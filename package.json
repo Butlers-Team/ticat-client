@@ -2,7 +2,6 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "dependencies": {
     "@craco/craco": "^7.1.0",
     "@tanstack/react-query": "^4.29.12",
@@ -54,6 +53,7 @@
     "@types/react": "^18.2.12",
     "craco-alias": "^3.0.1",
     "eslint": "^8.42.0",
+    "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",

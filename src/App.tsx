@@ -4,6 +4,7 @@ function App() {
   return (
     <div>
       <GlobalStyles />
+      감자
     </div>
   );
 }
