@@ -2,7 +2,7 @@
   // 전역변수 환경 설정
   "env": {
     "browser": true,
-    "es2021": true,
+    "es6": true,
     "node": true
   },
 
