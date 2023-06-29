@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 //css
 import styled from 'styled-components';
-import { OauthVariables } from '@styles/Oauth';
+import { OauthVariables } from '@styles/OauthColor';
 
 //icon
 import { RiKakaoTalkFill } from 'react-icons/ri';
@@ -48,7 +48,7 @@ export default OauthButton;
 /** 2023/06/29 - Oauth 버튼 컴포넌트 스타일 - by leekoby */
 const OauthBtn = styled.button<{ buttonService: ButtonService }>`
   ${OauthVariables}
-  cursor: pointer;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -78,6 +78,17 @@ const OauthBtn = styled.button<{ buttonService: ButtonService }>`
         return `${OauthVariables.colorGoogleText}`;
     }
   }};
+
+  &:focus {
+    outline: none;
+    border: 2px solid var(--color-sub);
+    ::placeholder {
+      opacity: 0;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 /** 2023/06/29 - Oauth 아이콘 Wrapper - by leekoby */

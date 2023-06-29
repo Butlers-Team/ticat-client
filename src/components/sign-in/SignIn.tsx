@@ -164,6 +164,17 @@ const StyledButton = styled.button<ButtonProps>`
   border: 1px solid #a5a5a5;
   margin-bottom: 5px;
 
-  background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'white')};
+  background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'var(--color-light-text)')};
   color: ${props => (props.buttonType === 'login' ? `white` : `var(--color-dark-text)`)};
+
+  &:focus {
+    outline: none;
+    border: 2px solid var(--color-sub);
+    ::placeholder {
+      opacity: 0;
+    }
+  }
+  &:hover {
+    cursor: pointer;
+  }
 `;
