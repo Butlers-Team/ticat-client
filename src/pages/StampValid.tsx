@@ -61,14 +61,4 @@ const StampBtnWrap = styled.div`
   position: absolute;
   bottom: 3rem;
   width: calc(100% - 4rem);
-
-  /* > .StampValidBtn {
-    font-size: 14px;
-    width: 100%;
-    height: 4.5rem;
-    border: none;
-    border-radius: 7px;
-    color: #fff;
-    background: var(--color-main);
-  } */
 `;
