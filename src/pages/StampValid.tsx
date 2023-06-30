@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Button from '@components/Button';
 
 const StampValid = () => {
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
@@ -16,9 +17,7 @@ const StampValid = () => {
         <p className="sub-description">티캣 발급을 위해 위치 이동을 자제해주세요.</p>
       </DescriptionWrap>
       <StampBtnWrap>
-        <button className="StampValidBtn" onClick={handleStampClick}>
-          스탬프 찍기
-        </button>
+        <Button onClick={handleStampClick}>스탬프 찍기</Button>
       </StampBtnWrap>
     </StampValidContainer>
   );
@@ -63,7 +62,7 @@ const StampBtnWrap = styled.div`
   bottom: 3rem;
   width: calc(100% - 4rem);
 
-  > .StampValidBtn {
+  /* > .StampValidBtn {
     font-size: 14px;
     width: 100%;
     height: 4.5rem;
@@ -71,5 +70,5 @@ const StampBtnWrap = styled.div`
     border-radius: 7px;
     color: #fff;
     background: var(--color-main);
-  }
+  } */
 `;
