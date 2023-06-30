@@ -22,8 +22,9 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   display: flex;
   justify-content: center;
   align-items: center;
-  width: ${({ width }) => width ?? 'calc(100% - 4rem)'};
+  width: ${({ width }) => width ?? '100%'};
   height: ${({ height }) => height ?? '4.5rem'};
+  font-size: ${({ fontSize }) => fontSize ?? '14px'};
   border-radius: 5px;
   border: none;
   margin: 10px 0px;
