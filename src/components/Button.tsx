@@ -1,0 +1,37 @@
+import { ReactNode } from 'react';
+import styled from 'styled-components';
+
+interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode;
+  width?: string;
+  height?: string;
+  fontSize?: string;
+}
+
+const Button: React.FC<BtnProps> = ({ children, ...props }) => {
+  return (
+    <div>
+      <PublicButton {...props}>{children}</PublicButton>
+    </div>
+  );
+};
+export default Button;
+
+/** 2023/06/29 - 서비스 공용 버튼 컴포넌트 - parksubeom */
+const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize'>>`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: ${({ width }) => width ?? 'calc(100% - 4rem)'};
+  height: ${({ height }) => height ?? '4.5rem'};
+  border-radius: 5px;
+  border: none;
+  margin: 10px 0px;
+  background-color: var(--color-main);
+  color: var(--color-light-text);
+  font-weight: bold;
+  cursor: pointer;
+  &:hover {
+    background-color: var(--color-sub);
+  }
+`;
