@@ -71,6 +71,24 @@ ${reset}
     width: 100%;
     background-color: #fff;
   }
+
+  main {
+    width: 100%;
+    height: calc(100vh - 70px);
+    overflow-x: hidden;
+  
+  }
+
+  nav {
+    border-top: 1px solid #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 70px;
+  }
+
+
 `;
 
 export default GlobalStyles;
