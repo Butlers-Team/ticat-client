@@ -5,6 +5,7 @@ interface ToggleProps {
   onClick: () => void;
 }
 
+/** 2023/07/01 - 캘린더 or 티켓 리스트 토글 컴포넌트 - by sineTlsl */
 const Toggle = ({ isSelectCal, onClick }: ToggleProps) => {
   return (
     <ToggleContainer>
@@ -18,6 +19,7 @@ const Toggle = ({ isSelectCal, onClick }: ToggleProps) => {
 
 export default Toggle;
 
+/** 2023/07/01 - 토글 - by sineTlsl */
 const ToggleContainer = styled.div`
   position: relative;
   display: inline-block;
@@ -28,6 +30,7 @@ const ToggleContainer = styled.div`
   font-size: 11px;
   letter-spacing: 0.1rem;
 
+  // 토글 컨테이너
   .toggle-container {
     position: absolute;
     width: 100%;
@@ -51,6 +54,7 @@ const ToggleContainer = styled.div`
     }
   }
 
+  // 토글 circle
   .toggle-circle {
     position: absolute;
     height: 26px;

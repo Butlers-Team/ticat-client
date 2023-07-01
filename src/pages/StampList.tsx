@@ -57,7 +57,7 @@ export default StampList;
 const StampListContainer = styled.section`
   position: relative;
   width: 100%;
-  min-height: calc(var(--vh, 1vh) * 100);
+  height: 100%;
 `;
 
 /** 2023/06/30 - 상단 이미지 및 소개 - by sineTlsl */
@@ -110,11 +110,11 @@ const StampItemsWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: calc(100vh - 210px);
+  height: calc(100% - 210px);
   width: 100%;
   background: #fff;
   border-radius: 30px 30px 0px 0px;
-  padding-bottom: 2rem;
+  padding-bottom: 1.5rem;
 
   // 캘린더 년도, 월
   > .cal-date {
@@ -136,8 +136,7 @@ const StampItemsWrap = styled.div`
   // 예시 토글 박스
   > .toggle-wrap {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1.5rem;
     right: 2rem;
-    /* padding: 1rem 0; */
   }
 `;

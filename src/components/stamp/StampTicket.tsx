@@ -40,7 +40,7 @@ const StampTicketContainer = styled.div`
   width: calc(100% - 4rem);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   overflow: scroll;
 `;
 

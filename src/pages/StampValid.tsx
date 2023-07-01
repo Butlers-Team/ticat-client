@@ -30,7 +30,7 @@ const StampValidContainer = styled.section`
   position: relative;
   padding: 0 2rem;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
 `;
 
 /** 2023/06/29 - 페이지 설명 - by sineTlsl */

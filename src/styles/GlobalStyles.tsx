@@ -45,7 +45,7 @@ ${reset}
     padding-right: env(safe-area-inset-right);
     max-width: 50rem;
     margin: 0 auto;
-    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
     overflow-y: scroll;
   }
   #root {
