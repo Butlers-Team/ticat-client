@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 // icons
@@ -6,8 +7,18 @@ import { AiOutlineRight } from 'react-icons/ai';
 
 // components
 import StampTicket from '@components/stamp/StampTicket';
+import StampCalendar from '@components/stamp/StampCalendar';
+import Toggle from '@components/stamp/StampToggle';
 
 const StampList = () => {
+  const [isSelectCal, setIsSelectCal] = useState<boolean>(false);
+
+  /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
+  const HandlerToggle = () => {
+    setIsSelectCal(!isSelectCal);
+    console.log(isSelectCal);
+  };
+
   return (
     <StampListContainer>
       <TopDescriptionWrap>
@@ -31,9 +42,9 @@ const StampList = () => {
             <AiOutlineRight size="18px" color="#D3D3D3" />
           </button>
         </div>
-        <StampTicket />
+        {isSelectCal ? <StampCalendar /> : <StampTicket />}
         <div className="toggle-wrap">
-          <div className="toggle" />
+          <Toggle isSelectCal={isSelectCal} onClick={HandlerToggle} />
         </div>
       </StampItemsWrap>
     </StampListContainer>
@@ -46,7 +57,7 @@ export default StampList;
 const StampListContainer = styled.section`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(var(--vh, 1vh) * 100);
 `;
 
 /** 2023/06/30 - 상단 이미지 및 소개 - by sineTlsl */
@@ -122,18 +133,11 @@ const StampItemsWrap = styled.div`
     background: none;
   }
 
-  // 예시 토글
+  // 예시 토글 박스
   > .toggle-wrap {
     position: absolute;
     bottom: 2rem;
     right: 2rem;
     /* padding: 1rem 0; */
-  }
-
-  > .toggle-wrap > .toggle {
-    width: 160px;
-    height: 36px;
-    border-radius: 40px;
-    background: #ebebeb;
   }
 `;
