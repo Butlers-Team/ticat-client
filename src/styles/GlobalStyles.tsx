@@ -79,9 +79,9 @@ ${reset}
     width: 100%;
     height: calc(100vh - 70px);
     overflow-x: hidden;
-    ::-webkit-scrollbar {
-    display: none;
-  }
+      ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   nav {
@@ -113,7 +113,6 @@ ${reset}
     align-items: center;
   }
 
-
   .column {
     flex-direction: column;
   }
@@ -121,7 +120,6 @@ ${reset}
   .row {
     flex-direction: row;
   }
-
 `;
 
 export default GlobalStyles;
