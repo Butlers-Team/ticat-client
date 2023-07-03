@@ -19,13 +19,13 @@ const StampTicket = () => {
           <ItemText>
             <h4 className="item-title">축제 이름</h4>
             <p className="item-place">
-              <MdPlace size="13px" color="var(--color-light-text)" />
+              <MdPlace size="13px" color="var(--color-light)" />
               <span>울산광역시 북구</span>
             </p>
             <p className="item-date">2023.06.23 ~ 2023.06.25</p>
           </ItemText>
           <ItemPhoto>
-            <IoLogoOctocat size="50px" color="var(--color-light-text)" />
+            <IoLogoOctocat size="50px" color="var(--color-light)" />
           </ItemPhoto>
         </TicketItemWrap>
       ))}
@@ -52,7 +52,7 @@ const TicketItemWrap = styled.div<StampTicketBg>`
   border-radius: 10px;
   background: ${({ background }) => background};
   padding: 1.5rem 0;
-  color: var(--color-light-text);
+  color: var(--color-light);
   display: flex;
 `;
 
@@ -87,5 +87,5 @@ const ItemPhoto = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border-left: 1px dashed var(--color-light-text);
+  border-left: 1px dashed var(--color-light);
 `;

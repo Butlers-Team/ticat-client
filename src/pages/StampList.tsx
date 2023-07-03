@@ -11,12 +11,12 @@ import StampCalendar from '@components/stamp/StampCalendar';
 import Toggle from '@components/stamp/StampToggle';
 
 const StampList = () => {
-  const [isSelectCal, setIsSelectCal] = useState<boolean>(false);
+  const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
   const HandlerToggle = () => {
-    setIsSelectCal(!isSelectCal);
-    console.log(isSelectCal);
+    setIsSelectTicket(!isSelectTicket);
+    console.log(isSelectTicket);
   };
 
   return (
@@ -42,9 +42,9 @@ const StampList = () => {
             <AiOutlineRight size="18px" color="#D3D3D3" />
           </button>
         </div>
-        {isSelectCal ? <StampCalendar /> : <StampTicket />}
+        {isSelectTicket ? <StampTicket /> : <StampCalendar />}
         <div className="toggle-wrap">
-          <Toggle isSelectCal={isSelectCal} onClick={HandlerToggle} />
+          <Toggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
         </div>
       </StampItemsWrap>
     </StampListContainer>
@@ -95,7 +95,7 @@ const TopDescriptionWrap = styled.div`
     font-size: 30px;
     font-weight: 300;
     line-height: 1.2;
-    color: var(--color-light-text);
+    color: var(--color-light);
   }
   > .stamp-description-text > p > .bold-text {
     font-weight: 700;
@@ -126,7 +126,7 @@ const StampItemsWrap = styled.div`
   > .cal-date .cal-month {
     font-size: 16px;
     font-weight: 700;
-    color: var(--color-dark-text);
+    color: var(--color-dark);
   }
   > .cal-date button {
     border: none;
