@@ -7,8 +7,10 @@ const GlobalStyles = createGlobalStyle`
   /* Color */
   --color-main: rgba(43,136,246,1);
   --color-sub: rgba(24, 164, 251, 1);
-  --color-dark-text: rgba(53, 53, 53, 1); 
-  --color-light-text: rgba(240,240,240,1); 
+  --color-dark: rgba(53, 53, 53, 1); 
+  --color-dark-gray: rgba(173, 173, 173, 1);
+  --color-light-gray: rgba(230,230,230,1); 
+  --color-light: rgba(250,250,250,1);
   --background-color: rgba(255,255,255,1); 
 }
 
@@ -74,7 +76,9 @@ ${reset}
     width: 100%;
     height: calc(100vh - 70px);
     overflow-x: hidden;
-  
+    ::-webkit-scrollbar {
+    display: none;
+  }
   }
 
   nav {
