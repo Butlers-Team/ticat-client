@@ -6,7 +6,7 @@ interface ButtonProps {
   buttonType: 'login' | 'signup';
 }
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
-const SignIn: React.FC = (props): JSX.Element => {
+const SignIn: React.FC = (): JSX.Element => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
