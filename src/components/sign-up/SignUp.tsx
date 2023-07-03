@@ -32,21 +32,6 @@ const SignUp: React.FC = (props): JSX.Element => {
     setShowPassword(!showPassword);
   };
 
-  // input 입력값 state 변경 함수
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = event => {
-    const { name, value } = event.target;
-
-    if (name === 'userId') {
-      setUserId(value);
-    } else if (name === 'userEmail') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    } else if (name === 'confirmPassword') {
-      setPasswordConfirm(value);
-    }
-  };
-
   // 회원가입 버튼 클릭 핸들러
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
     console.log('------submit------');
@@ -132,7 +117,10 @@ const SignUp: React.FC = (props): JSX.Element => {
             name="userId"
             value={userId}
             onChange={onChangeId}
-            onClear={() => setUserId('')}
+            onClear={() => {
+              setUserId('');
+              setIsId(false);
+            }}
             isValid={isId}
             validMessage={idMessage}
           />
@@ -144,7 +132,10 @@ const SignUp: React.FC = (props): JSX.Element => {
             name="userEmail"
             value={email}
             onChange={onChangeEmail}
-            onClear={() => setEmail('')}
+            onClear={() => {
+              setEmail('');
+              setIsEmail(false);
+            }}
             isValid={isEmail}
             validMessage={emailMessage}
           />
@@ -157,7 +148,10 @@ const SignUp: React.FC = (props): JSX.Element => {
             name="password"
             value={password}
             onChange={onChangePassword}
-            onClear={() => setPassword('')}
+            onClear={() => {
+              setPassword('');
+              setIsPassword(false);
+            }}
             isShow={showPassword}
             onToggleShow={toggleShowPassword}
             isValid={isPassword}
@@ -172,7 +166,10 @@ const SignUp: React.FC = (props): JSX.Element => {
             name="confirmPassword"
             value={passwordConfirm}
             onChange={onChangePasswordConfirm}
-            onClear={() => setPasswordConfirm('')}
+            onClear={() => {
+              setPasswordConfirm('');
+              setIsPasswordConfirm(false);
+            }}
             isShow={showPassword}
             isValid={isPasswordConfirm}
             validMessage={passwordConfirmMessage}
