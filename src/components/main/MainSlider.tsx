@@ -3,13 +3,16 @@ import { useState } from 'react';
 
 //icon
 import { TiLocation } from 'react-icons/ti';
+import { BiSun } from 'react-icons/bi';
 
 const MainSlider = () => {
   return (
     <SliderContainer>
-      <div className="wather-info">
+      <div className="wather-info flex-all-center">
         <span>축제날씨</span>
-        <span className="wather-icon">1</span>
+        <span className="wather-icon flex-all-center">
+          <BiSun />
+        </span>
       </div>
       <div className="festival-info">
         <p>2023.06.19 - 2023.07.31</p>
@@ -33,18 +36,14 @@ const SliderContainer = styled.article`
 
   > .wather-info {
     position: absolute;
-    display: flex;
-    justify-content: center;
-    align-content: center;
     top: 20px;
     right: 20px;
 
     .wather-icon {
-      display: flex;
-      justify-content: center;
-      align-content: center;
       width: 30px;
       height: 30px;
+      margin-left: 5px;
+      font-size: 2.5rem;
     }
   }
 
