@@ -7,8 +7,10 @@ const GlobalStyles = createGlobalStyle`
   /* Color */
   --color-main: rgba(43,136,246,1);
   --color-sub: rgba(24, 164, 251, 1);
-  --color-dark-text: rgba(53, 53, 53, 1); 
-  --color-light-text: rgba(240,240,240,1); 
+  --color-dark: rgba(53, 53, 53, 1); 
+  --color-dark-gray: rgba(173, 173, 173, 1);
+  --color-light-gray: rgba(230,230,230,1); 
+  --color-light: rgba(250,250,250,1);
   --background-color: rgba(255,255,255,1); 
 }
 
@@ -16,7 +18,6 @@ ${reset}
 	// 아래에 전역 스타일을 추가
   *{
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;  
   }
   a{
     text-decoration: none;
@@ -37,6 +38,7 @@ ${reset}
     height: 100%;
   }
   body {
+    font-family: 'Noto Sans KR','Noto Sans'; 
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
@@ -55,7 +57,7 @@ ${reset}
   }
   ul {
     margin: 0;
-    padding: 0 0 0 1.5em;
+    padding: 0 0 0 0;
   }
   li {
     padding: 0;
@@ -74,11 +76,14 @@ ${reset}
     width: 100%;
     height: calc(100vh - 70px);
     overflow-x: hidden;
-  
+    ::-webkit-scrollbar {
+    display: none;
+  }
   }
 
   nav {
     border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -86,6 +91,33 @@ ${reset}
     height: 70px;
   }
 
+  //수평,수직 중앙정렬
+  .flex-all-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //수평 중앙정렬
+  .flex-v-center{
+    display: flex;
+    justify-content: center;
+  }
+
+  //수직 중앙정렬 
+  .flex-h-center{
+    display: flex;
+    align-items: center;
+  }
+
+
+  .column {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: row;
+  }
 
 `;
 
