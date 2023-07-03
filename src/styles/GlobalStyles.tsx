@@ -18,7 +18,6 @@ ${reset}
 	// 아래에 전역 스타일을 추가
   *{
     box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;  
   }
   a{
     text-decoration: none;
@@ -39,6 +38,7 @@ ${reset}
     height: 100%;
   }
   body {
+    font-family: 'Noto Sans KR','Noto Sans'; 
     padding-top: env(safe-area-inset-top);
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
@@ -57,7 +57,7 @@ ${reset}
   }
   ul {
     margin: 0;
-    padding: 0 0 0 1.5em;
+    padding: 0 0 0 0;
   }
   li {
     padding: 0;
@@ -91,6 +91,33 @@ ${reset}
     height: 70px;
   }
 
+  //수평,수직 중앙정렬
+  .flex-all-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  //수평 중앙정렬
+  .flex-v-center{
+    display: flex;
+    justify-content: center;
+  }
+
+  //수직 중앙정렬 
+  .flex-h-center{
+    display: flex;
+    align-items: center;
+  }
+
+
+  .column {
+    flex-direction: column;
+  }
+
+  .row {
+    flex-direction: row;
+  }
 
 `;
 

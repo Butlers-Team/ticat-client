@@ -47,7 +47,7 @@ const CategoryContainer = styled.ul`
 
   .category-box {
     display: flex;
-    width: 50px;
+    width: 51px;
     flex-direction: column;
     justify-content: center;
     align-items: center;

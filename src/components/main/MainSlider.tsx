@@ -4,7 +4,7 @@ import { useState } from 'react';
 //icon
 import { TiLocation } from 'react-icons/ti';
 
-const FestivalSlider = () => {
+const MainSlider = () => {
   return (
     <SliderContainer>
       <div className="wather-info">
@@ -22,7 +22,7 @@ const FestivalSlider = () => {
   );
 };
 
-export default FestivalSlider;
+export default MainSlider;
 
 const SliderContainer = styled.article`
   position: relative;
