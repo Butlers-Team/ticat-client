@@ -11,7 +11,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <Main className={shouldHide() ? undefined : 'main_vh70'}>{children}</Main>
+      <Main className={shouldHide() ? undefined : 'main-vh70'}>{children}</Main>
       {!shouldHide() && <TabNav />}
     </>
   );

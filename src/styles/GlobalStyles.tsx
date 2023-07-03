@@ -83,11 +83,12 @@ ${reset}
 
   main {
     width: 100%;
+    height: 100%;
     overflow-x: hidden;
-    height: calc(var(--vh, 1vh) * 100);
+
   }
-  .main_vh70 {
-    height: calc(var(--vh, 1vh) * 100 - 70px);
+  .main-vh70 {
+    height: calc(100% - 70px);
   }
 
   nav {
