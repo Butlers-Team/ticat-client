@@ -1,10 +1,15 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 import Button from '@components/Button';
 
 const StampValid = () => {
+  const navigate = useNavigate();
+
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
   const handleStampClick = (): void => {
     // 스탬프 찍는 페이지로 이동
+    navigate('/stamp/list');
   };
 
   return (
@@ -30,7 +35,7 @@ const StampValidContainer = styled.section`
   position: relative;
   padding: 0 2rem;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
 `;
 
 /** 2023/06/29 - 페이지 설명 - by sineTlsl */
@@ -52,7 +57,7 @@ const DescriptionWrap = styled.div`
     margin-top: 3rem;
     font-size: 14px;
     font-weight: 400;
-    color: var(--color-dark-text);
+    color: var(--color-dark);
   }
 `;
 
