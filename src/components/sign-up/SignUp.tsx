@@ -1,29 +1,35 @@
 import styled from 'styled-components';
-import { useRef, useState } from 'react';
-import SignInput from './SignupInput';
+import { useCallback, useState } from 'react';
+import SignInputForm from './SignupInputForm';
 import Button from '@components/Button';
 
 /** 2023/06/29 - 회원가입 컴포넌트 - by leekoby */
 const SignUp: React.FC = (props): JSX.Element => {
+  // 이름, 이메일, 비밀번호, 비밀번호 확인
   const [userId, setUserId] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+
+  //오류메시지 상태저장
+  const [idMessage, setIdMessage] = useState<string>('');
+  const [emailMessage, setEmailMessage] = useState<string>('');
+  const [passwordMessage, setPasswordMessage] = useState<string>('');
+  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>('');
+
+  // 유효성 검사
+  const [isId, setIsId] = useState<boolean>(false);
+  const [isEmail, setIsEmail] = useState<boolean>(false);
+  const [isPassword, setIsPassword] = useState<boolean>(false);
+  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
 
   // 비밀번호 show state
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // 비밀번호 입력 show
-  const toggleShowPassword = () => {
-    event?.stopPropagation();
+  const toggleShowPassword: React.MouseEventHandler<HTMLButtonElement> = event => {
+    event.stopPropagation();
     setShowPassword(!showPassword);
-  };
-
-  // 비밀번호 확인 입력 show
-  const toggleShowConfirmPassword = () => {
-    event?.stopPropagation();
-    setShowConfirmPassword(!showConfirmPassword);
   };
 
   // input 입력값 state 변경 함수
@@ -33,24 +39,85 @@ const SignUp: React.FC = (props): JSX.Element => {
     if (name === 'userId') {
       setUserId(value);
     } else if (name === 'userEmail') {
-      setUserEmail(value);
+      setEmail(value);
     } else if (name === 'password') {
       setPassword(value);
     } else if (name === 'confirmPassword') {
-      setConfirmPassword(value);
+      setPasswordConfirm(value);
     }
   };
 
   // 회원가입 버튼 클릭 핸들러
   const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+    console.log('------submit------');
     event.preventDefault();
     console.log('UserId:', userId);
-    console.log('Email', userEmail);
+    console.log('Email', email);
     console.log('Password:', password);
-    console.log('ConfirmPassword:', confirmPassword);
+    console.log('ConfirmPassword:', passwordConfirm);
 
     // TODO: 회원가입 요청 처리
   };
+
+  // 이름
+  const onChangeId = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setUserId(e.target.value);
+    if (e.target.value.length < 6 || e.target.value.length >= 10) {
+      setIdMessage('6글자 이상 10글자 미만으로 입력해주세요.');
+      setIsId(false);
+    } else {
+      setIdMessage('올바른 이름 형식이에요 : )');
+      setIsId(true);
+    }
+  }, []);
+
+  // 이메일
+  const onChangeEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailRegex =
+      /([\w-.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$/;
+    const emailCurrent = e.target.value;
+    setEmail(emailCurrent);
+
+    if (!emailRegex.test(emailCurrent)) {
+      setEmailMessage('이메일 형식이 틀렸어요! 다시 확인해주세요 ㅜ ㅜ');
+      setIsEmail(false);
+    } else {
+      setEmailMessage('올바른 이메일 형식이에요 : )');
+      setIsEmail(true);
+    }
+  }, []);
+
+  // 비밀번호
+  const onChangePassword = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    const passwordCurrent = e.target.value;
+    setPassword(passwordCurrent);
+
+    if (!passwordRegex.test(passwordCurrent)) {
+      setPasswordMessage('숫자+영문자+특수문자 조합으로 8자리 이상!');
+      setIsPassword(false);
+    } else {
+      setPasswordMessage('안전한 비밀번호에요 : )');
+      setIsPassword(true);
+    }
+  }, []);
+
+  // 비밀번호 확인
+  const onChangePasswordConfirm = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const passwordConfirmCurrent = e.target.value;
+      setPasswordConfirm(passwordConfirmCurrent);
+
+      if (password === passwordConfirmCurrent) {
+        setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )');
+        setIsPasswordConfirm(true);
+      } else {
+        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ');
+        setIsPasswordConfirm(false);
+      }
+    },
+    [password],
+  );
 
   return (
     <SignUpContainer>
@@ -58,52 +125,64 @@ const SignUp: React.FC = (props): JSX.Element => {
       <FormContainer onSubmit={handleSubmit}>
         <InputContainer>
           {/* 아이디 */}
-          <SignInput
-            type="text"
-            placeholder="아이디"
+          <SignInputForm
+            label="아이디"
+            placeholder="6글자 이상 10글자 미만으로 입력해주세요."
+            type="id"
             name="userId"
             value={userId}
-            onChange={handleChange}
+            onChange={onChangeId}
             onClear={() => setUserId('')}
-            isShow={showPassword}
+            isValid={isId}
+            validMessage={idMessage}
           />
           {/* 이메일 */}
-          <SignInput
-            type="text"
-            placeholder="이메일"
+          <SignInputForm
+            label="이메일"
+            placeholder="이메일@exaple.com"
+            type="email"
             name="userEmail"
-            value={userEmail}
-            onChange={handleChange}
-            onClear={() => setUserEmail('')}
-            isShow={showPassword}
+            value={email}
+            onChange={onChangeEmail}
+            onClear={() => setEmail('')}
+            isValid={isEmail}
+            validMessage={emailMessage}
           />
 
           {/* 비밀번호 */}
-          <SignInput
+          <SignInputForm
+            label="비밀번호"
             type="password"
-            placeholder="비밀번호"
+            placeholder="숫자+영문자+특수문자 조합으로 8자리 이상"
             name="password"
             value={password}
-            onChange={handleChange}
+            onChange={onChangePassword}
             onClear={() => setPassword('')}
             isShow={showPassword}
             onToggleShow={toggleShowPassword}
+            isValid={isPassword}
+            validMessage={passwordMessage}
           />
 
           {/* 비밀번호확인 */}
-          <SignInput
+          <SignInputForm
+            label="비밀번호 확인"
             type="password"
-            placeholder="비밀번호 확인"
+            placeholder="숫자+영문자+특수문자 조합으로 8자리 이상"
             name="confirmPassword"
-            value={confirmPassword}
-            onChange={handleChange}
-            onClear={() => setConfirmPassword('')}
+            value={passwordConfirm}
+            onChange={onChangePasswordConfirm}
+            onClear={() => setPasswordConfirm('')}
             isShow={showPassword}
+            isValid={isPasswordConfirm}
+            validMessage={passwordConfirmMessage}
           />
         </InputContainer>
 
+        {/* 아이디, 이메일, 패스워드, 패스워드 확인이 다 맞다면 main 색상 버튼으로 */}
+
         <ButtonContainer>
-          <Button type="submit" fontSize="1.6rem">
+          <Button type="submit" fontSize="1.6rem" disabled={!(isId && isEmail && isPassword && isPasswordConfirm)}>
             회원가입
           </Button>
         </ButtonContainer>
@@ -115,7 +194,8 @@ const SignUp: React.FC = (props): JSX.Element => {
 export default SignUp;
 
 /** 2023/06/29 - 회원가입 컨테이너 - by leekoby */
-const SignUpContainer = styled.div`
+const SignUpContainer = styled.section`
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -132,8 +212,8 @@ const Title = styled.h1`
   font-size: 24px;
   font-weight: bold;
   color: var(--color-main);
-  margin-top: 115px;
-  margin-bottom: 30px;
+  margin-top: 5rem;
+  margin-bottom: 3rem;
 `;
 
 /** 2023/06/29 - 회원가입 인풋창 컨테이너 - by leekoby */
@@ -151,6 +231,6 @@ const ButtonContainer = styled.div`
   align-content: center;
   text-align: center;
   flex-direction: column;
-  margin: 5px auto;
+  margin: 1rem auto;
   width: 270px;
 `;
