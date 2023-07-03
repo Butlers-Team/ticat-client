@@ -29,7 +29,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   border: none;
   margin: 10px 0px;
   background-color: var(--color-main);
-  color: var(--color-light-text);
+  color: #ffffff;
   font-weight: bold;
   cursor: pointer;
   &:hover {
