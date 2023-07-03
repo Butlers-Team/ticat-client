@@ -37,9 +37,8 @@ const MainPageContainer = styled.div`
 const ContentsSection = styled.ul`
   background-color: #ffffff;
   height: 700px;
-  transform: translateY(-30px);
   border-radius: 30px;
-
+  animation: showupLayout 0.5s forwards;
   .contents-box {
     padding: 20px;
     > h2 {
@@ -48,6 +47,20 @@ const ContentsSection = styled.ul`
     }
     > div {
       margin: 20px 0px;
+    }
+  }
+
+  @keyframes showupLayout {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-30px);
     }
   }
 `;
