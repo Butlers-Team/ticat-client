@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 // icons
@@ -6,8 +7,18 @@ import { AiOutlineRight } from 'react-icons/ai';
 
 // components
 import StampTicket from '@components/stamp/StampTicket';
+import StampCalendar from '@components/stamp/StampCalendar';
+import Toggle from '@components/stamp/StampToggle';
 
 const StampList = () => {
+  const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
+
+  /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
+  const HandlerToggle = () => {
+    setIsSelectTicket(!isSelectTicket);
+    console.log(isSelectTicket);
+  };
+
   return (
     <StampListContainer>
       <TopDescriptionWrap>
@@ -31,9 +42,9 @@ const StampList = () => {
             <AiOutlineRight size="18px" color="#D3D3D3" />
           </button>
         </div>
-        <StampTicket />
+        {isSelectTicket ? <StampTicket /> : <StampCalendar />}
         <div className="toggle-wrap">
-          <div className="toggle" />
+          <Toggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
         </div>
       </StampItemsWrap>
     </StampListContainer>
@@ -46,7 +57,7 @@ export default StampList;
 const StampListContainer = styled.section`
   position: relative;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
 `;
 
 /** 2023/06/30 - 상단 이미지 및 소개 - by sineTlsl */
@@ -84,7 +95,7 @@ const TopDescriptionWrap = styled.div`
     font-size: 30px;
     font-weight: 300;
     line-height: 1.2;
-    color: var(--color-light-text);
+    color: var(--color-light);
   }
   > .stamp-description-text > p > .bold-text {
     font-weight: 700;
@@ -99,11 +110,11 @@ const StampItemsWrap = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: calc(100vh - 210px);
+  height: calc(100% - 210px);
   width: 100%;
   background: #fff;
   border-radius: 30px 30px 0px 0px;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
 
   // 캘린더 년도, 월
   > .cal-date {
@@ -115,25 +126,19 @@ const StampItemsWrap = styled.div`
   > .cal-date .cal-month {
     font-size: 16px;
     font-weight: 700;
-    color: var(--color-dark-text);
+    color: var(--color-dark);
   }
   > .cal-date button {
     border: none;
     background: none;
   }
 
-  // 예시 토글
+  // toggle box
   > .toggle-wrap {
     position: absolute;
-    bottom: 2rem;
-    right: 2rem;
-    /* padding: 1rem 0; */
-  }
-
-  > .toggle-wrap > .toggle {
-    width: 160px;
-    height: 36px;
-    border-radius: 40px;
-    background: #ebebeb;
+    bottom: 3rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 `;

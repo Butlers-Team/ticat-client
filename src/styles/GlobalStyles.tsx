@@ -18,6 +18,9 @@ ${reset}
 	// 아래에 전역 스타일을 추가
   *{
     box-sizing: border-box;
+    font-family: 'Noto Sans KR', sans-serif;
+    user-select: none; // 유저가 더블클릭 등을 이용하여 글자를 선택하는 것을 막을 수 있음
+    -webkit-tap-highlight-color:rgba(255,255,255,0); // 버튼 클릭 시 나오는 음영 지우기
   }
   a{
     text-decoration: none;
@@ -45,7 +48,6 @@ ${reset}
     padding-right: env(safe-area-inset-right);
     max-width: 50rem;
     margin: 0 auto;
-    height: 100vh;
     overflow-y: scroll;
   }
   #root {
@@ -67,18 +69,26 @@ ${reset}
   }
 
   .app {
-    height: 100vh;
-    width: 100%;
     background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   main {
     width: 100%;
-    height: calc(100vh - 70px);
+    height: 100%;
     overflow-x: hidden;
-    ::-webkit-scrollbar {
-    display: none;
+
   }
+  .main-vh70 {
+    height: calc(100% - 70px);
   }
 
   nav {
@@ -110,7 +120,6 @@ ${reset}
     align-items: center;
   }
 
-
   .column {
     flex-direction: column;
   }
@@ -118,7 +127,6 @@ ${reset}
   .row {
     flex-direction: row;
   }
-
 `;
 
 export default GlobalStyles;
