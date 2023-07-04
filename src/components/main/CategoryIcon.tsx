@@ -6,7 +6,7 @@ import { MdPalette, MdMovie, MdPeopleAlt, MdFastfood } from 'react-icons/md';
 import { RiGlobalLine, RiMusic2Fill, RiBookMarkFill } from 'react-icons/ri';
 import { GiTwirlyFlower, GiMechaMask } from 'react-icons/gi';
 
-const tabfilter = [
+const tabicon = [
   { filtername: '음악', filtericon: <RiMusic2Fill /> },
   { filtername: '미술', filtericon: <MdPalette /> },
   { filtername: '영화', filtericon: <MdMovie /> },
@@ -26,7 +26,7 @@ const tabfilter = [
 const CategoryIcon = () => {
   return (
     <CategoryContainer>
-      {tabfilter.map((icons, index) => (
+      {tabicon.map((icons, index) => (
         <li className="category-box" key={`icons${index}`}>
           <div className="category-icon">{icons.filtericon}</div>
           <p className="category-name">{icons.filtername}</p>
@@ -73,10 +73,10 @@ const CategoryContainer = styled.ul`
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       border-radius: 5px;
-      background-color: var(--color-light-gray);
+      background-color: #f0f0f0;
       color: var(--color-dark-gray);
       font-size: 22px;
     }
