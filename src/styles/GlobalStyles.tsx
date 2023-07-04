@@ -48,7 +48,6 @@ ${reset}
     padding-right: env(safe-area-inset-right);
     max-width: 50rem;
     margin: 0 auto;
-    height: calc(var(--vh, 1vh) * 100);
     overflow-y: scroll;
   }
   #root {
@@ -70,18 +69,26 @@ ${reset}
   }
 
   .app {
-    height: 100vh;
-    width: 100%;
     background-color: #fff;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    -ms-overflow-style: none; /* 인터넷 익스플로러 */
+    scrollbar-width: none; /* 파이어폭스 */
+
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   main {
     width: 100%;
-    height: calc(100vh - 70px);
+    height: 100%;
     overflow-x: hidden;
-      ::-webkit-scrollbar {
-      display: none;
-    }
+
+  }
+  .main-vh70 {
+    height: calc(100% - 70px);
   }
 
   nav {
