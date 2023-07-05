@@ -198,6 +198,32 @@ const SignUpContainer = styled.section`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  animation: showupLayout 0.5s forwards;
+  .contents-box {
+    padding: 20px;
+    > h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    > div {
+      margin: 20px 0px;
+    }
+  }
+
+  @keyframes showupLayout {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-30px);
+    }
+  }
 `;
 
 const FormContainer = styled.form`
