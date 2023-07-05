@@ -114,7 +114,7 @@ const StampItemsWrap = styled.div`
   width: 100%;
   background: #fff;
   border-radius: 30px 30px 0px 0px;
-  padding-bottom: 1.5rem;
+  padding-bottom: 3rem;
 
   // 캘린더 년도, 월
   > .cal-date {
@@ -133,10 +133,12 @@ const StampItemsWrap = styled.div`
     background: none;
   }
 
-  // 예시 토글 박스
+  // toggle box
   > .toggle-wrap {
     position: absolute;
-    bottom: 1.5rem;
-    right: 2rem;
+    bottom: 3rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
 `;
