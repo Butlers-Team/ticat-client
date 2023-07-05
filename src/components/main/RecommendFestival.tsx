@@ -1,42 +1,37 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectFade, Navigation, Pagination } from 'swiper/modules';
 
 // Import Swiper styles
 import 'swiper/css';
-import 'swiper/css/effect-fade';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
+import { styled } from '@tanstack/react-query-devtools/build/lib/utils';
 
 interface Options {
   spaceBetween: number;
-  effect: string;
-  navigation: boolean;
-  pagination: { clickable: boolean };
-  modules: (typeof EffectFade | typeof Navigation | typeof Pagination)[];
+  slidesPerView: number;
 }
 
 const RecommendFestival = () => {
   const swiperOptions: Options = {
-    spaceBetween: 30,
-    effect: 'fade',
-    navigation: true,
-    pagination: {
-      clickable: true,
-    },
-    modules: [EffectFade, Navigation, Pagination],
+    spaceBetween: 20,
+    slidesPerView: 3,
   };
 
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
-        <SwiperSlide></SwiperSlide>
-        <SwiperSlide></SwiperSlide>
-        <SwiperSlide></SwiperSlide>
-        <SwiperSlide></SwiperSlide>
+        <SwiperSlide>
+          <RecommendCard>
+          </RecommendCard>
+        </SwiperSlide>
+        <SwiperSlide>2</SwiperSlide>
+        <SwiperSlide>3</SwiperSlide>
+        <SwiperSlide>4</SwiperSlide>
       </Swiper>
     </>
   );
 };
 
 export default RecommendFestival;
+
+const RecommendCard = styled.
+   
