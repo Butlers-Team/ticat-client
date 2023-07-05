@@ -90,6 +90,8 @@ export default SignIn;
 
 /** 2023/06/29 - 로그인 컨테이너 - by leekoby */
 const SignInContainer = styled.div`
+  overflow: hidden;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,11 +100,10 @@ const SignInContainer = styled.div`
 
 /** 2023/06/29 - 로그인 타이틀 - by leekoby */
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: bold;
   color: var(--color-main);
-  margin-top: 115px;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 `;
 
 /** 2023/06/29 - 로그인 인풋창 컨테이너 - by leekoby */
@@ -121,7 +122,7 @@ const InputBox = styled.input`
   margin-bottom: 9px;
   padding: 2px 5px;
   border: 1px solid #a5a5a5;
-
+  border-radius: 5px;
   ::placeholder {
     color: rgba(130, 129, 129, 0.6);
   }
@@ -163,6 +164,7 @@ const StyledButton = styled.button<ButtonProps>`
   height: 45px;
   border: 1px solid #a5a5a5;
   margin-bottom: 5px;
+  border-radius: 5px;
 
   background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'var(--color-light-text)')};
   color: ${props => (props.buttonType === 'login' ? `white` : `var(--color-dark-text)`)};

@@ -4,7 +4,7 @@ import SignInputForm from './SignupInputForm';
 import Button from '@components/Button';
 
 /** 2023/06/29 - 회원가입 컴포넌트 - by leekoby */
-const SignUp: React.FC = (props): JSX.Element => {
+const SignUp: React.FC = (): JSX.Element => {
   // 이름, 이메일, 비밀번호, 비밀번호 확인
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
@@ -192,6 +192,7 @@ export default SignUp;
 
 /** 2023/06/29 - 회원가입 컨테이너 - by leekoby */
 const SignUpContainer = styled.section`
+  overflow: hidden;
   height: 100%;
   display: flex;
   justify-content: center;
@@ -200,16 +201,14 @@ const SignUpContainer = styled.section`
 `;
 
 const FormContainer = styled.form`
-  border-radius: 25px;
   position: relative;
 `;
 
 /** 2023/06/29 - 회원가입 타이틀 - by leekoby */
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: bold;
   color: var(--color-main);
-  margin-top: 5rem;
   margin-bottom: 3rem;
 `;
 
