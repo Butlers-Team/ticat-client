@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+
+// icons
 import { AiOutlineHome } from 'react-icons/ai';
 import { IoMapOutline } from 'react-icons/io5';
 import { BsCardList, BsPerson } from 'react-icons/bs';
 import { RxCalendar } from 'react-icons/rx';
 
 const tabMenulist = [
-  { icon: <AiOutlineHome />, name: '홈', link: 'null' },
+  { icon: <AiOutlineHome />, name: '홈', link: '/main' },
   { icon: <IoMapOutline />, name: '지도', link: 'null' },
   { icon: <BsCardList />, name: '축제목록', link: 'null' },
   { icon: <RxCalendar />, name: '캘린더', link: 'null' },
