@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
 /** 2023/07/05 - 회원가입 결과 컴포넌트 - by leekoby */
-const SignupResult: React.FC = (): JSX.Element => {
+const Wellcome: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,7 +29,7 @@ const SignupResult: React.FC = (): JSX.Element => {
   );
 };
 
-export default SignupResult;
+export default Wellcome;
 
 const WellcomeContainer = styled.section`
   height: 100%;
