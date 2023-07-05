@@ -6,7 +6,7 @@ interface ButtonProps {
   buttonType: 'login' | 'signup';
 }
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
-const SignIn: React.FC = (props): JSX.Element => {
+const SignIn: React.FC = (): JSX.Element => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
 
@@ -90,19 +90,46 @@ export default SignIn;
 
 /** 2023/06/29 - 로그인 컨테이너 - by leekoby */
 const SignInContainer = styled.div`
+  overflow: hidden;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  animation: showupLayout 0.5s forwards;
+  .contents-box {
+    padding: 20px;
+    > h2 {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    > div {
+      margin: 20px 0px;
+    }
+  }
+
+  @keyframes showupLayout {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-30px);
+    }
+  }
 `;
 
 /** 2023/06/29 - 로그인 타이틀 - by leekoby */
 const Title = styled.h1`
-  font-size: 24px;
+  font-size: 2.4rem;
   font-weight: bold;
   color: var(--color-main);
-  margin-top: 115px;
-  margin-bottom: 30px;
+  margin-bottom: 3rem;
 `;
 
 /** 2023/06/29 - 로그인 인풋창 컨테이너 - by leekoby */
@@ -121,7 +148,7 @@ const InputBox = styled.input`
   margin-bottom: 9px;
   padding: 2px 5px;
   border: 1px solid #a5a5a5;
-
+  border-radius: 5px;
   ::placeholder {
     color: rgba(130, 129, 129, 0.6);
   }
@@ -163,6 +190,7 @@ const StyledButton = styled.button<ButtonProps>`
   height: 45px;
   border: 1px solid #a5a5a5;
   margin-bottom: 5px;
+  border-radius: 5px;
 
   background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'var(--color-light-text)')};
   color: ${props => (props.buttonType === 'login' ? `white` : `var(--color-dark-text)`)};
