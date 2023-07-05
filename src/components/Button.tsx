@@ -34,7 +34,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   cursor: pointer;
 
   :disabled {
-    color: var(--color-light-text);
+    color: var(--color-light);
     background-color: var(--color-sub);
     opacity: 0.5;
     cursor: default;
