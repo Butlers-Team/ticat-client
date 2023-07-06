@@ -1,31 +1,36 @@
 import React from 'react';
+import styled from 'styled-components';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
+//type
+import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
 // Import Swiper styles
 import 'swiper/css';
-import { styled } from '@tanstack/react-query-devtools/build/lib/utils';
-
-interface Options {
-  spaceBetween: number;
-  slidesPerView: number;
-}
 
 const RecommendFestival = () => {
-  const swiperOptions: Options = {
-    spaceBetween: 20,
+  const swiperOptions: RecommendSwiperOptions = {
+    spaceBetween: 110,
     slidesPerView: 3,
+    grabCursor: true,
+    loop: true,
   };
 
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
-        <SwiperSlide>
-          <RecommendCard>
-          </RecommendCard>
-        </SwiperSlide>
-        <SwiperSlide>2</SwiperSlide>
-        <SwiperSlide>3</SwiperSlide>
-        <SwiperSlide>4</SwiperSlide>
+        {[...Array(6)].map((card, index) => (
+          <SwiperSlide key={`${card}${index}`}>
+            <RecommendCard>
+              <div className="card-image"></div>
+              <div className="card-text">
+                <span>축제 이름 입니다 {`${index + 1}`}</span>
+                <p>서울특별시 강남구</p>
+              </div>
+            </RecommendCard>
+          </SwiperSlide>
+        ))}
       </Swiper>
     </>
   );
@@ -33,5 +38,27 @@ const RecommendFestival = () => {
 
 export default RecommendFestival;
 
-const RecommendCard = styled.
-   
+const RecommendCard = styled.div`
+  width: 180px;
+  height: 200px;
+  color: var(--color-dark);
+
+  .card-image {
+    width: 180px;
+    height: 140px;
+    border-radius: 10px;
+    background: var(--color-light-gray);
+    margin-bottom: 10px;
+  }
+
+  .card-text {
+    span {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    p {
+      margin-top: 5px;
+      font-size: 1.2rem;
+    }
+  }
+`;

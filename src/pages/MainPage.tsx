@@ -51,6 +51,7 @@ const ContentsSection = styled.ul`
   border-radius: 30px;
   animation: showupLayout 0.5s forwards;
   z-index: 3;
+  color: var(--color-dark);
 
   .contents-box {
     padding: 20px;
