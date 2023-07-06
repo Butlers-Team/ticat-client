@@ -28,13 +28,12 @@ interface BgImage {
 const RecommendFestival = () => {
   const [FestivalData, setFestivalData] = useState<FestivalListType[]>([]);
 
-  console.log(FestivalData);
+  /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
     axios
       .get(`https://7639-124-111-225-247.ngrok-free.app/festivals/banner`, {
-        withCredentials: true,
         headers: {
-          'Content-Type': 'application/json', // Content-Type 값을 문자열로 지정
+          'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
         },
       })
@@ -43,12 +42,10 @@ const RecommendFestival = () => {
       });
   }, []);
 
+  /** 2023.07.05 main banner swiper options - by mscojl24 */
   const swiperOptions: MainSwiperOptions = {
     spaceBetween: 30,
     effect: 'fade',
-    // pagination: {
-    //   type: 'progressbar',
-    // },
     loop: true,
     autoplay: {
       delay: 2500,
@@ -57,6 +54,7 @@ const RecommendFestival = () => {
     modules: [Autoplay, EffectFade],
   };
 
+  /**2023.07.05 데이터 날짜 형식 변경 - by mscojl24*/
   function formatDate(dateString: string) {
     const year = dateString.slice(0, 4);
     const month = dateString.slice(4, 6);

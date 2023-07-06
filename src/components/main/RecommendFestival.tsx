@@ -2,14 +2,16 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-// Import Swiper styles
+
+// Import Swiper
+import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
 const RecommendFestival = () => {
+  /** 2023.07.05 recommend banner swiper options - by mscojl24 */
   const swiperOptions: RecommendSwiperOptions = {
     spaceBetween: 110,
     slidesPerView: 3,
