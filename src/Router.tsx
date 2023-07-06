@@ -6,6 +6,9 @@ import StampCheck from '@pages/StampValid';
 import StampList from '@pages/StampList';
 import MainPage from '@pages/MainPage';
 import FestivalListPage from '@pages/FestivalListPage';
+import SignUpPage from '@pages/SignUpPage';
+import SignInPage from '@pages/SignInPage';
+import WellcomePage from '@pages/WellcomePage';
 
 const Router = () => {
   return (
@@ -15,6 +18,9 @@ const Router = () => {
         <Route path="/festival" element={<FestivalListPage />} />
         <Route path="/stamp/valid" element={<StampCheck />} />
         <Route path="/stamp/list" element={<StampList />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/signin" element={<SignInPage />} />
+        <Route path="/wellcome" element={<WellcomePage />} />
       </Routes>
     </Layout>
   );
