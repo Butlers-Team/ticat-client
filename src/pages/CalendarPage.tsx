@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import axios from 'axios';
-import Calendar from '@components/calendar/Calendar';
+import ReactCalendar from '@components/calendar/ReactCalendar';
 
 const CalendarPage: React.FC = (props): JSX.Element => {
   const now = new Date();
@@ -11,7 +11,7 @@ const CalendarPage: React.FC = (props): JSX.Element => {
   return (
     <CalendarContainer>
       <CalendarSection>
-        <Calendar />
+        <ReactCalendar />
       </CalendarSection>
       <p className="today-date">
         <span>{month + 1}월</span> <span>{date}일</span> 축제리스트
@@ -30,7 +30,6 @@ export default CalendarPage;
 /** 2023/07/02 - 축제 캘린더 컨테이너  - by parksubeom */
 const CalendarContainer = styled.div`
   position: relative;
-  padding: 2rem 2rem;
   width: 100%;
   height: 80vh;
   .today-date {
@@ -47,7 +46,7 @@ const CalendarSection = styled.section`
   flex-direction: column;
   width: 100%;
   height: 25%;
-  border: solid 1px red;
+  box-shadow: 4px 10px 15px -10px gray;
   border-radius: 35px;
   text-align: center;
   justify-content: center;
@@ -76,7 +75,7 @@ const EmptyListSection = styled.section`
   }
   > span {
     font-size: 16px;
-    color: var(--color-light-text);
+    color: var(--color-light-gray);
     font-weight: bold;
     margin: 1rem;
   }
@@ -89,5 +88,9 @@ const EmptyListSection = styled.section`
     border-color: var(--color-sub);
     background-color: var(--background-color);
     margin-top: 1rem;
+    &:hover {
+      background-color: #b2d9fa;
+      color: var(--color-light);
+    }
   }
 `;
