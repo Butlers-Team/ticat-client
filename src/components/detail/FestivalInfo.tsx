@@ -24,6 +24,10 @@ const FestivalInfo = () => {
           <p className="contact-title">행사위치</p>
           <span>서울시 관악구 봉천동</span>
         </FestivalContact>
+        <FestivalContact>
+          <p className="contact-title">이용료</p>
+          <span>무료</span>
+        </FestivalContact>
       </InfoContainer>
     </>
   );
@@ -34,7 +38,7 @@ const InfoContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2rem;
+  padding: 3rem 2rem;
   > h2 {
     color: var(--color-dark);
     font-size: 24px;

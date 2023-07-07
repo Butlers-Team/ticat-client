@@ -16,9 +16,10 @@ const FestivalCover = () => {
           <BiSun />
         </span>
       </div>
-      <div className="festival-info">
-        <p>2023.06.19 - 2023.07.31</p>
 
+      <div className="festival-info">
+        <button className="festival-proceeding">진행중</button>
+        <p>2023.06.19 - 2023.07.31</p>
         <h2>축제 이름이 출력됩니다</h2>
         <span>
           <TiLocation /> 울산광역시 울주군
@@ -75,7 +76,20 @@ const SliderContainer = styled.article`
     position: absolute;
     bottom: 60px;
     left: 20px;
-
+    > .festival-proceeding {
+      color: var(--color-light);
+      background-color: var(--color-main);
+      border: none;
+      border-radius: 5px;
+      height: 2.5rem;
+    }
+    > .festival-ended {
+      color: var(--color-light);
+      background-color: var(--color-gray);
+      border: none;
+      border-radius: 5px;
+      height: 2.5rem;
+    }
     > * {
       margin-bottom: 10px;
     }
