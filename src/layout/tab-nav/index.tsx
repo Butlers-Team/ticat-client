@@ -12,7 +12,7 @@ const tabMenulist = [
   { icon: <AiOutlineHome />, name: '홈', link: '/main' },
   { icon: <IoMapOutline />, name: '지도', link: 'null' },
   { icon: <BsCardList />, name: '축제목록', link: 'null' },
-  { icon: <RxCalendar />, name: '캘린더', link: 'null' },
+  { icon: <RxCalendar />, name: '캘린더', link: 'calendar' },
   { icon: <BsPerson />, name: '내정보', link: 'null' },
 ];
 
