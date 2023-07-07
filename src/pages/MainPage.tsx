@@ -5,11 +5,14 @@ import styled from 'styled-components';
 import MainSlider from '@components/main/MainSlider';
 import CategoryIcon from '@components/main/CategoryIcon';
 import MyInfoButton from '@components/main/MyInfoButton';
+import RecommendFestival from '@components/main/RecommendFestival';
 
 const MainPage = () => {
   return (
     <MainPageContainer>
-      <MainSlider />
+      <div className="main-slider">
+        <MainSlider />
+      </div>
       <ContentsSection>
         <li>
           <CategoryIcon />
@@ -20,7 +23,9 @@ const MainPage = () => {
         </li>
         <li className="contents-box">
           <h2>추천 축제</h2>
-          <div></div>
+          <div>
+            <RecommendFestival />
+          </div>
         </li>
       </ContentsSection>
     </MainPageContainer>
@@ -32,13 +37,22 @@ export default MainPage;
 const MainPageContainer = styled.div`
   width: 100%;
   height: 100%;
+
+  .main-slider {
+    width: 100%;
+    height: 300px;
+  }
 `;
 
 const ContentsSection = styled.ul`
+  position: relative;
   background-color: #ffffff;
   height: 700px;
   border-radius: 30px;
   animation: showupLayout 0.5s forwards;
+  z-index: 3;
+  color: var(--color-dark);
+
   .contents-box {
     padding: 20px;
     > h2 {
