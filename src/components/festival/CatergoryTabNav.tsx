@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+
+import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
 interface TabCatergoryProps {
   tabCatergory: string[];
@@ -9,15 +11,36 @@ interface TabCatergoryProps {
 
 /** 2023/07/04 - 축제 카테고리 TabNav - by sineTlsl */
 const CatergoryTabNav = ({ tabCatergory, currentTab, onClick }: TabCatergoryProps) => {
+  const scrollRef = useRef<HTMLUListElement>(null); // 스크롤 가능한 요소 참조
+  const [scrollPosition, setScrollPosition] = useState(0); // 스크롤의 현재 위치
+  const [maxScrollLeft, setMaxScrollLeft] = useState(0); // 가능한 최대 위치
+
+  useEffect(() => {
+    /** 2023/07/08 - 스크롤이 이동할 때마다 현재 스크롤 위치를 계산하고 업데이트 하는 함수 - by sineTlsl */
+    const onScroll = () => {
+      if (scrollRef.current) {
+        setScrollPosition(scrollRef.current.scrollLeft);
+        setMaxScrollLeft(scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
+      }
+    };
+    scrollRef.current?.addEventListener('scroll', onScroll);
+
+    return () => scrollRef.current?.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
     <CatergoryTabNavContainer>
-      <ul>
+      <ArrowWrap>{scrollPosition > 0 && <MdArrowBackIosNew size="20px" color="var(--color-sub)" />}</ArrowWrap>
+      <ul ref={scrollRef}>
         {tabCatergory.map((tab, idx) => (
           <li key={idx} className={currentTab === tab ? 'select-tab' : ''} onClick={() => onClick(tab)}>
             {tab}
           </li>
         ))}
       </ul>
+      <ArrowWrap>
+        {scrollPosition < maxScrollLeft && <MdArrowForwardIos size="20px" color="var(--color-sub)" />}
+      </ArrowWrap>
     </CatergoryTabNavContainer>
   );
 };
@@ -28,6 +51,8 @@ const CatergoryTabNavContainer = styled.div`
   height: 6rem;
   width: 100%;
   display: flex;
+  gap: 0.3rem;
+  align-items: center;
   border-bottom: 1px solid var(--color-light-gray);
 
   > ul {
@@ -57,4 +82,8 @@ const CatergoryTabNavContainer = styled.div`
     color: var(--color-sub);
     font-weight: 700;
   }
+`;
+
+const ArrowWrap = styled.div`
+  width: 5rem;
 `;
