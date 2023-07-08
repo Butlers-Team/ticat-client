@@ -77,7 +77,7 @@ const FestivalListPage = () => {
         <h2 className="festival-list-title">축제 리스트</h2>
         <div className="festival-list-filter">
           <span>서울 외 4곳 </span>
-          <IoMdOptions size="20px" color="var(--color-sub)" />
+          <IoMdOptions size="20px" color="var(--color-main)" />
         </div>
       </FestivalFilter>
       <FestivalList data={FestivalData} />
@@ -110,7 +110,7 @@ const FestivalFilter = styled.div`
   > .festival-list-filter {
     font-size: 14px;
     font-weight: 500;
-    color: var(--color-sub);
+    color: var(--color-main);
     display: flex;
     align-items: center;
     gap: 1rem;
