@@ -9,7 +9,7 @@ import { BsCalendarPlus } from 'react-icons/bs';
 
 const FestivalCover = () => {
   return (
-    <SliderContainer>
+    <CoverContainer>
       <div className="wather-info flex-all-center">
         <span>축제날씨</span>
         <span className="wather-icon flex-all-center">
@@ -42,13 +42,13 @@ const FestivalCover = () => {
           </button>
         </BtnSection>
       </div>
-    </SliderContainer>
+    </CoverContainer>
   );
 };
 
 export default FestivalCover;
-
-const SliderContainer = styled.article`
+/** 2023/07/06 - 축제 커버 컨테이너 - parksubeom */
+const CoverContainer = styled.article`
   position: relative;
   background-color: #b5b5b5;
   border-bottom-left-radius: 30px;
@@ -57,12 +57,12 @@ const SliderContainer = styled.article`
   height: 300px;
   font-size: 1.5rem;
   color: #fff;
-
+  //날씨 정보
   > .wather-info {
     position: absolute;
     top: 20px;
     right: 20px;
-
+    //날씨 아이콘
     .wather-icon {
       width: 30px;
       height: 30px;
@@ -70,12 +70,13 @@ const SliderContainer = styled.article`
       font-size: 2.5rem;
     }
   }
-
+  //행사 정보
   > .festival-info {
     width: 100%;
     position: absolute;
     bottom: 60px;
     left: 20px;
+    //행사가 진행중이라면 진행중
     > .festival-proceeding {
       color: var(--color-light);
       background-color: var(--color-main);
@@ -83,6 +84,7 @@ const SliderContainer = styled.article`
       border-radius: 5px;
       height: 2.5rem;
     }
+    //행사가 종료됐다면 종료된
     > .festival-ended {
       color: var(--color-light);
       background-color: var(--color-gray);
@@ -116,12 +118,14 @@ const BtnSection = styled.div`
     border-radius: 5px;
     border: none;
     font-size: 1.5rem;
+    cursor: pointer;
     > span {
       font-size: 16px;
       margin-left: 2rem;
     }
   }
   > .calendar-icon-btn {
+    cursor: pointer;
     text-align: center;
     justify-content: center;
     height: 3.5rem;

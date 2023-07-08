@@ -18,6 +18,7 @@ const LocationContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 2rem;
+
   > h2 {
     color: var(--color-dark);
     font-size: 24px;
