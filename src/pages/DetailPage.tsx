@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import axios from 'axios';
+import { useState, useEffect } from 'react';
 
 //components
 import FestivalCover from '@components/detail/FestivalCover';
@@ -7,6 +9,23 @@ import FestivalLocation from '@components/detail/FestivalLocation';
 import Recommend from '@components/detail/Recommend';
 
 const DetailPage = () => {
+  const [detailList, setDetailList] = useState({});
+  useEffect(() => {
+    axios
+      .get(
+        `https://1d74-124-111-225-247.ngrok-free.app/festivals/2988268
+    `,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        },
+      )
+      .then(res => {
+        setDetailList(res.data);
+      });
+  }, []);
   return (
     <DetailPageContainer>
       <FestivalCover />
