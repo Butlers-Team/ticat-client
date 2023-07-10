@@ -65,7 +65,7 @@ const RecommendFestival = () => {
   return (
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
-        <SwiperSlide key={festival.contentId}>
+        <SwiperSlide key={festival.festivalId}>
           <SliderContainer
             backqroundimage={`url(${festival.image})`}
             className={`${festival.image}` === '' ? 'bg-color' : 'null'}>
