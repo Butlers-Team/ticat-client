@@ -52,7 +52,7 @@ const FestivalContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: 100px;
+  height: 110px;
   color: var(--color-dark);
   font-size: 13px;
 `;
@@ -73,7 +73,7 @@ const DescriptionWrap = styled.div`
   flex: 0 1 80%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 
   > .title-space-between {
     display: flex;
@@ -82,13 +82,13 @@ const DescriptionWrap = styled.div`
     line-height: 2rem;
   }
   > .title-space-between > .festival-left-title {
-    flex: 0 1 80%;
+    flex: 0 1 85%;
     font-size: 16px;
     font-weight: 700;
     color: var(--color-dark);
   }
   > .title-space-between > .festival-right {
-    flex: 0 0 20%;
+    flex: 0 0 15%;
     display: flex;
     justify-content: flex-end;
   }
