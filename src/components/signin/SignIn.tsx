@@ -1,9 +1,10 @@
 import { ApiSignInRequest } from 'types/auth';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OauthButton from './OauthButton';
 import { useSignIn } from '@hooks/query/index';
+import { useTokenStore } from '@store/authStore';
 
 interface ButtonProps {
   buttonType: 'login' | 'signup';
@@ -16,7 +17,7 @@ const SignIn: React.FC = (): JSX.Element => {
   const signInMutation = useSignIn();
 
   // input 입력값 state 변경 함수
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(event => {
     const { name, value } = event.target;
 
     if (name === 'userId') {
@@ -24,12 +25,10 @@ const SignIn: React.FC = (): JSX.Element => {
     } else if (name === 'password') {
       setPassword(value);
     }
-  };
+  }, []);
   // 로그인 버튼 클릭 핸들러
   const handleSignin: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
-    console.log('UserId:', userId);
-    console.log('Password:', password);
 
     // TODO: 로그인 요청 처리
 
@@ -42,7 +41,6 @@ const SignIn: React.FC = (): JSX.Element => {
     // 로그인 요청 처리 시작
     signInMutation.mutate(loginData, {
       onSuccess: data => {
-        console.log(data);
         // navigate('/main');
       },
       onError: () => {
@@ -84,7 +82,7 @@ const SignIn: React.FC = (): JSX.Element => {
       <form onSubmit={handleSignin}>
         <InputContainer>
           <InputBox placeholder="아이디" name="userId" value={userId} onChange={handleChange} />
-          <InputBox placeholder="비밀번호" name="password" value={password} onChange={handleChange} />
+          <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={handleChange} />
         </InputContainer>
         <ButtonContainer>
           <StyledButton buttonType="login" type="submit">
