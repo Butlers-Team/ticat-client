@@ -12,8 +12,6 @@ export const useSignIn = () => {
       const { data, accessToken, refreshToken } = response;
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
       console.log('로그인 성공:');
     },
 
