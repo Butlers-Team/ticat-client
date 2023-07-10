@@ -1,14 +1,19 @@
+import { ApiSignInRequest } from 'types/auth';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OauthButton from './OauthButton';
+import { useSignIn } from '@hooks/query/index';
 
 interface ButtonProps {
   buttonType: 'login' | 'signup';
 }
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const signInMutation = useSignIn();
 
   // input 입력값 state 변경 함수
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -21,40 +26,62 @@ const SignIn: React.FC = (): JSX.Element => {
     }
   };
   // 로그인 버튼 클릭 핸들러
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+  const handleSignin: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
     console.log('UserId:', userId);
     console.log('Password:', password);
 
     // TODO: 로그인 요청 처리
+
+    const loginData: ApiSignInRequest = {
+      // id: userId,
+      email: userId,
+      password,
+    };
+
+    // 로그인 요청 처리 시작
+    signInMutation.mutate(loginData, {
+      onSuccess: data => {
+        console.log(data);
+        // navigate('/main');
+      },
+      onError: () => {
+        // 실패 시 에러 처리 진행
+      },
+    });
   };
 
   // 회원 가입 버튼 클릭 핸들러
   const handleSignUp = () => {
     // TODO: 회원가입 페이지로 이동하는 코드를 작성
+    navigate('/signup');
   };
 
   // 카카오 Oauth 요청 함수
   const handleKakaoClick = () => {
     console.log('Kakao Button clicked');
     // TODO: Kakao 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
   // 네이버 Oauth 요청 함수
   const handleNaverClick = () => {
     console.log('Naver Button clicked');
     // TODO: Naver 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/naver`;
   };
 
   // 구글 Oauth 요청 함수
   const handleGoogleClick = () => {
     console.log('Google Button clicked');
     // TODO: Google 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
+
   return (
     <SignInContainer>
       <Title>로그인</Title>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignin}>
         <InputContainer>
           <InputBox placeholder="아이디" name="userId" value={userId} onChange={handleChange} />
           <InputBox placeholder="비밀번호" name="password" value={password} onChange={handleChange} />
