@@ -7,7 +7,7 @@ import { FestivalListType, CatergoriesRequest } from 'types/api/catergory';
 import { IoMdOptions } from 'react-icons/io';
 
 // components
-import InfiniteScroll from '@components/festival/InfiniteScroll';
+// import InfiniteScroll from '@components/festival/InfiniteScroll';
 import FestivalList from '@components/festival/FestivalList';
 import CatergoryTabNav from '@components/festival/CatergoryTabNav';
 

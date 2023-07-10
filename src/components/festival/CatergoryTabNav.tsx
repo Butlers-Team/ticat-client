@@ -30,7 +30,11 @@ const CatergoryTabNav = ({ tabCatergory, currentTab, onClick }: TabCatergoryProp
 
   return (
     <CatergoryTabNavContainer>
-      <ArrowWrap>{scrollPosition > 0 && <MdArrowBackIosNew size="20px" color="var(--color-sub)" />}</ArrowWrap>
+      {scrollPosition > 0 && (
+        <ArrowWrap>
+          <MdArrowBackIosNew size="20px" color="var(--color-sub)" />
+        </ArrowWrap>
+      )}
       <ul ref={scrollRef}>
         {tabCatergory.map((tab, idx) => (
           <li key={idx} className={currentTab === tab ? 'select-tab' : ''} onClick={() => onClick(tab)}>
@@ -85,5 +89,5 @@ const CatergoryTabNavContainer = styled.div`
 `;
 
 const ArrowWrap = styled.div`
-  width: 5rem;
+  width: 3.5rem;
 `;
