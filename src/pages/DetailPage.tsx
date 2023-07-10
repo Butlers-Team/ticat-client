@@ -7,13 +7,14 @@ import FestivalCover from '@components/detail/FestivalCover';
 import FestivalInfo from '@components/detail/FestivalInfo';
 import FestivalLocation from '@components/detail/FestivalLocation';
 import Recommend from '@components/detail/Recommend';
+import { FestivalDetailType } from 'types/api/catergory';
 
 const DetailPage = () => {
-  const [detailList, setDetailList] = useState({});
+  const [detailList, setDetailList] = useState<FestivalDetailType>();
   useEffect(() => {
     axios
       .get(
-        `https://1d74-124-111-225-247.ngrok-free.app/festivals/2988268
+        `https://913e-124-111-225-247.ngrok-free.app/festivals/2988268
     `,
         {
           headers: {
@@ -26,9 +27,10 @@ const DetailPage = () => {
         setDetailList(res.data);
       });
   }, []);
+  console.log(detailList);
   return (
     <DetailPageContainer>
-      <FestivalCover />
+      {detailList && <FestivalCover detailList={detailList} />}
       <ContentsSection>
         <FestivalInfo />
         <FestivalLocation />

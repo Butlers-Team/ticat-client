@@ -6,10 +6,15 @@ import { BiSun } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
-
-const FestivalCover = () => {
+import { FestivalDetailType } from 'types/api/catergory';
+interface FestivalCoverProps {
+  detailList: FestivalDetailType;
+}
+const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  console.log(detailList);
   return (
     <CoverContainer>
+      <img src={detailList.image}></img>
       <div className="wather-info flex-all-center">
         <span>축제날씨</span>
         <span className="wather-icon flex-all-center">
@@ -19,10 +24,12 @@ const FestivalCover = () => {
 
       <div className="festival-info">
         <button className="festival-proceeding">진행중</button>
-        <p>2023.06.19 - 2023.07.31</p>
-        <h2>축제 이름이 출력됩니다</h2>
+        <p>
+          {detailList.eventstartdate} - {detailList.eventenddate}
+        </p>
+        <h2>{detailList.title}</h2>
         <span>
-          <TiLocation /> 울산광역시 울주군
+          <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
           <button className="calendar-add-btn">
@@ -50,13 +57,18 @@ export default FestivalCover;
 /** 2023/07/06 - 축제 커버 컨테이너 - parksubeom */
 const CoverContainer = styled.article`
   position: relative;
-  background-color: #b5b5b5;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   z-index: 5;
   height: 300px;
   font-size: 1.5rem;
   color: #fff;
+  > img {
+    width: 100%;
+    height: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
   //날씨 정보
   > .wather-info {
     position: absolute;
