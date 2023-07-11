@@ -69,6 +69,7 @@ ${reset}
   }
 
   .app {
+    position: relative;
     background-color: #fff;
     width: 100%;
     height: 100vh;

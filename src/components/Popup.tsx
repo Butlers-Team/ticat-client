@@ -35,9 +35,9 @@ export default Button;
 
 const LoginModal = styled.div<Pick<PopupProps, 'width' | 'height' | 'barcolor' | 'time'>>`
   position: absolute;
-  top: -90px;
+  bottom: 90px;
   z-index: 3;
-  width: ${({ width }) => width ?? 'calc(100% - 40px)'};
+  width: ${({ width }) => width ?? 'calc(500px - 40px)'};
 
   .speech-bubble {
     justify-content: space-between;

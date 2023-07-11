@@ -42,9 +42,11 @@ const TabNav = () => {
           로그인을 진행하고 <br />
           맞춤 축제를 추천받으세요!
         </p>
-        <Button height="40px" width="100px" fontSize="1.3rem">
-          로그인하기
-        </Button>
+        <Link to="/signin">
+          <Button height="40px" width="100px" fontSize="1.3rem">
+            로그인하기
+          </Button>
+        </Link>
       </Popup>
     </nav>
   );
