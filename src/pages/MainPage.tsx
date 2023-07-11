@@ -1,11 +1,48 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 
+import { FestivalListType } from 'types/api/catergory';
+
 //components
 import MainSlider from '@components/main/MainSlider';
 import CategoryIcon from '@components/main/CategoryIcon';
 import MyInfoButton from '@components/main/MyInfoButton';
 import RecommendFestival from '@components/main/RecommendFestival';
+
+const data: FestivalListType[] = [
+  {
+    contentId: 2989926,
+    status: 'ONGOING',
+    title: '구팔일 올데이 페스티벌',
+    image: 'http://tong.visitkorea.or.kr/cms/resource/19/2989919_image2_1.png',
+    address: '제주특별자치도 제주시 천덕로 880-24 애월스마트테마파크',
+    category: '기타',
+    eventstartdate: '20230429',
+    eventenddate: '20230826',
+    reviewRating: 0.0,
+    reviewCount: 0,
+    likeCount: 0,
+    area: '(제주)제주시',
+    mapx: 126.3673891687,
+    mapy: 33.3909038082,
+  },
+  {
+    contentId: 2989926,
+    status: 'ONGOING',
+    title: '구팔일 올데이 페스티벌',
+    image: 'http://tong.visitkorea.or.kr/cms/resource/19/2989919_image2_1.png',
+    address: '제주특별자치도 제주시 천덕로 880-24 애월스마트테마파크',
+    category: '기타',
+    eventstartdate: '20230429',
+    eventenddate: '20230826',
+    reviewRating: 0.0,
+    reviewCount: 0,
+    likeCount: 0,
+    area: '(제주)제주시',
+    mapx: 126.3673891687,
+    mapy: 33.3909038082,
+  },
+];
 
 const MainPage = () => {
   return (
@@ -23,9 +60,7 @@ const MainPage = () => {
         </li>
         <li className="contents-box">
           <h2>추천 축제</h2>
-          <div>
-            <RecommendFestival />
-          </div>
+          <div>{/* <RecommendFestival fastivaldata={data} /> */}</div>
         </li>
       </ContentsSection>
     </MainPageContainer>

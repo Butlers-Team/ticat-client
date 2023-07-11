@@ -31,7 +31,7 @@ const RecommendFestival = () => {
   /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
     axios
-      .get(`https://7639-124-111-225-247.ngrok-free.app/festivals/banner`, {
+      .get(`https://a1fe-124-111-225-247.ngrok-free.app/festivals/banner`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
@@ -47,6 +47,7 @@ const RecommendFestival = () => {
     spaceBetween: 30,
     effect: 'fade',
     loop: true,
+    grabCursor: true,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
