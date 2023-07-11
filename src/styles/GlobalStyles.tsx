@@ -85,8 +85,11 @@ ${reset}
     width: 100%;
     height: 100%;
     overflow-x: hidden;
-
+    ::-webkit-scrollbar {
+      display: none;
+    }
   }
+
   .main-vh70 {
     height: calc(100% - 70px);
   }
