@@ -75,6 +75,7 @@ ${reset}
     height: calc(var(--vh, 1vh) * 100);
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
+    overflow: hidden;
 
     ::-webkit-scrollbar {
       display: none;
@@ -102,6 +103,7 @@ ${reset}
     align-items: center;
     width: 100%;
     height: 70px;
+    position: relative;
   }
 
   //수평,수직 중앙정렬
