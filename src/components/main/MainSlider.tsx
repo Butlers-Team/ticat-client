@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType, CatergoriesResponse } from 'types/api/catergory';
+import { FestivalListType, CategoriesResponse } from 'types/api/category';
 
 //icon
 import { TiLocation } from 'react-icons/ti';
