@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { formatDate } from '@utils/formatDate';
-import { FestivalListType } from 'types/api/catergory';
+import { FestivalListType } from 'types/api/category';
 
 // icon
 import { FaStar } from 'react-icons/fa';
@@ -90,6 +90,7 @@ const DescriptionWrap = styled.div`
   > .title-space-between > .festival-right {
     flex: 0 0 15%;
     display: flex;
+    font-size: 12px;
     justify-content: flex-end;
   }
   > .festival-area {
