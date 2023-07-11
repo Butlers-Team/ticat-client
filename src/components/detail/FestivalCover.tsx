@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { useState } from 'react';
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSun } from 'react-icons/bi';
@@ -12,10 +12,14 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
-  console.log(detailList);
+  const [defaultImg, setDefaultImg] = useState(detailList.image);
+
+  const handleImgError = () => {
+    setDefaultImg('/assets/images/ticat-cover-image.png');
+  };
   return (
     <CoverContainer>
-      <img src={detailList.image}></img>
+      <img src={defaultImg} onError={handleImgError}></img>
       <div className="wather-info flex-all-center">
         <span>축제날씨</span>
         <span className="wather-icon flex-all-center">
@@ -24,12 +28,18 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
       </div>
 
       <div className="festival-info">
-        <button className="festival-proceeding">{detailList.status === 'ONGOING' ? '진행 중' : '종료'}</button>
-        <p>
+        {detailList.status === 'ONGOING' ? (
+          <button className="festival-proceeding">진행 중</button>
+        ) : detailList.status === 'PLANNED' ? (
+          <button className="festival-proceeding">예정 됨</button>
+        ) : (
+          <button className="festival-ended">종료 됨</button>
+        )}
+        <p className="shadow">
           {formatDate(detailList.eventstartdate)} - {formatDate(detailList.eventenddate)}
         </p>
-        <h2>{detailList.title}</h2>
-        <span>
+        <h2 className="shadow">{detailList.title}</h2>
+        <span className="shadow">
           <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
@@ -42,9 +52,11 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
           <button className="calendar-icon-btn">
             <FiHeart />
           </button>
-          <button className="calendar-icon-btn">
-            <LuTicket />
-          </button>
+          {detailList.eventhomepage !== '' ? (
+            <button className="calendar-icon-btn">
+              <LuTicket />
+            </button>
+          ) : null}
           <button className="calendar-icon-btn">
             <FiShare2 />
           </button>
@@ -61,15 +73,16 @@ const CoverContainer = styled.article`
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   z-index: 5;
-  height: 300px;
+  height: 500px;
   font-size: 1.5rem;
   color: #fff;
   > img {
+    object-fit: cover;
     width: 100%;
     height: 100%;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
-    filter: brightness(60%);
+    filter: brightness(40%);
   }
   //날씨 정보
   > .wather-info {
@@ -83,6 +96,9 @@ const CoverContainer = styled.article`
       margin-left: 5px;
       font-size: 2.5rem;
     }
+  }
+  .shadow {
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
   }
   //행사 정보
   > .festival-info {
@@ -101,7 +117,7 @@ const CoverContainer = styled.article`
     //행사가 종료됐다면 종료된
     > .festival-ended {
       color: var(--color-light);
-      background-color: var(--color-gray);
+      background-color: var(--color-dark-gray);
       border: none;
       border-radius: 5px;
       height: 2.5rem;
