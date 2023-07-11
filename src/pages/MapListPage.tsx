@@ -1,20 +1,17 @@
 import styled from 'styled-components';
 
 //component
-import Button from '@components/Button';
+import MapScreen from '@components/map-list/MapScreen';
+import OpstionCategory from '@components/map-list/OpstionCategory';
+import FastivalList from '@components/map-list/FastivalList';
 
 const MapListPage = () => {
   return (
     <MapListContainer>
-      <MapView>
-        <div className="map-search flex-v-center">
-          <input type="text" />
-          <Button>검색</Button>
-        </div>
-      </MapView>
+      <MapScreen />
       <MapList>
-        <OpstionCategory></OpstionCategory>
-        <FastivalListBox></FastivalListBox>
+        <OpstionCategory />
+        <FastivalList />
       </MapList>
     </MapListContainer>
   );
@@ -27,30 +24,25 @@ const MapListContainer = styled.section`
   height: 100%;
 `;
 
-const MapView = styled.article`
-  height: 300px;
-  background-color: var(--color-light-gray);
-
-  .map-search {
-    height: 30px;
-    border: 1px solid red;
-    padding: 20px;
-    input {
-    }
-  }
-`;
-
 const MapList = styled.article`
   background-color: var(--background-color);
-  height: calc(100% - 240px);
+  height: calc(100% - 340px);
   border-radius: 30px 30px 0px 0px;
   margin-top: -60px;
   overflow: hidden;
-`;
+  animation: showupLayout 0.5s forwards;
 
-const OpstionCategory = styled.aside`
-  height: 60px;
-  border-bottom: 1px solid rgba(173, 173, 173, 0.2);
+  @keyframes showupLayout {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-30px);
+    }
+  }
 `;
-
-const FastivalListBox = styled.div``;

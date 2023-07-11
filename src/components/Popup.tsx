@@ -37,7 +37,7 @@ const LoginModal = styled.div<Pick<PopupProps, 'width' | 'height' | 'barcolor' |
   position: absolute;
   bottom: 90px;
   z-index: 3;
-  width: ${({ width }) => width ?? 'calc(500px - 40px)'};
+  width: ${({ width }) => width ?? 'calc(100% - 40px)'};
 
   .speech-bubble {
     justify-content: space-between;
