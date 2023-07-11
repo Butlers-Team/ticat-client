@@ -2,7 +2,7 @@ import { PageInfoType } from './index';
 
 /** 2023/07/04 - 축제 리스트 데이터 Type - by sineTlsl */
 export interface FestivalListType {
-  contentId: number;
+  festivalId: number;
   status: string;
   title: string;
   image: string;
@@ -21,7 +21,7 @@ export interface FestivalListType {
 // 축제 리스트 카테고리별
 /** 2023/07/04 - 축제 리스트 카테고리별 params (Reqeust) - by sineTlsl */
 export interface CatergoriesRequest {
-  category: string;
+  category?: string;
   page: number;
   size: number;
 }

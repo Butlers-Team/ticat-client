@@ -5,17 +5,16 @@ import { useState, useEffect } from 'react';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType } from 'types/api/catergory';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-const RecommendFestival: React.FC<FestivalListType[]> = fastivaldata => {
+const Recommend = () => {
   /** 2023.07.05 recommend banner swiper options - by mscojl24 */
   const swiperOptions: RecommendSwiperOptions = {
-    spaceBetween: 10,
-    slidesPerView: 2,
+    spaceBetween: 110,
+    slidesPerView: 3,
     grabCursor: true,
     loop: true,
   };
@@ -23,13 +22,13 @@ const RecommendFestival: React.FC<FestivalListType[]> = fastivaldata => {
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
-        {fastivaldata.map((card, index) => (
-          <SwiperSlide key={`card-${index + 1}`}>
+        {[...Array(6)].map((card, index) => (
+          <SwiperSlide key={`${card}${index}`}>
             <RecommendCard>
               <div className="card-image"></div>
               <div className="card-text">
-                <span>{card.title}</span>
-                <p>{card.area}</p>
+                <span>축제 이름 입니다 {`${index + 1}`}</span>
+                <p>서울특별시 강남구</p>
               </div>
             </RecommendCard>
           </SwiperSlide>
@@ -39,16 +38,17 @@ const RecommendFestival: React.FC<FestivalListType[]> = fastivaldata => {
   );
 };
 
-export default RecommendFestival;
+export default Recommend;
 
 const RecommendCard = styled.div`
-  /* width: 180px;
-  height: 200px; */
+  width: 180px;
+  height: 200px;
   color: var(--color-dark);
+  margin: 4rem 0;
 
   .card-image {
-    /* width: 100px; */
-    height: 13rem;
+    width: 180px;
+    height: 140px;
     border-radius: 10px;
     background: var(--color-light-gray);
     margin-bottom: 10px;

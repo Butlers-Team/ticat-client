@@ -63,13 +63,20 @@ const RecommendFestival = () => {
     return `${year}.${month}.${day}`;
   }
 
+  /**2023.07.11 배너 타이틀 길이 조정 함수 - by mscojl24 */
+  const TitleCutLengt = (title: string) => {
+    if (title.length >= 15) {
+      return `${title.slice(0, 15)}...`;
+    } else {
+      return title;
+    }
+  };
+
   return (
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
-        <SwiperSlide key={festival.contentId}>
-          <SliderContainer
-            backqroundimage={`url(${festival.image})`}
-            className={`${festival.image}` === '' ? 'bg-color' : 'null'}>
+        <SwiperSlide key={festival.festivalId}>
+          <SliderContainer backqroundimage={`url(${festival.image})`}>
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
@@ -80,7 +87,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{festival.title}</h2>
+              <h2>{TitleCutLengt(festival.title)}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>
