@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 //components
@@ -11,10 +12,11 @@ import { FestivalDetailType } from 'types/api/catergory';
 
 const DetailPage = () => {
   const [detailList, setDetailList] = useState<FestivalDetailType>();
+  const { contentId } = useParams<string>();
   useEffect(() => {
     axios
       .get(
-        `https://913e-124-111-225-247.ngrok-free.app/festivals/2988268
+        `https://a1fe-124-111-225-247.ngrok-free.app/festivals/2988268
     `,
         {
           headers: {
@@ -32,9 +34,9 @@ const DetailPage = () => {
     <DetailPageContainer>
       {detailList && <FestivalCover detailList={detailList} />}
       <ContentsSection>
-        <FestivalInfo />
+        {detailList && <FestivalInfo detailList={detailList} />}
         <FestivalLocation />
-        <Recommend />
+        {detailList && <Recommend detailList={detailList} />}
       </ContentsSection>
     </DetailPageContainer>
   );

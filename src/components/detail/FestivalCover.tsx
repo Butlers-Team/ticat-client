@@ -7,6 +7,7 @@ import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
 import { FestivalDetailType } from 'types/api/catergory';
+import { formatDate } from '@utils/formatDate';
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
@@ -23,9 +24,9 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
       </div>
 
       <div className="festival-info">
-        <button className="festival-proceeding">진행중</button>
+        <button className="festival-proceeding">{detailList.status === 'ONGOING' ? '진행 중' : '종료'}</button>
         <p>
-          {detailList.eventstartdate} - {detailList.eventenddate}
+          {formatDate(detailList.eventstartdate)} - {formatDate(detailList.eventenddate)}
         </p>
         <h2>{detailList.title}</h2>
         <span>
@@ -68,6 +69,7 @@ const CoverContainer = styled.article`
     height: 100%;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
+    filter: brightness(60%);
   }
   //날씨 정보
   > .wather-info {

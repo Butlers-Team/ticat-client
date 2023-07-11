@@ -5,12 +5,16 @@ import { useState, useEffect } from 'react';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
+import { FestivalDetailType } from 'types/api/catergory';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-const Recommend = () => {
+interface FestivalCoverProps {
+  detailList: FestivalDetailType;
+}
+const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
   /** 2023.07.05 recommend banner swiper options - by mscojl24 */
   const swiperOptions: RecommendSwiperOptions = {
     spaceBetween: 110,
