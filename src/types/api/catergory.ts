@@ -17,6 +17,7 @@ export interface FestivalListType {
   mapx: number;
   mapy: number;
 }
+/** 2023/07/09 - 축제 상세 데이터 Type - by parksubeom */
 export interface FestivalDetailType {
   address: string;
   eventenddate: string;
