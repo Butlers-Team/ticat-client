@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 
-import { FestivalListType } from 'types/api/catergory';
+import { FestivalListType } from 'types/api/category';
 
 //components
 import MainSlider from '@components/main/MainSlider';
