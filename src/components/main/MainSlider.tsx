@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType, CatergoriesResponse } from 'types/api/catergory';
+import { FestivalListType, CategoriesResponse } from 'types/api/category';
 
 //icon
 import { TiLocation } from 'react-icons/ti';
@@ -31,7 +31,7 @@ const RecommendFestival = () => {
   /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
     axios
-      .get(`https://1d74-124-111-225-247.ngrok-free.app/festivals/banner`, {
+      .get(`https://a1fe-124-111-225-247.ngrok-free.app/festivals/banner`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
@@ -47,6 +47,7 @@ const RecommendFestival = () => {
     spaceBetween: 30,
     effect: 'fade',
     loop: true,
+    grabCursor: true,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
@@ -62,13 +63,20 @@ const RecommendFestival = () => {
     return `${year}.${month}.${day}`;
   }
 
+  /**2023.07.11 배너 타이틀 길이 조정 함수 - by mscojl24 */
+  const TitleCutLengt = (title: string) => {
+    if (title.length >= 15) {
+      return `${title.slice(0, 15)}...`;
+    } else {
+      return title;
+    }
+  };
+
   return (
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
         <SwiperSlide key={festival.festivalId}>
-          <SliderContainer
-            backqroundimage={`url(${festival.image})`}
-            className={`${festival.image}` === '' ? 'bg-color' : 'null'}>
+          <SliderContainer backqroundimage={`url(${festival.image})`}>
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
@@ -79,7 +87,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{festival.title}</h2>
+              <h2>{TitleCutLengt(festival.title)}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>

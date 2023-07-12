@@ -69,12 +69,14 @@ ${reset}
   }
 
   .app {
+    position: relative;
     background-color: #fff;
     width: 100%;
     height: 100vh;
     height: calc(var(--vh, 1vh) * 100);
     -ms-overflow-style: none; /* 인터넷 익스플로러 */
     scrollbar-width: none; /* 파이어폭스 */
+    overflow: hidden;
 
     ::-webkit-scrollbar {
       display: none;
@@ -93,6 +95,7 @@ ${reset}
   .main-vh70 {
     height: calc(100% - 70px);
   }
+  
 
   nav {
     border-top: 1px solid #e4e4e4;
@@ -102,6 +105,7 @@ ${reset}
     align-items: center;
     width: 100%;
     height: 70px;
+    position: relative;
   }
 
   //수평,수직 중앙정렬

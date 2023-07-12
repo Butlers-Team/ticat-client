@@ -4,6 +4,7 @@ export interface MainSwiperOptions {
   spaceBetween: number;
   effect: string;
   loop: boolean;
+  grabCursor: boolean;
   autoplay: { delay: number; disableOnInteraction: boolean };
   modules: (typeof Autoplay | typeof EffectFade)[];
 }

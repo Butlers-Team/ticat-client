@@ -1,2 +1,2 @@
-export * from './catergory';
 export * from './detail';
+export * from './category';
