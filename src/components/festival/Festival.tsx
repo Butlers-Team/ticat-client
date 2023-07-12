@@ -13,11 +13,11 @@ interface FestivalProps {
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const Festival = ({ item }: FestivalProps) => {
   return (
-    <FestivalContainer>
+    <FestivalContainer titleLength={item.title.length}>
       <ImgBox>
-        {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-logo-icon-gray.png" />}
+        {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
-      <DescriptionWrap>
+      <DescriptionWrap titleLength={item.title.length}>
         <div className="title-space-between">
           <h3 className="festival-left-title">{item.title}</h3>
           <p className="festival-right">{item.category}</p>
@@ -47,12 +47,12 @@ const Festival = ({ item }: FestivalProps) => {
 export default Festival;
 
 /** 2023/07/08 - 축제 컨테이너 - by sineTlsl */
-const FestivalContainer = styled.div`
+const FestivalContainer = styled.div<{ titleLength: number }>`
   display: flex;
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: 110px;
+  height: ${props => (props.titleLength < 15 ? '100px' : '115px')};
   color: var(--color-dark);
   font-size: 13px;
 `;
@@ -60,20 +60,24 @@ const FestivalContainer = styled.div`
 /** 2023/07/08 - 축제 정보 이미지 - by sineTlsl */
 const ImgBox = styled.div`
   flex: 0 1 25%;
-  padding: 2rem 2rem 2rem 0;
+  height: 100%;
+  width: 100%;
+  padding-right: 1rem;
 
   > img {
     width: 100%;
-    max-height: calc(100px - 2rem);
+    height: 100%;
+    padding: 1rem 1rem 1rem 0;
+    object-fit: cover;
   }
 `;
 
 /** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
-const DescriptionWrap = styled.div`
+const DescriptionWrap = styled.div<{ titleLength: number }>`
   flex: 0 1 80%;
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.5rem;
 
   > .title-space-between {
     display: flex;
@@ -83,19 +87,33 @@ const DescriptionWrap = styled.div`
   }
   > .title-space-between > .festival-left-title {
     flex: 0 1 85%;
-    font-size: 16px;
+    font-size: ${props => (props.titleLength < 20 ? '16px' : '15.5px')};
     font-weight: 700;
     color: var(--color-dark);
+
+    @media screen and (max-width: 400px) {
+      font-size: ${props => (props.titleLength < 15 ? '15px' : '14.5px')};
+      gap: 0.3rem;
+    }
   }
   > .title-space-between > .festival-right {
     flex: 0 0 15%;
     display: flex;
     font-size: 12px;
     justify-content: flex-end;
+
+    @media screen and (max-width: 400px) {
+      font-size: 11px;
+    }
   }
   > .festival-area {
     width: 85%;
     font-size: 12px;
+
+    @media screen and (max-width: 400px) {
+      font-size: 11px;
+      line-height: 15px;
+    }
   }
   > .icon-wrap {
     display: flex;
