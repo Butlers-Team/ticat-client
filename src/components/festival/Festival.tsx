@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { formatDate } from '@utils/formatDate';
-import { FestivalListType } from 'types/api/category';
+import { FestivalListType } from 'types/api/festival';
 
 // icon
 import { FaStar } from 'react-icons/fa';
