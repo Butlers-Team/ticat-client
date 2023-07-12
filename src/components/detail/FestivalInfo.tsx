@@ -1,32 +1,25 @@
 import styled from 'styled-components';
-const FestivalInfo = () => {
+import { FestivalDetailType } from 'types/api/detail';
+interface FestivalCoverProps {
+  detailList: FestivalDetailType;
+}
+const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
   return (
     <>
       <InfoContainer>
         <h2>행사 소개</h2>
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-          make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-          typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-          sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum.
-        </p>
+        <p>{detailList.overview}</p>
         <FestivalContact>
           <p className="contact-title">행사 연락처</p>
-          <span>070-1234-4567</span>
-        </FestivalContact>
-        <FestivalContact>
-          <p className="contact-title">홈페이지</p>
-          <span>www.ticat.com</span>
+          <span>{detailList.tel}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="contact-title">행사위치</p>
-          <span>서울시 관악구 봉천동</span>
+          <span>{detailList.eventplace}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="contact-title">이용료</p>
-          <span>무료</span>
+          <span>{detailList.price.slice(0, detailList.price.indexOf('('))}</span>
         </FestivalContact>
       </InfoContainer>
     </>

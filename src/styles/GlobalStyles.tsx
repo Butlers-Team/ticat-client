@@ -91,6 +91,7 @@ ${reset}
       display: none;
     }
   }
+
   .main-vh70 {
     height: calc(100% - 70px);
   }
