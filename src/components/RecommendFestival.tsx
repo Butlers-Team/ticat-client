@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType } from 'types/api/catergory';
+import { FestivalListType } from 'types/api/category';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';

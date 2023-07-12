@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { FestivalDetailType } from 'types/api/catergory';
+import { FestivalDetailType } from 'types/api/detail';
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }

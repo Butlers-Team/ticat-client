@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Button from '../Button';
 import { useEffect } from 'react';
-import { FestivalDetailType } from 'types/api/catergory';
+import { FestivalDetailType } from 'types/api/detail';
 
 /** 2023/07/12 - 카카오맵api 타입스크립트 설정 -parksubeom */
 declare global {

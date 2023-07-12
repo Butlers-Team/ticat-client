@@ -8,7 +8,7 @@ import FestivalCover from '@components/detail/FestivalCover';
 import FestivalInfo from '@components/detail/FestivalInfo';
 import FestivalLocation from '@components/detail/FestivalLocation';
 import Recommend from '@components/detail/Recommend';
-import { FestivalDetailType } from 'types/api/catergory';
+import { FestivalDetailType } from 'types/api/detail';
 
 const DetailPage = () => {
   const [detailList, setDetailList] = useState<FestivalDetailType>();

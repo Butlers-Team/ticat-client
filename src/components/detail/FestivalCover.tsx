@@ -6,7 +6,7 @@ import { BiSun } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
-import { FestivalDetailType } from 'types/api/catergory';
+import { FestivalDetailType } from 'types/api/detail';
 import { formatDate } from '@utils/formatDate';
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
