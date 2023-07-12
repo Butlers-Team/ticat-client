@@ -85,8 +85,10 @@ const FestivalListPage = () => {
       <FestivalFilter>
         <h2 className="festival-list-title">축제 리스트</h2>
         <div className="festival-list-filter">
-          <span>서울 외 4곳 </span>
-          <IoMdOptions size="20px" color="var(--color-main)" />
+          <button className="filter-btn">
+            <span>서울 외 4곳 </span>
+            <IoMdOptions size="20px" color="var(--color-main)" />
+          </button>
         </div>
       </FestivalFilter>
       <FestivalScrollWrap>
@@ -95,7 +97,7 @@ const FestivalListPage = () => {
             data.pages.map(page =>
               page.data.map(festival => (
                 <li key={festival.festivalId}>
-                  <Link to="/detail">
+                  <Link to={`/detail/${festival.festivalId}`}>
                     <Festival item={festival} />
                   </Link>
                 </li>
@@ -126,18 +128,25 @@ const FestivalFilter = styled.div`
   align-items: center;
   justify-content: space-between;
 
+  @media screen and (max-width: 400px) {
+    height: 5rem;
+  }
+
   > .festival-list-title {
     color: var(--color-dark);
     font-size: 18px;
     font-weight: 700;
   }
-  > .festival-list-filter {
+  > .festival-list-filter > .filter-btn {
     font-size: 14px;
     font-weight: 500;
-    color: var(--color-main);
     display: flex;
     align-items: center;
     gap: 1rem;
+    border: none;
+    background: none;
+    color: var(--color-main);
+    cursor: pointer;
   }
 `;
 
@@ -154,4 +163,8 @@ const FestivalScrollWrap = styled.div`
   }
   // firefox
   scrollbar-width: none;
+
+  @media screen and (max-width: 400px) {
+    height: calc(100% - 11rem);
+  }
 `;
