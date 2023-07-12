@@ -10,7 +10,7 @@ import StampTicket from '@components/stamp/StampTicket';
 import StampCalendar from '@components/stamp/StampCalendar';
 import Toggle from '@components/stamp/StampToggle';
 
-const StampList = () => {
+const StampListPage = () => {
   const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
@@ -51,7 +51,7 @@ const StampList = () => {
   );
 };
 
-export default StampList;
+export default StampListPage;
 
 /** 2023/06/30 - 스탬프 리스트 컨테이너 - by sineTlsl */
 const StampListContainer = styled.section`
