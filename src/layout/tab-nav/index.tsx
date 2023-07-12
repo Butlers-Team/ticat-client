@@ -18,12 +18,6 @@ const tabMenulist = [
 
 const TabNav = () => {
   const [selectMenu, setSelectMenu] = useState<number>(0);
-  const [displayNone, setdisplayNone] = useState<boolean>(false);
-  console.log(displayNone);
-
-  setTimeout(() => {
-    setdisplayNone(true);
-  }, 11000);
 
   return (
     <nav>
