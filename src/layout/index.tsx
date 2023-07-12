@@ -15,8 +15,8 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   /** 2023/07/03 - 현재 페이지의 경로가 hidePages에 포함되어 있는지 확인하는 함수 - by sineTlsl */
   const shouldHide = () => hidePages.includes(location.pathname);
 
+  //pop-up 삭제
   const [displayNone, setdisplayNone] = useState<boolean>(false);
-  console.log(displayNone);
 
   setTimeout(() => {
     setdisplayNone(true);
