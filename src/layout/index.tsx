@@ -1,6 +1,12 @@
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import TabNav from '@layout/tab-nav';
 import Main from '@layout/main';
+import styled from 'styled-components';
+import { useState } from 'react';
+
+// import
+import Button from '@components/Button';
+import Popup from '@components/Popup';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const location = useLocation();
@@ -9,12 +15,44 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   /** 2023/07/03 - 현재 페이지의 경로가 hidePages에 포함되어 있는지 확인하는 함수 - by sineTlsl */
   const shouldHide = () => hidePages.includes(location.pathname);
 
+  const [displayNone, setdisplayNone] = useState<boolean>(false);
+  console.log(displayNone);
+
+  setTimeout(() => {
+    setdisplayNone(true);
+  }, 11000);
+
   return (
     <>
       <Main className={shouldHide() ? undefined : 'main-vh70'}>{children}</Main>
       {!shouldHide() && <TabNav />}
+      {displayNone ? null : (
+        <PopupContainer>
+          <Popup closetime={10000} time="10s" barcolor="var(--color-main)">
+            <p className="modal-text">
+              로그인을 진행하고 <br />
+              맞춤 축제를 추천받으세요!
+            </p>
+            <Link to="/signin">
+              <Button height="40px" width="100px" fontSize="1.3rem">
+                로그인하기
+              </Button>
+            </Link>
+          </Popup>
+        </PopupContainer>
+      )}
     </>
   );
 };
 
 export default Layout;
+
+const PopupContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  bottom: 90px;
+  z-index: 3;
+  width: 100%;
+`;

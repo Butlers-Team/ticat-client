@@ -8,10 +8,6 @@ import { IoMapOutline } from 'react-icons/io5';
 import { BsCardList, BsPerson } from 'react-icons/bs';
 import { RxCalendar } from 'react-icons/rx';
 
-// import
-import Button from '@components/Button';
-import Popup from '@components/Popup';
-
 const tabMenulist = [
   { icon: <AiOutlineHome />, name: '홈', link: '/main' },
   { icon: <IoMapOutline />, name: '지도', link: '/maplist' },
@@ -22,6 +18,12 @@ const tabMenulist = [
 
 const TabNav = () => {
   const [selectMenu, setSelectMenu] = useState<number>(0);
+  const [displayNone, setdisplayNone] = useState<boolean>(false);
+  console.log(displayNone);
+
+  setTimeout(() => {
+    setdisplayNone(true);
+  }, 11000);
 
   return (
     <nav>
@@ -37,17 +39,6 @@ const TabNav = () => {
           </NavIconbox>
         </Link>
       ))}
-      <Popup closetime={10000} time="10s" barcolor="var(--color-main)">
-        <p className="modal-text">
-          로그인을 진행하고 <br />
-          맞춤 축제를 추천받으세요!
-        </p>
-        <Link to="/signin">
-          <Button height="40px" width="100px" fontSize="1.3rem">
-            로그인하기
-          </Button>
-        </Link>
-      </Popup>
     </nav>
   );
 };
