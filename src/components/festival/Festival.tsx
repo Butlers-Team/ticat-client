@@ -74,7 +74,7 @@ const ImgBox = styled.div`
 
 /** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
 const DescriptionWrap = styled.div<{ titleLength: number }>`
-  flex: 0 1 80%;
+  flex: 0 1 75%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
