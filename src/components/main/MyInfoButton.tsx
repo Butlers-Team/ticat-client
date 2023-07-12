@@ -54,14 +54,12 @@ const MyInfoCheck = styled.ul<bgColor>`
   .left-section {
     flex-grow: 3;
     .font-main {
-      font-size: 16px;
+      font-size: 1.5rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
     }
     .font-sub {
-      font-size: 12px;
+      font-size: 1.2rem;
       font-weight: 400;
-      letter-spacing: 0.5px;
       opacity: 0.8;
     }
   }
