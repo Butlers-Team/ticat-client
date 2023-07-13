@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import Button from '@components/Button';
 
-const StampValid = () => {
+const StampValidPage = () => {
   const navigate = useNavigate();
 
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
@@ -28,7 +28,7 @@ const StampValid = () => {
   );
 };
 
-export default StampValid;
+export default StampValidPage;
 
 /** 2023/06/29 - 스탬프 위치 확인 컨테이너 - by sineTlsl */
 const StampValidContainer = styled.section`
