@@ -9,7 +9,6 @@ const MapListPage = () => {
   return (
     <MapListContainer>
       <MapScreen />
-
       <MapList>
         <OptionButton />
         <FastivalList />

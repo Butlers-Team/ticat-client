@@ -108,7 +108,7 @@ const OptionButton = () => {
             setOnCategoryList(!onCategoryList);
           }}
           className={category.length > 0 ? 'selected-option' : ''}>
-          <IoIosOptions className="icon-margin" /> 카테고리
+          <IoIosOptions className="icon-margin" /> 카테고리 {category.length > 0 && category.length}
           {onCategoryList ? (
             <IoIosArrowUp className="icon-position icon-margin" />
           ) : (
