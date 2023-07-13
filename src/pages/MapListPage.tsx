@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 //component
 import MapScreen from '@components/map-list/MapScreen';
-import OptionCategory from '@components/map-list/OptionCategory';
+import OptionButton from '@components/map-list/OptionButton';
 import FastivalList from '@components/map-list/FastivalList';
 
 const MapListPage = () => {
@@ -11,7 +11,7 @@ const MapListPage = () => {
       <MapScreen />
 
       <MapList>
-        <OptionCategory />
+        <OptionButton />
         <FastivalList />
       </MapList>
     </MapListContainer>

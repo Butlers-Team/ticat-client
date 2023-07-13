@@ -16,6 +16,7 @@ const MapScreen = () => {
           검색
         </Button>
       </div>
+      <img src="https://i.imgur.com/LcydlQy.png" />
     </MapView>
   );
 };
@@ -23,12 +24,17 @@ const MapScreen = () => {
 export default MapScreen;
 
 const MapView = styled.article`
+  position: relative;
   height: 400px;
   background-color: var(--color-light-gray);
 
   .map-search {
+    position: absolute;
+    top: 0px;
+    width: 100%;
     height: 30px;
     padding: 20px;
+
     input {
       width: 100%;
       height: 40px;
@@ -43,9 +49,15 @@ const MapView = styled.article`
         font-weight: 300;
       }
     }
+
     .icon-margin {
       margin: 5px 3px 3px 0px;
       font-size: 1.2rem;
     }
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;

@@ -143,6 +143,7 @@ const MainPageContainer = styled.div`
   .main-slider {
     width: 100%;
     height: 300px;
+    background-color: var(--color-light-gray);
   }
 `;
 
