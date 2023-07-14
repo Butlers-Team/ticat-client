@@ -52,14 +52,7 @@ const SignUp: React.FC = (): JSX.Element => {
     };
 
     console.log(signUpData);
-    signUpMutation.mutate(signUpData, {
-      onSuccess: () => {
-        navigate('/signin');
-      },
-      onError: () => {
-        // 실패 시 에러 처리 진행
-      },
-    });
+    signUpMutation.mutate(signUpData);
   };
 
   // 이름

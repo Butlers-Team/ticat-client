@@ -1,4 +1,4 @@
-import { ApiSignInRequest } from 'types/auth';
+import { ApiSignInRequest, ApiSignInSuccess } from 'types/auth';
 import { useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -38,14 +38,7 @@ const SignIn: React.FC = (): JSX.Element => {
     };
 
     // 로그인 요청 처리 시작
-    signInMutation.mutate(loginData, {
-      onSuccess: data => {
-        // navigate('/main');
-      },
-      onError: () => {
-        // 실패 시 에러 처리 진행
-      },
-    });
+    signInMutation.mutate(loginData);
   };
 
   // 회원 가입 버튼 클릭 핸들러
