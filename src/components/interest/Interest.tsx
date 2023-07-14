@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Category from './Category';
 import NicknameInput from './NickNameInput';
 
 interface Props {}
@@ -50,7 +51,7 @@ const Interest: React.FC<Props> = (props): JSX.Element => {
               좋아하거나 관심있는 <br />
               주제를 선택해주세요.
             </Title>
-            '여기에 관심사등록하는거 만들거야'
+            <Category />
           </>
         ) : (
           <>
@@ -86,6 +87,7 @@ const InterestContainer = styled.section`
   width: 100%;
   height: 100%;
 `;
+
 /** 2023/07/15 - 닉네임/관심사 등록 컨테이너 - by leekoby */
 const InterestWrapper = styled.div`
   overflow: hidden;
@@ -134,7 +136,7 @@ const Title = styled.h2`
 const InputContainer = styled.div`
   display: inline-block;
   margin: 0 auto;
-  width: 270px;
+  width: 300px;
   align-content: center;
   text-align: center;
 `;
@@ -147,7 +149,7 @@ const ButtonContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin: 5px auto;
-  width: 270px;
+  width: 300px;
 `;
 
 const ArrowWrap = styled.div`
