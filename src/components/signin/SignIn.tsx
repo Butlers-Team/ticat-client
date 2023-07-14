@@ -30,8 +30,6 @@ const SignIn: React.FC = (): JSX.Element => {
   const handleSignin: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
 
-    // TODO: 로그인 요청 처리
-
     const loginData: ApiSignInRequest = {
       id: userId,
       password,
@@ -43,19 +41,16 @@ const SignIn: React.FC = (): JSX.Element => {
 
   // 카카오 Oauth 요청 함수
   const handleKakaoClick = () => {
-    // TODO: Kakao 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
   // 네이버 Oauth 요청 함수
   const handleNaverClick = () => {
-    // TODO: Naver 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/naver`;
   };
 
   // 구글 Oauth 요청 함수
   const handleGoogleClick = () => {
-    // TODO: Google 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
 
