@@ -1,15 +1,25 @@
 import styled from 'styled-components';
-
+import { useState } from 'react';
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSun } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
+import { FestivalDetailType } from 'types/api/detail';
+import { formatDate } from '@utils/formatDate';
+interface FestivalCoverProps {
+  detailList: FestivalDetailType;
+}
+const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const [defaultImg, setDefaultImg] = useState(detailList.image);
 
-const FestivalCover = () => {
+  const handleImgError = () => {
+    setDefaultImg('/assets/images/ticat-cover-image.png');
+  };
   return (
-    <SliderContainer>
+    <CoverContainer>
+      <img src={defaultImg} onError={handleImgError}></img>
       <div className="wather-info flex-all-center">
         <span>축제날씨</span>
         <span className="wather-icon flex-all-center">
@@ -18,11 +28,19 @@ const FestivalCover = () => {
       </div>
 
       <div className="festival-info">
-        <button className="festival-proceeding">진행중</button>
-        <p>2023.06.19 - 2023.07.31</p>
-        <h2>축제 이름이 출력됩니다</h2>
-        <span>
-          <TiLocation /> 울산광역시 울주군
+        {detailList.status === 'ONGOING' ? (
+          <button className="festival-proceeding">진행 중</button>
+        ) : detailList.status === 'PLANNED' ? (
+          <button className="festival-proceeding">예정 됨</button>
+        ) : (
+          <button className="festival-ended">종료 됨</button>
+        )}
+        <p className="shadow">
+          {formatDate(detailList.eventstartdate)} - {formatDate(detailList.eventenddate)}
+        </p>
+        <h2 className="shadow">{detailList.title}</h2>
+        <span className="shadow">
+          <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
           <button className="calendar-add-btn">
@@ -34,35 +52,44 @@ const FestivalCover = () => {
           <button className="calendar-icon-btn">
             <FiHeart />
           </button>
-          <button className="calendar-icon-btn">
-            <LuTicket />
-          </button>
+          {detailList.eventhomepage !== '' ? (
+            <button className="calendar-icon-btn">
+              <LuTicket />
+            </button>
+          ) : null}
           <button className="calendar-icon-btn">
             <FiShare2 />
           </button>
         </BtnSection>
       </div>
-    </SliderContainer>
+    </CoverContainer>
   );
 };
 
 export default FestivalCover;
-
-const SliderContainer = styled.article`
+/** 2023/07/06 - 축제 커버 컨테이너 - parksubeom */
+const CoverContainer = styled.article`
   position: relative;
-  background-color: #b5b5b5;
   border-bottom-left-radius: 30px;
   border-bottom-right-radius: 30px;
   z-index: 5;
-  height: 300px;
+  height: 500px;
   font-size: 1.5rem;
   color: #fff;
-
+  > img {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    filter: brightness(40%);
+  }
+  //날씨 정보
   > .wather-info {
     position: absolute;
     top: 20px;
     right: 20px;
-
+    //날씨 아이콘
     .wather-icon {
       width: 30px;
       height: 30px;
@@ -70,12 +97,16 @@ const SliderContainer = styled.article`
       font-size: 2.5rem;
     }
   }
-
+  .shadow {
+    text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+  }
+  //행사 정보
   > .festival-info {
     width: 100%;
     position: absolute;
     bottom: 60px;
     left: 20px;
+    //행사가 진행중이라면 진행중
     > .festival-proceeding {
       color: var(--color-light);
       background-color: var(--color-main);
@@ -83,9 +114,10 @@ const SliderContainer = styled.article`
       border-radius: 5px;
       height: 2.5rem;
     }
+    //행사가 종료됐다면 종료된
     > .festival-ended {
       color: var(--color-light);
-      background-color: var(--color-gray);
+      background-color: var(--color-dark-gray);
       border: none;
       border-radius: 5px;
       height: 2.5rem;
@@ -116,12 +148,14 @@ const BtnSection = styled.div`
     border-radius: 5px;
     border: none;
     font-size: 1.5rem;
+    cursor: pointer;
     > span {
       font-size: 16px;
       margin-left: 2rem;
     }
   }
   > .calendar-icon-btn {
+    cursor: pointer;
     text-align: center;
     justify-content: center;
     height: 3.5rem;

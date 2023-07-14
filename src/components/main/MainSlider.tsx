@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType, CatergoriesResponse } from 'types/api/catergory';
-
+import { FestivalListType } from 'types/api/festival';
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSun } from 'react-icons/bi';
@@ -21,6 +20,10 @@ import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
+//utils
+import { truncatedText } from '@utils/truncatedText';
+import { formatDate } from '@utils/formatDate';
+
 interface BgImage {
   backqroundimage: string;
 }
@@ -31,7 +34,7 @@ const RecommendFestival = () => {
   /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
     axios
-      .get(`https://1d74-124-111-225-247.ngrok-free.app/festivals/banner`, {
+      .get(`https://a1fe-124-111-225-247.ngrok-free.app/festivals/banner`, {
         headers: {
           'Content-Type': 'application/json',
           'ngrok-skip-browser-warning': '69420',
@@ -39,6 +42,9 @@ const RecommendFestival = () => {
       })
       .then(res => {
         setFestivalData(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
       });
   }, []);
 
@@ -47,6 +53,7 @@ const RecommendFestival = () => {
     spaceBetween: 30,
     effect: 'fade',
     loop: true,
+    grabCursor: true,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
@@ -54,21 +61,11 @@ const RecommendFestival = () => {
     modules: [Autoplay, EffectFade],
   };
 
-  /**2023.07.05 데이터 날짜 형식 변경 - by mscojl24*/
-  function formatDate(dateString: string) {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(4, 6);
-    const day = dateString.slice(6, 8);
-    return `${year}.${month}.${day}`;
-  }
-
   return (
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
         <SwiperSlide key={festival.festivalId}>
-          <SliderContainer
-            backqroundimage={`url(${festival.image})`}
-            className={`${festival.image}` === '' ? 'bg-color' : 'null'}>
+          <SliderContainer backqroundimage={`url(${festival.image})`}>
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
@@ -79,7 +76,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{festival.title}</h2>
+              <h2>{truncatedText(festival.title, 15)}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>

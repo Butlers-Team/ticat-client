@@ -3,24 +3,37 @@ import styled from 'styled-components';
 
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-interface TabCatergoryProps {
-  tabCatergory: string[];
+interface TabCategoryProps {
+  tabCategory: string[];
   currentTab: string;
   onClick: (tab: string) => void;
 }
 
 /** 2023/07/04 - 축제 카테고리 TabNav - by sineTlsl */
-const CatergoryTabNav = ({ tabCatergory, currentTab, onClick }: TabCatergoryProps) => {
+const CategoryTabNav = ({ tabCategory, currentTab, onClick }: TabCategoryProps) => {
   const scrollRef = useRef<HTMLUListElement>(null); // 스크롤 가능한 요소 참조
+  const scrollAmount = 100; // 한 번에 스크롤할 양
   const [scrollPosition, setScrollPosition] = useState(0); // 스크롤의 현재 위치
   const [maxScrollLeft, setMaxScrollLeft] = useState(0); // 가능한 최대 위치
 
+  /** 2023/07/11 - left 화살표 클릭 시 왼쪽 스크롤 함수 - by sineTlsl */
+  const HandlerScrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft -= scrollAmount;
+    }
+  };
+  /** 2023/07/11 - right 화살표 클릭 시 오른쪽 스크롤 함수 - by sineTlsl */
+  const HandlerScrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollLeft += scrollAmount;
+    }
+  };
+
+  /** 2023/07/11 - 컴포넌트가 마운트 or 언마운트 되었을 때, 스크롤 이벤트 리스너 추가 및 제거하는 함수 - by sineTlsl */
   useEffect(() => {
-    /** 2023/07/08 - 스크롤이 이동할 때마다 현재 스크롤 위치를 계산하고 업데이트 하는 함수 - by sineTlsl */
     const onScroll = () => {
       if (scrollRef.current) {
         setScrollPosition(scrollRef.current.scrollLeft);
-        setMaxScrollLeft(scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
       }
     };
     scrollRef.current?.addEventListener('scroll', onScroll);
@@ -28,33 +41,41 @@ const CatergoryTabNav = ({ tabCatergory, currentTab, onClick }: TabCatergoryProp
     return () => scrollRef.current?.removeEventListener('scroll', onScroll);
   }, []);
 
+  /** 2023/07/08 - 스크롤이 이동할 때마다 현재 스크롤 위치를 계산하고 업데이트 하는 함수 - by sineTlsl */
+  useEffect(() => {
+    if (scrollRef.current) {
+      setMaxScrollLeft(scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
+    }
+  }, [tabCategory]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
+
   return (
     <CatergoryTabNavContainer>
       {scrollPosition > 0 && (
-        <ArrowWrap>
+        <ArrowWrap onClick={HandlerScrollLeft}>
           <MdArrowBackIosNew size="20px" color="var(--color-sub)" />
         </ArrowWrap>
       )}
       <ul ref={scrollRef}>
-        {tabCatergory.map((tab, idx) => (
+        {tabCategory.map((tab, idx) => (
           <li key={idx} className={currentTab === tab ? 'select-tab' : ''} onClick={() => onClick(tab)}>
             {tab}
           </li>
         ))}
       </ul>
-      <ArrowWrap>
+      <ArrowWrap onClick={HandlerScrollRight}>
         {scrollPosition < maxScrollLeft && <MdArrowForwardIos size="20px" color="var(--color-sub)" />}
       </ArrowWrap>
     </CatergoryTabNavContainer>
   );
 };
 
-export default CatergoryTabNav;
+export default CategoryTabNav;
 
 const CatergoryTabNavContainer = styled.div`
   height: 6rem;
-  width: 100%;
   display: flex;
+  padding: 0 2rem;
+  width: 100%;
   gap: 0.3rem;
   align-items: center;
   border-bottom: 1px solid var(--color-light-gray);
@@ -63,11 +84,10 @@ const CatergoryTabNavContainer = styled.div`
     align-items: center;
     height: 100%;
     color: var(--color-dark);
-    overflow-x: scroll;
+    overflow: auto;
     display: flex;
     justify-content: flex-start;
     gap: 2.4rem;
-    cursor: pointer;
 
     // 스크롤바 없애기
     // chrome and safari
@@ -81,6 +101,8 @@ const CatergoryTabNavContainer = styled.div`
     white-space: nowrap;
     font-weight: 600;
     font-size: 16px;
+    line-height: 21px;
+    cursor: pointer;
   }
   > ul > li.select-tab {
     color: var(--color-sub);
@@ -90,4 +112,5 @@ const CatergoryTabNavContainer = styled.div`
 
 const ArrowWrap = styled.div`
   width: 3.5rem;
+  cursor: pointer;
 `;

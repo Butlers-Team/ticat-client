@@ -6,6 +6,7 @@ interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string;
   height?: string;
   fontSize?: string;
+  margin?: string;
 }
 
 const Button: React.FC<BtnProps> = ({ children, ...props }) => {
@@ -18,7 +19,7 @@ const Button: React.FC<BtnProps> = ({ children, ...props }) => {
 export default Button;
 
 /** 2023/06/29 - 서비스 공용 버튼 컴포넌트 - parksubeom */
-const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize'>>`
+const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize' | 'margin'>>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,8 +28,9 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   font-size: ${({ fontSize }) => fontSize ?? '14px'};
   border-radius: 5px;
   border: none;
-  margin: 10px 0px;
+  margin: ${({ margin }) => margin ?? '10px 0px'};
   background-color: var(--color-main);
+  cursor: pointer;
 
   color: var(--color-light);
   font-weight: bold;
