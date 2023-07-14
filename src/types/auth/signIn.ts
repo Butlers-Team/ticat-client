@@ -4,15 +4,19 @@ export interface ApiSignInRequest {
   id: string;
   password: string;
 }
-
-export interface ApiSignInSuccess {
-  data: ApiSignInResponse;
-  accessToken: string;
-  refreshToken: string;
-}
+/** 2023/07/14 - 로그인 성공 응답 타입 - by leekoby */
+export type ApiSignInSuccess =
+  | {
+      data: ApiSignInResponse;
+      accessToken: string;
+      refreshToken: string;
+    }
+  | unknown;
 
 /** 2023/07/07 - 로그인 응답 타입 - by leekoby */
-export interface ApiSignInResponse {}
+export interface ApiSignInResponse {
+  message?: string;
+}
 /** 2023/07/07 - 로그인 핸들러 - by leekoby */
 export interface ApiSignInHandler {
   (body: ApiSignInRequest): Promise<ApiSignInSuccess>;
