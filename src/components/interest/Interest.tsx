@@ -1,43 +1,47 @@
 import Button from '@components/Button';
-import { useEffect, useState } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Category from './Category';
-import NicknameInput from './NickNameInput';
+import { Category } from './Category';
+import { NicknameInput } from './NickNameInput';
 
 interface Props {}
 
 /** 2023/07/14 - 관심사등록 Component - by leekoby */
-const Interest: React.FC<Props> = (props): JSX.Element => {
-  const [nickname, setNickname] = useState('');
-  const [previousNickname, setPreviousNickname] = useState('');
+const Interest: React.FC<Props> = (): JSX.Element => {
+  const [nickname, setNickname] = useState(''); //닉네임
+  const [previousNickname, setPreviousNickname] = useState(''); // 다음으로 넘어갔다 돌아올때 닉네임 채워넣기 위해 만듦
 
-  const [interest, setInterest] = useState<string[]>([]);
+  const [category, setCategory] = useState<string[]>([]);
 
   const [validNickname, setValidNickname] = useState(false);
 
   const [registerInterestsEnabled, setRegisterInterestsEnabled] = useState(false);
 
-  const handleNicknameValidationChange = (valid: boolean) => {
+  const handleNicknameValidationChange = useCallback((valid: boolean) => {
     setValidNickname(valid);
-  };
+  }, []);
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = useCallback(() => {
     if (validNickname) {
       setPreviousNickname(nickname);
       setRegisterInterestsEnabled(!registerInterestsEnabled);
     }
-  };
+  }, [validNickname, nickname, registerInterestsEnabled]);
 
-  const handleCancelButtonClick = () => {
+  const handleCancelButtonClick = useCallback(() => {
     setRegisterInterestsEnabled(false);
     setPreviousNickname(nickname);
-  };
+  }, [nickname]);
 
-  const handleNicknameChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleNicknameChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(event => {
     setNickname(event.target.value);
-  };
+  }, []);
+
+  useEffect(() => {
+    console.log(nickname, category);
+  }, [nickname, category]);
 
   return (
     <InterestContainer>
@@ -51,7 +55,7 @@ const Interest: React.FC<Props> = (props): JSX.Element => {
               좋아하거나 관심있는 <br />
               주제를 선택해주세요.
             </Title>
-            <Category />
+            <Category category={category} setCategory={setCategory} />
           </>
         ) : (
           <>
@@ -60,6 +64,10 @@ const Interest: React.FC<Props> = (props): JSX.Element => {
                 <MdArrowBackIosNew size="20px" color="var(--color-dark)" />
               </ArrowWrap>
             </Link>
+            <Title>
+              가입을 축하드려요! <br />
+              어떻게 불러드리면 될까요?
+            </Title>
             <InputContainer>
               <NicknameInput
                 onValidNickname={handleNicknameValidationChange}
