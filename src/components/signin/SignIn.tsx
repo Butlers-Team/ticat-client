@@ -33,8 +33,7 @@ const SignIn: React.FC = (): JSX.Element => {
     // TODO: 로그인 요청 처리
 
     const loginData: ApiSignInRequest = {
-      // id: userId,
-      email: userId,
+      id: userId,
       password,
     };
 

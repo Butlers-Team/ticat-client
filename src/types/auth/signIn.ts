@@ -1,8 +1,7 @@
 // ============================== 로그인 ==============================
 /** 2023/07/07 - 로그인 요청 타입 - by leekoby */
 export interface ApiSignInRequest {
-  // id: string;
-  email: string;
+  id: string;
   password: string;
 }
 
