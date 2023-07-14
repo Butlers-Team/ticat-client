@@ -12,6 +12,7 @@ import DetailPage from '@pages/DetailPage';
 import SignUpPage from '@pages/SignUpPage';
 import SignInPage from '@pages/SignInPage';
 import WellcomePage from '@pages/WellcomePage';
+import MapListPage from '@pages/MapListPage';
 
 const Router = () => {
   return (
@@ -19,6 +20,7 @@ const Router = () => {
       <Routes>
         <Route path="/calendar" element={<CalendarPage />} />
         <Route path="/main" element={<MainPage />} />
+        <Route path="/maplist" element={<MapListPage />} />
         <Route path="/festival" element={<FestivalListPage />} />
         <Route path="/festival/area" element={<AreaFilterPage />} />
         <Route path="/detail/:id" element={<DetailPage />} />
