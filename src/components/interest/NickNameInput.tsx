@@ -45,12 +45,29 @@ const NicknameInput: React.FC<Props> = ({ onValidNickname, value, onChange, plac
 
   return (
     <>
-      <InputBox type="text" value={value} onChange={handleNicknameChange} placeholder={placeholder} />
-      {validationMessage && <div>{validationMessage}</div>}
+      <InputContainer>
+        <InputBox type="text" value={value} onChange={handleNicknameChange} placeholder={placeholder} maxLength={8} />
+        <CharacterCount>{value.length}/8</CharacterCount>
+      </InputContainer>
+      {validationMessage.length > 0 && validationMessage && <ValidationMessage>{validationMessage}</ValidationMessage>}
     </>
   );
 };
 export default NicknameInput;
+
+const InputContainer = styled.div`
+  position: relative;
+`;
+
+const CharacterCount = styled.span`
+  position: absolute;
+  right: 5px;
+  top: 42%;
+  transform: translateY(-50%);
+  font-size: 1.8rem;
+  color: var(--color-dark-gray);
+`;
+
 /** 2023/07/15 - 닉네임 컴포넌트  - by leekoby */
 const InputBox = styled.input`
   width: 100%;
@@ -72,4 +89,9 @@ const InputBox = styled.input`
       opacity: 0;
     }
   }
+`;
+
+const ValidationMessage = styled.div`
+  font-size: 1.2rem;
+  color: red;
 `;
