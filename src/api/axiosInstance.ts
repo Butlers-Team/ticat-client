@@ -17,11 +17,11 @@ instance.interceptors.request.use(
   async config => {
     // No-Auth 헤더가 없는 경우에만 토큰을 추가
     if (!config.headers['No-Auth']) {
-      const authToken = `Bearer ${localStorage.getItem('authToken')}`;
+      const accessToken = `Bearer ${localStorage.getItem('accessToken')}`;
       const refresh = localStorage.getItem('refresh');
-      if (refresh && authToken) {
+      if (refresh && accessToken) {
         config.headers['Refresh'] = refresh;
-        config.headers['Authorization'] = authToken;
+        config.headers['Authorization'] = accessToken;
       }
     }
     return config;
