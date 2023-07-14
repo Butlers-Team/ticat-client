@@ -7,10 +7,11 @@ import styled from 'styled-components';
 interface Props {
   category: string[];
   setCategory: React.Dispatch<React.SetStateAction<string[]>>;
+  onSubmit: () => void;
 }
 
 /** 2023/07/15 - 관심 카테고리 등록 컴포넌트 - by leekoby */
-const CategoryComponent: React.FC<Props> = ({ category, setCategory }): JSX.Element => {
+const CategoryComponent: React.FC<Props> = ({ category, setCategory, onSubmit }): JSX.Element => {
   const maxLength = 5;
 
   const handleCategory = (item: string) => {
@@ -32,7 +33,7 @@ const CategoryComponent: React.FC<Props> = ({ category, setCategory }): JSX.Elem
         ))}
       </FastivalCategory>
       <ButtonContainer>
-        <Button fontSize="1.6rem" disabled={category.length < 1}>
+        <Button fontSize="1.6rem" disabled={category.length < 1} onClick={onSubmit}>
           <span>확인</span>
           <span>
             {category.length}/{maxLength}

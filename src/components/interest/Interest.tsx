@@ -1,4 +1,6 @@
 import Button from '@components/Button';
+import { useRegisterInterest } from '@hooks/query';
+import { ApiInterestRequest } from 'types/api';
 import { useState, useCallback, useEffect } from 'react';
 import { MdArrowBackIosNew } from 'react-icons/md';
 import { Link } from 'react-router-dom';
@@ -10,6 +12,7 @@ interface Props {}
 
 /** 2023/07/14 - 관심사등록 Component - by leekoby */
 const Interest: React.FC<Props> = (): JSX.Element => {
+  const interestMutation = useRegisterInterest();
   const [nickname, setNickname] = useState(''); //닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 다음으로 넘어갔다 돌아올때 닉네임 채워넣기 위해 만듦
 
@@ -39,9 +42,14 @@ const Interest: React.FC<Props> = (): JSX.Element => {
     setNickname(event.target.value);
   }, []);
 
-  useEffect(() => {
-    console.log(nickname, category);
-  }, [nickname, category]);
+  const handleCategorySubmit = () => {
+    const interestData: ApiInterestRequest = {
+      displayName: nickname,
+      categories: category,
+    };
+
+    interestMutation.mutate(interestData);
+  };
 
   return (
     <InterestContainer>
@@ -55,7 +63,7 @@ const Interest: React.FC<Props> = (): JSX.Element => {
               좋아하거나 관심있는 <br />
               주제를 선택해주세요.
             </Title>
-            <Category category={category} setCategory={setCategory} />
+            <Category category={category} setCategory={setCategory} onSubmit={handleCategorySubmit} />
           </>
         ) : (
           <>
