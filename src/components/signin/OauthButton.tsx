@@ -55,7 +55,18 @@ const OauthBtn = styled.button<{ buttonService: ButtonService }>`
   font-size: 14px;
   font-weight: bold;
   height: 45px;
-  border: 1px solid #a5a5a5;
+  border: 1px solid
+    ${({ buttonService }) => {
+      switch (buttonService) {
+        case 'kakao':
+          return `${OauthVariables.colorKakao}`;
+        case 'naver':
+          return `${OauthVariables.colorNaver}`;
+        default:
+          return `#a5a5a5`;
+      }
+    }};
+
   border-radius: 12px;
   margin-bottom: 5px;
   background-color: ${({ buttonService }) => {

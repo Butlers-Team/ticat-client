@@ -7,7 +7,7 @@ import { useSignIn } from '@hooks/query/index';
 import { useTokenStore } from '@store/authStore';
 
 interface ButtonProps {
-  buttonType: 'login' | 'signup';
+  buttonType: 'signin' | 'signup';
 }
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
@@ -85,7 +85,7 @@ const SignIn: React.FC = (): JSX.Element => {
           <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={handleChange} />
         </InputContainer>
         <ButtonContainer>
-          <StyledButton buttonType="login" type="submit">
+          <StyledButton buttonType="signin" type="submit">
             로그인
           </StyledButton>
         </ButtonContainer>
@@ -173,7 +173,8 @@ const InputBox = styled.input`
   margin-bottom: 9px;
   padding: 2px 5px;
   border: 1px solid #a5a5a5;
-  border-radius: 5px;
+  border-radius: 12px;
+
   ::placeholder {
     color: rgba(130, 129, 129, 0.6);
   }
@@ -213,12 +214,21 @@ const StyledButton = styled.button<ButtonProps>`
   font-size: 14px;
   font-weight: bold;
   height: 45px;
-  border: 1px solid #a5a5a5;
-  margin-bottom: 5px;
-  border-radius: 5px;
+  border: 1px solid
+    ${({ buttonType }) => {
+      switch (buttonType) {
+        case 'signin':
+          return `var(--color-sub)`;
+        case 'signup':
+          return `#a5a5a5`;
+      }
+    }};
 
-  background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'var(--color-light-text)')};
-  color: ${props => (props.buttonType === 'login' ? `white` : `var(--color-dark-text)`)};
+  margin-bottom: 5px;
+  border-radius: 12px;
+
+  background-color: ${props => (props.buttonType === 'signin' ? 'var(--color-sub)' : 'var(--background-color)')};
+  color: ${props => (props.buttonType === 'signin' ? `white` : `var(--color-dark)`)};
 
   &:focus {
     outline: none;
