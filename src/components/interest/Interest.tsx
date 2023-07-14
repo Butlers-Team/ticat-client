@@ -24,14 +24,14 @@ const Interest: React.FC<Props> = (props): JSX.Element => {
 
   const handleNextButtonClick = () => {
     if (validNickname) {
-      setRegisterInterestsEnabled(!registerInterestsEnabled);
       setPreviousNickname(nickname);
+      setRegisterInterestsEnabled(!registerInterestsEnabled);
     }
   };
 
   const handleCancelButtonClick = () => {
     setRegisterInterestsEnabled(false);
-    setNickname(previousNickname);
+    setPreviousNickname(nickname);
   };
 
   const handleNicknameChange: React.ChangeEventHandler<HTMLInputElement> = event => {
@@ -62,16 +62,13 @@ const Interest: React.FC<Props> = (props): JSX.Element => {
             <InputContainer>
               <NicknameInput
                 onValidNickname={handleNicknameValidationChange}
-                value={nickname}
+                value={registerInterestsEnabled ? previousNickname : nickname}
                 onChange={handleNicknameChange}
-                placeholder={
-                  !registerInterestsEnabled && previousNickname ? previousNickname : '5~8자 사이의 닉네임을 입력하세요.'
-                }
+                placeholder={'5~8자 사이의 닉네임을 입력하세요.'}
               />
             </InputContainer>
-            {!validNickname && <div>유효하지 않은 닉네임입니다.</div>}
             <ButtonContainer>
-              <Button disabled={!validNickname} onClick={handleNextButtonClick}>
+              <Button disabled={!validNickname} onClick={handleNextButtonClick} fontSize="1.6rem">
                 다음
               </Button>
             </ButtonContainer>
