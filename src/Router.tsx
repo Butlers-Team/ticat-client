@@ -12,6 +12,7 @@ import DetailPage from '@pages/DetailPage';
 import SignUpPage from '@pages/SignUpPage';
 import SignInPage from '@pages/SignInPage';
 import WellcomePage from '@pages/WellcomePage';
+import OauthCallbackPage from '@pages/OauthCallbackPage';
 
 const Router = () => {
   return (
@@ -26,6 +27,7 @@ const Router = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/wellcome" element={<WellcomePage />} />
+        <Route path="/callback/:interest" element={<OauthCallbackPage />} />
       </Routes>
     </Layout>
   );
