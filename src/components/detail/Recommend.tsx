@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
+import { RecommendListType } from 'types/api/recommend';
+import { getRecommendList } from 'api/recommend';
 import { FestivalDetailType } from 'types/api/detail';
 
 // Import Swiper
@@ -15,6 +16,7 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const [recommendlList, setRecommendList] = useState<RecommendListType>();
   /** 2023.07.05 recommend banner swiper options - by mscojl24 */
   const swiperOptions: RecommendSwiperOptions = {
     spaceBetween: 110,
@@ -22,7 +24,19 @@ const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
     grabCursor: true,
     loop: true,
   };
+  console.log(detailList.category);
 
+  /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
+  /*const fetchRecommendlList = async () => {
+    const category = detailList.category;
+    const res = await getRecommendList({ category });
+    setRecommendList(res);
+  };
+
+  useEffect(() => {
+    fetchRecommendlList();
+  }, []);*/
+  console.log(recommendlList);
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
