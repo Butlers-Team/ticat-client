@@ -13,6 +13,7 @@ import SignUpPage from '@pages/SignUpPage';
 import SignInPage from '@pages/SignInPage';
 import WellcomePage from '@pages/WellcomePage';
 import OauthCallbackPage from '@pages/OauthCallbackPage';
+import InterestPage from '@pages/InterestPage';
 
 const Router = () => {
   return (
@@ -28,6 +29,7 @@ const Router = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/wellcome" element={<WellcomePage />} />
         <Route path="/callback/:interest" element={<OauthCallbackPage />} />
+        <Route path="/interest" element={<InterestPage />} />
       </Routes>
     </Layout>
   );
