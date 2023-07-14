@@ -8,7 +8,7 @@ const Wellcome: React.FC = (): JSX.Element => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate('/');
+      navigate('/signin');
     }, 4000);
 
     // cleanup function
@@ -23,7 +23,7 @@ const Wellcome: React.FC = (): JSX.Element => {
       <DescriptionWrap>
         <h2 className="main-title">WELLCOME</h2>
         <p className="sub-description">티캣의 집사님이 되신걸 환영합니다.</p>
-        <p className="sub-description">잠시 후 메인화면으로 이동합니다.</p>
+        <p className="sub-description">잠시 후 로그인 페이지로 이동합니다.</p>
       </DescriptionWrap>
     </WellcomeContainer>
   );
