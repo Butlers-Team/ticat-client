@@ -1,6 +1,6 @@
 import { ApiSignInRequest, ApiSignInSuccess } from 'types/auth';
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OauthButton from './OauthButton';
 import { useSignIn } from '@hooks/query/index';
@@ -41,29 +41,20 @@ const SignIn: React.FC = (): JSX.Element => {
     signInMutation.mutate(loginData);
   };
 
-  // 회원 가입 버튼 클릭 핸들러
-  const handleSignUp = () => {
-    // TODO: 회원가입 페이지로 이동하는 코드를 작성
-    navigate('/signup');
-  };
-
   // 카카오 Oauth 요청 함수
   const handleKakaoClick = () => {
-    console.log('Kakao Button clicked');
     // TODO: Kakao 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
   // 네이버 Oauth 요청 함수
   const handleNaverClick = () => {
-    console.log('Naver Button clicked');
     // TODO: Naver 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/naver`;
   };
 
   // 구글 Oauth 요청 함수
   const handleGoogleClick = () => {
-    console.log('Google Button clicked');
     // TODO: Google 요청 처리
     window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
@@ -82,11 +73,11 @@ const SignIn: React.FC = (): JSX.Element => {
           </StyledButton>
         </ButtonContainer>
       </form>
-      <ButtonContainer>
-        <StyledButton buttonType="signup" onClick={handleSignUp}>
-          회원가입
-        </StyledButton>
-      </ButtonContainer>
+      <Link to="/signup">
+        <ButtonContainer>
+          <StyledButton buttonType="signup">회원가입</StyledButton>
+        </ButtonContainer>
+      </Link>
 
       <OauthButtonContainer>
         <OauthButton buttonService="kakao" onClick={handleKakaoClick}>
