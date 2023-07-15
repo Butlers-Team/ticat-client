@@ -31,6 +31,8 @@
       {
         "endOfLine": "auto"
       }
-    ]
+    ],
+    "@typescript-eslint/no-empty-function": "off", // 빈함수 허용
+    "@typescript-eslint/no-empty-interface": "off" // 빈인터페이스 일 때 허용
   }
 }

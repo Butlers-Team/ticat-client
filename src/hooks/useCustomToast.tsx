@@ -10,6 +10,10 @@ const useCustomToast = () => {
       duration: 2500,
       isClosable: true,
       position: 'top',
+      containerStyle: {
+        fontSize: '1.5rem', // 글자 크기 조절
+        maxWidth: '80%', // 원하는 최대 너비
+      },
     });
 
   return toast;

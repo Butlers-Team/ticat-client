@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { ApiSignInRequest, ApiSignInSuccess } from 'types/auth';
+import { useCallback, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OauthButton from './OauthButton';
+import { useSignIn } from '@hooks/query/index';
+import { useTokenStore } from '@store/authStore';
 
 interface ButtonProps {
-  buttonType: 'login' | 'signup';
+  buttonType: 'signin' | 'signup';
 }
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
+  const signInMutation = useSignIn();
 
   // input 입력값 state 변경 함수
-  const handleChange: React.ChangeEventHandler<HTMLInputElement> = event => {
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = useCallback(event => {
     const { name, value } = event.target;
 
     if (name === 'userId') {
@@ -19,57 +25,59 @@ const SignIn: React.FC = (): JSX.Element => {
     } else if (name === 'password') {
       setPassword(value);
     }
-  };
+  }, []);
   // 로그인 버튼 클릭 핸들러
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+  const handleSignin: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
-    console.log('UserId:', userId);
-    console.log('Password:', password);
 
     // TODO: 로그인 요청 처리
-  };
 
-  // 회원 가입 버튼 클릭 핸들러
-  const handleSignUp = () => {
-    // TODO: 회원가입 페이지로 이동하는 코드를 작성
+    const loginData: ApiSignInRequest = {
+      id: userId,
+      password,
+    };
+
+    // 로그인 요청 처리 시작
+    signInMutation.mutate(loginData);
   };
 
   // 카카오 Oauth 요청 함수
   const handleKakaoClick = () => {
-    console.log('Kakao Button clicked');
     // TODO: Kakao 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/kakao`;
   };
 
   // 네이버 Oauth 요청 함수
   const handleNaverClick = () => {
-    console.log('Naver Button clicked');
     // TODO: Naver 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/naver`;
   };
 
   // 구글 Oauth 요청 함수
   const handleGoogleClick = () => {
-    console.log('Google Button clicked');
     // TODO: Google 요청 처리
+    window.location.href = `${process.env.REACT_APP_API_URL}/oauth2/authorization/google`;
   };
+
   return (
     <SignInContainer>
       <Title>로그인</Title>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignin}>
         <InputContainer>
           <InputBox placeholder="아이디" name="userId" value={userId} onChange={handleChange} />
-          <InputBox placeholder="비밀번호" name="password" value={password} onChange={handleChange} />
+          <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={handleChange} />
         </InputContainer>
         <ButtonContainer>
-          <StyledButton buttonType="login" type="submit">
+          <StyledButton buttonType="signin" type="submit">
             로그인
           </StyledButton>
         </ButtonContainer>
       </form>
-      <ButtonContainer>
-        <StyledButton buttonType="signup" onClick={handleSignUp}>
-          회원가입
-        </StyledButton>
-      </ButtonContainer>
+      <Link to="/signup">
+        <ButtonContainer>
+          <StyledButton buttonType="signup">회원가입</StyledButton>
+        </ButtonContainer>
+      </Link>
 
       <OauthButtonContainer>
         <OauthButton buttonService="kakao" onClick={handleKakaoClick}>
@@ -148,7 +156,8 @@ const InputBox = styled.input`
   margin-bottom: 9px;
   padding: 2px 5px;
   border: 1px solid #a5a5a5;
-  border-radius: 5px;
+  border-radius: 12px;
+
   ::placeholder {
     color: rgba(130, 129, 129, 0.6);
   }
@@ -188,12 +197,21 @@ const StyledButton = styled.button<ButtonProps>`
   font-size: 14px;
   font-weight: bold;
   height: 45px;
-  border: 1px solid #a5a5a5;
-  margin-bottom: 5px;
-  border-radius: 5px;
+  border: 1px solid
+    ${({ buttonType }) => {
+      switch (buttonType) {
+        case 'signin':
+          return `var(--color-sub)`;
+        case 'signup':
+          return `#a5a5a5`;
+      }
+    }};
 
-  background-color: ${props => (props.buttonType === 'login' ? 'var(--color-sub)' : 'var(--color-light-text)')};
-  color: ${props => (props.buttonType === 'login' ? `white` : `var(--color-dark-text)`)};
+  margin-bottom: 5px;
+  border-radius: 12px;
+
+  background-color: ${props => (props.buttonType === 'signin' ? 'var(--color-sub)' : 'var(--background-color)')};
+  color: ${props => (props.buttonType === 'signin' ? `white` : `var(--color-dark)`)};
 
   &:focus {
     outline: none;
