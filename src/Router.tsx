@@ -12,6 +12,8 @@ import DetailPage from '@pages/DetailPage';
 import SignUpPage from '@pages/SignUpPage';
 import SignInPage from '@pages/SignInPage';
 import WellcomePage from '@pages/WellcomePage';
+import OauthCallbackPage from '@pages/OauthCallbackPage';
+import InterestPage from '@pages/InterestPage';
 import MapListPage from '@pages/MapListPage';
 
 const Router = () => {
@@ -29,6 +31,8 @@ const Router = () => {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/wellcome" element={<WellcomePage />} />
+        <Route path="/callback/:interest" element={<OauthCallbackPage />} />
+        <Route path="/interest" element={<InterestPage />} />
       </Routes>
     </Layout>
   );

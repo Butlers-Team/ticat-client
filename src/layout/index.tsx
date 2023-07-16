@@ -1,6 +1,7 @@
 import { useLocation, Link } from 'react-router-dom';
 import TabNav from '@layout/tab-nav';
 import Main from '@layout/main';
+import Provider from '../provider';
 import styled from 'styled-components';
 import { useState } from 'react';
 
@@ -25,7 +26,9 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <Main className={shouldHide() ? undefined : 'main-vh70'}>{children}</Main>
+      <Provider>
+        <Main className={shouldHide() ? undefined : 'main-vh70'}>{children}</Main>
+      </Provider>
       {!shouldHide() && <TabNav />}
       {displayNone ? null : (
         <PopupContainer>

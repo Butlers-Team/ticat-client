@@ -108,6 +108,13 @@ ${reset}
     position: relative;
   }
 
+
+  .chakra-portal{
+    width: 0;
+    height:0;
+  }
+
+  
   //수평,수직 중앙정렬
   .flex-all-center {
     display: flex;

@@ -2,26 +2,33 @@ import styled from 'styled-components';
 import { useCallback, useState } from 'react';
 import SignInputForm from './SignupInputForm';
 import Button from '@components/Button';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useSignUp } from '@hooks/query';
+import { ApiSignUpRequest } from 'types/auth';
 
 /** 2023/06/29 - 회원가입 컴포넌트 - by leekoby */
 const SignUp: React.FC = (): JSX.Element => {
+  const navigate = useNavigate();
+  const signUpMutation = useSignUp();
+
   // 이름, 이메일, 비밀번호, 비밀번호 확인
   const [userId, setUserId] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   //오류메시지 상태저장
   const [idMessage, setIdMessage] = useState<string>('');
   const [emailMessage, setEmailMessage] = useState<string>('');
   const [passwordMessage, setPasswordMessage] = useState<string>('');
-  const [passwordConfirmMessage, setPasswordConfirmMessage] = useState<string>('');
+  const [passwordConfirmMessage, setConfirmPasswordMessage] = useState<string>('');
 
   // 유효성 검사
   const [isId, setIsId] = useState<boolean>(false);
   const [isEmail, setIsEmail] = useState<boolean>(false);
   const [isPassword, setIsPassword] = useState<boolean>(false);
-  const [isPasswordConfirm, setIsPasswordConfirm] = useState<boolean>(false);
+  const [isPasswordConfirm, setIsConfirmPassword] = useState<boolean>(false);
 
   // 비밀번호 show state
   const [showPassword, setShowPassword] = useState(false);
@@ -33,15 +40,19 @@ const SignUp: React.FC = (): JSX.Element => {
   };
 
   // 회원가입 버튼 클릭 핸들러
-  const handleSubmit: React.FormEventHandler<HTMLFormElement> = event => {
+  const handleSignUp: React.FormEventHandler<HTMLFormElement> = async event => {
     console.log('------submit------');
     event.preventDefault();
-    console.log('UserId:', userId);
-    console.log('Email', email);
-    console.log('Password:', password);
-    console.log('ConfirmPassword:', passwordConfirm);
 
-    // TODO: 회원가입 요청 처리
+    const signUpData: ApiSignUpRequest = {
+      id: userId,
+      email,
+      password,
+      confirmPassword,
+    };
+
+    console.log(signUpData);
+    signUpMutation.mutate(signUpData);
   };
 
   // 이름
@@ -90,15 +101,15 @@ const SignUp: React.FC = (): JSX.Element => {
   // 비밀번호 확인
   const onChangePasswordConfirm = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const passwordConfirmCurrent = e.target.value;
-      setPasswordConfirm(passwordConfirmCurrent);
+      const confirmPasswordCurrent = e.target.value;
+      setConfirmPassword(confirmPasswordCurrent);
 
-      if (password === passwordConfirmCurrent) {
-        setPasswordConfirmMessage('비밀번호를 똑같이 입력했어요 : )');
-        setIsPasswordConfirm(true);
+      if (password === confirmPasswordCurrent) {
+        setConfirmPasswordMessage('비밀번호를 똑같이 입력했어요 : )');
+        setIsConfirmPassword(true);
       } else {
-        setPasswordConfirmMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ');
-        setIsPasswordConfirm(false);
+        setConfirmPasswordMessage('비밀번호가 틀려요. 다시 확인해주세요 ㅜ ㅜ');
+        setIsConfirmPassword(false);
       }
     },
     [password],
@@ -107,7 +118,7 @@ const SignUp: React.FC = (): JSX.Element => {
   return (
     <SignUpContainer>
       <Title>회원가입</Title>
-      <FormContainer onSubmit={handleSubmit}>
+      <FormContainer onSubmit={handleSignUp}>
         <InputContainer>
           {/* 아이디 */}
           <SignInputForm
@@ -164,11 +175,11 @@ const SignUp: React.FC = (): JSX.Element => {
             type="password"
             placeholder="숫자+영문자+특수문자 조합으로 8자리 이상"
             name="confirmPassword"
-            value={passwordConfirm}
+            value={confirmPassword}
             onChange={onChangePasswordConfirm}
             onClear={() => {
-              setPasswordConfirm('');
-              setIsPasswordConfirm(false);
+              setConfirmPassword('');
+              setIsConfirmPassword(false);
             }}
             isShow={showPassword}
             isValid={isPasswordConfirm}
