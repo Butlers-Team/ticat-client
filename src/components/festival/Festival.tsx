@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import { formatDate } from '@utils/formatDate';
 import { FestivalListType } from 'types/api/festival';
 
-// icon
+// utils
+import { formatDate } from '@utils/formatDate';
+import { truncatedText } from '@utils/truncatedText';
+
+// icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
 
@@ -13,13 +16,13 @@ interface FestivalProps {
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const Festival = ({ item }: FestivalProps) => {
   return (
-    <FestivalContainer titleLength={item.title.length}>
+    <FestivalContainer>
       <ImgBox>
         {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
-      <DescriptionWrap titleLength={item.title.length}>
+      <DescriptionWrap>
         <div className="title-space-between">
-          <h3 className="festival-left-title">{item.title}</h3>
+          <h3 className="festival-left-title">{truncatedText(item.title, 15)}</h3>
           <p className="festival-right">{item.category}</p>
         </div>
         <p className="festival-area">{item.address}</p>
@@ -47,12 +50,12 @@ const Festival = ({ item }: FestivalProps) => {
 export default Festival;
 
 /** 2023/07/08 - 축제 컨테이너 - by sineTlsl */
-const FestivalContainer = styled.div<{ titleLength: number }>`
+const FestivalContainer = styled.div`
   display: flex;
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: ${props => (props.titleLength < 15 ? '100px' : '115px')};
+  height: 110px;
   color: var(--color-dark);
   font-size: 13px;
 `;
@@ -73,11 +76,11 @@ const ImgBox = styled.div`
 `;
 
 /** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
-const DescriptionWrap = styled.div<{ titleLength: number }>`
+const DescriptionWrap = styled.div`
   flex: 0 1 75%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 
   > .title-space-between {
     display: flex;
@@ -87,14 +90,9 @@ const DescriptionWrap = styled.div<{ titleLength: number }>`
   }
   > .title-space-between > .festival-left-title {
     flex: 0 1 85%;
-    font-size: ${props => (props.titleLength < 20 ? '16px' : '15.5px')};
+    font-size: 16px;
     font-weight: 700;
     color: var(--color-dark);
-
-    @media screen and (max-width: 400px) {
-      font-size: ${props => (props.titleLength < 15 ? '15px' : '14.5px')};
-      gap: 0.3rem;
-    }
   }
   > .title-space-between > .festival-right {
     flex: 0 0 15%;
