@@ -12,11 +12,9 @@ import { getDetailList } from '../api/detail';
 
 const DetailPage = () => {
   const [detailList, setDetailList] = useState<FestivalDetailType>();
-
-  //const { contentId } = useParams<string>();
+  const contentId = useParams<string>().id;
   /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
   const fetchDetailList = async () => {
-    const contentId = '2865136'; //detailList.contentId로 변경예정
     if (typeof contentId === 'string') {
       const res = await getDetailList(contentId);
       setDetailList(res.data);
