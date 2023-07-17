@@ -67,13 +67,13 @@ const Interest: React.FC<Props> = (): JSX.Element => {
           </>
         ) : (
           <>
-            <Link to="/">
-              <ArrowWrap>
+            <ArrowWrap>
+              <Link to="/">
                 <MdArrowBackIosNew size="20px" color="var(--color-dark)" />
-              </ArrowWrap>
-            </Link>
+              </Link>
+            </ArrowWrap>
             <Title>
-              가입을 축하드려요! <br />
+              닉네임이 필요해요! <br />
               어떻게 불러드리면 될까요?
             </Title>
             <InputContainer>
@@ -106,12 +106,13 @@ const InterestContainer = styled.section`
 
 /** 2023/07/15 - 닉네임/관심사 등록 컨테이너 - by leekoby */
 const InterestWrapper = styled.div`
-  overflow: hidden;
-  height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 2rem;
+  height: 100%;
+  margin: 0 auto;
 
   animation: showupLayout 0.5s forwards;
   .contents-box {
@@ -169,7 +170,13 @@ const ButtonContainer = styled.div`
 `;
 
 const ArrowWrap = styled.div`
+  padding: 1rem;
   width: 3.5rem;
-  cursor: pointer;
   align-self: flex-start;
+  cursor: pointer;
+
+  svg {
+    align-items: center;
+    justify-content: center;
+  }
 `;

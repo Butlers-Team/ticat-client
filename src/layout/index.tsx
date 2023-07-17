@@ -11,7 +11,7 @@ import Popup from '@components/Popup';
 
 const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const location = useLocation();
-  const hidePages = ['/stamp/valid', '/stamp/list', '/signup', '/signIn', '/wellcome']; // navBar를 숨기고 싶은 페이지
+  const hidePages = ['/stamp/valid', '/stamp/list', '/signup', '/signIn', '/wellcome', '/interest']; // navBar를 숨기고 싶은 페이지
 
   /** 2023/07/03 - 현재 페이지의 경로가 hidePages에 포함되어 있는지 확인하는 함수 - by sineTlsl */
   const shouldHide = () => hidePages.includes(location.pathname);

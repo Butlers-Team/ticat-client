@@ -56,6 +56,7 @@ const FastivalCategory = styled.ul`
 
   .tab-section {
     margin: 0.5rem;
+    height: 5.5rem;
     border: 1px solid var(--color-dark-gray);
     width: calc(30%);
     padding: 15px 0px;
