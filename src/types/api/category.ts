@@ -7,6 +7,7 @@ export interface CategoriesRequest {
   category?: string;
   page: number;
   size: number;
+  areas?: string;
 }
 /** 2023/07/04 - 축제 리스트 카테고리별 (Response) - by sineTlsl */
 export interface CategoriesResponse {

@@ -5,7 +5,10 @@ import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { getCatergories } from '@api/category';
 import { CategoriesRequest } from 'types/api/category';
+
+// stores
 import { useAreaFilterStore } from '@store/areaFilterStore';
+import { useTabStore } from '@store/CategoryTabStore';
 
 // components
 import CatergoryTabNav from '@components/festival/CategoryTabNav';
@@ -33,7 +36,7 @@ const tabCategory = [
 ];
 
 const FestivalListPage = () => {
-  const [currentTab, setCurrentTab] = useState(tabCategory[0]);
+  const { currentTab, setCurrentTab } = useTabStore();
   const { selectedItems } = useAreaFilterStore();
 
   /** 2023/07/11 - 카테고리 클릭 시 API 요청하는 함수 (무한스크롤) - by sineTlsl */
@@ -44,7 +47,22 @@ const FestivalListPage = () => {
         page: pageParam,
         size: 10,
       };
-      if (currentTab !== '전체') {
+      if (currentTab !== '전체' && selectedItems.length >= 1) {
+        const areas = selectedItems.join(',');
+
+        params = {
+          category: currentTab,
+          ...params,
+          areas,
+        };
+      } else if (currentTab === '전체' && selectedItems.length >= 1) {
+        const areas = selectedItems.join(',');
+
+        params = {
+          ...params,
+          areas,
+        };
+      } else if (currentTab !== '전체') {
         params = {
           category: currentTab,
           ...params,

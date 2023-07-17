@@ -20,7 +20,7 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
 
   const { selectedItems } = useAreaFilterStore();
 
-  /** 2023/07/17 - 지역마다 각 자치별 초기 상태 지정 및 업데이트 될 때마다 전역 관리 - by sineTlsl */
+  /** 2023/07/17 - 지역마다 각 자치별 초기 상태 지정 및 업데이트 될 때마다  관리 - by sineTlsl */
   useEffect(() => {
     const updatedItemSelect =
       areaData[area].reduce((obj, item) => {
