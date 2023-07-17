@@ -20,23 +20,23 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
 
   const { selectedItems } = useAreaFilterStore();
 
-  /** 2023/07/17 - 지역마다 각 자치별 초기 상태 지정 - by sineTlsl */
+  /** 2023/07/17 - 지역마다 각 자치별 초기 상태 지정 및 업데이트 될 때마다 전역 관리 - by sineTlsl */
   useEffect(() => {
-    const initalItemState =
+    const updatedItemSelect =
       areaData[area].reduce((obj, item) => {
         const formattedItem = item === '전체' ? `(${area})` : `(${area})${item}`;
-        return { ...obj, [item]: selectedItems.includes(formattedItem) };
+        return { ...obj, [item]: tempSelectedItems.includes(formattedItem) };
       }, {}) || {};
 
-    setItemSelect(initalItemState);
-  }, [area, selectedItems]);
+    setItemSelect(updatedItemSelect);
+  }, [area, selectedItems, tempSelectedItems]);
 
   /** 2023/07/17 - 각 자치구가 선택되어있는지 확인하고, 그 지역의 맞게 업데이트 하는 함수 - by sineTlsl */
   const HandlerSelectItem = (data: string) => {
     const strItem = data === '전체' ? `(${area})` : `(${area})${data}`;
 
     if (data === '전체') {
-      if (tempSelectedItems.length > 5) return;
+      if (tempSelectedItems.length >= 5) return;
 
       const itemsToRemove = Object.keys(itemSelect).map(key => `(${area})${key}`);
       onAllRemoveItem(itemsToRemove);
