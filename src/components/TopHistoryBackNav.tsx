@@ -4,19 +4,20 @@ import styled from 'styled-components';
 import { MdArrowBackIosNew } from 'react-icons/md';
 
 interface BackNavProps {
-  onNavigate: () => void;
+  textTitle: string;
+  onNavigation: () => void;
 }
 
-/** 2023/07/17 - 윗 상단 History back - by sineTlsl */
-const TopHistoryBackNav = ({ onNavigate }: BackNavProps) => {
+/** 2023/07/17 - 윗 상단 History back 컴포넌트 - by sineTlsl */
+const TopHistoryBackNav = ({ textTitle, onNavigation }: BackNavProps) => {
   return (
     <BackNavContainer>
       <div className="top-left">
-        <button className="back-btn" onClick={onNavigate}>
+        <button className="back-btn" onClick={onNavigation}>
           <MdArrowBackIosNew size="18px" color="var(--color-dark-gray)" />
         </button>
       </div>
-      <div className="area-filter-title">지역설정</div>
+      <div className="area-filter-title">{textTitle}</div>
     </BackNavContainer>
   );
 };

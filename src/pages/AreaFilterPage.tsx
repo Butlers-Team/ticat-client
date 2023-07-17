@@ -46,7 +46,7 @@ const AreaFilterPage = () => {
 
   return (
     <AreaFilterContainer>
-      <TopHistoryBackNav onNavigate={goBackPage} />
+      <TopHistoryBackNav textTitle={'지역설정'} onNavigation={goBackPage} />
       <AreaWrap>
         <p className="area-description">지역은 5개까지만 선택이 가능합니다.</p>
         <ul className="select-items ">
