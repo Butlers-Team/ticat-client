@@ -7,7 +7,6 @@ interface BackNavProps {
   textTitle: string;
   onNavigation: () => void;
 }
-
 /** 2023/07/17 - 윗 상단 History back 컴포넌트 - by sineTlsl */
 const TopHistoryBackNav = ({ textTitle, onNavigation }: BackNavProps) => {
   return (
