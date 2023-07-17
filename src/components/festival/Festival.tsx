@@ -80,7 +80,7 @@ const DescriptionWrap = styled.div`
   flex: 0 1 75%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 
   > .title-space-between {
     display: flex;
