@@ -1,8 +1,11 @@
 import styled from 'styled-components';
-import { formatDate } from '@utils/formatDate';
-import { FestivalListType } from 'types/api/category';
+import { FestivalListType } from 'types/api/festival';
 
-// icon
+// utils
+import { formatDate } from '@utils/formatDate';
+import { truncatedText } from '@utils/truncatedText';
+
+// icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
 
@@ -15,11 +18,11 @@ const Festival = ({ item }: FestivalProps) => {
   return (
     <FestivalContainer>
       <ImgBox>
-        {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-logo-icon-gray.png" />}
+        {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
       <DescriptionWrap>
         <div className="title-space-between">
-          <h3 className="festival-left-title">{item.title}</h3>
+          <h3 className="festival-left-title">{truncatedText(item.title, 15)}</h3>
           <p className="festival-right">{item.category}</p>
         </div>
         <p className="festival-area">{item.address}</p>
@@ -60,17 +63,21 @@ const FestivalContainer = styled.div`
 /** 2023/07/08 - 축제 정보 이미지 - by sineTlsl */
 const ImgBox = styled.div`
   flex: 0 1 25%;
-  padding: 2rem 2rem 2rem 0;
+  height: 100%;
+  width: 100%;
+  padding-right: 1rem;
 
   > img {
     width: 100%;
-    max-height: calc(100px - 2rem);
+    height: 100%;
+    padding: 1rem 1rem 1rem 0;
+    object-fit: cover;
   }
 `;
 
 /** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
 const DescriptionWrap = styled.div`
-  flex: 0 1 80%;
+  flex: 0 1 75%;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -92,10 +99,19 @@ const DescriptionWrap = styled.div`
     display: flex;
     font-size: 12px;
     justify-content: flex-end;
+
+    @media screen and (max-width: 400px) {
+      font-size: 11px;
+    }
   }
   > .festival-area {
     width: 85%;
     font-size: 12px;
+
+    @media screen and (max-width: 400px) {
+      font-size: 11px;
+      line-height: 15px;
+    }
   }
   > .icon-wrap {
     display: flex;

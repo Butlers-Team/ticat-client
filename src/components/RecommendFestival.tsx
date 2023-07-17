@@ -4,11 +4,14 @@ import { useState, useEffect } from 'react';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType } from 'types/api/category';
+import { FestivalListType } from 'types/api/festival';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+
+//utils
+import { truncatedText } from '@utils/truncatedText';
 
 interface RecommendFestivalProps {
   fastivaldata: FestivalListType[];
@@ -41,16 +44,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
     loop: true,
   };
 
-  /**2023.07.11 배너 타이틀 길이 조정 함수 - by mscojl24 */
-  const TitleCutLengt = (title: string) => {
-    if (title.length >= 8) {
-      return `${title.slice(0, 8)}...`;
-    } else {
-      return title;
-    }
-  };
-
-  /**2023.07.11 배너 타이틀 길이 조정 함수 - by mscojl24 */
+  /**2023.07.11 error image 기본이미지로 교체 - by mscojl24 */
   const handleImageError = (index: number) => {
     setImageErrors(prevErrors => {
       const newErrors = [...prevErrors];
@@ -73,7 +67,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
                 )}
               </div>
               <div className="card-text">
-                <span>{TitleCutLengt(card.title)}</span>
+                <span>{truncatedText(card.title, 11)}</span>
                 <p>{card.area}</p>
               </div>
             </RecommendCard>

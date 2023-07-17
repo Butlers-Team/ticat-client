@@ -5,8 +5,7 @@ import { useState, useEffect } from 'react';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType, CategoriesResponse } from 'types/api/category';
-
+import { FestivalListType } from 'types/api/festival';
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSun } from 'react-icons/bi';
@@ -20,6 +19,10 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
+
+//utils
+import { truncatedText } from '@utils/truncatedText';
+import { formatDate } from '@utils/formatDate';
 
 interface BgImage {
   backqroundimage: string;
@@ -39,6 +42,9 @@ const RecommendFestival = () => {
       })
       .then(res => {
         setFestivalData(res.data.data);
+      })
+      .catch(err => {
+        console.log(err);
       });
   }, []);
 
@@ -53,23 +59,6 @@ const RecommendFestival = () => {
       disableOnInteraction: false,
     },
     modules: [Autoplay, EffectFade],
-  };
-
-  /**2023.07.05 데이터 날짜 형식 변경 - by mscojl24*/
-  function formatDate(dateString: string) {
-    const year = dateString.slice(0, 4);
-    const month = dateString.slice(4, 6);
-    const day = dateString.slice(6, 8);
-    return `${year}.${month}.${day}`;
-  }
-
-  /**2023.07.11 배너 타이틀 길이 조정 함수 - by mscojl24 */
-  const TitleCutLengt = (title: string) => {
-    if (title.length >= 15) {
-      return `${title.slice(0, 15)}...`;
-    } else {
-      return title;
-    }
   };
 
   return (
@@ -87,7 +76,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{TitleCutLengt(festival.title)}</h2>
+              <h2>{truncatedText(festival.title, 15)}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>

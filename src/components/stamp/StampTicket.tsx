@@ -61,8 +61,8 @@ const ItemText = styled.div`
   flex: 0 1 70%;
   flex-direction: column;
   display: flex;
-  gap: 0.6rem;
-  padding: 1rem 2rem;
+  gap: 0.3rem;
+  padding: 0 2rem;
 
   > .item-title {
     font-size: 16px;

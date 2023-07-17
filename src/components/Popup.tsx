@@ -18,28 +18,22 @@ const Button: React.FC<PopupProps> = ({ children, ...props }) => {
   }, props.closetime);
 
   return (
-    <LoginModal {...props}>
-      <div
-        className={
-          closeBox ? 'flex-h-center speech-bubble close-moving-box' : 'flex-h-center speech-bubble show-moving-box'
-        }>
+    <PopupModal {...props}>
+      <div className={`flex-h-center background-bubble ${closeBox ? 'close-moving-box' : 'show-moving-box'}`}>
         <div className="time-bar"></div>
         {children}
       </div>
-    </LoginModal>
+    </PopupModal>
   );
 };
 export default Button;
 
 /** 2023/06/29 - 서비스 공용 버튼 컴포넌트 - parksubeom */
 
-const LoginModal = styled.div<Pick<PopupProps, 'width' | 'height' | 'barcolor' | 'time'>>`
-  position: absolute;
-  bottom: 90px;
-  z-index: 3;
-  width: ${({ width }) => width ?? 'calc(500px - 40px)'};
+const PopupModal = styled.div<Pick<PopupProps, 'width' | 'height' | 'barcolor' | 'time'>>`
+  width: ${({ width }) => width ?? 'calc(100% - 40px)'};
 
-  .speech-bubble {
+  .background-bubble {
     justify-content: space-between;
     position: relative;
     background: #ffffff;

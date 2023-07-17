@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 
-import { FestivalListType } from 'types/api/category';
+import { FestivalListType } from 'types/api/festival';
 
 //components
 import MainSlider from '@components/main/MainSlider';
@@ -143,6 +143,7 @@ const MainPageContainer = styled.div`
   .main-slider {
     width: 100%;
     height: 300px;
+    background-color: var(--color-light-gray);
   }
 `;
 
