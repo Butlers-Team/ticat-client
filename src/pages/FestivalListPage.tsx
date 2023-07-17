@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
-import { getCatergories } from '../api/category';
+import { getCatergories } from '@api/category';
 import { CategoriesRequest } from 'types/api/category';
+import { useAreaFilterStore } from '@store/areaFilterStore';
 
 // components
 import CatergoryTabNav from '@components/festival/CategoryTabNav';
@@ -33,6 +34,7 @@ const tabCategory = [
 
 const FestivalListPage = () => {
   const [currentTab, setCurrentTab] = useState(tabCategory[0]);
+  const { selectedItems } = useAreaFilterStore();
 
   /** 2023/07/11 - 카테고리 클릭 시 API 요청하는 함수 (무한스크롤) - by sineTlsl */
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
@@ -86,10 +88,16 @@ const FestivalListPage = () => {
         <h2 className="festival-list-title">축제 리스트</h2>
         <div className="festival-list-filter">
           <button className="filter-btn">
-            <Link to="/festival/area">
-              <span>서울 외 4곳 </span>
+            <Link className="link-wrap" to="/festival/area">
+              {selectedItems.length !== 0 ? (
+                <span>
+                  {selectedItems.length < 2 ? selectedItems : `${selectedItems[0]} 외 ${selectedItems.length - 1} 곳`}
+                </span>
+              ) : (
+                <span>지역필터 선택</span>
+              )}
+              <IoMdOptions size="20px" color="var(--color-main)" />
             </Link>
-            <IoMdOptions size="20px" color="var(--color-main)" />
           </button>
         </div>
       </FestivalFilter>
@@ -142,13 +150,15 @@ const FestivalFilter = styled.div`
   > .festival-list-filter > .filter-btn {
     font-size: 15px;
     font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
     border: none;
     background: none;
     color: var(--color-main);
     cursor: pointer;
+  }
+  > .festival-list-filter > .filter-btn > .link-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
   }
 `;
 

@@ -2,8 +2,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { areas } from '@data/areaData';
+import { useAreaFilterStore } from '@store/areaFilterStore';
 
 // components
+import Button from '@components/Button';
 import AreaDropDown from '@components/areaFilter/AreaDropDown';
 
 // icons
@@ -11,8 +13,9 @@ import { MdArrowBackIosNew } from 'react-icons/md';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
 const AreaFilterPage = () => {
-  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const navigate = useNavigate();
+  const { selectedItems, setSelectedItems } = useAreaFilterStore();
+  const [tempSelectedItems, setTempSelectedItems] = useState<string[]>(selectedItems);
 
   /** 2023/07/14 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
@@ -20,15 +23,25 @@ const AreaFilterPage = () => {
   };
 
   /** 2023/07/14 - 선택된 지역들을 목록에 업데이트하는 함수 - by sineTlsl */
-  // const handlerSelectItem = (item: string) => {
-  //   setSelectedItems(item);
-  // };
+  const handlerAddItem = (item: string) => {
+    setTempSelectedItems(prevItems => [...prevItems, item]);
+  };
 
-  /** 2023/07/14 - 특정 지역 삭제 함수 - by sineTlsl */
-  const handlerRemoveItem = (removeIdx: number) => {
-    const filterItems = selectedItems.filter((_, idx) => idx !== removeIdx);
+  /** 2023/07/14 - 특정 지역 or 자치구 삭제 함수 - by sineTlsl */
+  const handlerRemoveItem = (removeItem: string) => {
+    const filterItems = tempSelectedItems.filter(item => item !== removeItem);
+    setTempSelectedItems(filterItems);
+  };
 
-    setSelectedItems(filterItems);
+  /** 2023/07/17 - 지역의 전체 버튼을 클릭 시 그 지역의 자치구 전체 삭제 함수 - by sineTlsl */
+  const handlerRemoveAreaItems = (items: string[]) => {
+    const newSelectedItems = tempSelectedItems.filter(item => !items.includes(item));
+    setTempSelectedItems(newSelectedItems);
+  };
+
+  const handlerSelectComplete = () => {
+    setSelectedItems(tempSelectedItems);
+    goBackPage();
   };
 
   return (
@@ -44,10 +57,10 @@ const AreaFilterPage = () => {
       <AreaWrap>
         <p className="area-description">지역은 5개까지만 선택이 가능합니다.</p>
         <ul className="select-items ">
-          {selectedItems.map((item, idx) => (
+          {tempSelectedItems.map((item, idx) => (
             <li className="area-tag" key={idx}>
               <span className="tag-title">{item}</span>
-              <span onClick={() => handlerRemoveItem(idx)}>
+              <span className="tag-remove-btn" onClick={() => handlerRemoveItem(item)}>
                 <AiFillCloseCircle size="15px" color="var(--color-light)" />
               </span>
             </li>
@@ -56,23 +69,34 @@ const AreaFilterPage = () => {
         <div className="area-list">
           {areas.map((area, idx) => (
             <div key={idx}>
-              <AreaDropDown area={area} selectedItems={selectedItems} />
+              <AreaDropDown
+                area={area}
+                tempSelectedItems={tempSelectedItems}
+                onAddItem={handlerAddItem}
+                onRemoveItem={handlerRemoveItem}
+                onAllRemoveItem={handlerRemoveAreaItems}
+              />
             </div>
           ))}
         </div>
       </AreaWrap>
+      <SelectedBtnWrap>
+        <Button onClick={handlerSelectComplete}>선택 완료</Button>
+      </SelectedBtnWrap>
     </AreaFilterContainer>
   );
 };
 
 export default AreaFilterPage;
 
+/** 2023/07/17 - 축제 리스트 지역별 카테고리 컨테이너 - by sineTlsl */
 const AreaFilterContainer = styled.section`
   position: relative;
   width: 100%;
   height: 100%;
 `;
 
+/** 2023/07/17 - 페이지 top 컨테이너 - by sineTlsl */
 const TopWrap = styled.div`
   position: relative;
   width: 100%;
@@ -104,7 +128,7 @@ const TopWrap = styled.div`
   }
 `;
 
-// 지역 드롭다운 리스트
+/** 2023/07/17 - 지역 드롭다운 리스트 - by sineTlsl */
 const AreaWrap = styled.div`
   width: calc(100% - 4rem);
   height: calc(100% - 5rem);
@@ -140,8 +164,13 @@ const AreaWrap = styled.div`
     color: var(--color-light);
     /* background: #e38882; */
   }
+  > .select-items > .area-tag > .tag-remove-btn {
+    display: flex;
+    align-items: center;
+  }
   > .area-list {
     flex: 1;
+    padding-bottom: 10rem;
     overflow: scroll;
 
     // 스크롤바 없애기
@@ -152,4 +181,13 @@ const AreaWrap = styled.div`
     // firefox
     scrollbar-width: none;
   }
+`;
+
+const SelectedBtnWrap = styled.div`
+  position: absolute;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  bottom: 0rem;
+  width: calc(100% - 4rem);
+  isolation: isolate;
 `;
