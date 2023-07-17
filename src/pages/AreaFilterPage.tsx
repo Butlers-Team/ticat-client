@@ -17,6 +17,11 @@ const AreaFilterPage = () => {
   const { selectedItems, setSelectedItems } = useAreaFilterStore();
   const [tempSelectedItems, setTempSelectedItems] = useState<string[]>(selectedItems);
 
+  /** 2023/07/14 - 이전 페이지 이동 함수 - by sineTlsl */
+  const goBackPage = () => {
+    navigate('/festival');
+  };
+
   /** 2023/07/14 - 선택된 지역들을 목록에 업데이트하는 함수 - by sineTlsl */
   const handlerAddItem = (item: string) => {
     setTempSelectedItems(prevItems => [...prevItems, item]);
@@ -41,7 +46,7 @@ const AreaFilterPage = () => {
 
   return (
     <AreaFilterContainer>
-      <TopHistoryBackNav />
+      <TopHistoryBackNav onNavigate={goBackPage} />
       <AreaWrap>
         <p className="area-description">지역은 5개까지만 선택이 가능합니다.</p>
         <ul className="select-items ">
