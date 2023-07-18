@@ -8,7 +8,7 @@ const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
     <>
       <InfoContainer>
         <h2>행사 소개</h2>
-        <p>{detailList.overview}</p>
+        <p>{detailList.overview.replaceAll('<br>', ' ')}</p>
         <FestivalContact>
           <p className="contact-title">행사 연락처</p>
           <span>{detailList.tel}</span>
@@ -32,6 +32,10 @@ const InfoContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 3rem 2rem;
+  div:nth-last-child(1) {
+    border-bottom: 1px solid var(--color-light-gray);
+  }
+
   > h2 {
     color: var(--color-dark);
     font-size: 24px;
@@ -42,7 +46,7 @@ const InfoContainer = styled.div`
     color: var(--color-dark);
     margin-top: 2rem;
     margin-bottom: 6rem;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 1px;
     line-height: 25px;
   }
@@ -54,10 +58,6 @@ const FestivalContact = styled.div`
   flex-direction: row;
   width: 100%;
   height: 6rem;
-  :nth-last-child(1) {
-    border-bottom: 1px solid var(--color-light-gray);
-  }
-
   > .contact-title {
     width: 15rem;
     font-size: 16px;

@@ -47,8 +47,6 @@ export default OauthButton;
 
 /** 2023/06/29 - Oauth 버튼 컴포넌트 스타일 - by leekoby */
 const OauthBtn = styled.button<{ buttonService: ButtonService }>`
-  ${OauthVariables}
-
   display: flex;
   justify-content: center;
   align-items: center;

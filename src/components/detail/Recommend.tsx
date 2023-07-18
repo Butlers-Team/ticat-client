@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
-
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
+import { RecommendListType, RecommendListType2 } from 'types/api/recommend';
+import { getRecommendList } from '@api/recommend';
+import { RecommendRequest } from 'types/api/recommend';
 import { FestivalDetailType } from 'types/api/detail';
 
 // Import Swiper
@@ -15,6 +16,7 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const [recommendlList, setRecommendList] = useState<RecommendListType[] | undefined>();
   /** 2023.07.05 recommend banner swiper options - by mscojl24 */
   const swiperOptions: RecommendSwiperOptions = {
     spaceBetween: 110,
@@ -23,20 +25,34 @@ const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
     loop: true,
   };
 
+  /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
+  const fetchRecommendlList = async () => {
+    const category: RecommendRequest = {
+      category: detailList.category,
+    };
+    const res = await getRecommendList(category);
+    console.log(res);
+    setRecommendList(res);
+  };
+
+  useEffect(() => {
+    fetchRecommendlList();
+  }, []);
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
-        {[...Array(6)].map((card, index) => (
-          <SwiperSlide key={`${card}${index}`}>
-            <RecommendCard>
-              <div className="card-image"></div>
-              <div className="card-text">
-                <span>축제 이름 입니다 {`${index + 1}`}</span>
-                <p>서울특별시 강남구</p>
-              </div>
-            </RecommendCard>
-          </SwiperSlide>
-        ))}
+        {recommendlList &&
+          recommendlList.map((card: RecommendListType, index: number) => (
+            <SwiperSlide key={index}>
+              <RecommendCard>
+                <img src={card.image} className="card-image"></img>
+                <div className="card-text">
+                  <span>{card.title}</span>
+                  <p>{card.area}</p>
+                </div>
+              </RecommendCard>
+            </SwiperSlide>
+          ))}
       </Swiper>
     </>
   );
@@ -56,6 +72,7 @@ const RecommendCard = styled.div`
     border-radius: 10px;
     background: var(--color-light-gray);
     margin-bottom: 10px;
+    object-fit: cover;
   }
 
   .card-text {
