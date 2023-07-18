@@ -4,6 +4,7 @@ import { FestivalListType } from 'types/api/festival';
 // utils
 import { formatDate } from '@utils/formatDate';
 import { truncatedText } from '@utils/truncatedText';
+import { splitAddress } from '@utils/address';
 
 // icons
 import { FaStar } from 'react-icons/fa';
@@ -25,7 +26,7 @@ const Festival = ({ item }: FestivalProps) => {
           <h3 className="festival-left-title">{truncatedText(item.title, 15)}</h3>
           <p className="festival-right">{item.category}</p>
         </div>
-        <p className="festival-area">{item.address}</p>
+        <p className="festival-area">{splitAddress(item.address)}</p>
         <div className="icon-wrap">
           <div className="review-icon">
             <FaStar size="14px" color="#FFAD33" />
@@ -55,29 +56,29 @@ const FestivalContainer = styled.div`
   align-items: center;
   margin: 0 auto;
   width: 100%;
-  height: 110px;
+  height: 105px;
   color: var(--color-dark);
   font-size: 13px;
 `;
 
 /** 2023/07/08 - 축제 정보 이미지 - by sineTlsl */
 const ImgBox = styled.div`
-  flex: 0 1 25%;
+  flex: 0 0 95px;
   height: 100%;
   width: 100%;
-  padding-right: 1rem;
+  padding: 1rem 1rem 1rem 0;
 
   > img {
     width: 100%;
     height: 100%;
-    padding: 1rem 1rem 1rem 0;
     object-fit: cover;
+    border-radius: 5px;
   }
 `;
 
 /** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
 const DescriptionWrap = styled.div`
-  flex: 0 1 75%;
+  flex: 0 1 calc(100% - 95px);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
