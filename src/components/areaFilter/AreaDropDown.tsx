@@ -91,9 +91,9 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
           <div>{area}</div>
           <div>
             {!isOpen ? (
-              <IoMdArrowDropdown size="24px" color="var(--color-dark-gray)" />
+              <IoMdArrowDropdown size="26px" color="var(--color-dark-gray)" />
             ) : (
-              <IoMdArrowDropup size="24px" color="var(--color-dark)" />
+              <IoMdArrowDropup size="26px" color="var(--color-dark)" />
             )}
           </div>
         </button>
