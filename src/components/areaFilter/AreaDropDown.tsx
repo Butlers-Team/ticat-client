@@ -36,26 +36,34 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
     const strItem = data === '전체' ? `(${area})` : `(${area})${data}`;
 
     if (data === '전체') {
-      if (tempSelectedItems.length >= 5) return;
+      if (itemSelect[data]) {
+        // 현재 그 지역의 '전체'가 클릭되어 있을 때
+        onRemoveItem(strItem);
+        setItemSelect(prevItem => ({ ...prevItem, [data]: false }));
+      } else {
+        const currentAreaItemsCount = tempSelectedItems.filter(item => item.startsWith(`(${area})`)).length;
+        // 선택된 그 지역의 자치구가 5개 초과이거나 현재 선택된 지역이 5개 이상이고 그 지역이 하나도 포함이 안되어있을 때
+        if (currentAreaItemsCount > 5 || (tempSelectedItems.length >= 5 && currentAreaItemsCount === 0)) return;
 
-      const itemsToRemove = Object.keys(itemSelect).map(key => `(${area})${key}`);
-      onAllRemoveItem(itemsToRemove);
+        const itemsToRemove = Object.keys(itemSelect).map(key => `(${area})${key}`);
+        onAllRemoveItem(itemsToRemove);
 
-      // 모든 자치구를 선택하지 않은 상태로 업데이트
-      setItemSelect(prevItem => {
-        const newItemSelect = { ...prevItem };
-        for (const key in newItemSelect) {
-          newItemSelect[key] = false;
+        // 모든 자치구를 선택하지 않은 상태로 업데이트
+        setItemSelect(prevItem => {
+          const newItemSelect = { ...prevItem };
+          for (const key in newItemSelect) {
+            newItemSelect[key] = false;
+          }
+
+          // 전체만 선택된 상태로 업데이트
+          newItemSelect[data] = true;
+
+          return newItemSelect;
+        });
+        // 현재 지역의 전체가 항목에 있는 지 확인하고, 없는 경우에만 추가
+        if (!tempSelectedItems.includes(strItem)) {
+          onAddItem(strItem);
         }
-
-        // 전체만 선택된 상태로 업데이트
-        newItemSelect[data] = true;
-
-        return newItemSelect;
-      });
-      // 현재 지역의 전체가 항목에 있는 지 확인하고, 없는 경우에만 추가
-      if (!tempSelectedItems.includes(strItem)) {
-        onAddItem(strItem);
       }
     } else {
       if (tempSelectedItems.length < 5 && !itemSelect[data]) {
@@ -78,14 +86,16 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
 
   return (
     <DropDownContainer>
-      <div className="area-title-box">
-        <div>{area}</div>
-        <button className="dropdown-btn" onClick={() => setIsOpen(!isOpen)}>
-          {!isOpen ? (
-            <IoMdArrowDropdown size="24px" color="var(--color-dark-gray)" />
-          ) : (
-            <IoMdArrowDropup size="24px" color="var(--color-dark)" />
-          )}
+      <div className="area-title-box" onClick={() => setIsOpen(!isOpen)}>
+        <button className="dropdown-btn">
+          <div>{area}</div>
+          <div>
+            {!isOpen ? (
+              <IoMdArrowDropdown size="24px" color="var(--color-dark-gray)" />
+            ) : (
+              <IoMdArrowDropup size="24px" color="var(--color-dark)" />
+            )}
+          </div>
         </button>
       </div>
 
@@ -115,16 +125,18 @@ const DropDownContainer = styled.div`
   > .area-title-box {
     margin: 0 auto;
     width: 100%;
-    height: 4.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    height: 4.8rem;
     color: var(--color-dark);
     font-size: 15px;
     font-weight: 500;
     border-bottom: 1px solid var(--color-light-gray);
   }
   > .area-title-box > .dropdown-btn {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     background: none;
     border: none;
     cursor: pointer;
