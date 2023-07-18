@@ -33,6 +33,12 @@ const removeTokenFromStorage = (key: string) => {
   }
 };
 
+/** 2023/07/17 - getToken 함수 추가- by leekoby */
+const getToken = () => {
+  const store = useTokenStore.getState();
+  return { accessToken: store.accessToken, refreshToken: store.refreshToken };
+};
+
 /** 2023/07/10 - 로그인 응답 헤더 토큰 저장소 - by leekoby */
 const useTokenStore = create<Token>(set => ({
   ...getTokenStateFromStorage(),
@@ -49,6 +55,10 @@ const useTokenStore = create<Token>(set => ({
     removeTokenFromStorage('refreshToken');
     set({ accessToken: '', refreshToken: '' });
   },
+  getToken: () => {
+    const store = useTokenStore.getState();
+    return { accessToken: store.accessToken, refreshToken: store.refreshToken };
+  },
 }));
 
-export { useTokenStore };
+export { useTokenStore, getToken };
