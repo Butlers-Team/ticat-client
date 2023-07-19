@@ -41,17 +41,13 @@ const SignUp: React.FC = (): JSX.Element => {
 
   // 회원가입 버튼 클릭 핸들러
   const handleSignUp: React.FormEventHandler<HTMLFormElement> = async event => {
-    console.log('------submit------');
     event.preventDefault();
-
     const signUpData: ApiSignUpRequest = {
       id: userId,
       email,
       password,
       confirmPassword,
     };
-
-    console.log(signUpData);
     signUpMutation.mutate(signUpData);
   };
 
