@@ -46,7 +46,7 @@ const InfoContainer = styled.div`
     color: var(--color-dark);
     margin-top: 2rem;
     margin-bottom: 6rem;
-    font-weight: 600;
+    font-weight: 400;
     letter-spacing: 1px;
     line-height: 25px;
   }
@@ -57,7 +57,7 @@ const FestivalContact = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 6rem;
+  height: 100%;
   > .contact-title {
     width: 15rem;
     font-size: 16px;
