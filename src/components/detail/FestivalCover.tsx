@@ -148,6 +148,7 @@ const BtnSection = styled.div`
     border-radius: 5px;
     border: none;
     font-size: 1.5rem;
+    margin-right: 5px;
     cursor: pointer;
     > span {
       font-size: 16px;
