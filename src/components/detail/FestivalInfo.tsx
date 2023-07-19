@@ -52,7 +52,6 @@ const InfoContainer = styled.div`
     margin-top: 2rem;
     margin-bottom: 6rem;
     font-weight: 400;
-    letter-spacing: 1px;
     line-height: 25px;
   }
 `;
