@@ -1,32 +1,54 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun } from 'react-icons/bi';
+import { BiSun, BiSolidHeart } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
 import { FestivalDetailType } from 'types/api/detail';
 import { formatDate } from '@utils/formatDate';
+import { shareKakao } from '@utils/shareKakao';
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   const [defaultImg, setDefaultImg] = useState(detailList.image);
 
-  const handleImgError = () => {
+  /**2023-07-19 - 축제 이미지가 없을 시, 대체이미지 삽입하는 함수 - by parksubeom */
+  const ImgErrorHandler = () => {
     setDefaultImg('/assets/images/ticat-cover-image.png');
   };
+
+  const LikedHandler = () => {
+    //https://ticat.store/festivals/2992167/favorite 로 엑세스토큰담아서 post요청 보내면된다
+    if (detailList.liked === true) {
+      festivalUnLikedRequest(detailList.festivalId);
+    } else {
+      festivalLikedRequest(detailList.festivalId);
+    }
+  };
+
+  const ShareHandler = () => {
+    shareKakao(
+      'https://d99pqcn6hzkdg.cloudfront.net/detail/2994118',
+      detailList.title,
+      detailList.overview,
+      detailList.image,
+    );
+  };
+
   return (
     <CoverContainer>
-      <img src={defaultImg} onError={handleImgError}></img>
+      <img src={defaultImg} onError={ImgErrorHandler}></img>
       <div className="wather-info flex-all-center">
         <span>축제날씨</span>
         <span className="wather-icon flex-all-center">
           <BiSun />
         </span>
       </div>
-
       <div className="festival-info">
         {detailList.status === 'ONGOING' ? (
           <button className="festival-proceeding">진행 중</button>
@@ -49,11 +71,11 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
               <BsCalendarPlus />
             </span>
           </button>
-          <button className="calendar-icon-btn">
-            <FiHeart />
+          <button className="calendar-icon-btn" onClick={LikedHandler}>
+            {detailList.liked === true ? <BiSolidHeart /> : <FiHeart />}
           </button>
           {detailList.eventhomepage !== '' ? (
-            <button className="calendar-icon-btn">
+            <button className="calendar-icon-btn" onClick={ShareHandler}>
               <LuTicket />
             </button>
           ) : null}
