@@ -8,7 +8,7 @@ export const festivalLikedRequest = async (contentId: number) => {
 };
 
 export const festivalUnLikedRequest = async (contentId: number) => {
-  const { data } = await instance.post<string>(`/unfestivals/${contentId}/favorite`, {});
+  const { data } = await instance.post<string>(`/festivals/${contentId}/unfavorite`, {});
 
   return data;
 };
