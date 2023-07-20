@@ -15,11 +15,11 @@ const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">행사위치</p>
-          <span className="mobile-fontsize">{detailList.eventplace}</span>
+          <span className="mobile-fontsize">{detailList.eventplace.replaceAll('<br>', ' ')}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">이용료</p>
-          <span className="mobile-fontsize">{detailList.price.slice(0, detailList.price.indexOf('('))}</span>
+          <span className="mobile-fontsize">{detailList.price.replaceAll('<br>', ' ')}</span>
         </FestivalContact>
       </InfoContainer>
     </>

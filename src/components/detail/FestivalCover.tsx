@@ -15,31 +15,49 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const location = useLocation();
   const [defaultImg, setDefaultImg] = useState(detailList.image);
+  const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
+  const eventhomepage = detailList.eventhomepage.slice(
+    // 축제 홈페이지 주소가 옛날 데이터 주소는 url이 그대로오고, 요즘 데이터는 <a>태그가 붙어서 오기 때문에 분기가 필요하다
+    detailList.eventhomepage.indexOf('http'),
+    detailList.eventhomepage.indexOf('target') - 2,
+  );
 
   /**2023-07-19 - 축제 이미지가 없을 시, 대체이미지 삽입하는 함수 - by parksubeom */
   const ImgErrorHandler = () => {
     setDefaultImg('/assets/images/ticat-cover-image.png');
   };
 
+  /** 2023-07-20 - 현재 축제의 좋아요 요청/좋아요 취소 요청을 보내는 함수 - by parksubeom */
   const LikedHandler = () => {
     //https://ticat.store/festivals/2992167/favorite 로 엑세스토큰담아서 post요청 보내면된다
     if (detailList.liked === true) {
       festivalUnLikedRequest(detailList.festivalId);
+      setFestivalLiked(!festivalLiked);
     } else {
       festivalLikedRequest(detailList.festivalId);
+      setFestivalLiked(!festivalLiked);
+    }
+  };
+  /** 2023-07-20 - 현재 머물고있는 페이지의 url을 클립보드에 복사해주는 함수 - by parksubeom */
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('클립보드에 링크가 복사되었어요.');
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const ShareHandler = () => {
-    shareKakao(
-      'https://d99pqcn6hzkdg.cloudfront.net/detail/2994118',
-      detailList.title,
-      detailList.overview,
-      detailList.image,
-    );
+  /** 2023-07-20 - 해당 축제 홈페이지로 라우팅 시켜주는 함수 - by parksubeom */
+  const HomepageRoute = () => {
+    if (detailList.eventhomepage.indexOf('<') === -1) {
+      window.location.assign(detailList.eventhomepage);
+    } else {
+      window.location.assign(eventhomepage);
+    }
   };
-
   return (
     <CoverContainer>
       <img src={defaultImg} onError={ImgErrorHandler}></img>
@@ -72,14 +90,16 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
             </span>
           </button>
           <button className="calendar-icon-btn" onClick={LikedHandler}>
-            {detailList.liked === true ? <BiSolidHeart /> : <FiHeart />}
+            {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />}
           </button>
           {detailList.eventhomepage !== '' ? (
-            <button className="calendar-icon-btn" onClick={ShareHandler}>
+            <button className="calendar-icon-btn" onClick={HomepageRoute}>
               <LuTicket />
             </button>
           ) : null}
-          <button className="calendar-icon-btn">
+          <button
+            className="calendar-icon-btn"
+            onClick={() => handleCopyClipBoard(`${process.env.REACT_APP_DEV_BASEURL}${location.pathname}`)}>
             <FiShare2 />
           </button>
         </BtnSection>
