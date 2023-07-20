@@ -6,6 +6,9 @@ import { useAreaFilterStore } from '@store/areaFilterStore';
 // icon
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 
+// components
+import CommonCategoryList from '@components/CommonCategoryList';
+
 interface AreaProps {
   area: string; // 지역
   tempSelectedItems: string[]; // 선택한 지역 및 지역별 자치구 list
@@ -151,19 +154,24 @@ const DropDownContainer = styled.div`
   }
 
   > .area-item-box > .area-btn {
-    font-size: 14px;
-    height: 4rem;
+    height: 4.2rem;
     width: calc((100% - 2rem) / 3);
+    border: 1px solid var(--color-dark-gray);
+    font-size: 1.4rem;
     white-space: nowrap;
-    border: none;
-    cursor: pointer;
+    background: #fff;
     color: var(--color-dark);
-    background: #ececec;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    :hover {
+      color: var(--color-main);
+    }
   }
 
   > .area-item-box > .selected-btn {
-    font-weight: 400;
-    color: var(--color-light);
-    background: var(--color-main);
+    font-weight: bold;
+    background-color: #f5f7ff;
+    color: var(--color-main);
+    border: 2px solid var(--color-main);
   }
 `;
