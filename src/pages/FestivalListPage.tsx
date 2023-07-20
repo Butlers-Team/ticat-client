@@ -114,7 +114,7 @@ const FestivalListPage = () => {
               ) : (
                 <span>지역필터 선택</span>
               )}
-              <IoMdOptions size="20px" color="var(--color-main)" />
+              <IoMdOptions size="19px" color="var(--color-main)" />
             </Link>
           </button>
         </div>
@@ -176,7 +176,8 @@ const FestivalFilter = styled.div`
   > .festival-list-filter > .filter-btn > .link-wrap {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.5rem;
+    letter-spacing: -0.05rem;
   }
 `;
 
