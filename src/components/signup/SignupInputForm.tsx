@@ -62,7 +62,7 @@ const SignInputForm: React.FC<Props> = ({
           </IconButton>
         </ButtonWrapper>
       )}
-      {value && <InputValid isValid={isValid}>{validMessage}</InputValid>}
+      <div style={{ height: '1.2rem' }}>{value && <InputValid isValid={isValid}>{validMessage}</InputValid>}</div>
     </InputContainer>
   );
 };
@@ -102,7 +102,7 @@ const InputContainer = styled.div`
 
 const ButtonWrapper = styled.div`
   position: absolute;
-  top: 42%;
+  top: 48%;
   right: 10px;
   display: flex;
   justify-content: end;

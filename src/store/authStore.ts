@@ -38,6 +38,11 @@ const getToken = () => {
   const store = useTokenStore.getState();
   return { accessToken: store.accessToken, refreshToken: store.refreshToken };
 };
+/** 2023/07/19 - ClearToken 함수 추가- by leekoby */
+const clearTokens = () => {
+  const store = useTokenStore.getState();
+  store.clearTokens();
+};
 
 /** 2023/07/10 - 로그인 응답 헤더 토큰 저장소 - by leekoby */
 const useTokenStore = create<Token>(set => ({
@@ -61,4 +66,4 @@ const useTokenStore = create<Token>(set => ({
   },
 }));
 
-export { useTokenStore, getToken };
+export { useTokenStore, getToken, clearTokens };
