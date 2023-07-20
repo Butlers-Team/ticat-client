@@ -1,6 +1,5 @@
-import { getToken } from '@store/authStore';
+import { getToken, clearTokens, useTokenStore } from '@store/authStore';
 import axios from 'axios';
-import { refreshAccessToken } from './auth/authApi';
 
 /** 2023/07/04 - Axios instance 생성 - by sineTlsl */
 export const instance = axios.create({
@@ -18,7 +17,6 @@ instance.interceptors.request.use(
 
   async config => {
     const { accessToken, refreshToken } = getToken();
-    // console.log(accessToken, refreshToken);
     // No-Auth 헤더가 없는 경우에만 토큰을 추가
     if (!config.headers['No-Auth']) {
       if (refreshToken && accessToken) {
@@ -45,25 +43,19 @@ instance.interceptors.response.use(
   async error => {
     const originalRequest = error.config;
     // 에러 상태가 401 (Unauthorized)이고, 아직 재시도를 하지 않았다면
-    if (
-      error.response &&
-      (error.response.status === 404 || error.response.status === 401) &&
-      !originalRequest._retry &&
-      originalRequest.url !== '/refresh'
-    ) {
+    if (error.response && (error.response.status === 404 || error.response.status === 401) && !originalRequest._retry) {
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
-      // 새로운 액세스 토큰을 얻기
-      const newToken = await refreshAccessToken();
-      console.log('newToken:', newToken);
-      if (newToken) {
-        // 새로운 액세스 토큰을 헤더에 설정하고 요청을 다시 보내기
-        instance.defaults.headers.common['Authorization'] = newToken.newAccessToken;
-        originalRequest.headers['Authorization'] = newToken.newAccessToken;
-        instance.defaults.headers.common['Refresh'] = newToken.newRefreshToken;
-        originalRequest.headers['Refresh'] = newToken.newRefreshToken;
-        return instance(originalRequest);
+      if (error.response.data === '리프레시 토큰이 만료되었습니다.') {
+        clearTokens(); // 로컬스토리지 초기화
+        alert('로그인 필요: 다시 로그인해주세요.');
+      } else if (error.response.data === '액세스 토큰이 갱신되었습니다') {
+        const newAccessToken = error.response.headers.authorization;
+        instance.defaults.headers.common['Authorization'] = newAccessToken;
+        useTokenStore.getState().setAccessToken(newAccessToken);
       }
+
+      return instance(originalRequest);
     }
 
     // 위의 경우가 아닌 경우 에러를 그대로 반환

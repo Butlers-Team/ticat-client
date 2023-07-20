@@ -16,6 +16,7 @@ const Interest: React.FC<Props> = (): JSX.Element => {
   const [nickname, setNickname] = useState(''); //닉네임
   const [previousNickname, setPreviousNickname] = useState(''); // 다음으로 넘어갔다 돌아올때 닉네임 채워넣기 위해 만듦
 
+  // 공통 카테고리 선택을 위한 state
   const [category, setCategory] = useState<string[]>([]);
 
   const [validNickname, setValidNickname] = useState(false);
