@@ -8,18 +8,18 @@ const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
     <>
       <InfoContainer>
         <h2>행사 소개</h2>
-        <p>{detailList.overview.replaceAll('<br>', ' ')}</p>
+        <p className="mobile-fontsize">{detailList.overview.replaceAll('<br>', ' ')}</p>
         <FestivalContact>
-          <p className="contact-title">행사 연락처</p>
-          <span>{detailList.tel}</span>
+          <p className="mobile-fontsize">행사 연락처</p>
+          <span className="mobile-fontsize">{detailList.tel}</span>
         </FestivalContact>
         <FestivalContact>
-          <p className="contact-title">행사위치</p>
-          <span>{detailList.eventplace}</span>
+          <p className="mobile-fontsize">행사위치</p>
+          <span className="mobile-fontsize">{detailList.eventplace.replaceAll('<br>', ' ')}</span>
         </FestivalContact>
         <FestivalContact>
-          <p className="contact-title">이용료</p>
-          <span>{detailList.price.slice(0, detailList.price.indexOf('('))}</span>
+          <p className="mobile-fontsize">이용료</p>
+          <span className="mobile-fontsize">{detailList.price.replaceAll('<br>', ' ')}</span>
         </FestivalContact>
       </InfoContainer>
     </>
@@ -32,6 +32,11 @@ const InfoContainer = styled.div`
   width: 100%;
   height: 100%;
   padding: 3rem 2rem;
+  @media (max-width: 420px) {
+    .mobile-fontsize {
+      font-size: 14px;
+    }
+  }
   div:nth-last-child(1) {
     border-bottom: 1px solid var(--color-light-gray);
   }
@@ -46,8 +51,7 @@ const InfoContainer = styled.div`
     color: var(--color-dark);
     margin-top: 2rem;
     margin-bottom: 6rem;
-    font-weight: 600;
-    letter-spacing: 1px;
+    font-weight: 400;
     line-height: 25px;
   }
 `;
@@ -57,14 +61,20 @@ const FestivalContact = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 6rem;
-  > .contact-title {
+  height: 100%;
+  @media (max-width: 420px) {
+    .mobile-fontsize {
+      font-size: 14px;
+    }
+  }
+  > p {
     width: 15rem;
     font-size: 16px;
     font-weight: bold;
     margin: 2rem;
     color: var(--color-sub);
   }
+
   > span {
     width: 100%;
     font-size: 16px;

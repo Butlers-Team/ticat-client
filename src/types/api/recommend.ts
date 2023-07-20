@@ -15,16 +15,13 @@ export interface RecommendListType {
   mapx: number;
   mapy: number;
 }
-export interface RecommendListType2 {
-  res: RecommendListType[];
-}
 
 // 축제 리스트 카테고리별
-/** 2023/07/04 - 축제 리스트 카테고리별 params (Reqeust) - by sineTlsl */
+/** 2023/07/04 - 축제 리스트 카테고리별 params (Reqeust) - by  parksubeom */
 export interface RecommendRequest {
   category?: string;
 }
-/** 2023/07/04 - 축제 리스트 카테고리별 (Response) - by sineTlsl */
+/** 2023/07/04 - 축제 리스트 카테고리별 (Response) - by parksubeom */
 export interface RecommendResponse {
   data?: RecommendListType[];
 }

@@ -1,16 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-import { RecommendListType, RecommendListType2 } from 'types/api/recommend';
+import { RecommendListType } from 'types/api/recommend';
 import { getRecommendList } from '@api/recommend';
 import { RecommendRequest } from 'types/api/recommend';
 import { FestivalDetailType } from 'types/api/detail';
-
 // Import Swiper
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+import RecommendFestival from '@components/RecommendFestival';
 
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
@@ -31,7 +30,6 @@ const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
       category: detailList.category,
     };
     const res = await getRecommendList(category);
-    console.log(res);
     setRecommendList(res);
   };
 
@@ -39,50 +37,12 @@ const Recommend: React.FC<FestivalCoverProps> = ({ detailList }) => {
     fetchRecommendlList();
   }, []);
   return (
-    <>
-      <Swiper {...swiperOptions} className="mySwiper">
-        {recommendlList &&
-          recommendlList.map((card: RecommendListType, index: number) => (
-            <SwiperSlide key={index}>
-              <RecommendCard>
-                <img src={card.image} className="card-image"></img>
-                <div className="card-text">
-                  <span>{card.title}</span>
-                  <p>{card.area}</p>
-                </div>
-              </RecommendCard>
-            </SwiperSlide>
-          ))}
-      </Swiper>
-    </>
+    <RecommendCardSection>{recommendlList && <RecommendFestival fastivaldata={recommendlList} />}</RecommendCardSection>
   );
 };
 
 export default Recommend;
 
-const RecommendCard = styled.div`
-  width: 180px;
-  height: 200px;
-  color: var(--color-dark);
-  margin: 4rem 0;
-
-  .card-image {
-    width: 180px;
-    height: 140px;
-    border-radius: 10px;
-    background: var(--color-light-gray);
-    margin-bottom: 10px;
-    object-fit: cover;
-  }
-
-  .card-text {
-    span {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-    p {
-      margin-top: 5px;
-      font-size: 1.2rem;
-    }
-  }
+const RecommendCardSection = styled.div`
+  padding: 3rem 2rem;
 `;
