@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
-import { RecommendListType, RecommendListType2 } from 'types/api/recommend';
+import { RecommendListType } from 'types/api/recommend';
 import { getRecommendList } from '@api/recommend';
 import { RecommendRequest } from 'types/api/recommend';
 import { FestivalDetailType } from 'types/api/detail';
