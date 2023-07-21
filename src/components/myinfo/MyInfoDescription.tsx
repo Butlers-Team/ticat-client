@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getMyInfo } from '@api/myinfo';
 
 // icon
 import { FiSettings } from 'react-icons/fi';
 
 /** 2023/07/21 - 회원 정보 소개 컴포넌트 - by sineTlsl */
 const MyInfoDescription = () => {
+  const { data } = useQuery(['userInfo'], getMyInfo);
   const navigate = useNavigate();
 
   /** 2023/07/21 - 설정 페이지로 이동 - by sineTlsl */
@@ -15,16 +18,20 @@ const MyInfoDescription = () => {
 
   return (
     <MyInfoDescContainer>
-      <MyInfoImgWrap>
-        <img src="/assets/images/ticat-cover-image.png" />
-      </MyInfoImgWrap>
-      <MyInfoTextWrap>
-        <p className="my-name">버틀러스</p>
-        <p className="my-email">kimjubee@gmail.com</p>
-      </MyInfoTextWrap>
-      <MyInfoSettingWrap onClick={NavSettingPage}>
-        <FiSettings size="20px" color="#838383" />
-      </MyInfoSettingWrap>
+      {data && (
+        <>
+          <MyInfoImgWrap>
+            <img src="/assets/images/ticat-cover-image.png" />
+          </MyInfoImgWrap>
+          <MyInfoTextWrap>
+            <p className="my-name">{data?.displayName}</p>
+            <p className="my-email">kimjubee@gmail.com</p>
+          </MyInfoTextWrap>
+          <MyInfoSettingWrap onClick={NavSettingPage}>
+            <FiSettings size="20px" color="#838383" />
+          </MyInfoSettingWrap>
+        </>
+      )}
     </MyInfoDescContainer>
   );
 };

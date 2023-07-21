@@ -36,7 +36,10 @@ const TabNav = () => {
   return (
     <nav>
       {tabMenulist.map((menu, index) => (
-        <NavIconbox className={index === selectMenu ? 'over-tab' : 'null'} onClick={() => checkToken(menu.link, index)}>
+        <NavIconbox
+          key={index}
+          className={index === selectMenu ? 'over-tab' : 'null'}
+          onClick={() => checkToken(menu.link, index)}>
           <div>{menu.icon}</div>
           <p>{menu.name}</p>
         </NavIconbox>
