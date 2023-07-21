@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { getToken } from '@store/authStore';
 
 // icons
 import { AiOutlineHome } from 'react-icons/ai';
@@ -18,20 +19,27 @@ const tabMenulist = [
 
 const TabNav = () => {
   const [selectMenu, setSelectMenu] = useState<number>(0);
+  const { accessToken, refreshToken } = getToken();
+
+  const navigate = useNavigate();
+
+  /** 2023/07/21 - 로그인 상태일 때만 마이페이지로 이동할 수 있도록 하는 함수 - by sineTlsl */
+  const checkToken = (link: string, idx: number) => {
+    if (link === '/myinfo' && !(accessToken && refreshToken)) {
+      navigate('/signin');
+    } else {
+      setSelectMenu(idx);
+      navigate(link);
+    }
+  };
 
   return (
     <nav>
       {tabMenulist.map((menu, index) => (
-        <Link to={menu.link} key={index}>
-          <NavIconbox
-            className={index === selectMenu ? 'over-tab' : 'null'}
-            onClick={() => {
-              setSelectMenu(index);
-            }}>
-            <div>{menu.icon}</div>
-            <p>{menu.name}</p>
-          </NavIconbox>
-        </Link>
+        <NavIconbox className={index === selectMenu ? 'over-tab' : 'null'} onClick={() => checkToken(menu.link, index)}>
+          <div>{menu.icon}</div>
+          <p>{menu.name}</p>
+        </NavIconbox>
       ))}
     </nav>
   );
