@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun, BiSolidHeart } from 'react-icons/bi';
+import { BiSun } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
@@ -90,7 +90,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
             </span>
           </button>
           <button className="calendar-icon-btn" onClick={LikedHandler}>
-            {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />}
+            {/* {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />} */}
           </button>
           {detailList.eventhomepage !== '' ? (
             <button className="calendar-icon-btn" onClick={HomepageRoute}>
