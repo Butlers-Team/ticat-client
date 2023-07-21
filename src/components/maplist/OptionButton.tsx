@@ -21,6 +21,7 @@ const OptionButton = () => {
   ];
 
   const tabCategory = [
+    '전체',
     '음악',
     '미술',
     '영화',
@@ -44,13 +45,16 @@ const OptionButton = () => {
 
   /** 2023.07.13 선택된 카테고리 저장 - by mscojl24 */
   const CheckCategory = (tab: string) => {
-    if (category.includes(tab)) {
-      setCategory(prevState => prevState.filter(item => item !== tab));
+    if (tab === '전체') {
+      setCategory([]);
     } else {
-      if (category.length < 3) {
-        // 카테고리 3개 이상 선택시 추가 불가
-        setCategory(prevState => [...prevState, tab]);
-      }
+      setCategory(prevCategory => {
+        if (prevCategory.includes(tab)) {
+          return prevCategory.filter(item => item !== tab);
+        } else {
+          return prevCategory.length < 5 ? [...prevCategory, tab] : prevCategory;
+        }
+      });
     }
   };
 
@@ -107,7 +111,7 @@ const OptionButton = () => {
           onClick={() => {
             setOnCategoryList(!onCategoryList);
           }}
-          className={category.length > 0 ? 'selected-option' : ''}>
+          className={category.length > 0 ? 'category-on' : 'category-off'}>
           <IoIosOptions className="icon-margin" /> 카테고리 {category.length > 0 && category.length}
           {onCategoryList ? (
             <IoIosArrowUp className="icon-position icon-margin" />
@@ -123,7 +127,7 @@ const OptionButton = () => {
             }}
             data-value={option.value}
             className={sortBy === option.value ? 'selected-option' : ''}>
-            {option.optionName} {sortBy === option.value && <BiDownArrowAlt />}
+            {option.optionName}
           </button>
         ))}
       </CategoryScroll>
@@ -150,11 +154,11 @@ const OptionList = styled.aside`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--color-main);
+    border: 1px solid #ccc;
     border-radius: 20px;
     padding: 7px 12px;
     font-size: 1.4rem;
-    color: var(--color-main);
+    color: #777;
     background: none;
     cursor: pointer;
 
@@ -166,7 +170,17 @@ const OptionList = styled.aside`
     }
   }
 
+  .category-off {
+  }
+
+  .category-on {
+    color: var(--color-main);
+    border-color: var(--color-main);
+    background-color: #f4f7ff;
+  }
+
   .selected-option {
+    border-color: var(--color-main);
     background-color: var(--color-main);
     color: #fff;
   }
