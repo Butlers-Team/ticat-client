@@ -32,7 +32,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   /** 2023-07-20 - 현재 축제의 좋아요 요청/좋아요 취소 요청을 보내는 함수 - by parksubeom */
   const LikedHandler = () => {
     //https://ticat.store/festivals/2992167/favorite 로 엑세스토큰담아서 post요청 보내면된다
-    if (detailList.liked === true) {
+    if (festivalLiked === true) {
       festivalUnLikedRequest(detailList.festivalId);
       setFestivalLiked(!festivalLiked);
     } else {
@@ -99,7 +99,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
           ) : null}
           <button
             className="calendar-icon-btn"
-            onClick={() => handleCopyClipBoard(`${process.env.REACT_APP_DEV_BASEURL}${location.pathname}`)}>
+            onClick={() => handleCopyClipBoard(`${window.location.origin}${location.pathname}`)}>
             <FiShare2 />
           </button>
         </BtnSection>
@@ -198,8 +198,9 @@ const BtnSection = styled.div`
     }
   }
   > .calendar-icon-btn {
+    display: flex;
     cursor: pointer;
-    text-align: center;
+    align-items: center;
     justify-content: center;
     height: 3.5rem;
     width: 3.5rem;
