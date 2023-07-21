@@ -4,7 +4,7 @@ import axios from 'axios';
 /** 2023/07/04 - Axios instance 생성 - by sineTlsl */
 export const instance = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
-  timeout: 1000,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': '69420',
