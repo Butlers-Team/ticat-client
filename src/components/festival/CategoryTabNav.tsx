@@ -1,20 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useCategoryTabStore } from '@store/categoryTabStore';
 
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
-interface TabCategoryProps {
-  tabCategory: string[];
-  currentTab: string;
-  onClick: (tab: string) => void;
-}
-
 /** 2023/07/04 - 축제 카테고리 TabNav - by sineTlsl */
-const CategoryTabNav = ({ tabCategory, currentTab, onClick }: TabCategoryProps) => {
+const CategoryTabNav = () => {
+  const { categoryTab, setCategoryTab, categoriesTab } = useCategoryTabStore();
   const scrollRef = useRef<HTMLUListElement>(null); // 스크롤 가능한 요소 참조
   const scrollAmount = 100; // 한 번에 스크롤할 양
   const [scrollPosition, setScrollPosition] = useState(0); // 스크롤의 현재 위치
   const [maxScrollLeft, setMaxScrollLeft] = useState(0); // 가능한 최대 위치
+
+  /** 2023/07/04 - 카테고리 탭 select 함수 - by sineTlsl */
+  const HandlerSelectTab = (tabName: string): void => {
+    setCategoryTab(tabName);
+  };
 
   /** 2023/07/11 - left 화살표 클릭 시 왼쪽 스크롤 함수 - by sineTlsl */
   const HandlerScrollLeft = () => {
@@ -46,7 +47,7 @@ const CategoryTabNav = ({ tabCategory, currentTab, onClick }: TabCategoryProps) 
     if (scrollRef.current) {
       setMaxScrollLeft(scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
     }
-  }, [tabCategory]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
+  }, [categoriesTab]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
 
   return (
     <CatergoryTabNavContainer>
@@ -56,8 +57,8 @@ const CategoryTabNav = ({ tabCategory, currentTab, onClick }: TabCategoryProps) 
         </ArrowWrap>
       )}
       <ul ref={scrollRef}>
-        {tabCategory.map((tab, idx) => (
-          <li key={idx} className={currentTab === tab ? 'select-tab' : ''} onClick={() => onClick(tab)}>
+        {categoriesTab.map((tab, idx) => (
+          <li key={idx} className={categoryTab === tab ? 'select-tab' : ''} onClick={() => HandlerSelectTab(tab)}>
             {tab}
           </li>
         ))}
