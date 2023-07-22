@@ -52,13 +52,12 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
       return newErrors;
     });
   };
-
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
         {fastivaldata.map((card, index) => (
           <SwiperSlide key={`card-${index + 1}`}>
-            <RecommendCard>
+            <RecommendCard href={card.festivalId.toString()}>
               <div className="card-image">
                 {imageErrors[index] ? (
                   <img src="/assets/images/ticat-cover-image.png" alt="fastival image" />
@@ -80,7 +79,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
 
 export default RecommendFestival;
 
-const RecommendCard = styled.div`
+const RecommendCard = styled.a`
   /* width: 180px;
   height: 200px; */
   color: var(--color-dark);

@@ -8,18 +8,18 @@ const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
     <>
       <InfoContainer>
         <h2>행사 소개</h2>
-        <p className="mobile-fontsize">{detailList.overview.replaceAll('<br>', ' ')}</p>
+        <p className="mobile-fontsize">{detailList.overview.replaceAll(/(<([^>]+)>)/gi, ' ')}</p>
         <FestivalContact>
           <p className="mobile-fontsize">행사 연락처</p>
           <span className="mobile-fontsize">{detailList.tel}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">행사위치</p>
-          <span className="mobile-fontsize">{detailList.eventplace.replaceAll('<br>', ' ')}</span>
+          <span className="mobile-fontsize">{detailList.eventplace.replaceAll(/(<([^>]+)>)/gi, ' ')}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">이용료</p>
-          <span className="mobile-fontsize">{detailList.price.replaceAll('<br>', ' ')}</span>
+          <span className="mobile-fontsize">{detailList.price.replaceAll(/(<([^>]+)>)/gi, ' ')}</span>
         </FestivalContact>
       </InfoContainer>
     </>
