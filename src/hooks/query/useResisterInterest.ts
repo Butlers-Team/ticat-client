@@ -5,21 +5,37 @@ import { useNavigate } from 'react-router-dom';
 import { apiRegisterInterest } from '@api/interest';
 
 //type
-import { ApiInterestResponse } from 'types/api';
+import { ApiInterestResponse, ApiInterestRequest } from 'types/api';
 import useCustomToast from '@hooks/useCustomToast';
-import { CustomAxiosError } from 'types/auth';
+import { CustomAxiosError, Member } from 'types/auth';
+import { useMemberStore } from '@store/useMemberStore';
 
 /** 2023/07/15 - 닉네임, 관심사등록  뮤테이션 - by leekoby */
 export const useRegisterInterest = () => {
+  const { setMember, member } = useMemberStore();
   const navigate = useNavigate();
   const toast = useCustomToast();
 
   const interestMutation = useMutation(apiRegisterInterest, {
     onSuccess: data => {
-      if (typeof data === 'string' && data === '관심사 등록이 완료되었습니다.') {
-        toast({ title: data, status: 'success' });
-        navigate('/main');
+      if (member) {
+        // 기존 member 객체에서 memberId와 profileUrl을 가져와 새 Member 객체 생성
+        const updatedMember: Member = {
+          ...member,
+          displayName: data.displayName,
+        };
+        setMember(updatedMember);
+      } else {
+        // 회원 데이터가 없는 경우 기본값으로 memberId와 profileUrl을 설정
+        const defaultMember: Member = {
+          memberId: null,
+          profileUrl: null,
+          displayName: data.displayName,
+        };
+        setMember(defaultMember);
       }
+      toast({ title: '관심사 등록이 완료되었습니다.', status: 'success' });
+      navigate('/main');
     },
     onError: (error: CustomAxiosError) => {
       if (error.response) {

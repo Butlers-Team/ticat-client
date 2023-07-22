@@ -24,7 +24,8 @@ const useMemberStore = create(
   persist<MemberInfo>(
     set => ({
       ...initialState,
-      setMember: member => set(state => ({ ...state, member: member ? { ...state.member, ...member } : null })),
+      // setMember: member => set(state => ({ ...state, member: member ? { ...state.member, ...member } : null })),
+      setMember: member => set(state => ({ ...state, member })),
       resetMember: () => set(() => initialState),
     }),
     { name: 'member', getStorage: () => localStorage },

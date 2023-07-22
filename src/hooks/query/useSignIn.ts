@@ -26,16 +26,13 @@ export const useSignIn = () => {
         const { accessToken, refreshToken } = response;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
-        console.log(member);
         setMember(response.data);
-        console.log(member);
         if (response.data.displayName === null) {
           toast({ title: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
           // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
           navigate('/interest');
         } else {
           toast({ title: `메인페이지로 이동합니다.`, status: 'success' });
-
           navigate('/main');
         }
       }

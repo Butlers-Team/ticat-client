@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useTokenStore } from '@store/authStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 interface Props {}
 

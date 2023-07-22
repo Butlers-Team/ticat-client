@@ -1,6 +1,6 @@
 /** 2023/07/22 - 로그인 응답 타입 - by leekoby */
 export interface Member {
-  memberId: number;
+  memberId: number | null;
   profileUrl: string | null;
   displayName: string | null;
 }
