@@ -5,7 +5,9 @@ export interface ApiInterestRequest {
   categories: string[];
 }
 /** 2023/07/15 - 관심사등록 응답 타입 - by leekoby */
-export interface ApiInterestResponse {}
+export interface ApiInterestResponse {
+  displayName: string;
+}
 /** 2023/07/15 - 관심사등록 핸들러 - by leekoby */
 export interface ApiInterestHandler {
   (body: ApiInterestRequest): Promise<ApiInterestResponse>;
