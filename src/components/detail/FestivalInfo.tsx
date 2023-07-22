@@ -4,7 +4,6 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
-  console.log(detailList);
   return (
     <>
       <InfoContainer>
