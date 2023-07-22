@@ -1,10 +1,11 @@
-import { getToken, clearTokens, useTokenStore } from '@store/authStore';
+import { resetMember, useMemberStore } from '@store/useMemberStore';
+import { getToken, clearTokens, useTokenStore } from '@store/useTokenStore';
 import axios from 'axios';
 
 /** 2023/07/04 - Axios instance 생성 - by sineTlsl */
 export const instance = axios.create({
   baseURL: `${process.env.REACT_APP_API_URL}`,
-  timeout: 1000,
+  timeout: 5000,
   headers: {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': '69420',
@@ -47,9 +48,11 @@ instance.interceptors.response.use(
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       if (error.response.data === '리프레시 토큰이 만료되었습니다.') {
-        clearTokens(); // 로컬스토리지 초기화
+        clearTokens(); // 로컬스토리지 토큰 초기화
+        resetMember(); // 로컬스토리지 멤버 초기화
         alert('로그인 필요: 다시 로그인해주세요.');
       } else if (error.response.data === '액세스 토큰이 갱신되었습니다') {
+        console.log(error.response);
         const newAccessToken = error.response.headers.authorization;
         instance.defaults.headers.common['Authorization'] = newAccessToken;
         useTokenStore.getState().setAccessToken(newAccessToken);
@@ -59,6 +62,7 @@ instance.interceptors.response.use(
     }
 
     // 위의 경우가 아닌 경우 에러를 그대로 반환
+    console.log(error.response);
     return Promise.reject(error);
   },
 );
