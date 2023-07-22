@@ -2,10 +2,12 @@ import React from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
+import { getMainFastival } from '@api/mainfastival';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType } from 'types/api/festival';
+import { MainFastivalType } from 'types/api/mainfastival';
+
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSun } from 'react-icons/bi';
@@ -29,23 +31,18 @@ interface BgImage {
 }
 
 const RecommendFestival = () => {
-  const [FestivalData, setFestivalData] = useState<FestivalListType[]>([]);
+  const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
+
+  const getdata = async () => {
+    const res = await getMainFastival();
+    if (res.data) {
+      setFestivalData(res.data);
+    }
+  };
 
   /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
-    axios
-      .get(`https://a1fe-124-111-225-247.ngrok-free.app/festivals/banner`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
-      .then(res => {
-        setFestivalData(res.data.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    getdata();
   }, []);
 
   /** 2023.07.05 main banner swiper options - by mscojl24 */
@@ -76,7 +73,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{truncatedText(festival.title, 15)}</h2>
+              <h2>{truncatedText(festival.title, 17)}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>
@@ -124,10 +121,6 @@ const SliderContainer = styled.article<BgImage>`
     position: absolute;
     bottom: 60px;
     left: 20px;
-
-    > * {
-      margin-bottom: 10px;
-    }
 
     > h2 {
       font-size: 24px;
