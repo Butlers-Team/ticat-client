@@ -1,6 +1,10 @@
 export * from './category';
 export * from './festival';
 export * from './interest';
+export * from './blogposts';
+export * from './comment';
+export * from './comment-like';
+export * from './comment-dislike';
 
 /** 2023/07/04 - 페이지 데이터 Type - by sineTlsl */
 export interface PageInfoType {
