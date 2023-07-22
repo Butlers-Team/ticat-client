@@ -4,7 +4,8 @@ export interface MyInfoType {
   memberId: number;
   displayName: string;
   email: string;
-  image: string;
+  profileUrl: string;
+  pureProfileUrl: string;
 }
 
 /** 2023/07/21 - 회원정보 (Response) - by sineTlsl */

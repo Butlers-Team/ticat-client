@@ -36,7 +36,7 @@ export default StampTicket;
 
 /** 2023/06/30 - 스탬프 티켓 컨테이너 - by sineTlsl  */
 const StampTicketContainer = styled.div`
-  margin: 5rem 0;
+  margin: 3rem 0 5rem 0;
   width: calc(100% - 4rem);
   display: flex;
   flex-direction: column;

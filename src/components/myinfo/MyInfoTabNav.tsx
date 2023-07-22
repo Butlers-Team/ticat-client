@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { IconType } from 'react-icons';
 import styled from 'styled-components';
 
-// icons
-import { RxCounterClockwiseClock } from 'react-icons/rx';
-import { BsTicketPerforated, BsPersonGear } from 'react-icons/bs';
-import { GoCodeReview } from 'react-icons/go';
+interface myInfoTabProps {
+  myInfoTabNav: { label: string; icon: IconType }[];
+  currentTab: string;
+  onSelectTab: (tab: string) => void;
+}
 
 // tabItem Props
 interface TabItemProps {
@@ -13,14 +14,6 @@ interface TabItemProps {
   isCurrentTab: boolean;
   onClick: () => void;
 }
-
-// TabNav Data (label, icon)
-const MypageTabNav = [
-  { label: '최근목록', icon: RxCounterClockwiseClock },
-  { label: '티켓스탬프', icon: BsTicketPerforated },
-  { label: '나의리뷰', icon: GoCodeReview },
-  { label: '정보수정', icon: BsPersonGear },
-];
 
 /** 2023/07/21 - 하나의 탭메뉴 아이템을 생성하는 컴포넌트 - by sineTlsl */
 const TabItem = ({ IconComponent, label, isCurrentTab, onClick }: TabItemProps) => {
@@ -33,24 +26,16 @@ const TabItem = ({ IconComponent, label, isCurrentTab, onClick }: TabItemProps) 
 };
 
 /** 2023/07/21 - 마이페이지 navBar 컴포넌트 - by sineTlsl */
-const MyInfoTabNav = () => {
-  const [currentTab, setCurrentTab] = useState<string>(MypageTabNav[0].label);
-
-  /** 2023/07/21 - tabNav를 선택하고 변경하는 함수 - by sineTlsl */
-  const HandlerSelectTab = (tab: string) => {
-    setCurrentTab(tab);
-    console.log(currentTab);
-  };
-
+const MyInfoTabNav = ({ myInfoTabNav, currentTab, onSelectTab }: myInfoTabProps) => {
   return (
     <MyInfoTabNavContainer>
-      {MypageTabNav.map((item, idx) => (
+      {myInfoTabNav.map((item, idx) => (
         <TabItem
           key={idx}
           IconComponent={item.icon}
           label={item.label}
           isCurrentTab={currentTab === item.label}
-          onClick={() => HandlerSelectTab(item.label)}
+          onClick={() => onSelectTab(item.label)}
         />
       ))}
     </MyInfoTabNavContainer>

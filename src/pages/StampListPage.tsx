@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 // icons
@@ -6,12 +7,19 @@ import { AiOutlineLeft } from 'react-icons/ai';
 import { AiOutlineRight } from 'react-icons/ai';
 
 // components
+import TopHistoryBackNav from '@components/TopHistoryBackNav';
 import StampTicket from '@components/stamp/StampTicket';
 import StampCalendar from '@components/stamp/StampCalendar';
-import Toggle from '@components/stamp/StampToggle';
+import StampToggle from '@components/stamp/StampToggle';
 
 const StampListPage = () => {
   const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  /** 2023/07/22 - 이전 페이지 이동 함수 - by sineTlsl */
+  const goBackPage = () => {
+    navigate('/myinfo');
+  };
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
   const HandlerToggle = () => {
@@ -21,6 +29,7 @@ const StampListPage = () => {
 
   return (
     <StampListContainer>
+      <TopHistoryBackNav textTitle="티켓 스탬프" onNavigation={goBackPage} />
       <TopDescriptionWrap>
         <div className="stamp-img-bg">
           <div className="stamp-img-inner" />
@@ -44,7 +53,7 @@ const StampListPage = () => {
         </div>
         {isSelectTicket ? <StampTicket /> : <StampCalendar />}
         <div className="toggle-wrap">
-          <Toggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
+          <StampToggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
         </div>
       </StampItemsWrap>
     </StampListContainer>
@@ -66,7 +75,7 @@ const TopDescriptionWrap = styled.div`
   overflow: hidden;
   display: flex;
   width: 100%;
-  height: 270px;
+  height: 200px;
   background: var(--color-main);
 
   // 이미지
@@ -74,8 +83,8 @@ const TopDescriptionWrap = styled.div`
     position: absolute;
     right: -45px;
     top: -23px;
-    width: 178px;
-    height: 178px;
+    width: 150px;
+    height: 150px;
   }
   > .stamp-img-bg > .stamp-img-inner {
     position: absolute;
@@ -90,7 +99,7 @@ const TopDescriptionWrap = styled.div`
   // 텍스트
   > .stamp-description-text {
     position: absolute;
-    top: 115px;
+    top: 50px;
     left: 30px;
     font-size: 30px;
     font-weight: 300;
@@ -105,12 +114,12 @@ const TopDescriptionWrap = styled.div`
 /** 2023/06/30 - 스탬프 리스트 - by sineTlsl */
 const StampItemsWrap = styled.div`
   z-index: 1;
-  top: 210px;
+  top: 150px;
   position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
-  height: calc(100% - 210px);
+  height: calc(100% - 200px);
   width: 100%;
   background: #fff;
   border-radius: 30px 30px 0px 0px;
