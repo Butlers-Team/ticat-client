@@ -2,15 +2,18 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
+import { getWeather } from '@api/weather';
+import { WeatherRequest, WeatherType } from 'types/api/weather';
+import { WeatherIcon } from '@components/WeatherIcon';
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun, BiSolidHeart } from 'react-icons/bi';
+import { BiSolidHeart } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
 import { FestivalDetailType } from 'types/api/detail';
 import { formatDate } from '@utils/formatDate';
-import { shareKakao } from '@utils/shareKakao';
+
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
@@ -18,6 +21,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   const location = useLocation();
   const [defaultImg, setDefaultImg] = useState(detailList.image);
   const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
+  const [regionWeather, setRegionWeather] = useState<WeatherType | undefined>();
   const eventhomepage = detailList.eventhomepage.slice(
     // 축제 홈페이지 주소가 옛날 데이터 주소는 url이 그대로오고, 요즘 데이터는 <a>태그가 붙어서 오기 때문에 분기가 필요하다
     detailList.eventhomepage.indexOf('http'),
@@ -58,13 +62,27 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
       window.location.assign(eventhomepage);
     }
   };
+
+  /**2023-07-22 - 해당 축제의 위치에 날씨를 불러오는 함수 - by parksubeom */
+  const fetchWeather = async () => {
+    const params: WeatherRequest = {
+      currentLongitude: detailList.mapx,
+      currentLatitude: detailList.mapy,
+    };
+    const res = await getWeather(params);
+    setRegionWeather(res);
+  };
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
   return (
     <CoverContainer>
       <img src={defaultImg} onError={ImgErrorHandler}></img>
       <div className="wather-info flex-all-center">
-        <span>축제날씨</span>
+        <span>{regionWeather ? regionWeather.region : 'Loding...'}</span>
         <span className="wather-icon flex-all-center">
-          <BiSun />
+          <WeatherIcon regionWeather={regionWeather} />
         </span>
       </div>
       <div className="festival-info">
