@@ -22,11 +22,11 @@ export const createFormData = ({ request }: Options): FormData => {
   if (readReviewBlob instanceof Blob) {
     const fileReader = new FileReader();
     fileReader.onload = () => {
-      console.log('review content:', fileReader.result);
+      // console.log('review content:', fileReader.result);
     };
     fileReader.readAsText(reviewBlob);
   }
-  console.log('formData entries: ', Array.from(formData.entries()));
+  // console.log('formData entries: ', Array.from(formData.entries()));
 
   // ===============================
   return formData;
