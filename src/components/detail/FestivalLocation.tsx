@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from '../Button';
+import Button from '@components/Button';
 import { useEffect } from 'react';
 import { FestivalDetailType } from 'types/api/detail';
 
@@ -38,12 +38,17 @@ const FestivalLocation: React.FC<FestivalCoverProps> = ({ detailList }) => {
     });
     MapMarker.setMap(map);
   }, []);
+  /** 2023/07/23 - 카카오맵에서 축제위치와 내 위치의 경로를 찾도록 링크로 이동시켜주는 함수 - by parksubeom */
+  const searchKakaoMap = () => {
+    window.open(`https://map.kakao.com/link/to/${detailList.eventplace},${detailList.mapy},${detailList.mapx}`);
+  };
+  console.log(detailList);
   return (
     <>
       <LocationContainer>
         <h2>위치 안내</h2>
         <div id="map"></div>
-        <Button>내 위치에서 경로찾기</Button>
+        <Button onClick={searchKakaoMap}>내 위치에서 경로찾기</Button>
       </LocationContainer>
     </>
   );
