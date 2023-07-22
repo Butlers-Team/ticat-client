@@ -15,6 +15,8 @@ import WellcomePage from '@pages/WellcomePage';
 import OauthCallbackPage from '@pages/OauthCallbackPage';
 import InterestPage from '@pages/InterestPage';
 import MapListPage from '@pages/MapListPage';
+import MyPage from '@pages/MyPage';
+import MyInfoSettingPage from '@pages/SettingPage';
 
 const Router = () => {
   return (
@@ -33,6 +35,8 @@ const Router = () => {
         <Route path="/wellcome" element={<WellcomePage />} />
         <Route path="/callback/:interest" element={<OauthCallbackPage />} />
         <Route path="/interest" element={<InterestPage />} />
+        <Route path="/myinfo" element={<MyPage />} />
+        <Route path="setting" element={<MyInfoSettingPage />} />
       </Routes>
     </Layout>
   );
