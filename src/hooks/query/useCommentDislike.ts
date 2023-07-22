@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom';
 //type
 
 /** 2023/07/22- 댓글 싫어요 뮤테이션 - by leekoby */
+
+//TODO: onSuccess, onSettled, OnMutate, onError,getQueryData,setQueryData 사용법 공부하고 리팩토링해야함
 export const useCommentDislike = () => {
   const toast = useCustomToast();
 

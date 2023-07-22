@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import type { ApiCreateLikeRequest } from 'types/api';
 
 /** 2023/07/22- 댓글 좋아요 뮤테이션 - by leekoby */
+//TODO: onSuccess, onSettled, OnMutate, onError,getQueryData,setQueryData 사용법 공부하고 리팩토링해야함
 export const useCommentLike = () => {
   const toast = useCustomToast();
 
