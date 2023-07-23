@@ -4,31 +4,40 @@ import styled from 'styled-components';
 import { formatDate } from '@utils/formatDate';
 import { truncatedText } from '@utils/truncatedText';
 import { splitAddress } from '@utils/address';
+import { RecentListType } from 'types/api/myinfo';
 
 // icons
 import { MdPlace } from 'react-icons/md';
 import { TiHeartFullOutline } from 'react-icons/ti';
 
+interface FestivalLikeProps {
+  recentItem: RecentListType;
+}
+
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
-const FestivalLike = () => {
+const FestivalLike = ({ recentItem }: FestivalLikeProps) => {
   return (
     <FestivalContainer>
       <ImgBox>
-        <img src="/assets/images/ticat-cover-image.png" />
+        {recentItem.imageUrl !== '' ? (
+          <img src={recentItem.imageUrl} />
+        ) : (
+          <img src="/assets/images/ticat-cover-image.png" />
+        )}
       </ImgBox>
       <DescriptionWrap>
         <div className="title-space-between">
-          <h3 className="festival-left-title">{truncatedText('타이틀 제목이에요', 15)}</h3>
+          <h3 className="festival-left-title">{truncatedText(recentItem.title, 15)}</h3>
           <div className="festival-right">
             <TiHeartFullOutline size="14px" color="var(--color-sub)" />
           </div>
         </div>
         <div className="area-wrap">
           <MdPlace size="13px" color="var(--color-dark)" />
-          <p className="festival-area">{splitAddress('사랑시 고백구 행복동')}</p>
+          <p className="festival-area">{splitAddress(recentItem.address)}</p>
         </div>
         <p className="festival-date">
-          {formatDate('20230721')} ~ {formatDate('20230721')}
+          {formatDate(recentItem.eventStartDate)} ~ {formatDate(recentItem.eventEndDate)}
         </p>
       </DescriptionWrap>
     </FestivalContainer>

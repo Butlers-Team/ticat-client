@@ -16,14 +16,12 @@ const MyInfoDescription = () => {
     navigate('/setting');
   };
 
-  console.log('data >> ', data);
-
   return (
     <MyInfoDescContainer>
       {data && (
         <>
           <MyInfoImgWrap>
-            {data.profileUrl ? <img src={data.profileUrl} /> : <img src="/assets/images/ticat-cover-image.png" />}
+            {data.profileUrl ? <img src={data.profileUrl} /> : <img src="/assets/images/default-profile-image.png" />}
           </MyInfoImgWrap>
           <MyInfoTextWrap>
             <p className="my-name">{data.displayName}</p>

@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getRecentList } from '@api/myinfo';
 
 // components
 import FestivalLike from '@components/festival/FestivalLike';
@@ -9,15 +12,20 @@ interface MyInfoListProps {
 }
 
 const MyInfoList = ({ textTitle, items }: MyInfoListProps) => {
+  const { data } = useQuery(['recentList'], getRecentList);
+
   return (
     <MyInfoListContainer>
       <p className="myinfo-title">{textTitle}</p>
       <ContentItemWrap>
-        <FestivalLike />
-        <FestivalLike />
-        <FestivalLike />
-        <FestivalLike />
-        <FestivalLike />
+        {data &&
+          data.map(item => (
+            <li key={item.festivalId}>
+              <Link to={`/detail/${item.festivalId}`}>
+                <FestivalLike recentItem={item} />
+              </Link>
+            </li>
+          ))}
       </ContentItemWrap>
     </MyInfoListContainer>
   );
@@ -41,7 +49,7 @@ const MyInfoListContainer = styled.div`
   }
 `;
 
-const ContentItemWrap = styled.div`
+const ContentItemWrap = styled.ul`
   width: 100%;
   background: var(--background-color);
   display: flex;
