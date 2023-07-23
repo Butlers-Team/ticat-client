@@ -37,11 +37,21 @@ async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: 
   if (error.response && error.response.data === '리프레시 토큰이 만료되었습니다.') {
     clearTokens(); // 로컬스토리지 토큰 초기화
     resetMember(); // 로컬스토리지 멤버 초기화
+    localStorage.removeItem('exp');
     alert('로그인 필요: 다시 로그인해주세요.');
   }
 
   if (error.response && error.response.data === '액세스 토큰이 갱신되었습니다') {
     const newAccessToken = error.response.headers.authorization;
+
+    //액세스 토큰 만료 시간 설정
+    const dateToSeconds = (dateString: string) => {
+      const date = new Date(dateString);
+      const seconds = Math.floor(date.getTime() / 1000);
+
+      return `${seconds}`;
+    };
+    localStorage.setItem('exp', dateToSeconds(error.response.headers.exp));
 
     if (originalRequest.headers && !originalRequest.headers['No-Auth']) {
       instance.defaults.headers.common['Authorization'] = newAccessToken;
