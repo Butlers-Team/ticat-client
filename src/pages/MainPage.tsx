@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
-import { getMainRecommend } from '@api/mainfastival';
-import { FestivalListType } from 'types/api/festival';
+import { getMainRecommend, getMainFastival } from '@api/mainfastival';
+import { MainFastivalType } from 'types/api/mainfastival';
 import { getToken } from '@store/authStore';
 
 console.log(getMainRecommend);
@@ -13,18 +13,17 @@ import RecommendFestival from '@components/RecommendFestival';
 import { useEffect, useState } from 'react';
 
 const MainPage = () => {
-  const [recommendData, setRecommendData] = useState<FestivalListType[]>([]);
+  const [recommendData, setRecommendData] = useState<MainFastivalType[]>([]);
   const { accessToken, refreshToken } = getToken();
 
-  console.log(refreshToken);
-
   const fetchDetailList = async () => {
-    const res = await getMainRecommend();
-    if (res.data) {
-      setRecommendData(res.data);
-      console.log(res.data);
+    const recommend = await getMainRecommend();
+
+    if (refreshToken && accessToken) {
+      recommend && setRecommendData(recommend);
     }
   };
+
   useEffect(() => {
     fetchDetailList();
   }, []);
