@@ -48,7 +48,7 @@ const BtnLabel = styled.label<ToggleLabelProps>`
   align-items: center;
 
   // 스탬프 TICKET 리스트(false)일 때 before
-  ::before {
+  &::before {
     display: flex;
     position: absolute;
     content: 'TICKET';
@@ -65,7 +65,7 @@ const BtnLabel = styled.label<ToggleLabelProps>`
   }
 
   // 스탬프 TICKET 리스트(false)일 때 after
-  ::after {
+  &::after {
     display: flex;
     position: absolute;
     content: 'CALENDAR';
