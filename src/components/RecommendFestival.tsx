@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
@@ -21,6 +22,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [slidesPerView, setSlidesPerView] = useState<number>(3);
   const [imageErrors, setImageErrors] = useState(Array(fastivaldata.length).fill(false));
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleResize = () => {
@@ -52,12 +54,27 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
       return newErrors;
     });
   };
+
+  const routingDetailPage = (cardId: string) => {
+    navigate(`/detail/${cardId}`);
+    window.location.reload();
+
+    /**  기존의 <RecommendCard href={card.festivalId.toString()}> 코드의 경우
+     * main 에서 라우팅할때 detail 페이지로 라우팅하지 못하는 bug 발생.
+     * navigate 함수로 변경 후 같은 detail 경로에서 param 만 변경하니
+     * 새로고침이 되지않는 현상이 발견되어 임의로 새로고침이 가능하도록 구현.
+     * 차후 임의로 수정해주시기 바랍니다. -by mscojl24 */
+  };
+
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
         {fastivaldata.map((card, index) => (
           <SwiperSlide key={`card-${index + 1}`}>
-            <RecommendCard href={card.festivalId.toString()}>
+            <RecommendCard
+              onClick={() => {
+                routingDetailPage(`${card.festivalId}`);
+              }}>
               <div className="card-image">
                 {imageErrors[index] ? (
                   <img src="/assets/images/ticat-cover-image.png" alt="fastival image" />
@@ -79,7 +96,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
 
 export default RecommendFestival;
 
-const RecommendCard = styled.a`
+const RecommendCard = styled.div`
   /* width: 180px;
   height: 200px; */
   color: var(--color-dark);
