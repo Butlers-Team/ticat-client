@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
+import WeatherIcon from '@components/WeatherIcon';
+
+//API
 import { getMainFastival } from '@api/mainfastival';
+import { getWeather } from '@api/weather';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
 import { MainFastivalType } from 'types/api/mainfastival';
+import { WeatherRequest, WeatherType } from 'types/api/weather';
 
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun } from 'react-icons/bi';
 
 //swiper modules
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -32,20 +35,19 @@ interface BgImage {
 
 const RecommendFestival = () => {
   const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
+  const [regionWeather] = useState<WeatherType | undefined>();
 
-  const getdata = async () => {
+  const getMainData = async () => {
     const res = await getMainFastival();
-    if (res.data) {
-      setFestivalData(res.data);
-    }
+    res.data && setFestivalData(res.data);
   };
 
-  /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
   useEffect(() => {
-    getdata();
+    getMainData();
   }, []);
 
   /** 2023.07.05 main banner swiper options - by mscojl24 */
+
   const swiperOptions: MainSwiperOptions = {
     spaceBetween: 30,
     effect: 'fade',
@@ -66,7 +68,7 @@ const RecommendFestival = () => {
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
-                <BiSun />
+                <WeatherIcon regionWeather={regionWeather} />
               </span>
             </div>
             <div className="festival-info">

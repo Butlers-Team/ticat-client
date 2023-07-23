@@ -116,7 +116,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
             </span>
           </button>
           <button className="calendar-icon-btn" onClick={LikedHandler}>
-            {/* {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />} */}
+            {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />}
           </button>
           {detailList.eventhomepage !== '' ? (
             <button className="calendar-icon-btn" onClick={HomepageRoute}>

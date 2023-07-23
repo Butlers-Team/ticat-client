@@ -83,7 +83,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
                 )}
               </div>
               <div className="card-text">
-                <span>{truncatedText(card.title, 11)}</span>
+                <span>{truncatedText(card.title, 10)}</span>
                 <p>{card.area}</p>
               </div>
             </RecommendCard>

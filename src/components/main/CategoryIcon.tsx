@@ -67,6 +67,7 @@ const CategoryContainer = styled.ul`
     justify-content: center;
     align-items: center;
     margin-bottom: 15px;
+    cursor: pointer;
 
     :nth-last-child(1) .category-icon {
       font-size: 12px;

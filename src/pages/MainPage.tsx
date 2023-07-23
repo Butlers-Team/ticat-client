@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
-import { getMainRecommend, getMainFastival } from '@api/mainfastival';
+import { getMainRecommend } from '@api/mainfastival';
 import { MainFastivalType } from 'types/api/mainfastival';
 import { getToken } from '@store/authStore';
 
-console.log(getMainRecommend);
 //components
 import MainSlider from '@components/main/MainSlider';
 import CategoryIcon from '@components/main/CategoryIcon';
@@ -76,7 +75,7 @@ const ContentsSection = styled.ul`
   .contents-box {
     padding: 20px;
     > h2 {
-      font-size: 18px;
+      font-size: 2rem;
       font-weight: 700;
     }
     > div {
