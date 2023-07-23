@@ -89,6 +89,8 @@ const BtnLabel = styled.label<ToggleLabelProps>`
     &::before {
       content: 'CALENDAR';
       left: 7rem;
+      height: 100%;
+      width: 9rem;
     };
     // true
     &::after {
