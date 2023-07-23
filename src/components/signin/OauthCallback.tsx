@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useTokenStore } from '@store/useTokenStore';
+import { useMemberStore } from '@store/useMemberStore';
 
 interface Props {}
 
 /** 2023/07/14 - OauthCallback Component - by leekoby */
 const OauthCallback: React.FC<Props> = (): JSX.Element => {
+  const { setMember } = useMemberStore();
   const { setAccessToken, setRefreshToken } = useTokenStore();
   const navigate = useNavigate();
   const location = useLocation();
@@ -19,7 +21,11 @@ const OauthCallback: React.FC<Props> = (): JSX.Element => {
   useEffect(() => {
     // URL 쿼리 매개변수 분석
     const queryParams = new URLSearchParams(location.search);
+    // URL에서 Member 정보 값 얻기
 
+    const profileUrl = queryParams.get('profileUrl');
+    const displayName = queryParams.get('displayName');
+    const memberId = queryParams.get('memberId');
     // URL에서 토큰 값 얻기
     const accessToken = queryParams.get('Authorization');
     const refreshToken = queryParams.get('Refresh');
@@ -29,18 +35,25 @@ const OauthCallback: React.FC<Props> = (): JSX.Element => {
       setAccessToken(accessToken);
 
       setRefreshToken(refreshToken);
-
-      // 페이지 리디렉션 (예:메인 페이지)
-      if (hasInterest) {
-        navigate('/main');
+      if (memberId) {
+        setMember({
+          profileUrl,
+          displayName,
+          memberId: +memberId,
+        });
+        // 페이지 리디렉션 (예:메인 페이지)
+        if (hasInterest) {
+          navigate('/main');
+        } else {
+          navigate('/interest');
+        }
       } else {
-        navigate('/interest');
+        console.error('정보 저장 실패.');
       }
     } else {
-      // 오류 처리
       console.error('인증 토큰이 누락되었습니다.');
     }
-  }, [navigate, location, interest]);
+  }, [navigate, location, interest, setMember, setAccessToken, setRefreshToken]);
   return <div>Loading...</div>;
 };
 
