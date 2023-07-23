@@ -8,6 +8,7 @@ export interface FestivalDetailType {
   eventstartdate: string;
   festivalId: number;
   image: string;
+  liked: boolean;
   mapx: number;
   mapy: number;
   overview: string;

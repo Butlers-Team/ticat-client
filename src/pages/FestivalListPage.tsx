@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
@@ -8,7 +8,7 @@ import { CategoriesRequest } from 'types/api/category';
 
 // stores
 import { useAreaFilterStore } from '@store/areaFilterStore';
-import { useTabStore } from '@store/CategoryTabStore';
+import { useCategoryTabStore } from '@store/categoryTabStore';
 
 // components
 import CatergoryTabNav from '@components/festival/CategoryTabNav';
@@ -17,54 +17,36 @@ import Festival from '@components/festival/Festival';
 // icons
 import { IoMdOptions } from 'react-icons/io';
 
-const tabCategory = [
-  '전체',
-  '음악',
-  '미술',
-  '영화',
-  '문화',
-  '국제',
-  '역사',
-  '과학',
-  '스포츠',
-  '요리',
-  '주류',
-  '정원',
-  '종교',
-  '전통',
-  '기타',
-];
-
 const FestivalListPage = () => {
-  const { currentTab, setCurrentTab } = useTabStore();
+  const { categoryTab } = useCategoryTabStore();
   const { selectedItems } = useAreaFilterStore();
 
   /** 2023/07/11 - 카테고리 클릭 시 API 요청하는 함수 (무한스크롤) - by sineTlsl */
   const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
-    ['categories', currentTab],
+    ['categories', categoryTab],
     ({ pageParam = 1 }) => {
       let params: CategoriesRequest = {
         page: pageParam,
         size: 10,
       };
-      if (currentTab !== '전체' && selectedItems.length >= 1) {
+      if (categoryTab !== '전체' && selectedItems.length >= 1) {
         const areas = selectedItems.join(',');
 
         params = {
-          category: currentTab,
+          category: categoryTab,
           ...params,
           areas,
         };
-      } else if (currentTab === '전체' && selectedItems.length >= 1) {
+      } else if (categoryTab === '전체' && selectedItems.length >= 1) {
         const areas = selectedItems.join(',');
 
         params = {
           ...params,
           areas,
         };
-      } else if (currentTab !== '전체') {
+      } else if (categoryTab !== '전체') {
         params = {
-          category: currentTab,
+          category: categoryTab,
           ...params,
         };
       }
@@ -94,14 +76,9 @@ const FestivalListPage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  /** 2023/07/04 - 카테고리 탭 select 함수 - by sineTlsl */
-  const HandlerSelectTab = (tabName: string): void => {
-    setCurrentTab(tabName);
-  };
-
   return (
     <FestivalListContainer>
-      <CatergoryTabNav tabCategory={tabCategory} currentTab={currentTab} onClick={HandlerSelectTab} />
+      <CatergoryTabNav />
       <FestivalFilter>
         <h2 className="festival-list-title">축제 리스트</h2>
         <div className="festival-list-filter">
@@ -114,7 +91,7 @@ const FestivalListPage = () => {
               ) : (
                 <span>지역필터 선택</span>
               )}
-              <IoMdOptions size="20px" color="var(--color-main)" />
+              <IoMdOptions size="19px" color="var(--color-main)" />
             </Link>
           </button>
         </div>
@@ -176,7 +153,8 @@ const FestivalFilter = styled.div`
   > .festival-list-filter > .filter-btn > .link-wrap {
     display: flex;
     align-items: center;
-    gap: 0.7rem;
+    gap: 0.5rem;
+    letter-spacing: -0.05rem;
   }
 `;
 

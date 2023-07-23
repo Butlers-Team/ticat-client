@@ -7,6 +7,7 @@ import { RecommendListType, RecommendRequest } from 'types/api/recommend';
 export const getRecommendList = async (params: RecommendRequest) => {
   const { data } = await instance.get<RecommendListType[]>('/festivals/detailrecommend', {
     params,
+    headers: { 'No-Auth': 'True' },
   });
 
   return data;

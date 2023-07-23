@@ -1,32 +1,98 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
+import { getWeather } from '@api/weather';
+import { WeatherRequest, WeatherType } from 'types/api/weather';
+import { WeatherIcon } from '@components/WeatherIcon';
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun } from 'react-icons/bi';
+import { BiSolidHeart } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
 import { FestivalDetailType } from 'types/api/detail';
 import { formatDate } from '@utils/formatDate';
+
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const token = window.localStorage.getItem('accessToken');
+  const location = useLocation();
   const [defaultImg, setDefaultImg] = useState(detailList.image);
+  const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
+  const [regionWeather, setRegionWeather] = useState<WeatherType | undefined>();
+  const eventhomepage = detailList.eventhomepage.slice(
+    // 축제 홈페이지 주소가 옛날 데이터 주소는 url이 그대로오고, 요즘 데이터는 <a>태그가 붙어서 오기 때문에 분기가 필요하다
+    detailList.eventhomepage.indexOf('http'),
+    detailList.eventhomepage.indexOf('target') - 2,
+  );
 
-  const handleImgError = () => {
+  /**2023-07-19 - 축제 이미지가 없을 시, 대체이미지 삽입하는 함수 - by parksubeom */
+  const ImgErrorHandler = () => {
     setDefaultImg('/assets/images/ticat-cover-image.png');
   };
+
+  /** 2023-07-20 - 현재 축제의 좋아요 요청/좋아요 취소 요청을 보내는 함수 - by parksubeom */
+  const LikedHandler = () => {
+    if (!token) {
+      if (window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?')) {
+        return (window.location.href = '/signin');
+      } else {
+        return;
+      }
+    }
+    //https://ticat.store/festivals/2992167/favorite 로 엑세스토큰담아서 post요청 보내면된다
+    if (festivalLiked === true) {
+      festivalUnLikedRequest(detailList.festivalId);
+      setFestivalLiked(!festivalLiked);
+    } else {
+      festivalLikedRequest(detailList.festivalId);
+      setFestivalLiked(!festivalLiked);
+    }
+  };
+  /** 2023-07-20 - 현재 머물고있는 페이지의 url을 클립보드에 복사해주는 함수 - by parksubeom */
+  const handleCopyClipBoard = async (text: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('클립보드에 링크가 복사되었어요.');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  /** 2023-07-20 - 해당 축제 홈페이지로 라우팅 시켜주는 함수 - by parksubeom */
+  const HomepageRoute = () => {
+    if (detailList.eventhomepage.indexOf('<') === -1) {
+      window.location.assign(detailList.eventhomepage);
+    } else {
+      window.location.assign(eventhomepage);
+    }
+  };
+
+  /**2023-07-22 - 해당 축제의 위치에 날씨를 불러오는 함수 - by parksubeom */
+  const fetchWeather = async () => {
+    const params: WeatherRequest = {
+      currentLongitude: detailList.mapx,
+      currentLatitude: detailList.mapy,
+    };
+    const res = await getWeather(params);
+    setRegionWeather(res);
+  };
+
+  useEffect(() => {
+    fetchWeather();
+  }, []);
   return (
     <CoverContainer>
-      <img src={defaultImg} onError={handleImgError}></img>
+      <img src={defaultImg} onError={ImgErrorHandler}></img>
       <div className="wather-info flex-all-center">
-        <span>축제날씨</span>
+        <span>{regionWeather ? regionWeather.region : 'Loding...'}</span>
         <span className="wather-icon flex-all-center">
-          <BiSun />
+          <WeatherIcon regionWeather={regionWeather} />
         </span>
       </div>
-
       <div className="festival-info">
         {detailList.status === 'ONGOING' ? (
           <button className="festival-proceeding">진행 중</button>
@@ -49,15 +115,17 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
               <BsCalendarPlus />
             </span>
           </button>
-          <button className="calendar-icon-btn">
-            <FiHeart />
+          <button className="calendar-icon-btn" onClick={LikedHandler}>
+            {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />}
           </button>
           {detailList.eventhomepage !== '' ? (
-            <button className="calendar-icon-btn">
+            <button className="calendar-icon-btn" onClick={HomepageRoute}>
               <LuTicket />
             </button>
           ) : null}
-          <button className="calendar-icon-btn">
+          <button
+            className="calendar-icon-btn"
+            onClick={() => handleCopyClipBoard(`${window.location.origin}${location.pathname}`)}>
             <FiShare2 />
           </button>
         </BtnSection>
@@ -148,6 +216,7 @@ const BtnSection = styled.div`
     border-radius: 5px;
     border: none;
     font-size: 1.5rem;
+    margin-right: 5px;
     cursor: pointer;
     > span {
       font-size: 16px;
@@ -155,8 +224,9 @@ const BtnSection = styled.div`
     }
   }
   > .calendar-icon-btn {
+    display: flex;
     cursor: pointer;
-    text-align: center;
+    align-items: center;
     justify-content: center;
     height: 3.5rem;
     width: 3.5rem;

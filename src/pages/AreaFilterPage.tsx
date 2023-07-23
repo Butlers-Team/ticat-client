@@ -6,7 +6,7 @@ import { useAreaFilterStore } from '@store/areaFilterStore';
 
 // components
 import Button from '@components/Button';
-import AreaDropDown from '@components/areaFilter/AreaDropDown';
+import AreaDropDown from '@components/area-filter/AreaDropDown';
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
 
 // icons
@@ -48,7 +48,7 @@ const AreaFilterPage = () => {
     <AreaFilterContainer>
       <TopHistoryBackNav textTitle={'지역설정'} onNavigation={goBackPage} />
       <AreaWrap>
-        <p className="area-description">지역은 5개까지만 선택이 가능합니다.</p>
+        <p className="area-description">지역은 5개까지만 선택이 가능합니다</p>
         <ul className="select-items ">
           {tempSelectedItems.map((item, idx) => (
             <li className="area-tag" key={idx}>
@@ -87,38 +87,6 @@ const AreaFilterContainer = styled.section`
   position: relative;
   width: 100%;
   height: 100%;
-`;
-
-/** 2023/07/17 - 페이지 top 컨테이너 - by sineTlsl */
-const TopWrap = styled.div`
-  position: relative;
-  width: 100%;
-  height: 5rem;
-  margin: auto 0;
-  display: flex;
-  align-items: center;
-  border-bottom: 1px solid var(--color-light-gray);
-
-  > .top-left {
-    position: absolute;
-    left: 1.5rem;
-  }
-  > .top-left > .back-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  > .area-filter-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    color: var(--color-dark);
-    font-size: 17px;
-    font-weight: 700;
-  }
 `;
 
 /** 2023/07/17 - 지역 드롭다운 리스트 - by sineTlsl */

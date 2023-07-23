@@ -7,3 +7,4 @@ export * from './blogpost';
 export * from './comment';
 export * from './comment-like';
 export * from './comment-dislike';
+export * from './myinfo';
