@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useTabStore } from '@store/CategoryTabStore';
 
 //icon
 import { FaRunning, FaWineGlassAlt, FaCross, FaLightbulb } from 'react-icons/fa';
@@ -24,10 +26,24 @@ const tabicon = [
 ];
 
 const CategoryIcon = () => {
+  const { setCurrentTab } = useTabStore();
+  const navigate = useNavigate();
+
+  /** 2023.07.23 아이콘 클릭시 관련 카테고리 탭으로 라우팅 - by mscojl24 */
+  const handleRouting = (tab: string) => {
+    navigate(`/festival`);
+    setCurrentTab(tab);
+  };
+
   return (
     <CategoryContainer>
       {tabicon.map((icons, index) => (
-        <li className="category-box" key={`icons${index}`}>
+        <li
+          className="category-box"
+          key={`icons${index}`}
+          onClick={() => {
+            handleRouting(`${icons.filtername}`);
+          }}>
           <div className="category-icon">{icons.filtericon}</div>
           <p className="category-name">{icons.filtername}</p>
         </li>
