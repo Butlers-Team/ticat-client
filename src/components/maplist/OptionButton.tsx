@@ -142,7 +142,7 @@ const OptionList = styled.aside`
   position: relative;
   display: flex;
   width: 100%;
-  height: 60px;
+  height: 70px;
   border-bottom: 1px solid rgba(173, 173, 173, 0.2);
   padding: 20px;
 

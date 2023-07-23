@@ -48,13 +48,11 @@ const MyInfoCheck = styled.ul<bgColor>`
   background-color: ${({ bgcolor }) => bgcolor};
   color: #fff;
   margin: 10px 0px;
-  > li > * {
-    margin: 3px 0px;
-  }
+
   .left-section {
     flex-grow: 3;
     .font-main {
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       font-weight: 700;
     }
     .font-sub {
