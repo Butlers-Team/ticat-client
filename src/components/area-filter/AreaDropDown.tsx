@@ -6,9 +6,6 @@ import { useAreaFilterStore } from '@store/areaFilterStore';
 // icon
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 
-// components
-import CommonCategoryList from '@components/CommonCategoryList';
-
 interface AreaProps {
   area: string; // 지역
   tempSelectedItems: string[]; // 선택한 지역 및 지역별 자치구 list
@@ -163,7 +160,8 @@ const DropDownContainer = styled.div`
     color: var(--color-dark);
     cursor: pointer;
     border-radius: 0.5rem;
-    :hover {
+
+    &:hover {
       color: var(--color-main);
     }
   }
