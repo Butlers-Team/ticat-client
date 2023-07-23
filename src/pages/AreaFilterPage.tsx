@@ -6,7 +6,7 @@ import { useAreaFilterStore } from '@store/areaFilterStore';
 
 // components
 import Button from '@components/Button';
-import AreaDropDown from '@components/areaFilter/AreaDropDown';
+import AreaDropDown from '@components/area-filter/AreaDropDown';
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
 
 // icons

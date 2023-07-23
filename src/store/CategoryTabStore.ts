@@ -1,6 +1,7 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-const tabCategory = [
+const categoriesTab = [
   '전체',
   '음악',
   '미술',
@@ -19,13 +20,23 @@ const tabCategory = [
 ];
 
 interface TabStore {
-  currentTab: string;
-  setCurrentTab: (items: string) => void;
+  categoryTab: string;
+  categoriesTab: string[];
+  setCategoryTab: (items: string) => void;
 }
 
-const useTabStore = create<TabStore>(set => ({
-  currentTab: tabCategory[0],
-  setCurrentTab: (tab: string) => set({ currentTab: tab }),
-}));
+const useCategoryTabStore = create(
+  persist<TabStore>(
+    set => ({
+      categoryTab: categoriesTab[0],
+      setCategoryTab: (tab: string) => set({ categoryTab: tab }),
+      categoriesTab: categoriesTab,
+    }),
+    {
+      name: 'useCategoryTabStore',
+      getStorage: () => sessionStorage,
+    },
+  ),
+);
 
-export { useTabStore };
+export { useCategoryTabStore };
