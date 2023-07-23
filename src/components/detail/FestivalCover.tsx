@@ -18,6 +18,7 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const token = window.localStorage.getItem('accessToken');
   const location = useLocation();
   const [defaultImg, setDefaultImg] = useState(detailList.image);
   const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
@@ -35,6 +36,13 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
 
   /** 2023-07-20 - 현재 축제의 좋아요 요청/좋아요 취소 요청을 보내는 함수 - by parksubeom */
   const LikedHandler = () => {
+    if (!token) {
+      if (window.confirm('로그인이 필요한 기능입니다. 로그인 하시겠습니까?')) {
+        return (window.location.href = '/signin');
+      } else {
+        return;
+      }
+    }
     //https://ticat.store/festivals/2992167/favorite 로 엑세스토큰담아서 post요청 보내면된다
     if (festivalLiked === true) {
       festivalUnLikedRequest(detailList.festivalId);
