@@ -94,7 +94,11 @@ const CategoryContainer = styled.ul`
       border-radius: 5px;
       background-color: #f0f0f0;
       color: var(--color-dark-gray);
-      font-size: 22px;
+      font-size: 1.5rem;
+      font-weight: 600;
+      :nth-last-child(1) {
+        font-size: 2.3rem;
+      }
     }
     > .category-name {
       font-size: 14px;
