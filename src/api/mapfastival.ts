@@ -7,6 +7,9 @@ import { MapFastivalResponse, MapFastivalRequest } from 'types/api/mapfastival';
 export const getMapFastival = async (params: MapFastivalRequest) => {
   const { data } = await instance.get<MapFastivalResponse>('/festivals/map', {
     params,
+    headers: {
+      'No-Auth': true,
+    },
   });
 
   return data;
