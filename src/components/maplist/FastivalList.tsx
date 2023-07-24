@@ -38,7 +38,7 @@ const FastivalList = () => {
   return (
     <FastivalListBox>
       {mapListData.map(list => (
-        <Link to={`/detail/${list.festivalId}`}>
+        <Link to={`/detail/${list.festivalId}`} key={list.festivalId}>
           <Festival item={list} />
         </Link>
       ))}
