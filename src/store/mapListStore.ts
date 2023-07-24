@@ -1,5 +1,4 @@
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
 
 export const mapOptions = [
   { optionName: '좋아요순', value: 'likeCount' },

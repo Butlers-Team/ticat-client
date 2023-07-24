@@ -4,7 +4,7 @@ import Main from '@layout/main';
 import Provider from '../provider';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { getToken } from '@store/authStore';
+import { getToken } from '@store/useTokenStore';
 
 // import
 import Button from '@components/Button';
@@ -19,7 +19,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   //pop-up 삭제
   const [displayNone, setdisplayNone] = useState<boolean>(false);
-  const { accessToken } = getToken();
+  const { accessToken, refreshToken } = getToken();
 
   setTimeout(() => {
     setdisplayNone(true);
@@ -31,7 +31,7 @@ const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Main className={shouldHide() ? undefined : 'main-vh70'}>{children}</Main>
       </Provider>
       {!shouldHide() && <TabNav />}
-      {displayNone || accessToken ? null : (
+      {displayNone || accessToken || refreshToken ? null : (
         <PopupContainer>
           <Popup closetime={10000} time="10s" barcolor="var(--color-main)">
             <p className="modal-text">

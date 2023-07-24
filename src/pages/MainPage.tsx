@@ -2,7 +2,7 @@ import styled from 'styled-components';
 // import { useState } from 'react';
 import { getMainRecommend } from '@api/mainfastival';
 import { MainFastivalType } from 'types/api/mainfastival';
-import { getToken } from '@store/authStore';
+import { getToken } from '@store/useTokenStore';
 
 //components
 import MainSlider from '@components/main/MainSlider';
