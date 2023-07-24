@@ -51,14 +51,14 @@ const SignUp: React.FC = (): JSX.Element => {
     signUpMutation.mutate(signUpData);
   };
 
-  // 이름
+  // ID
   const onChangeId = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUserId(e.target.value);
     if (e.target.value.length < 6 || e.target.value.length >= 10) {
       setIdMessage('6글자 이상 10글자 미만으로 입력해주세요.');
       setIsId(false);
     } else {
-      setIdMessage('올바른 이름 형식이에요 : )');
+      setIdMessage('올바른 아이디 형식이에요 : )');
       setIsId(true);
     }
   }, []);

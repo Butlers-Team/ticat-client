@@ -1,6 +1,10 @@
 export * from './category';
 export * from './festival';
 export * from './interest';
+export * from './blogposts';
+export * from './comment';
+export * from './comment-like';
+export * from './comment-dislike';
 export * from './myinfo';
 export * from './stamp';
 

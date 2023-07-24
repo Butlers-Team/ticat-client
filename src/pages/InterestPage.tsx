@@ -1,5 +1,5 @@
 import Interest from '@components/interest/Interest';
-import { useTokenStore } from '@store/authStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 interface Props {}
 

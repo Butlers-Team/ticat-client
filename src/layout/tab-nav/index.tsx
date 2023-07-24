@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getToken } from '@store/authStore';
+import { getToken } from '@store/useTokenStore';
 
 // icons
 import { AiOutlineHome } from 'react-icons/ai';
