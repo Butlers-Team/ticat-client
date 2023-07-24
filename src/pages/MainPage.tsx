@@ -2,7 +2,6 @@ import styled from 'styled-components';
 // import { useState } from 'react';
 import { getMainRecommend } from '@api/mainfastival';
 import { MainFastivalType } from 'types/api/mainfastival';
-import { getToken } from '@store/useTokenStore';
 
 //components
 import MainSlider from '@components/main/MainSlider';
@@ -13,14 +12,10 @@ import { useEffect, useState } from 'react';
 
 const MainPage = () => {
   const [recommendData, setRecommendData] = useState<MainFastivalType[]>([]);
-  const { accessToken, refreshToken } = getToken();
 
   const fetchDetailList = async () => {
     const recommend = await getMainRecommend();
-
-    if (refreshToken && accessToken) {
-      recommend && setRecommendData(recommend);
-    }
+    recommend && setRecommendData(recommend);
   };
 
   useEffect(() => {

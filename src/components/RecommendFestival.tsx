@@ -67,7 +67,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
     <>
       <Swiper {...swiperOptions} className="mySwiper">
         {fastivaldata.map((card, index) => (
-          <SwiperSlide key={`card-${index + 1}`}>
+          <SwiperSlide key={card.festivalId}>
             <RecommendCard
               onClick={() => {
                 routingDetailPage(`${card.festivalId}`);
