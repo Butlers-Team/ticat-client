@@ -17,4 +17,5 @@ export interface RecentListType {
   eventStartDate: string;
   eventEndDate: string;
   imageUrl: string;
+  favorite: boolean;
 }
