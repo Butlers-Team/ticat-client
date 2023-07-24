@@ -1,5 +1,5 @@
 import { PropsWithChildren } from 'react';
-import { styled } from 'styled-components';
+import styled from 'styled-components';
 
 interface Props {}
 
@@ -27,7 +27,7 @@ const FastivalCategory = styled.ul`
     background-color: #fff;
     color: var(--color-dark);
     cursor: pointer;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     :hover {
       color: var(--color-main);
     }

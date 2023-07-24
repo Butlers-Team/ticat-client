@@ -8,29 +8,31 @@ import { apiSignIn } from '@api/auth';
 import { ApiSignInResponse, ApiSignInSuccess, CustomAxiosError } from 'types/auth';
 
 // state
-import { useTokenStore } from '@store/authStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 //custom
 import useCustomToast from '@hooks/useCustomToast';
+import { useMemberStore } from '@store/useMemberStore';
 
 /** 2023/07/09 - 로그인 뮤테이션 - by leekoby */
 export const useSignIn = () => {
   const { setAccessToken, setRefreshToken } = useTokenStore();
+  const { setMember, member } = useMemberStore();
   const navigate = useNavigate();
   const toast = useCustomToast();
   const signInMutation = useMutation(apiSignIn, {
     onSuccess: (response: ApiSignInSuccess) => {
       if (isApiSignInSuccess(response)) {
-        const { data, accessToken, refreshToken } = response;
+        const { accessToken, refreshToken } = response;
         setAccessToken(accessToken);
         setRefreshToken(refreshToken);
-        if (typeof data === 'string' && data === '닉네임 설정 및 관심사 등록이 필요합니다.') {
-          toast({ title: data, status: 'success' });
+        setMember(response.data);
+        if (response.data.displayName === null) {
+          toast({ title: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
           // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
           navigate('/interest');
         } else {
           toast({ title: `메인페이지로 이동합니다.`, status: 'success' });
-
           navigate('/main');
         }
       }

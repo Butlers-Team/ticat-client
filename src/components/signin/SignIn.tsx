@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import OauthButton from './OauthButton';
 import { useSignIn } from '@hooks/query/index';
-import { useTokenStore } from '@store/authStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 interface ButtonProps {
   buttonType: 'signin' | 'signup';
@@ -29,6 +29,11 @@ const SignIn: React.FC = (): JSX.Element => {
   // 로그인 버튼 클릭 핸들러
   const handleSignin: React.FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
+
+    // 아이디 비밀번호가 입력되지 않았을때 요청 보내지 않기
+    if (userId.length < 6 || userId.length >= 10) return;
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,25}$/;
+    if (!passwordRegex.test(password)) return;
 
     const loginData: ApiSignInRequest = {
       id: userId,
