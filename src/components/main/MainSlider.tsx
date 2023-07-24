@@ -138,7 +138,7 @@ const SliderContainer = styled.article<BgImage>`
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      font-size: 24px;
+      font-size: 2.5rem;
       font-weight: 700;
     }
   }
