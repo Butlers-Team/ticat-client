@@ -9,6 +9,7 @@ import FestivalLocation from '@components/detail/FestivalLocation';
 import Recommend from '@components/detail/Recommend';
 import { FestivalDetailType } from 'types/api/detail';
 import { getDetailList } from '../api/detail';
+import Reviews from '@components/review/Reviews';
 
 const DetailPage = () => {
   const [detailList, setDetailList] = useState<FestivalDetailType>();
@@ -32,6 +33,7 @@ const DetailPage = () => {
         {detailList && <FestivalLocation detailList={detailList} />}
         {detailList && <Recommend detailList={detailList} />}
       </ContentsSection>
+      {detailList && <Reviews detailList={detailList} />}
     </DetailPageContainer>
   );
 };
