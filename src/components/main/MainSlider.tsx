@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import WeatherIcon from '@components/WeatherIcon';
+import { useNavigate } from 'react-router-dom';
 
 //API
 import { getMainFastival } from '@api/mainfastival';
@@ -33,6 +34,7 @@ interface BgImage {
 }
 
 const RecommendFestival = () => {
+  const navigate = useNavigate();
   const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
   const [regionWeather] = useState<WeatherType | undefined>();
 
@@ -44,6 +46,10 @@ const RecommendFestival = () => {
   useEffect(() => {
     getMainData();
   }, []);
+
+  const routingFestivalPage = (id: number) => {
+    navigate(`/detail/${id}`);
+  };
 
   /** 2023.07.05 main banner swiper options - by mscojl24 */
 
@@ -63,7 +69,11 @@ const RecommendFestival = () => {
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
         <SwiperSlide key={festival.festivalId}>
-          <SliderContainer backqroundimage={`url(${festival.image})`}>
+          <SliderContainer
+            backqroundimage={`url(${festival.image})`}
+            onClick={() => {
+              routingFestivalPage(festival.festivalId);
+            }}>
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
