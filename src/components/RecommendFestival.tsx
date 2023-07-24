@@ -11,9 +11,6 @@ import { FestivalListType } from 'types/api/festival';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
-//utils
-import { truncatedText } from '@utils/truncatedText';
-
 interface RecommendFestivalProps {
   fastivaldata: FestivalListType[];
 }
@@ -83,7 +80,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
                 )}
               </div>
               <div className="card-text">
-                <span>{truncatedText(card.title, 10)}</span>
+                <div>{card.title}</div>
                 <p>{card.area}</p>
               </div>
             </RecommendCard>
@@ -117,9 +114,13 @@ const RecommendCard = styled.div`
   }
 
   .card-text {
-    span {
+    div {
+      max-width: 100%;
       font-size: 1.5rem;
       font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     p {
       margin-top: 5px;

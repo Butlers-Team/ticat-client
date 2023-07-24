@@ -26,7 +26,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
 //utils
-import { truncatedText } from '@utils/truncatedText';
 import { formatDate } from '@utils/formatDate';
 
 interface BgImage {
@@ -75,7 +74,7 @@ const RecommendFestival = () => {
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{truncatedText(festival.title, 17)}</h2>
+              <h2>{festival.title}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>
@@ -125,6 +124,10 @@ const SliderContainer = styled.article<BgImage>`
     left: 20px;
 
     > h2 {
+      width: calc(100% - 50px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-size: 24px;
       font-weight: 700;
     }
