@@ -13,7 +13,7 @@ import { useOptionStore, useCategoryStore } from '@store/mapListStore';
 const FastivalList = () => {
   const [mapListData, setMapListData] = useState<MapFastivalType[]>([]);
   const { sortBy } = useOptionStore();
-  const { category, setCategory } = useCategoryStore();
+  const { category } = useCategoryStore();
 
   const categoryJoin = category.join();
 
@@ -38,7 +38,7 @@ const FastivalList = () => {
   return (
     <FastivalListBox>
       {mapListData.map(list => (
-        <Link to={`/detail/${list.festivalId}`}>
+        <Link to={`/detail/${list.festivalId}`} key={list.festivalId}>
           <Festival item={list} />
         </Link>
       ))}
