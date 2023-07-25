@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { WeatherIcon } from '@components/WeatherIcon';
 
 //icon
-import { BiSun } from 'react-icons/bi';
 import { IoIosArrowForward } from 'react-icons/io';
+import LodingIcon from '@components/LodingIcon';
 
 //API
 import { getWeather } from '@api/weather';
@@ -31,7 +31,7 @@ const MyInfoButton = () => {
     const weather = await getWeather(params);
     console.log(weather);
     weather && setMyWeather(weather);
-    setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태를 해제합니다.
+    setIsLoading(true); // Weather 데이터를 받아오면 로딩 상태 해제.
   };
 
   useEffect(() => {
@@ -45,16 +45,19 @@ const MyInfoButton = () => {
         },
         error => {
           console.error('Error getting location:', error);
-          setIsLoading(false); // 에러 발생 시에도 로딩 상태를 해제합니다.
+          // 위치 정보를 받아오지 못할경우 디폴트 데이터 출력.
+          setLatitude(126.98834145916423);
+          setLongitude(37.54810058003352);
+          setIsLoading(false);
         },
         {
-          // 위치 정보를 가져오는데 최대 5초까지 대기합니다.
           timeout: 5000,
         },
       );
     } else {
-      console.error('Geolocation is not supported by this browser.');
-      setIsLoading(false); // Geolocation을 지원하지 않는 경우에도 로딩 상태를 해제합니다.
+      setLatitude(126.98834145916423);
+      setLongitude(37.54810058003352);
+      setIsLoading(false);
     }
   }, []);
 
@@ -76,21 +79,35 @@ const MyInfoButton = () => {
           <IoIosArrowForward className="size-large" />
         </li>
       </MyInfoCheck>
-      <MyInfoCheck bgcolor="var(--color-sub)">
-        <li className="flex-v-center column left-section">
-          <span className="font-main">현재의 날씨는 {myWeather?.weather.sky} 입니다</span>
-          <p className="font-sub">{myWeather?.region}</p>
-        </li>
-        <li className="flex-h-center row">
-          <div className="local-wather-icon">
-            <WeatherIcon regionWeather={myWeather} />
-          </div>
-          <div className="local-Temperature flex-v-center row">
-            <span>{myWeather?.weather.temp}</span>
-            <p>˚C</p>
-          </div>
-        </li>
-      </MyInfoCheck>
+      {isLoading ? (
+        <MyInfoCheck bgcolor="var(--color-sub)">
+          <li className="flex-v-center column left-section">
+            <span className="font-main">현재 집사님의 위치를 조회중 입니다</span>
+            <p className="font-sub">{`잠시만 기다려주세요 :)`}</p>
+          </li>
+          <li className="flex-h-center row width">
+            <div className="local-wather-icon">
+              <LodingIcon></LodingIcon>
+            </div>
+          </li>
+        </MyInfoCheck>
+      ) : (
+        <MyInfoCheck bgcolor="var(--color-sub)">
+          <li className="flex-v-center column left-section">
+            <span className="font-main">현재의 날씨는 {myWeather?.weather.sky} 입니다</span>
+            <p className="font-sub">{myWeather?.region}</p>
+          </li>
+          <li className="flex-h-center row">
+            <div className="local-wather-icon">
+              <WeatherIcon regionWeather={myWeather} />
+            </div>
+            <div className="local-Temperature flex-v-center row">
+              <span>{myWeather?.weather.temp}</span>
+              <p>˚C</p>
+            </div>
+          </li>
+        </MyInfoCheck>
+      )}
     </div>
   );
 };
