@@ -123,7 +123,6 @@ const AreaWrap = styled.div`
     background: var(--color-sub);
     font-size: 13px;
     color: var(--color-light);
-    /* background: #e38882; */
   }
   > .select-items > .area-tag > .tag-remove-btn {
     display: flex;

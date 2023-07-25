@@ -1,28 +1,38 @@
 import styled from 'styled-components';
+import { StampType } from 'types/api/stamp';
 
+// icons
 import { MdPlace } from 'react-icons/md';
 import { IoLogoOctocat } from 'react-icons/io';
 
+// utils
+import { formatDate } from '@utils/formatDate';
+import { splitAddress } from '@utils/address';
+
+interface StampTicketProps {
+  stampList: StampType[];
+}
 interface StampTicketBg {
   background: string;
 }
 
 /**  2023/06/30 - 스탬프 티켓 컴포넌트 - by sineTlsl */
-const StampTicket = () => {
+const StampTicket = ({ stampList }: StampTicketProps) => {
   const colorBg = ['var(--color-main)', 'var(--color-sub)', '#FF6B6B'];
-  const items = Array.from({ length: 9 }); // 예시로 9개 아이템 생성
 
   return (
     <StampTicketContainer>
-      {items.map((_, idx) => (
+      {stampList.map((item, idx) => (
         <TicketItemWrap key={idx} background={colorBg[idx % colorBg.length]}>
           <ItemText>
-            <h4 className="item-title">축제 이름</h4>
+            <h4 className="item-title">{item.title}</h4>
             <p className="item-place">
               <MdPlace size="13px" color="var(--color-light)" />
-              <span>울산광역시 북구</span>
+              <span>{splitAddress(item.address)}</span>
             </p>
-            <p className="item-date">2023.06.23 ~ 2023.06.25</p>
+            <p className="item-date">
+              {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
+            </p>
           </ItemText>
           <ItemPhoto>
             <IoLogoOctocat size="50px" color="var(--color-light)" />
@@ -58,13 +68,17 @@ const TicketItemWrap = styled.div<StampTicketBg>`
 
 /** 2023/06/30 - 스탬프 티켓(item) 텍스트 - by sineTlsl  */
 const ItemText = styled.div`
-  flex: 0 1 70%;
+  width: 70%;
   flex-direction: column;
   display: flex;
   gap: 0.3rem;
   padding: 0 2rem;
 
   > .item-title {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 16px;
     font-weight: 600;
   }
@@ -83,7 +97,7 @@ const ItemText = styled.div`
 
 /** 2023/06/30 - 스탬프 티켓(item) 이미지 or 아이콘 - by sineTlsl  */
 const ItemPhoto = styled.div`
-  flex: 0 1 30%;
+  width: 30%;
   display: flex;
   justify-content: center;
   align-items: center;

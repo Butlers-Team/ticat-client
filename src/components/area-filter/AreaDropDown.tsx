@@ -6,9 +6,6 @@ import { useAreaFilterStore } from '@store/areaFilterStore';
 // icon
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 
-// components
-import CommonCategoryList from '@components/CommonCategoryList';
-
 interface AreaProps {
   area: string; // 지역
   tempSelectedItems: string[]; // 선택한 지역 및 지역별 자치구 list
@@ -91,7 +88,7 @@ const AreaDropDown = ({ area, tempSelectedItems, onAddItem, onRemoveItem, onAllR
     <DropDownContainer>
       <div className="area-title-box" onClick={() => setIsOpen(!isOpen)}>
         <button className="dropdown-btn">
-          <div>{area}</div>
+          <div className="area-title">{area}</div>
           <div>
             {!isOpen ? (
               <IoMdArrowDropdown size="26px" color="var(--color-dark-gray)" />
@@ -129,9 +126,6 @@ const DropDownContainer = styled.div`
     margin: 0 auto;
     width: 100%;
     height: 4.8rem;
-    color: var(--color-dark);
-    font-size: 15px;
-    font-weight: 500;
     border-bottom: 1px solid var(--color-light-gray);
   }
   > .area-title-box > .dropdown-btn {
@@ -144,26 +138,33 @@ const DropDownContainer = styled.div`
     border: none;
     cursor: pointer;
   }
+  > .area-title-box > .dropdown-btn > .area-title {
+    color: var(--color-dark);
+    font-size: 14px;
+    font-weight: 500;
+  }
+
   > .area-item-box {
     width: 100%;
     display: flex;
+    align-items: center;
     flex-wrap: wrap;
     padding: 1rem;
     gap: 1rem;
-    margin: 0 auto;
   }
 
   > .area-item-box > .area-btn {
     height: 4.2rem;
     width: calc((100% - 2rem) / 3);
     border: 1px solid var(--color-dark-gray);
-    font-size: 1.4rem;
+    font-size: 13px;
     white-space: nowrap;
-    background: #fff;
+    background: var(--background-color);
     color: var(--color-dark);
     cursor: pointer;
     border-radius: 0.5rem;
-    :hover {
+
+    &:hover {
       color: var(--color-main);
     }
   }

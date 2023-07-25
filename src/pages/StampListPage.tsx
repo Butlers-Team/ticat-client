@@ -1,18 +1,32 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-
-// icons
-import { AiOutlineLeft } from 'react-icons/ai';
-import { AiOutlineRight } from 'react-icons/ai';
+import { getStampList } from '@api/stamp';
+import { useQuery } from '@tanstack/react-query';
+import { StampListRequest } from 'types/api/stamp';
 
 // components
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
+import StampDate from '@components/stamp/StampDate';
 import StampTicket from '@components/stamp/StampTicket';
 import StampCalendar from '@components/stamp/StampCalendar';
 import StampToggle from '@components/stamp/StampToggle';
 
+/**  2023/07/24 - 스탬프 리스트 페이지 - by sineTlsl */
 const StampListPage = () => {
+  // 현재 날짜를 기준으로 캘린더 정의
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+  const [year, setYear] = useState<number>(currentYear);
+  const [month, setMonth] = useState<number>(currentMonth);
+
+  const params: StampListRequest = {
+    year,
+    month,
+  };
+
+  const { data } = useQuery(['stampList', params], getStampList);
   const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
   const navigate = useNavigate();
 
@@ -24,7 +38,37 @@ const StampListPage = () => {
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
   const HandlerToggle = () => {
     setIsSelectTicket(!isSelectTicket);
-    console.log(isSelectTicket);
+  };
+
+  /** 2023/07/24 - 이전 달로 이동 - by sineTlsl */
+  const HandlerLastMonth = () => {
+    setMonth(prev => {
+      if (prev === 1) {
+        setYear(year => year - 1); // 1월인 경우 연도 줄이기
+        return 12;
+      } else {
+        return prev - 1; // 그 외에는 달 -1
+      }
+    });
+  };
+  /** 2023/07/24 - 다음 달로 이동 - by sineTlsl */
+  const HandlerNextMonth = () => {
+    if (year === currentYear && month === currentMonth) {
+      return;
+    }
+    setMonth(prev => {
+      if (prev === 12) {
+        setYear(year => year + 1); // 12월인 경우 연도 늘리기
+        return 1;
+      } else {
+        return prev + 1; // 그 외에는 달 + 1
+      }
+    });
+  };
+  /** 2023/07/24 - 현재 달(날짜)로 이동 - by sineTlsl */
+  const HandlerCurrentMonth = () => {
+    setYear(currentYear);
+    setMonth(currentMonth);
   };
 
   return (
@@ -42,16 +86,14 @@ const StampListPage = () => {
         </div>
       </TopDescriptionWrap>
       <StampItemsWrap>
-        <div className="cal-date">
-          <button>
-            <AiOutlineLeft size="18px" color="#D3D3D3" />
-          </button>
-          <p className="cal-month ">2023년 7월</p>
-          <button>
-            <AiOutlineRight size="18px" color="#D3D3D3" />
-          </button>
-        </div>
-        {isSelectTicket ? <StampTicket /> : <StampCalendar />}
+        <StampDate
+          year={year}
+          month={month}
+          onLastMonth={HandlerLastMonth}
+          onNextMonth={HandlerNextMonth}
+          onCurrentMonth={HandlerCurrentMonth}
+        />
+        {data && (isSelectTicket ? <StampTicket stampList={data.festivalList} /> : <StampCalendar />)}
         <div className="toggle-wrap">
           <StampToggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
         </div>
