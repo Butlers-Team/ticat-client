@@ -27,8 +27,8 @@ const MyInfoButton = () => {
 
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
-      currentLongitude: latitude,
-      currentLatitude: longitude,
+      currentLongitude: longitude,
+      currentLatitude: latitude,
     };
 
     const weather = await getWeather(params);
