@@ -1,115 +1,27 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
-
-import { FestivalListType } from 'types/api/festival';
+import { getMainRecommend } from '@api/mainfastival';
+import { MainFastivalType } from 'types/api/mainfastival';
 
 //components
 import MainSlider from '@components/main/MainSlider';
 import CategoryIcon from '@components/main/CategoryIcon';
 import MyInfoButton from '@components/main/MyInfoButton';
 import RecommendFestival from '@components/RecommendFestival';
-
-//임시 더미데이터 - by mscojl24
-const data: FestivalListType[] = [
-  {
-    festivalId: 2993282,
-    status: 'ONGOING',
-    title: '전라북도 어쩌고 이벤트',
-    image: '',
-    address: '전라북도 전주시 완산구 효자로 225 전라북도청',
-    category: '음악',
-    eventstartdate: '20230624',
-    eventenddate: '20230909',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '전라북도 전주시',
-    mapx: 127.109137314,
-    mapy: 35.8201129557,
-  },
-  {
-    festivalId: 2951686,
-    status: 'ONGOING',
-    title: '체험형 미디어아트 훌리훌리',
-    image: '',
-    address: '경기도 김포시 김포대로 1466-48',
-    category: '미술',
-    eventstartdate: '20221223',
-    eventenddate: '20231015',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '경기도 김포시',
-    mapx: 126.6688661848,
-    mapy: 37.6568909879,
-  },
-  {
-    festivalId: 2970367,
-    status: 'ONGOING',
-    title: '2023 광화문 책마당',
-    image: '',
-    address: '서울특별시 종로구 세종로',
-    category: '스포츠',
-    eventstartdate: '20230423',
-    eventenddate: '20231112',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '서울특별시 종로구',
-    mapx: 126.9767154774,
-    mapy: 37.5718535964,
-  },
-  {
-    festivalId: 2873711,
-    status: 'ONGOING',
-    title: '양주 조각숲 나들이(전시)',
-    image: '',
-    address: '경기도 양주시 권율로 594',
-    category: '미술',
-    eventstartdate: '20221019',
-    eventenddate: '20231231',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '경기도 양주시',
-    mapx: 126.9685442552,
-    mapy: 37.7582150989,
-  },
-  {
-    festivalId: 2970367,
-    status: 'ONGOING',
-    title: '2023 광화문 책마당',
-    image: '',
-    address: '서울특별시 종로구 세종로',
-    category: '스포츠',
-    eventstartdate: '20230423',
-    eventenddate: '20231112',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '서울특별시 종로구',
-    mapx: 126.9767154774,
-    mapy: 37.5718535964,
-  },
-  {
-    festivalId: 2873711,
-    status: 'ONGOING',
-    title: '양주 조각숲 나들이(전시)',
-    image: '',
-    address: '경기도 양주시 권율로 594',
-    category: '미술',
-    eventstartdate: '20221019',
-    eventenddate: '20231231',
-    reviewRating: 0.0,
-    reviewCount: 0,
-    likeCount: 0,
-    area: '경기도 양주시',
-    mapx: 126.9685442552,
-    mapy: 37.7582150989,
-  },
-];
+import { useEffect, useState } from 'react';
 
 const MainPage = () => {
+  const [recommendData, setRecommendData] = useState<MainFastivalType[]>([]);
+
+  const fetchDetailList = async () => {
+    const recommend = await getMainRecommend();
+    recommend && setRecommendData(recommend);
+  };
+
+  useEffect(() => {
+    fetchDetailList();
+  }, []);
+
   return (
     <MainPageContainer>
       <div className="main-slider">
@@ -126,7 +38,7 @@ const MainPage = () => {
         <li className="contents-box">
           <h2>추천 축제</h2>
           <div>
-            <RecommendFestival fastivaldata={data} />
+            <RecommendFestival fastivaldata={recommendData} />
           </div>
         </li>
       </ContentsSection>
@@ -143,7 +55,6 @@ const MainPageContainer = styled.div`
   .main-slider {
     width: 100%;
     height: 300px;
-    background-color: var(--color-light-gray);
   }
 `;
 
@@ -159,7 +70,7 @@ const ContentsSection = styled.ul`
   .contents-box {
     padding: 20px;
     > h2 {
-      font-size: 18px;
+      font-size: 2rem;
       font-weight: 700;
     }
     > div {

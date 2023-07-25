@@ -1,25 +1,46 @@
 import styled from 'styled-components';
+import sanitizeHtml from 'sanitize-html'; // string 값을 마크업 언어로 변환해주는 라이브러리
+
+//type
 import { FestivalDetailType } from 'types/api/detail';
+import { SanitizeHtmlOptions } from 'types/festival/festivalInfo';
+
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  /**2023.07.25 허용한 마크업 태그만 html 변환 - by mscojl24 */
+  const safelySanitizeHtml = (htmlString: string): string => {
+    const sanitizeOptions: SanitizeHtmlOptions = {
+      allowedTags: ['br', 'b'], //작성된 태그만 허용하도록 설정
+      allowedAttributes: {}, // 위의 태그 제외 모든 속성 허용하지않음
+    };
+
+    return sanitizeHtml(htmlString, sanitizeOptions);
+  };
+
   return (
     <>
       <InfoContainer>
         <h2>행사 소개</h2>
-        <p className="mobile-fontsize">{detailList.overview.replaceAll(/(<([^>]+)>)/gi, ' ')}</p>
+        <p
+          className="mobile-fontsize"
+          dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.overview) }}></p>
         <FestivalContact>
           <p className="mobile-fontsize">행사 연락처</p>
           <span className="mobile-fontsize">{detailList.tel}</span>
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">행사위치</p>
-          <span className="mobile-fontsize">{detailList.eventplace.replaceAll(/(<([^>]+)>)/gi, ' ')}</span>
+          <span
+            className="mobile-fontsize"
+            dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.eventplace) }}></span>
         </FestivalContact>
         <FestivalContact>
           <p className="mobile-fontsize">이용료</p>
-          <span className="mobile-fontsize">{detailList.price.replaceAll(/(<([^>]+)>)/gi, ' ')}</span>
+          <span
+            className="mobile-fontsize"
+            dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.price) }}></span>
         </FestivalContact>
       </InfoContainer>
     </>

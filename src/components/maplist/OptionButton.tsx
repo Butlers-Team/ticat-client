@@ -2,56 +2,29 @@ import styled from 'styled-components';
 import { useEffect, useRef, useState } from 'react';
 
 import { IoIosArrowDown, IoIosArrowUp, IoIosOptions } from 'react-icons/io';
-import { BiDownArrowAlt } from 'react-icons/bi';
+import { BiSolidStar } from 'react-icons/bi';
 
-const OptionButton = () => {
-  const [sortBy, setSortBy] = useState<string>('');
-  const [category, setCategory] = useState<string[]>([]);
+import { mapOptions, tabCategory, useOptionStore, useCategoryStore } from '@store/mapListStore';
+
+const OptionButton: React.FC = () => {
+  // const [sortBy, setSortBy] = useState<string>('');
+  // const [category, setCategory] = useState<string[]>([]);
   const [onCategoryList, setOnCategoryList] = useState<boolean>(false);
 
   const [scrollStartPosition, setScrollStartPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
 
   const scrollRef = useRef<HTMLDivElement>(null); // CategoryScroll 컴포넌트의 ref
-
-  const Options = [
-    { optionName: '좋아요순', value: 'likeCount' },
-    { optionName: '평점순', value: 'reviewRating' },
-    { optionName: '리뷰순', value: 'reviewCount' },
-  ];
-
-  const tabCategory = [
-    '음악',
-    '미술',
-    '영화',
-    '문화',
-    '국제',
-    '역사',
-    '과학',
-    '스포츠',
-    '요리',
-    '주류',
-    '정원',
-    '종교',
-    '전통',
-    '기타',
-  ];
+  const { sortBy, setSortBy } = useOptionStore();
+  const { category, setCategory } = useCategoryStore();
 
   /** 2023.07.13 선택된 옵션 저장 - by mscojl24 */
   const handleEnableOptions = (value: string) => {
     value !== sortBy ? setSortBy(value) : setSortBy('');
   };
 
-  /** 2023.07.13 선택된 카테고리 저장 - by mscojl24 */
-  const CheckCategory = (tab: string) => {
-    if (category.includes(tab)) {
-      setCategory(prevState => prevState.filter(item => item !== tab));
-    } else {
-      if (category.length < 3) {
-        // 카테고리 3개 이상 선택시 추가 불가
-        setCategory(prevState => [...prevState, tab]);
-      }
-    }
+  const handleCategoryChange = (tab: string) => {
+    setCategory(tab);
   };
 
   /**2023.07.13 버튼 가로 스크롤 이벤트 리스너 함수 - by mscojl24 */
@@ -90,24 +63,33 @@ const OptionButton = () => {
     <OptionList className="flex-h-center">
       <CategoryScroll ref={scrollRef}>
         {onCategoryList && (
-          <FastivalCategory>
-            {tabCategory.map(tab => (
-              <li
-                key={tab}
-                className={`tab-section flex-all-center ${category.includes(tab) && 'selected-category'}`}
-                onClick={() => {
-                  CheckCategory(tab);
-                }}>
-                {tab}
-              </li>
-            ))}
-          </FastivalCategory>
+          <div
+            className="onblur-event"
+            onClick={() => {
+              setOnCategoryList(false);
+            }}>
+            <FastivalCategory
+              onClick={e => {
+                e.stopPropagation();
+              }}>
+              {tabCategory.map(tab => (
+                <li
+                  key={tab}
+                  className={`tab-section flex-all-center ${category.includes(tab) && 'selected-category'}`}
+                  onClick={() => {
+                    handleCategoryChange(tab);
+                  }}>
+                  {tab}
+                </li>
+              ))}
+            </FastivalCategory>
+          </div>
         )}
         <button
           onClick={() => {
             setOnCategoryList(!onCategoryList);
           }}
-          className={category.length > 0 ? 'selected-option' : ''}>
+          className={category.length > 0 ? 'category-on' : 'category-off'}>
           <IoIosOptions className="icon-margin" /> 카테고리 {category.length > 0 && category.length}
           {onCategoryList ? (
             <IoIosArrowUp className="icon-position icon-margin" />
@@ -115,7 +97,7 @@ const OptionButton = () => {
             <IoIosArrowDown className="icon-position icon-margin" />
           )}
         </button>
-        {Options.map(option => (
+        {mapOptions.map(option => (
           <button
             key={option.value}
             onClick={() => {
@@ -123,7 +105,7 @@ const OptionButton = () => {
             }}
             data-value={option.value}
             className={sortBy === option.value ? 'selected-option' : ''}>
-            {option.optionName} {sortBy === option.value && <BiDownArrowAlt />}
+            {option.optionName} {sortBy === option.value && <BiSolidStar />}
           </button>
         ))}
       </CategoryScroll>
@@ -138,23 +120,23 @@ const OptionList = styled.aside`
   position: relative;
   display: flex;
   width: 100%;
-  height: 60px;
+  height: 70px;
   border-bottom: 1px solid rgba(173, 173, 173, 0.2);
   padding: 20px;
 
   > * {
-    margin: 0px 2px;
+    margin-right: 2px;
   }
 
   button {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 1px solid var(--color-main);
+    border: 1px solid #ccc;
     border-radius: 20px;
     padding: 7px 12px;
     font-size: 1.4rem;
-    color: var(--color-main);
+    color: #777;
     background: none;
     cursor: pointer;
 
@@ -166,7 +148,17 @@ const OptionList = styled.aside`
     }
   }
 
+  .category-off {
+  }
+
+  .category-on {
+    color: var(--color-main);
+    border-color: var(--color-main);
+    background-color: #f4f7ff;
+  }
+
   .selected-option {
+    border-color: var(--color-main);
     background-color: var(--color-main);
     color: #fff;
   }
@@ -191,6 +183,14 @@ const CategoryScroll = styled.div`
 
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  .onblur-event {
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
   }
 `;
 
