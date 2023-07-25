@@ -1,5 +1,4 @@
 import { createGlobalStyle } from 'styled-components';
-import reset from 'styled-reset';
 
 const GlobalStyles = createGlobalStyle`
 
@@ -14,14 +13,13 @@ const GlobalStyles = createGlobalStyle`
   --background-color: rgba(255,255,255,1); 
 }
 
-${reset}
+*{
+  box-sizing: border-box;
+  font-family: 'Noto Sans KR', sans-serif;
+  user-select: none; // 유저가 더블클릭 등을 이용하여 글자를 선택하는 것을 막을 수 있음
+  -webkit-tap-highlight-color:rgba(255,255,255,0); // 버튼 클릭 시 나오는 음영 지우기
+}
 	// 아래에 전역 스타일을 추가
-  *{
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif;
-    user-select: none; // 유저가 더블클릭 등을 이용하여 글자를 선택하는 것을 막을 수 있음
-    -webkit-tap-highlight-color:rgba(255,255,255,0); // 버튼 클릭 시 나오는 음영 지우기
-  }
   a{
     text-decoration: none;
     color: inherit;
@@ -57,16 +55,18 @@ ${reset}
     margin: 0;
     font-size: 16px;
   }
-  ul {
-    margin: 0;
-    padding: 0 0 0 0;
-  }
   li {
+    list-style: none;
     padding: 0;
+    margin: 0px;
   }
-  b { 
-    margin-right: 3px;
+  P,span,
+  div,ul,li,
+  h6,h5,h4,h3,h2{
+    margin: 0px;
+    padding: 0px;
   }
+
 
   .app {
     position: relative;

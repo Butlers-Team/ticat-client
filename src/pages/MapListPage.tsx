@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 
 //component
-import MapScreen from '@components/map-list/MapScreen';
-import OptionButton from '@components/map-list/OptionButton';
-import FastivalList from '@components/map-list/FastivalList';
+import MapScreen from '@components/maplist/MapScreen';
+import OptionButton from '@components/maplist/OptionButton';
+import FastivalList from '@components/maplist/FastivalList';
 
 const MapListPage = () => {
   return (

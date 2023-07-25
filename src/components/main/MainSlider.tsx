@@ -1,14 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 import { useState, useEffect } from 'react';
+import WeatherIcon from '@components/WeatherIcon';
+import { useNavigate } from 'react-router-dom';
+
+//API
+import { getMainFastival } from '@api/mainfastival';
+import { getWeather } from '@api/weather';
 
 //type
 import { MainSwiperOptions } from 'types/swiper/swiperOptions';
-import { FestivalListType } from 'types/api/festival';
+import { MainFastivalType } from 'types/api/mainfastival';
+import { WeatherRequest, WeatherType } from 'types/api/weather';
+
 //icon
 import { TiLocation } from 'react-icons/ti';
-import { BiSun } from 'react-icons/bi';
 
 //swiper modules
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,7 +27,6 @@ import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
 //utils
-import { truncatedText } from '@utils/truncatedText';
 import { formatDate } from '@utils/formatDate';
 
 interface BgImage {
@@ -29,26 +34,25 @@ interface BgImage {
 }
 
 const RecommendFestival = () => {
-  const [FestivalData, setFestivalData] = useState<FestivalListType[]>([]);
+  const navigate = useNavigate();
+  const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
+  const [regionWeather] = useState<WeatherType | undefined>();
 
-  /** 2023.07.05 데이터 요청 test 차후 인스턴스 사용예정 - by mscojl24 */
+  const getMainData = async () => {
+    const res = await getMainFastival();
+    res.data && setFestivalData(res.data);
+  };
+
   useEffect(() => {
-    axios
-      .get(`https://a1fe-124-111-225-247.ngrok-free.app/festivals/banner`, {
-        headers: {
-          'Content-Type': 'application/json',
-          'ngrok-skip-browser-warning': '69420',
-        },
-      })
-      .then(res => {
-        setFestivalData(res.data.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    getMainData();
   }, []);
 
+  const routingFestivalPage = (id: number) => {
+    navigate(`/detail/${id}`);
+  };
+
   /** 2023.07.05 main banner swiper options - by mscojl24 */
+
   const swiperOptions: MainSwiperOptions = {
     spaceBetween: 30,
     effect: 'fade',
@@ -65,18 +69,22 @@ const RecommendFestival = () => {
     <Swiper {...swiperOptions} className="mySwiper">
       {FestivalData.map(festival => (
         <SwiperSlide key={festival.festivalId}>
-          <SliderContainer backqroundimage={`url(${festival.image})`}>
+          <SliderContainer
+            backqroundimage={`url(${festival.image})`}
+            onClick={() => {
+              routingFestivalPage(festival.festivalId);
+            }}>
             <div className="wather-info flex-all-center">
               <span>축제날씨</span>
               <span className="wather-icon flex-all-center">
-                <BiSun />
+                <WeatherIcon regionWeather={regionWeather} />
               </span>
             </div>
             <div className="festival-info">
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
               </p>
-              <h2>{truncatedText(festival.title, 15)}</h2>
+              <h2>{festival.title}</h2>
               <span>
                 <TiLocation /> {festival.area}
               </span>
@@ -125,12 +133,12 @@ const SliderContainer = styled.article<BgImage>`
     bottom: 60px;
     left: 20px;
 
-    > * {
-      margin-bottom: 10px;
-    }
-
     > h2 {
-      font-size: 24px;
+      width: calc(100% - 50px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 2.5rem;
       font-weight: 700;
     }
   }
