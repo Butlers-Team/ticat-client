@@ -61,7 +61,8 @@ const GlobalStyles = createGlobalStyle`
     margin: 0px;
   }
   P,span,
-  div,ul,li,h3,h2{
+  div,ul,li,
+  h6,h5,h4,h3,h2{
     margin: 0px;
     padding: 0px;
   }

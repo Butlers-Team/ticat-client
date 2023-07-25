@@ -66,7 +66,7 @@ const CategoryContainer = styled.ul`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     cursor: pointer;
 
     :nth-last-child(1) .category-icon {
@@ -90,20 +90,27 @@ const CategoryContainer = styled.ul`
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 35px;
-      height: 35px;
+      width: 40px;
+      height: 40px;
       border-radius: 5px;
       background-color: #f0f0f0;
       color: var(--color-dark-gray);
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 600;
       :nth-last-child(1) {
         font-size: 2.3rem;
       }
     }
     > .category-name {
-      font-size: 14px;
+      white-space: nowrap;
+      font-size: 1.5rem;
       color: var(--color-dark);
+    }
+
+    @media (max-width: 400px) {
+      > * {
+        margin: 3px;
+      }
     }
   }
 `;

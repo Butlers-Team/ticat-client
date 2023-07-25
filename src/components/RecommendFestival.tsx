@@ -116,14 +116,14 @@ const RecommendCard = styled.div`
   .card-text {
     div {
       max-width: 100%;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       font-weight: 700;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
     p {
-      margin-top: 5px;
+      margin-top: 3px;
       font-size: 1.2rem;
     }
   }

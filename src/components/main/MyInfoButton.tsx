@@ -1,9 +1,11 @@
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import { WeatherIcon } from '@components/WeatherIcon';
+import { useNavigate } from 'react-router-dom';
 
 //icon
 import { IoIosArrowForward } from 'react-icons/io';
+import { HiLocationMarker } from 'react-icons/hi';
+import { WeatherIcon } from '@components/WeatherIcon';
 import LodingIcon from '@components/LodingIcon';
 
 //API
@@ -21,6 +23,7 @@ const MyInfoButton = () => {
   const [latitude, setLatitude] = useState<number>(0);
   const [longitude, setLongitude] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
@@ -31,7 +34,7 @@ const MyInfoButton = () => {
     const weather = await getWeather(params);
     console.log(weather);
     weather && setMyWeather(weather);
-    setIsLoading(true); // Weather 데이터를 받아오면 로딩 상태 해제.
+    setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
   };
 
   useEffect(() => {
@@ -61,6 +64,10 @@ const MyInfoButton = () => {
     }
   }, []);
 
+  const navigateStamp = () => {
+    navigate(`/stamp/list`);
+  };
+
   useEffect(() => {
     // 위치 정보를 가져온 후에 myLocationWeather 함수를 실행합니다.
     if (latitude && longitude) {
@@ -70,19 +77,19 @@ const MyInfoButton = () => {
 
   return (
     <div>
-      <MyInfoCheck bgcolor="var(--color-main)">
+      <MyInfoCheck bgcolor="var(--color-main)" onClick={navigateStamp} className="cursor-pointer">
         <li className="flex-v-center column left-section">
           <span className="font-main">나의 티캣 확인하기</span>
-          <p className="font-sub">현재 5마리의 티캣이 모여있어요</p>
+          <p className="font-sub">집사님의 티캣을 수집해보세요</p>
         </li>
         <li className="flex-h-center row">
-          <IoIosArrowForward className="size-large" />
+          <IoIosArrowForward className="size-large move-icon" />
         </li>
       </MyInfoCheck>
       {isLoading ? (
         <MyInfoCheck bgcolor="var(--color-sub)">
           <li className="flex-v-center column left-section">
-            <span className="font-main">현재 집사님의 위치를 조회중 입니다</span>
+            <span className="font-main">{`현재 집사님의 위치를 조회중 입니다`}</span>
             <p className="font-sub">{`잠시만 기다려주세요 :)`}</p>
           </li>
           <li className="flex-h-center row width">
@@ -95,15 +102,17 @@ const MyInfoButton = () => {
         <MyInfoCheck bgcolor="var(--color-sub)">
           <li className="flex-v-center column left-section">
             <span className="font-main">현재의 날씨는 {myWeather?.weather.sky} 입니다</span>
-            <p className="font-sub">{myWeather?.region}</p>
+            <p className="font-sub">
+              <HiLocationMarker className="icon-margin" />
+              {myWeather?.region}
+            </p>
           </li>
           <li className="flex-h-center row">
-            <div className="local-wather-icon">
+            <div className="local-wather-icon flex-h-center">
               <WeatherIcon regionWeather={myWeather} />
             </div>
             <div className="local-Temperature flex-v-center row">
-              <span>{myWeather?.weather.temp}</span>
-              <p>˚C</p>
+              <span>{myWeather?.weather.temp}˚</span>
             </div>
           </li>
         </MyInfoCheck>
@@ -116,40 +125,68 @@ export default MyInfoButton;
 
 const MyInfoCheck = styled.ul<bgColor>`
   display: flex;
-  padding: 20px;
+  padding: 15px;
   border-radius: 10px;
   background-color: ${({ bgcolor }) => bgcolor};
   color: #fff;
   margin: 10px 0px;
 
+  &.cursor-pointer {
+    cursor: pointer;
+  }
+
   .left-section {
     flex-grow: 3;
     .font-main {
+      width: calc(100% - 10px);
       font-size: 1.8rem;
       font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .font-sub {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 400;
       opacity: 0.8;
+      .icon-margin {
+        margin-right: 3px;
+      }
     }
   }
 
   .size-large {
-    font-size: large;
+    font-size: 2rem;
+  }
+
+  .move-icon {
+    animation: moveIcon 1s infinite;
+  }
+
+  @keyframes moveIcon {
+    0% {
+      opacity: 0;
+      transform: translateX(-8px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0px);
+    }
   }
 
   .local-wather-icon {
-    font-size: 3rem;
+    font-size: 2rem;
+    margin-right: 10px;
   }
   .local-Temperature {
     align-items: flex-end;
     span {
-      font-size: 3.5rem;
+      font-size: 3.3rem;
       font-weight: 900;
     }
     p {
       font-size: 1.5rem;
+      margin: 5px;
     }
   }
 `;
