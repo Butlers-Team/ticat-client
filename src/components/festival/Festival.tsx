@@ -3,7 +3,6 @@ import { FestivalListType } from 'types/api/festival';
 
 // utils
 import { formatDate } from '@utils/formatDate';
-import { truncatedText } from '@utils/truncatedText';
 import { splitAddress } from '@utils/address';
 
 // icons
@@ -22,10 +21,7 @@ const Festival = ({ item }: FestivalProps) => {
         {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
       <DescriptionWrap>
-        <div className="title-space-between">
-          <h3 className="festival-left-title">{truncatedText(item.title, 15)}</h3>
-          <p className="festival-right">{item.category}</p>
-        </div>
+        <h3 className="festival-title">{item.title}</h3>
         <p className="festival-area">{splitAddress(item.address)}</p>
         <div className="icon-wrap">
           <div className="review-icon">
@@ -44,6 +40,9 @@ const Festival = ({ item }: FestivalProps) => {
           {formatDate(item.eventstartdate)} ~ {formatDate(item.eventenddate)}
         </p>
       </DescriptionWrap>
+      <FestivalrCategoryWrap>
+        <p className="festival-right">{item.category}</p>
+      </FestivalrCategoryWrap>
     </FestivalContainer>
   );
 };
@@ -61,7 +60,7 @@ const FestivalContainer = styled.div`
   font-size: 13px;
 `;
 
-/** 2023/07/08 - 축제 정보 이미지 - by sineTlsl */
+// 축제 정보 이미지
 const ImgBox = styled.div`
   flex: 0 0 95px;
   height: 100%;
@@ -76,38 +75,27 @@ const ImgBox = styled.div`
   }
 `;
 
-/** 2023/07/08 - 축제 정보 텍스트 - by sineTlsl */
+// 축제 정보 텍스트
 const DescriptionWrap = styled.div`
-  flex: 0 1 calc(100% - 95px);
+  width: calc(100% - 95px - 35px);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  padding-left: 0.3rem;
+  padding: 0 1rem 0 0.3rem;
 
-  > .title-space-between {
-    display: flex;
-    justify-content: space-between;
-    color: var(--color-dark-gray);
-    line-height: 2rem;
-  }
-  > .title-space-between > .festival-left-title {
-    flex: 0 1 85%;
-    font-size: 16px;
-    font-weight: 700;
+  > .festival-title {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: var(--color-dark);
+    font-weight: 700;
+    line-height: 2rem;
+    font-size: 16px;
   }
-  > .title-space-between > .festival-right {
-    flex: 0 0 15%;
-    display: flex;
-    font-size: 12px;
-    justify-content: flex-end;
 
-    @media screen and (max-width: 400px) {
-      font-size: 11px;
-    }
-  }
   > .festival-area {
-    width: 85%;
+    width: 100%;
     font-size: 12px;
 
     @media screen and (max-width: 400px) {
@@ -136,5 +124,22 @@ const DescriptionWrap = styled.div`
   }
   > .festival-date {
     color: var(--color-sub);
+  }
+`;
+
+// 축제 카테고리
+const FestivalrCategoryWrap = styled.div`
+  height: 100%;
+  color: var(--color-dark-gray);
+  font-size: 12px;
+  width: 35px;
+  display: flex;
+  white-space: nowrap;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding-top: 1.2rem;
+
+  @media screen and (max-width: 400px) {
+    font-size: 11px;
   }
 `;

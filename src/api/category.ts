@@ -7,7 +7,7 @@ import { CategoriesRequest, CategoriesResponse } from 'types/api/category';
 export const getCatergories = async (params: CategoriesRequest) => {
   const { data } = await instance.get<CategoriesResponse>('/festivals/list', {
     params,
-    headers: { 'No-Auth': 'True' },
+    headers: { 'No-Auth': true },
   });
 
   return data;

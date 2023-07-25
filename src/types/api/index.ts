@@ -6,6 +6,7 @@ export * from './comment';
 export * from './comment-like';
 export * from './comment-dislike';
 export * from './myinfo';
+export * from './stamp';
 
 /** 2023/07/04 - 페이지 데이터 Type - by sineTlsl */
 export interface PageInfoType {

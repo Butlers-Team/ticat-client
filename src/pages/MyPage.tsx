@@ -10,7 +10,7 @@ import { GoCodeReview } from 'react-icons/go';
 // components
 import MyInfoDescription from '@components/myinfo/MyInfoDescription';
 import MyInfoTabNav from '@components/myinfo/MyInfoTabNav';
-import MyInfoList from '@components/myinfo/MyInfoList';
+import RecentList from '@components/myinfo/RecentList';
 
 // TabNav Data (label, icon)
 const myInfoTabNav = [
@@ -40,7 +40,7 @@ const MyPage = () => {
         <MyInfoDescription />
         <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={HandlerSelectTab} />
       </MyInfoTopWrap>
-      {currentTab === '최근목록' && <MyInfoList textTitle={currentTab} items={['하잇', '안농']} />}
+      {currentTab === '최근목록' && <RecentList textTitle={currentTab} />}
     </MyPageContainer>
   );
 };

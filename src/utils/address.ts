@@ -2,5 +2,12 @@
 export const splitAddress = (address: string): string => {
   const splitAddress = address.split(' ');
 
-  return splitAddress[0] + ' ' + splitAddress[1] + ' ' + splitAddress[2];
+  switch (splitAddress.length) {
+    case 1:
+      return splitAddress[0];
+    case 2:
+      return splitAddress[0] + ' ' + splitAddress[1];
+    default:
+      return splitAddress[0] + ' ' + splitAddress[1] + ' ' + splitAddress[2];
+  }
 };
