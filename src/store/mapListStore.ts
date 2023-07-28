@@ -56,4 +56,14 @@ const useCategoryStore = create<CategoryState>(set => ({
   },
 }));
 
-export { useOptionStore, useCategoryStore };
+interface keywordState {
+  keyword: string;
+  setKeyword: (keyword: string) => void;
+}
+
+const useKeywordStore = create<keywordState>(set => ({
+  keyword: '',
+  setKeyword: (keyword: string) => set({ keyword }),
+}));
+
+export { useOptionStore, useCategoryStore, useKeywordStore };
