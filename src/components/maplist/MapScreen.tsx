@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useKeywordStore } from '@store/mapListStore';
+import { useKeywordStore, useLocationStore } from '@store/mapListStore';
 
 //component
 import Button from '@components/Button';
@@ -16,16 +16,19 @@ export interface LatLngType {
 const MapScreen = () => {
   const [inputText, setInputText] = useState<string>('');
   const { setKeyword } = useKeywordStore();
-  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>([
-    { latitude: 37.0, longitude: 127.0 }, // 예시로 두 개의 마커 위치를 초기화
-    { latitude: 37.0, longitude: 127.1 },
-  ]);
+  const { locationData } = useLocationStore();
+  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       setKeyword(inputText);
     }
   };
+
+  useEffect(() => {
+    // This useEffect hook will run whenever locationData changes
+    setMarkerPositions(locationData);
+  }, [locationData]);
 
   useEffect(() => {
     // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
@@ -46,7 +49,7 @@ const MapScreen = () => {
         marker.setMap(map);
       });
     });
-  }, []);
+  }, [markerPositions]);
 
   return (
     <MapView>

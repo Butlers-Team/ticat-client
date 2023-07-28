@@ -66,4 +66,25 @@ const useKeywordStore = create<keywordState>(set => ({
   setKeyword: (keyword: string) => set({ keyword }),
 }));
 
+// 타입 정의
+type Location = {
+  latitude: number;
+  longitude: number;
+};
+
+type LocationDataState = {
+  locationData: Location[];
+  setLocationData: (newData: Location[]) => void;
+};
+
+export const useLocationStore = create<LocationDataState>(set => ({
+  locationData: [
+    {
+      latitude: 127.0,
+      longitude: 25.0,
+    },
+  ],
+  setLocationData: newData => set({ locationData: newData }), // updateData의 인자를 받아 state를 업데이트
+}));
+
 export { useOptionStore, useCategoryStore, useKeywordStore };
