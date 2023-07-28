@@ -8,18 +8,20 @@ import Festival from '@components/festival/Festival';
 
 //type
 import { MapFastivalType } from 'types/api/mapfastival';
-import { useOptionStore, useCategoryStore } from '@store/mapListStore';
+import { useOptionStore, useCategoryStore, useKeywordStore } from '@store/mapListStore';
 
 const FastivalList = () => {
   const [mapListData, setMapListData] = useState<MapFastivalType[]>([]);
   const { sortBy } = useOptionStore();
   const { category } = useCategoryStore();
+  const { keyword } = useKeywordStore();
 
   const categoryJoin = category.join();
 
   /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
   const fetchDetailList = async () => {
     const params = {
+      keyword: keyword,
       categories: categoryJoin,
       sortBy: sortBy,
       page: 1,
@@ -33,7 +35,7 @@ const FastivalList = () => {
   };
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category]);
+  }, [sortBy, category, keyword]);
 
   return (
     <FastivalListBox>
