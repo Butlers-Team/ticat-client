@@ -27,10 +27,9 @@ const MyInfoButton = () => {
 
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
-      currentLongitude: latitude,
-      currentLatitude: longitude,
+      currentLongitude: longitude,
+      currentLatitude: latitude,
     };
-
     const weather = await getWeather(params);
     console.log(weather);
     weather && setMyWeather(weather);
@@ -44,6 +43,7 @@ const MyInfoButton = () => {
         position => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
+          console.log(position);
           console.log(`위도:${position.coords.latitude} 경도:${position.coords.longitude}`);
         },
         error => {
@@ -74,7 +74,7 @@ const MyInfoButton = () => {
       myLocationWeather();
     }
   }, [latitude, longitude]);
-
+  console.log(myWeather?.region);
   return (
     <div>
       <MyInfoCheck bgcolor="var(--color-main)" onClick={navigateStamp} className="cursor-pointer">
