@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react';
+import { useKeywordStore, useLocationStore } from '@store/mapListStore';
 
 //component
 import Button from '@components/Button';
@@ -6,17 +8,77 @@ import Button from '@components/Button';
 //icon
 import { FaSearch } from 'react-icons/fa';
 
+export interface LatLngType {
+  latitude: number;
+  longitude: number;
+}
+
 const MapScreen = () => {
+  const [inputText, setInputText] = useState<string>('');
+  const { setKeyword } = useKeywordStore();
+  const { locationData } = useLocationStore();
+  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      setKeyword(inputText);
+    }
+  };
+
+  useEffect(() => {
+    // This useEffect hook will run whenever locationData changes
+    setMarkerPositions(locationData);
+  }, [locationData]);
+
+  useEffect(() => {
+    // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
+    window.kakao.maps.load(() => {
+      // 카카오 지도 생성
+      const container = document.getElementById('map');
+      const options = {
+        center: new window.kakao.maps.LatLng(37.5665, 126.978), // 서울시청 좌표를 기준으로 설정
+        level: 12, // 지도 확대 레벨
+      };
+      const map = new window.kakao.maps.Map(container, options);
+
+      // 마커들 생성 및 추가
+      markerPositions.forEach(position => {
+        const marker = new window.kakao.maps.Marker({
+          position: new window.kakao.maps.LatLng(position.latitude, position.longitude),
+        });
+        marker.setMap(map);
+      });
+    });
+  }, [markerPositions]);
+
   return (
     <MapView>
+      <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
-        <input type="text" placeholder="검색할 축제 이름 및 지역명" />
-        <Button margin="0px" height="40px" width="70px">
+        <input
+          type="text"
+          placeholder="검색할 축제 이름 및 지역명"
+          value={inputText}
+          onChange={e => {
+            setInputText(e.target.value);
+          }}
+          onKeyDown={e => {
+            handleKeyPress(e);
+          }}
+        />
+        <Button
+          margin="0px"
+          height="40px"
+          width="70px"
+          onClick={() => {
+            setKeyword(inputText);
+          }}>
           <FaSearch className="icon-margin" />
           검색
         </Button>
       </div>
-      <img src="https://i.imgur.com/LcydlQy.png" />
+
+      {/* <div className="map-guide"></div> */}
     </MapView>
   );
 };
@@ -34,6 +96,7 @@ const MapView = styled.article`
     width: 100%;
     height: 30px;
     padding: 20px;
+    z-index: 99;
 
     input {
       width: 100%;
@@ -55,9 +118,9 @@ const MapView = styled.article`
       font-size: 1.2rem;
     }
   }
-  img {
+  .map-guide {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    background: url('https://i.imgur.com/LcydlQy.png');
   }
 `;

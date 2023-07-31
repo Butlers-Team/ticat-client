@@ -18,6 +18,7 @@ export interface MapFastivalType {
 /**2023/07/23 - 맵 리스트 params (Reqeust) */
 
 export interface MapFastivalRequest {
+  keyword: string;
   categories: string;
   sortBy: string;
   page: number;
