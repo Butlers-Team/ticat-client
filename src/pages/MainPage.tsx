@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 import { getMainRecommend } from '@api/mainfastival';
+import { getSurroundingFestival } from '@api/surroundingfestival';
 import { MainFastivalType } from 'types/api/mainfastival';
+import { surroundType, surroundTypeRequest } from 'types/api/surroundingfestival';
 
 //components
 import MainSlider from '@components/main/MainSlider';
@@ -32,11 +34,11 @@ const MainPage = () => {
           <CategoryIcon />
         </li>
         <li className="contents-box">
-          <h2>나의 정보 확인</h2>
+          <h2>😀 나의 정보 확인</h2>
           <MyInfoButton />
         </li>
         <li className="contents-box">
-          <h2>추천 축제</h2>
+          <h2>🔥 추천 축제</h2>
           <div>
             <RecommendFestival fastivaldata={recommendData} />
           </div>

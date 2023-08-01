@@ -31,7 +31,6 @@ const MyInfoButton = () => {
       currentLatitude: latitude,
     };
     const weather = await getWeather(params);
-    console.log(weather);
     weather && setMyWeather(weather);
     setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
   };
@@ -43,8 +42,6 @@ const MyInfoButton = () => {
         position => {
           setLatitude(position.coords.latitude);
           setLongitude(position.coords.longitude);
-          console.log(position);
-          console.log(`위도:${position.coords.latitude} 경도:${position.coords.longitude}`);
         },
         error => {
           console.error('Error getting location:', error);
@@ -89,12 +86,12 @@ const MyInfoButton = () => {
       {isLoading ? (
         <MyInfoCheck bgcolor="var(--color-sub)">
           <li className="flex-v-center column left-section">
-            <span className="font-main">{`현재 집사님의 위치를 조회중 입니다`}</span>
+            <span className="font-main">{`집사님의 위치를 조회중 입니다`}</span>
             <p className="font-sub">{`잠시만 기다려주세요 :)`}</p>
           </li>
           <li className="flex-h-center row width">
             <div className="local-wather-icon">
-              <LodingIcon></LodingIcon>
+              <LodingIcon width="20px" height="20px"></LodingIcon>
             </div>
           </li>
         </MyInfoCheck>
