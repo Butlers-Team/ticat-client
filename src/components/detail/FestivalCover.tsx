@@ -5,6 +5,8 @@ import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked
 import { getWeather } from '@api/weather';
 import { WeatherRequest, WeatherType } from 'types/api/weather';
 import { WeatherIcon } from '@components/WeatherIcon';
+//import { getToken } from '@store/useTokenStore';
+
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { BiSolidHeart } from 'react-icons/bi';
@@ -173,7 +175,7 @@ const CoverContainer = styled.article`
     width: 100%;
     position: absolute;
     bottom: 60px;
-    left: 20px;
+    padding: 0 2rem;
     //행사가 진행중이라면 진행중
     > .festival-proceeding {
       color: var(--color-light);

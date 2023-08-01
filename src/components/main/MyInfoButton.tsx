@@ -30,7 +30,6 @@ const MyInfoButton = () => {
       currentLongitude: longitude,
       currentLatitude: latitude,
     };
-
     const weather = await getWeather(params);
     weather && setMyWeather(weather);
     setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
@@ -72,7 +71,7 @@ const MyInfoButton = () => {
       myLocationWeather();
     }
   }, [latitude, longitude]);
-
+  console.log(myWeather?.region);
   return (
     <div>
       <MyInfoCheck bgcolor="var(--color-main)" onClick={navigateStamp} className="cursor-pointer">

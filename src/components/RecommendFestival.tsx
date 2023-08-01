@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
@@ -19,8 +18,6 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const [slidesPerView, setSlidesPerView] = useState<number>(3);
   const [imageErrors, setImageErrors] = useState(Array(fastivaldata.length).fill(false));
-  const navigate = useNavigate();
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -53,8 +50,7 @@ const RecommendFestival: React.FC<RecommendFestivalProps> = ({ fastivaldata }) =
   };
 
   const routingDetailPage = (cardId: string) => {
-    navigate(`/detail/${cardId}`);
-    window.location.reload();
+    window.location.href = `/detail/${cardId}`;
 
     /**  기존의 <RecommendCard href={card.festivalId.toString()}> 코드의 경우
      * main 에서 라우팅할때 detail 페이지로 라우팅하지 못하는 bug 발생.
