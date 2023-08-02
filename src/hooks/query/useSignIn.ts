@@ -13,28 +13,32 @@ import { useTokenStore } from '@store/useTokenStore';
 //custom
 import useCustomToast from '@hooks/useCustomToast';
 import { useMemberStore } from '@store/useMemberStore';
+import { dateToSeconds } from '@utils/dateToSeconds';
+import { useExpStore } from '@store/useExpStore';
 
 /** 2023/07/09 - 로그인 뮤테이션 - by leekoby */
 export const useSignIn = () => {
   const { setAccessToken, setRefreshToken } = useTokenStore();
-  const { setMember, member } = useMemberStore();
+  const { setMember } = useMemberStore();
+  const { setExp, exp } = useExpStore();
+
   const navigate = useNavigate();
   const toast = useCustomToast();
   const signInMutation = useMutation(apiSignIn, {
     onSuccess: (response: ApiSignInSuccess) => {
-      if (isApiSignInSuccess(response)) {
-        const { accessToken, refreshToken } = response;
-        setAccessToken(accessToken);
-        setRefreshToken(refreshToken);
-        setMember(response.data);
-        if (response.data.displayName === null) {
-          toast({ title: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
-          // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
-          navigate('/interest');
-        } else {
-          toast({ title: `메인페이지로 이동합니다.`, status: 'success' });
-          navigate('/main');
-        }
+      const { accessToken, refreshToken, accessTokenExpiration } = response;
+      console.log('response:', response);
+      setExp(+dateToSeconds(accessTokenExpiration));
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      setMember(response.data);
+      if (response.data.displayName === null) {
+        toast({ title: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
+        // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
+        navigate('/interest');
+      } else {
+        toast({ title: `메인페이지로 이동합니다.`, status: 'success' });
+        navigate('/main');
       }
     },
 
@@ -55,20 +59,3 @@ export const useSignIn = () => {
 
   return signInMutation;
 };
-
-/**
- * 2023/07/14 - 객체의 타입을 확인하는 사용자 정의 타입가드 - by leekoby
- * 입력으로 받은 객체가 { data: ApiSignInResponse; accessToken: string; refreshToken: string } 타입인지 확인
- *
- * @param obj 타입 확인이 필요한 객체
- * @returns 타입 확인 결과에 따라 true 또는 false 반환
- */
-function isApiSignInSuccess(
-  obj: unknown,
-): obj is { data: ApiSignInResponse; accessToken: string; refreshToken: string } {
-  if (typeof obj === 'object' && obj !== null && 'data' in obj && 'accessToken' in obj && 'refreshToken' in obj) {
-    // 객체가 'null'이 아닌 'object' data', 'accessToken', 'refreshToken' 키가 모두 있는지 확인 모두 만족하면 true 아니면 false
-    return true;
-  }
-  return false;
-}
