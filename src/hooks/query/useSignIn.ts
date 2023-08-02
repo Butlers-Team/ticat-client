@@ -27,7 +27,6 @@ export const useSignIn = () => {
   const signInMutation = useMutation(apiSignIn, {
     onSuccess: (response: ApiSignInSuccess) => {
       const { accessToken, refreshToken, accessTokenExpiration } = response;
-      console.log('response:', response);
       setExp(+dateToSeconds(accessTokenExpiration));
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
