@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 //key
-import { QUERY_KEYS } from '.';
+import { QUERY_KEYS } from './queryKeys';
 
 //api
 import { apiFetchBlogPosts } from '@api/blogpost';

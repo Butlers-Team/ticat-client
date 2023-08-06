@@ -2,7 +2,7 @@ import useCustomToast from '@hooks/useCustomToast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 //keys
-import { QUERY_KEYS } from '.';
+import { QUERY_KEYS } from './queryKeys';
 
 // api
 import { apiCreateReview } from '@api/reviews';
