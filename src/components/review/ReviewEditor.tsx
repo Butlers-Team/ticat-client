@@ -25,13 +25,22 @@ interface Props {}
 const ReviewEditor: React.FC<Props> = (): JSX.Element => {
   const { id } = useParams();
   const festivalId = parseInt(id as string, 10);
-  const commentMutation = useCreateReview();
+
   const toast = useCustomToast();
 
   const [rating, setRating] = useState<number>(0);
   const [content, setContent] = useState<string>('');
   const [existingImages, setExistingImages] = useState<string[]>([]); // 기존의 사진
   const [selectedImages, setSelectedImages] = useState<File[]>([]); // new 사진
+
+  const handleReset = () => {
+    setRating(0);
+    setContent('');
+    setExistingImages([]);
+    setSelectedImages([]);
+  };
+
+  const reviewMutation = useCreateReview({ festivalId, handleReset });
 
   /** 2023/07/21- textarea 리사이징 - by leekoby */
   const [textareaRef, handleResizeHeight] = useResizeTextarea();
@@ -70,7 +79,7 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
       },
       reviewImages: selectedImages,
     };
-    commentMutation.mutate(data);
+    reviewMutation.mutate(data);
   };
   return (
     <>

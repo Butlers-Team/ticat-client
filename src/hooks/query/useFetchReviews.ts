@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { apiFetchReviews } from '@api/reviews';
 
 //key
-const QUERY_KEYS = { review: 'review' };
+import { QUERY_KEYS } from '.';
 
 //type
 import type { ApiFetchReviewsResponse } from 'types/api';

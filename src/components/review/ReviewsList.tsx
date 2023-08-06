@@ -1,3 +1,4 @@
+import Button from '@components/Button';
 import { useFetchReviews } from '@hooks/query/useFetchReviews';
 import styled from 'styled-components';
 import ReviewItem from './review-item/ReviewItem';
@@ -12,6 +13,11 @@ const ReviewsList: React.FC<Props> = ({ festivalId }): JSX.Element => {
   return (
     <ReviewsContainer>
       {data?.pages.map(page => page.data.map(review => <ReviewItem key={review.reviewId} review={review} />))}
+      {hasNextPage && (
+        <section>
+          <Button onClick={() => fetchNextPage()}>리뷰 더 불러오기</Button>
+        </section>
+      )}
     </ReviewsContainer>
   );
 };
