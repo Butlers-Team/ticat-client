@@ -5,10 +5,10 @@ interface Props {
   displayName: string;
   rating: number;
 }
-/** 2023/07/22- 댓글 상단 프로필이미지/닉네임/별점/작성일 - by leekoby */
-const CommentHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element => {
+/** 2023/07/22- 리뷰 상단 프로필이미지/닉네임/별점/작성일 - by leekoby */
+const ReviewItemHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element => {
   return (
-    <CommentHeaderContainer>
+    <ReviewHeaderContainer>
       <InfoWrapper>
         <span className="nickname">{displayName}</span>
         <span className="rating">
@@ -16,13 +16,13 @@ const CommentHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element =>
         </span>
       </InfoWrapper>
       <span className="createdAt">2023.07.21</span>
-    </CommentHeaderContainer>
+    </ReviewHeaderContainer>
   );
 };
 
-export default CommentHeader;
+export default ReviewItemHeader;
 
-const CommentHeaderContainer = styled.div`
+const ReviewHeaderContainer = styled.div`
   display: flex;
   flex-grow: 1;
   justify-content: space-between;

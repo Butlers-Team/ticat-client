@@ -3,9 +3,9 @@ import styled from 'styled-components';
 interface Props {
   pictures: string[];
 }
-/** 2023/07/22- 댓글 상단 프로필 이미지 - by leekoby */
+/** 2023/07/22- 리뷰 상단 프로필 이미지 - by leekoby */
 
-const CommentImage: React.FC<Props> = ({ pictures }): JSX.Element => {
+const ReviewProfileImage: React.FC<Props> = ({ pictures }): JSX.Element => {
   return (
     <ImageContainer>
       {pictures.map((imgUrl, idx) => (
@@ -15,7 +15,7 @@ const CommentImage: React.FC<Props> = ({ pictures }): JSX.Element => {
   );
 };
 
-export default CommentImage;
+export default ReviewProfileImage;
 
 const ImageContainer = styled.div`
   width: 100%;

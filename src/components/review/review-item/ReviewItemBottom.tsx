@@ -1,4 +1,4 @@
-import { useCommentDislike, useCommentLike } from '@hooks/query';
+import { useReviewDislike, useReviewLike } from '@hooks/query';
 import { useState } from 'react';
 
 import {
@@ -20,11 +20,11 @@ interface Props {
   likedCount?: number;
   dislikedCount?: number;
 }
-/** 2023/07/22- 댓글 하단 좋아요/싫어요/답글 보기/답글 작성 - by leekoby */
+/** 2023/07/22- 리뷰 하단 좋아요/싫어요/답글 보기/답글 작성 - by leekoby */
 
-const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewId }): JSX.Element => {
-  const { createCommentLikeMutation, deleteCommentLikeMutation } = useCommentLike();
-  const { createCommentDislikeMutation, deleteCommentDislikeMutation } = useCommentDislike();
+const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewId }): JSX.Element => {
+  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
+  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike();
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
 
@@ -45,7 +45,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
     // 일정 시간 동안 대기 후 API 호출
     timer = setTimeout(() => {
       if (!isLiked) {
-        createCommentLikeMutation.mutate(
+        createReviewLikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -55,7 +55,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       } else {
-        deleteCommentLikeMutation.mutate(
+        deleteReviewLikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -84,7 +84,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
     // 일정 시간 동안 대기 후 API 호출
     timer = setTimeout(() => {
       if (!isDisliked) {
-        createCommentDislikeMutation.mutate(
+        createReviewDislikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -94,7 +94,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       } else {
-        deleteCommentDislikeMutation.mutate(
+        deleteReviewDislikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -108,7 +108,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
   };
 
   return (
-    <CommentBottomContainer>
+    <ReviewBottomContainer>
       <IconContainer>
         <button className={`like-btn`} onClick={handleLikeClick}>
           {isLiked ? <TrueLike /> : <FalseLike />}
@@ -126,13 +126,13 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           <button>{`답글 ${commentCount}개`}</button>
         </RecommentButtonContainer>
       )}
-    </CommentBottomContainer>
+    </ReviewBottomContainer>
   );
 };
 
-export default CommentBottom;
+export default ReviewItemBottom;
 
-const CommentBottomContainer = styled.div`
+const ReviewBottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;

@@ -5,7 +5,7 @@ export interface reviewRatingProps {
   reviewRating: number;
   size: number;
 }
-/** 2023/07/23- 댓글 별점  - by leekoby */
+/** 2023/07/23- 리뷰 별점  - by leekoby */
 const ReviewRating = ({ reviewRating, size }: reviewRatingProps) => {
   return (
     <>

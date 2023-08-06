@@ -3,8 +3,8 @@ import styled from 'styled-components';
 interface Props {
   content: string;
 }
-/** 2023/07/22- 댓글 내용 - by leekoby */
-const CommentContent: React.FC<Props> = ({ content }): JSX.Element => {
+/** 2023/07/22- 리뷰 내용 - by leekoby */
+const ReviewItemContent: React.FC<Props> = ({ content }): JSX.Element => {
   return (
     <ContentContainer>
       <p>{content}</p>
@@ -12,7 +12,7 @@ const CommentContent: React.FC<Props> = ({ content }): JSX.Element => {
   );
 };
 
-export default CommentContent;
+export default ReviewItemContent;
 
 const ContentContainer = styled.div`
   p {

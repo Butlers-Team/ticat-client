@@ -1,7 +1,7 @@
 import { FestivalDetailType } from 'types/api/detail';
 import styled from 'styled-components';
-import BlogReviews from './BlogReviews';
-import Comments from './Comments';
+import BlogReviews from './blog-reviews/BlogReviews';
+import ReviewsList from './ReviewsList';
 import ReviewEditor from './ReviewEditor';
 import ReviewHeader from './ReviewHeader';
 import { getToken } from '@store/useTokenStore';
@@ -29,7 +29,7 @@ const Review: React.FC<Props> = ({ detailList }): JSX.Element => {
           <Button>로그인 하고 후기 남기기</Button>
         </Link>
       )}
-      <Comments festivalId={detailList.festivalId} />
+      <ReviewsList festivalId={detailList.festivalId} />
     </ReviewSection>
   );
 };

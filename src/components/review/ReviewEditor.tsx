@@ -16,16 +16,16 @@ import { TiDeleteOutline } from 'react-icons/ti';
 //hooks
 import useResizeTextarea from '@hooks/useResizeTextArea';
 import useCustomToast from '@hooks/useCustomToast';
-import { useCreateComment } from '@hooks/query';
-import { ApiCreateCommentRequest } from 'types/api';
+import { useCreateReview } from '@hooks/query';
+import { ApiCreateReviewRequest } from 'types/api';
 
 interface Props {}
 
-/** 2023/07/21- 댓글 Editor - by leekoby */
+/** 2023/07/21- 리뷰 Editor - by leekoby */
 const ReviewEditor: React.FC<Props> = (): JSX.Element => {
   const { id } = useParams();
   const festivalId = parseInt(id as string, 10);
-  const commentMutation = useCreateComment();
+  const commentMutation = useCreateReview();
   const toast = useCustomToast();
 
   const [rating, setRating] = useState<number>(0);
@@ -62,7 +62,7 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
       return;
     }
 
-    const data: ApiCreateCommentRequest = {
+    const data: ApiCreateReviewRequest = {
       festivalId,
       review: {
         content,
