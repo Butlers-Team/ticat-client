@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 //key
-const QUERY_KEYS = { blogPosts: 'blogPosts' };
+import { QUERY_KEYS } from '.';
+
 //api
 import { apiFetchBlogPosts } from '@api/blogpost';
 

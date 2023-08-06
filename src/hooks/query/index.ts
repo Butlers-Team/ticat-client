@@ -1,3 +1,8 @@
+export const QUERY_KEYS = {
+  blogPosts: 'blogPosts',
+  review: 'review',
+};
+
 export * from './useSignIn';
 export * from './useSignUp';
 export * from './useResisterInterest';
