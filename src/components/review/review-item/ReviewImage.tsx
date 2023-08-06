@@ -5,7 +5,7 @@ interface Props {
 }
 /** 2023/07/22- 리뷰 상단 프로필 이미지 - by leekoby */
 
-const ReviewProfileImage: React.FC<Props> = ({ pictures }): JSX.Element => {
+const ReviewImage: React.FC<Props> = ({ pictures }): JSX.Element => {
   return (
     <ImageContainer>
       {pictures.map((imgUrl, idx) => (
@@ -15,7 +15,7 @@ const ReviewProfileImage: React.FC<Props> = ({ pictures }): JSX.Element => {
   );
 };
 
-export default ReviewProfileImage;
+export default ReviewImage;
 
 const ImageContainer = styled.div`
   width: 100%;

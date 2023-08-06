@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import ReviewItemBottom from './ReviewItemBottom';
 import ReviewItemContent from './ReviewItemContent';
 import ReviewItemHeader from './ReviewItemHeader';
-import ReviewImage from './ReviewProfileImage';
+import ReviewImage from './ReviewImage';
 
 interface Props {
   review: ReviewResponse;
@@ -25,7 +25,13 @@ const ReviewItem: React.FC<Props> = ({ review }): JSX.Element => {
       </HeaderWrapper>
       <ReviewItemContent content={content} />
       <ReviewImage pictures={pictures} />
-      <ReviewItemBottom commentCount={commentCount} disliked={disliked} liked={liked} reviewId={reviewId} />
+      <ReviewItemBottom
+        commentCount={commentCount}
+        disliked={disliked}
+        liked={liked}
+        reviewId={reviewId}
+        memberId={memberId}
+      />
     </ReviewItemContainer>
   );
 };
