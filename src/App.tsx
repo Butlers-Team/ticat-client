@@ -11,7 +11,6 @@ function App() {
       navigator.geolocation.getCurrentPosition(
         position => {
           const { latitude, longitude } = position.coords;
-          console.log(`위도:${latitude} 경도:${longitude}`);
           setLocation({ latitude, longitude });
         },
         error => {

@@ -26,8 +26,6 @@ const MyInfoButton = () => {
   const navigate = useNavigate();
   const { location } = useLocationStore();
 
-  console.log(location);
-
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
       currentLongitude: location.longitude,
