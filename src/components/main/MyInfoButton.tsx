@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocationStore } from '@store/userLocation';
+
 //icon
 import { IoIosArrowForward } from 'react-icons/io';
 import { HiLocationMarker } from 'react-icons/hi';
@@ -20,15 +22,16 @@ interface bgColor {
 
 const MyInfoButton = () => {
   const [myWeather, setMyWeather] = useState<WeatherType>();
-  const [latitude, setLatitude] = useState<number>(0);
-  const [longitude, setLongitude] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const { location } = useLocationStore();
+
+  console.log(location);
 
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
-      currentLongitude: longitude,
-      currentLatitude: latitude,
+      currentLongitude: location.longitude,
+      currentLatitude: location.latitude,
     };
 
     const weather = await getWeather(params);
@@ -36,42 +39,16 @@ const MyInfoButton = () => {
     setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
   };
 
-  useEffect(() => {
-    /**2023.07.25 사용자 위치정보 요청 - by mscojl24 */
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-        },
-        error => {
-          console.error('Error getting location:', error);
-          // 위치 정보를 받아오지 못할경우 디폴트 데이터 출력.
-          setLatitude(126.98834145916423);
-          setLongitude(37.54810058003352);
-          setIsLoading(false);
-        },
-        {
-          timeout: 5000,
-        },
-      );
-    } else {
-      setLatitude(126.98834145916423);
-      setLongitude(37.54810058003352);
-      setIsLoading(false);
-    }
-  }, []);
-
   const navigateStamp = () => {
     navigate(`/stamp/list`);
   };
 
   useEffect(() => {
     // 위치 정보를 가져온 후에 myLocationWeather 함수를 실행합니다.
-    if (latitude && longitude) {
+    if (location) {
       myLocationWeather();
     }
-  }, [latitude, longitude]);
+  }, [location.latitude, location.latitude]);
 
   return (
     <div>
