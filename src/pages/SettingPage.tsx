@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 // components
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
+import MySetting from '@components/mysetting/MySetting';
 
 /** 2023/07/21 - 설정 페이지 - by sineTlsl */
 const SettingPage = () => {
@@ -16,6 +17,7 @@ const SettingPage = () => {
   return (
     <SettingContainer>
       <TopHistoryBackNav textTitle="설정 관리" onNavigation={goBackPage} />
+      <MySetting></MySetting>
     </SettingContainer>
   );
 };
