@@ -26,22 +26,38 @@ const FestivalInfo: React.FC<FestivalCoverProps> = ({ detailList }) => {
         <p
           className="mobile-fontsize"
           dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.overview) }}></p>
-        <FestivalContact>
-          <p className="mobile-fontsize">행사 연락처</p>
-          <span className="mobile-fontsize">{detailList.tel}</span>
-        </FestivalContact>
-        <FestivalContact>
-          <p className="mobile-fontsize">행사위치</p>
-          <span
-            className="mobile-fontsize"
-            dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.eventplace) }}></span>
-        </FestivalContact>
-        <FestivalContact>
-          <p className="mobile-fontsize">이용료</p>
-          <span
-            className="mobile-fontsize"
-            dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.price) }}></span>
-        </FestivalContact>
+        {
+          <FestivalContact>
+            <p className="mobile-fontsize">행사 연락처</p>
+            <span className="mobile-fontsize">{detailList.tel ? detailList.tel : '정보제공 X'}</span>
+          </FestivalContact>
+        }
+        {detailList.eventplace ? (
+          <FestivalContact>
+            <p className="mobile-fontsize">행사위치</p>
+            <span
+              className="mobile-fontsize"
+              dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.eventplace) }}></span>
+          </FestivalContact>
+        ) : (
+          <FestivalContact>
+            <p className="mobile-fontsize">행사위치</p>
+            <span className="mobile-fontsize">정보제공 X</span>
+          </FestivalContact>
+        )}
+        {detailList.price ? (
+          <FestivalContact>
+            <p className="mobile-fontsize">이용료</p>
+            <span
+              className="mobile-fontsize"
+              dangerouslySetInnerHTML={{ __html: safelySanitizeHtml(detailList.price) }}></span>
+          </FestivalContact>
+        ) : (
+          <FestivalContact>
+            <p className="mobile-fontsize">이용료</p>
+            <span className="mobile-fontsize">정보제공 X</span>
+          </FestivalContact>
+        )}
       </InfoContainer>
     </>
   );
