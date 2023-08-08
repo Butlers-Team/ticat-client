@@ -21,7 +21,7 @@ const CategoryComponent: React.FC<Props> = ({ category, setCategory, onSubmit })
 
   return (
     <>
-      <CommonCategoryList category={category} handleCategory={handleCategory} />
+      <CommonCategoryList category={category} handleCategory={handleCategory} width={'300px'} />
       <ButtonContainer>
         <Button fontSize="1.6rem" disabled={category.length < 1} onClick={onSubmit}>
           <span>확인</span>
