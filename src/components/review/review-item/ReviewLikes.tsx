@@ -1,5 +1,6 @@
 import { useReviewDislike, useReviewLike } from '@hooks/query';
-import { useState } from 'react';
+import { useMemberStore } from '@store/useMemberStore';
+import { useRef, useState } from 'react';
 
 import {
   BiDislike as FalseDislike,
@@ -13,6 +14,7 @@ import { GoCommentDiscussion } from 'react-icons/go';
 import styled from 'styled-components';
 
 interface Props {
+  memberId: number | null;
   reviewId: number;
   commentCount: number;
   liked: boolean;
@@ -20,20 +22,29 @@ interface Props {
   likedCount?: number;
   dislikedCount?: number;
 }
-/** 2023/07/22- 리뷰 하단 좋아요/싫어요/답글 보기/답글 작성 - by leekoby */
+/** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
 
-const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewId }): JSX.Element => {
+const ReviewItemBottom: React.FC<Props> = ({
+  commentCount,
+  liked,
+  disliked,
+  reviewId,
+  memberId: writerId,
+}): JSX.Element => {
+  const { member } = useMemberStore();
+
   const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
   const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike();
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
 
-  let timer: ReturnType<typeof setTimeout>; // 타이머 생성
+  const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
+
   const handleLikeClick = () => {
     const previousIsLiked = isLiked;
 
-    if (timer) {
-      clearTimeout(timer); // 기존에 설정된 타이머가 있다면 초기화
+    if (timer.current) {
+      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
     }
 
     // Optimistic UI 업데이트
@@ -43,7 +54,7 @@ const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, revi
     setIsLiked(prevState => !prevState);
 
     // 일정 시간 동안 대기 후 API 호출
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       if (!isLiked) {
         createReviewLikeMutation.mutate(
           { reviewId },
@@ -65,14 +76,14 @@ const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, revi
           },
         );
       }
-    }, 3000); // 3초 동안 다른 동작이 없으면 API 호출 진행
+    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   const handleDislikeClick = () => {
     const previousIsDisliked = isDisliked;
 
-    if (timer) {
-      clearTimeout(timer); // 기존에 설정된 타이머가 있다면 초기화
+    if (timer.current) {
+      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
     }
 
     // Optimistic UI 업데이트
@@ -82,7 +93,7 @@ const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, revi
     setIsDisliked(prevState => !prevState);
 
     // 일정 시간 동안 대기 후 API 호출
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       if (!isDisliked) {
         createReviewDislikeMutation.mutate(
           { reviewId },
@@ -104,29 +115,25 @@ const ReviewItemBottom: React.FC<Props> = ({ commentCount, liked, disliked, revi
           },
         );
       }
-    }, 3000); // 3초 동안 다른 동작이 없으면 API 호출 진행
+    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   return (
-    <ReviewBottomContainer>
-      <IconContainer>
-        <button className={`like-btn`} onClick={handleLikeClick}>
-          {isLiked ? <TrueLike /> : <FalseLike />}
-        </button>
-        <button className={`dislike-btn`} onClick={handleDislikeClick}>
-          {isDisliked ? <TrueDislike /> : <FalseDislike />}
-        </button>
-        <button>
-          <GoCommentDiscussion />
-        </button>
-      </IconContainer>
-      {!commentCount && (
-        <RecommentButtonContainer>
-          <FaAngleDown size={'1.3rem'} />
-          <button>{`답글 ${commentCount}개`}</button>
-        </RecommentButtonContainer>
-      )}
-    </ReviewBottomContainer>
+    <>
+      <ReviewBottomContainer>
+        <IconContainer>
+          <button type="button" className={`like-btn`} onClick={handleLikeClick}>
+            {isLiked ? <TrueLike /> : <FalseLike />}
+          </button>
+          <button type="button" className={`dislike-btn`} onClick={handleDislikeClick}>
+            {isDisliked ? <TrueDislike /> : <FalseDislike />}
+          </button>
+          {/* <button type="button">
+            <GoCommentDiscussion />
+          </button> */}
+        </IconContainer>
+      </ReviewBottomContainer>
+    </>
   );
 };
 
@@ -171,26 +178,5 @@ const IconContainer = styled.div`
     &:hover {
       color: #ff7a7a;
     }
-  }
-`;
-const RecommentButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-main);
-  gap: 0.5rem;
-
-  &:hover {
-    color: var(--color-sub);
-  }
-  button {
-    font-size: 1.3rem;
-    font-weight: bold;
-    background: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    cursor: pointer;
-    outline: inherit;
   }
 `;

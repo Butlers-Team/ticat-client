@@ -1,18 +1,23 @@
+import { FestivalDetailType } from 'types/api/detail';
+
 import styled from 'styled-components';
 
-interface Props {}
+interface Props {
+  detailList: FestivalDetailType;
+}
 
 /** 2023/07/22- 리뷰 영역 헤더 - by leekoby */
-const ReviewHeader: React.FC<Props> = (): JSX.Element => {
+const ReviewHeader: React.FC<Props> = ({ detailList }): JSX.Element => {
+  const { reviewCount, reviewRating } = detailList;
   return (
     <ReviewHeaderContainer>
       <ReviewTitleContainer>
         <h2>축제 평가</h2>
-        <span>n개의 리뷰</span>
+        <span>{reviewCount}개의 리뷰</span>
       </ReviewTitleContainer>
       <span className="score">
         <span>평점</span>
-        <span className="score-point">5.0</span>
+        <span className="score-point">{reviewRating}</span>
       </span>
     </ReviewHeaderContainer>
   );

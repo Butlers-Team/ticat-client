@@ -19,7 +19,7 @@ const Review: React.FC<Props> = ({ detailList }): JSX.Element => {
   const isLogin = accessToken && refreshToken && member?.memberId;
   return (
     <ReviewSection>
-      <ReviewHeader />
+      <ReviewHeader detailList={detailList} />
       {detailList && <BlogReviews festivalName={detailList.title} />}
       {isLogin ? (
         <ReviewEditor />

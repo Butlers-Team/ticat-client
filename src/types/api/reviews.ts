@@ -10,6 +10,8 @@ interface ReviewType {
   pictures: string[] | [];
   rating: number;
   reviewId: number;
+  createdAt: string;
+  modifiedAt?: string;
 }
 
 export interface ReviewResponse extends Review, Member, ReviewType {}

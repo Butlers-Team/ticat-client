@@ -1,7 +1,10 @@
 //react
 import { FormEventHandler, useState } from 'react';
 import { useParams } from 'react-router-dom';
+//api
+
 //types
+import { ApiCreateReviewRequest } from 'types/api';
 
 //install library
 import styled from 'styled-components';
@@ -14,10 +17,9 @@ import { TiDeleteOutline } from 'react-icons/ti';
 //components
 
 //hooks
+import { useCreateReview } from '@hooks/query';
 import useResizeTextarea from '@hooks/useResizeTextArea';
 import useCustomToast from '@hooks/useCustomToast';
-import { useCreateReview } from '@hooks/query';
-import { ApiCreateReviewRequest } from 'types/api';
 
 interface Props {}
 
@@ -66,9 +68,11 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
 
-    if (!content || !rating) {
-      toast({ title: '후기 내용을 모두 입력해주세요.', status: 'warning' });
-      return;
+    if (!content && !rating) {
+      return toast({ title: '리뷰 내용과 별점을 모두 입력해주세요.', status: 'warning' });
+    } else if (!content.trim().length) return toast({ title: '리뷰 내용을 입력해주세요.', status: 'warning' });
+    else if (!rating) {
+      return toast({ title: '별점을 선택해주세요.', status: 'warning' });
     }
 
     const data: ApiCreateReviewRequest = {
@@ -106,12 +110,13 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
                     setContent(e.target.value);
                     handleResizeHeight();
                   }}
+                  placeholder="리뷰를 입력해주세요."
                 />
               </div>
             </ReviewContentBox>
             <ReviewContentBox>
               <div className="content-bottom">
-                <p>축제와 관계 없는 내용은 삭제될 수 있습니다.</p>
+                <p>부적절한 내용은 삭제될 수 있습니다.</p>
                 <div className="content-button">
                   <label htmlFor="file-upload" className="img-upload-btn">
                     <AiOutlinePicture size="34" color="var(--color-dark)" />
@@ -123,7 +128,7 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
                     multiple
                     onChange={handleImageUpload}
                   />
-                  <button className="post-button">작성</button>
+                  <button className="post-button">리뷰 등록</button>
                 </div>
               </div>
             </ReviewContentBox>
@@ -183,6 +188,7 @@ const ReviewFormBox = styled.div`
 const ReviewContentBox = styled.div`
   .content-input {
     textarea {
+      resize: none;
       margin-bottom: 1rem;
       border: none;
       width: 100%;

@@ -21,8 +21,15 @@ const useFetchReviews = ({ festivalId, page, size }: Props) => {
     [QUERY_KEYS.review, festivalId],
     ({ pageParam = page }) => apiFetchReviews({ festivalId, page: pageParam, size }),
     {
-      getNextPageParam: (lastPage, allPage) =>
-        lastPage?.pageInfo?.size === size ? lastPage?.pageInfo?.page + 1 : null,
+      getNextPageParam: lastPage => {
+        const { page, totalPages } = lastPage.pageInfo;
+        const nextPage = page + 1;
+        if (nextPage <= totalPages) {
+          return nextPage;
+        } else {
+          return null;
+        }
+      },
     },
   );
 

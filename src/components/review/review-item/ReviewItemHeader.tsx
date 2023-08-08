@@ -1,12 +1,16 @@
 import ReviewRating from '@components/ReviewRating';
+import { getTimeDiff } from '@libs/time';
+
 import styled from 'styled-components';
 
 interface Props {
   displayName: string;
   rating: number;
+  createdAt: string;
+  modifiedAt?: string;
 }
 /** 2023/07/22- 리뷰 상단 프로필이미지/닉네임/별점/작성일 - by leekoby */
-const ReviewItemHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element => {
+const ReviewItemHeader: React.FC<Props> = ({ displayName, rating, createdAt, modifiedAt }): JSX.Element => {
   return (
     <ReviewHeaderContainer>
       <InfoWrapper>
@@ -15,7 +19,7 @@ const ReviewItemHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element
           <ReviewRating size={16} reviewRating={rating} />
         </span>
       </InfoWrapper>
-      <span className="createdAt">2023.07.21</span>
+      <span className="createdAt">{getTimeDiff(new Date(createdAt))}</span>
     </ReviewHeaderContainer>
   );
 };
