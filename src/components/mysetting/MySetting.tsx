@@ -4,6 +4,20 @@ import styled from 'styled-components';
 import { settingData } from '@data/settingData';
 
 const MySetting = () => {
+  const handelMembershipSetting = (item: string) => {
+    if (item === '로그아웃') {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+      alert('로그아웃이 완료되었습니다');
+      window.location.href = '/main';
+    }
+
+    if (item === '회원탈퇴') {
+      /** 2023/08/08 회원탈퇴 요청 - by mscojl24 */
+      console.log('회원탈퇴 요청좀 도와주실분~');
+    }
+  };
+
   return (
     <SettingBox>
       {Object.entries(settingData).map(([category, items]) => (
