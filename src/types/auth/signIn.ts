@@ -12,13 +12,12 @@ export interface ApiSignInRequest {
   password: string;
 }
 /** 2023/07/14 - 로그인 성공 응답 타입 - by leekoby */
-export type ApiSignInSuccess =
-  | {
-      data: ApiSignInResponse;
-      accessToken: string;
-      refreshToken: string;
-    }
-  | unknown;
+export interface ApiSignInSuccess {
+  data: ApiSignInResponse;
+  accessToken: string;
+  refreshToken: string;
+  accessTokenExpiration: string;
+}
 
 /** 2023/07/07 - 로그인 응답 타입 - by leekoby */
 export type ApiSignInResponse = Member;

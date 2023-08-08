@@ -31,7 +31,6 @@ const MyInfoButton = () => {
       currentLongitude: location.longitude,
       currentLatitude: location.latitude,
     };
-
     const weather = await getWeather(params);
     weather && setMyWeather(weather);
     setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
@@ -47,6 +46,7 @@ const MyInfoButton = () => {
       myLocationWeather();
     }
   }, [location.latitude, location.latitude]);
+
 
   return (
     <div>

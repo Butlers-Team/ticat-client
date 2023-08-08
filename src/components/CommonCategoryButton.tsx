@@ -1,18 +1,21 @@
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
 
-interface Props {}
+interface Props {
+  width?: string;
+}
 
 /** 2023/07/19 - 카테고리 버튼 공통 컴포넌트 - by leekoby */
-const CommonCategoryButton: React.FC<PropsWithChildren> = ({ children }): JSX.Element => {
-  return <FastivalCategory>{children}</FastivalCategory>;
+const CommonCategoryButton: React.FC<PropsWithChildren<Props>> = ({ children, width }): JSX.Element => {
+  return <FastivalCategory width={width}>{children}</FastivalCategory>;
 };
 export default CommonCategoryButton;
 
-const FastivalCategory = styled.ul`
+const FastivalCategory = styled.ul<{ width?: string }>`
   display: flex;
   flex-wrap: wrap;
-  width: 300px;
+  /* width: 300px; */
+  width: ${({ width }) => width};
   overflow: hidden;
   border-radius: 10px;
   cursor: auto;
@@ -22,6 +25,7 @@ const FastivalCategory = styled.ul`
     height: 5.5rem;
     border: 1px solid var(--color-dark-gray);
     width: calc(30%);
+    /* width: ${({ width }) => (width ? width : 'calc(30%)')}; */
     padding: 15px 0px;
     font-size: 1.4rem;
     background-color: #fff;
