@@ -1,5 +1,5 @@
 //react
-import { FormEventHandler, useState } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 //api
 
@@ -65,6 +65,10 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
     setSelectedImages(prevImages => prevImages.filter((_, i) => i !== idx));
   };
 
+  const convertNewLinesToBr = (content: string): string => {
+    return content.replace(/\n/g, '<br>');
+  };
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
 
@@ -74,11 +78,11 @@ const ReviewEditor: React.FC<Props> = (): JSX.Element => {
     else if (!rating) {
       return toast({ title: '별점을 선택해주세요.', status: 'warning' });
     }
-
+    const convertedContent = convertNewLinesToBr(content);
     const data: ApiCreateReviewRequest = {
       festivalId,
       review: {
-        content,
+        content: convertedContent,
         rating,
       },
       reviewImages: selectedImages,

@@ -1,3 +1,4 @@
+import { getSanitizedContent } from '@utils/sanitizeContent';
 import styled from 'styled-components';
 
 interface Props {
@@ -5,9 +6,11 @@ interface Props {
 }
 /** 2023/07/22- 리뷰 내용 - by leekoby */
 const ReviewItemContent: React.FC<Props> = ({ content }): JSX.Element => {
+  const sanitizedContent = getSanitizedContent(content);
+
   return (
     <ContentContainer>
-      <p>{content}</p>
+      <p dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
     </ContentContainer>
   );
 };
