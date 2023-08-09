@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getMyInfo } from '@api/myinfo';
 
 // icons
 import { RxCounterClockwiseClock } from 'react-icons/rx';
@@ -22,23 +24,28 @@ const myInfoTabNav = [
 
 /** 2023/07/21 - 마이 페이지 - by sineTlsl */
 const MyPage = () => {
+  const { data } = useQuery(['userInfo'], getMyInfo);
   const [currentTab, setCurrentTab] = useState<string>(myInfoTabNav[0].label);
   const navigate = useNavigate();
 
   /** 2023/07/21 - tabNav를 선택하고 변경하는 함수 - by sineTlsl */
-  const HandlerSelectTab = (tab: string) => {
+  const handlerSelectTab = (tab: string) => {
     setCurrentTab(tab);
 
     if (tab === '티켓스탬프') {
       navigate('/stamp/list');
+    } else if (tab === '정보수정') {
+      navigate('/profile', {
+        state: { data },
+      });
     }
   };
 
   return (
     <MyPageContainer>
       <MyInfoTopWrap>
-        <MyInfoDescription />
-        <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={HandlerSelectTab} />
+        {data && <MyInfoDescription memberInfo={data} />}
+        <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={handlerSelectTab} />
       </MyInfoTopWrap>
       {currentTab === '최근목록' && <RecentList textTitle={currentTab} />}
     </MyPageContainer>

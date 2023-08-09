@@ -16,3 +16,30 @@ export const getRecentList = async () => {
 
   return data;
 };
+
+/** 2023/08/07 - 프로필 이미지 POST 요청 - by sineTlsl */
+export const postProfileImg = async (formData: FormData) => {
+  const { data } = await instance.post('/profile', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data;
+};
+
+/** 2023/08/07 - 프로필 이미지 PATCH 요청 - by sineTlsl */
+export const patchProfileImg = async (formData: FormData) => {
+  const { data } = await instance.patch('/profile', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return data;
+};
+
+/** 2023/08/07 - 프로필 이미지 DELETE 요청 - by sineTlsl */
+export const deleteProfileImg = async () => {
+  return await instance.delete('/profile');
+};
