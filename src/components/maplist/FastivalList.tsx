@@ -8,18 +8,26 @@ import Festival from '@components/festival/Festival';
 
 //type
 import { MapFastivalType } from 'types/api/mapfastival';
-import { useOptionStore, useCategoryStore } from '@store/mapListStore';
+import { useOptionStore, useCategoryStore, useKeywordStore, useLocationStore } from '@store/mapListStore';
+
+interface transformed {
+  latitude: number;
+  longitude: number;
+}
 
 const FastivalList = () => {
   const [mapListData, setMapListData] = useState<MapFastivalType[]>([]);
   const { sortBy } = useOptionStore();
   const { category } = useCategoryStore();
+  const { keyword } = useKeywordStore();
+  const { locationData, setLocationData } = useLocationStore();
 
   const categoryJoin = category.join();
 
   /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
   const fetchDetailList = async () => {
     const params = {
+      keyword: keyword,
       categories: categoryJoin,
       sortBy: sortBy,
       page: 1,
@@ -29,11 +37,23 @@ const FastivalList = () => {
     const res = await getMapFastival(params);
     if (res.data) {
       setMapListData(res.data);
+
+      // 변환된 값을 저장할 스테이트 변수
+      const transformedData: transformed[] = [];
+
+      // 주어진 데이터에서 "mapx"와 "mapy" 값을 추출하여 변환 후 스테이트에 저장
+      res.data.forEach(item => {
+        const latitude = item.mapy;
+        const longitude = item.mapx;
+        transformedData.push({ latitude, longitude });
+      });
+
+      setLocationData(transformedData);
     }
   };
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category]);
+  }, [sortBy, category, keyword]);
 
   return (
     <FastivalListBox>

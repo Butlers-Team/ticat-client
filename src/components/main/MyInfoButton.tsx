@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useLocationStore } from '@store/userLocation';
+
 //icon
 import { IoIosArrowForward } from 'react-icons/io';
 import { HiLocationMarker } from 'react-icons/hi';
@@ -20,49 +22,19 @@ interface bgColor {
 
 const MyInfoButton = () => {
   const [myWeather, setMyWeather] = useState<WeatherType>();
-  const [latitude, setLatitude] = useState<number>(0);
-  const [longitude, setLongitude] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const navigate = useNavigate();
+  const { location } = useLocationStore();
 
   const myLocationWeather = async () => {
     const params: WeatherRequest = {
-      currentLongitude: longitude,
-      currentLatitude: latitude,
+      currentLongitude: location.longitude,
+      currentLatitude: location.latitude,
     };
-
     const weather = await getWeather(params);
-    console.log(weather);
     weather && setMyWeather(weather);
     setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
   };
-
-  useEffect(() => {
-    /**2023.07.25 사용자 위치정보 요청 - by mscojl24 */
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          setLatitude(position.coords.latitude);
-          setLongitude(position.coords.longitude);
-          console.log(`위도:${position.coords.latitude} 경도:${position.coords.longitude}`);
-        },
-        error => {
-          console.error('Error getting location:', error);
-          // 위치 정보를 받아오지 못할경우 디폴트 데이터 출력.
-          setLatitude(126.98834145916423);
-          setLongitude(37.54810058003352);
-          setIsLoading(false);
-        },
-        {
-          timeout: 5000,
-        },
-      );
-    } else {
-      setLatitude(126.98834145916423);
-      setLongitude(37.54810058003352);
-      setIsLoading(false);
-    }
-  }, []);
 
   const navigateStamp = () => {
     navigate(`/stamp/list`);
@@ -70,10 +42,11 @@ const MyInfoButton = () => {
 
   useEffect(() => {
     // 위치 정보를 가져온 후에 myLocationWeather 함수를 실행합니다.
-    if (latitude && longitude) {
+    if (location) {
       myLocationWeather();
     }
-  }, [latitude, longitude]);
+  }, [location.latitude, location.latitude]);
+
 
   return (
     <div>
@@ -89,12 +62,12 @@ const MyInfoButton = () => {
       {isLoading ? (
         <MyInfoCheck bgcolor="var(--color-sub)">
           <li className="flex-v-center column left-section">
-            <span className="font-main">{`현재 집사님의 위치를 조회중 입니다`}</span>
+            <span className="font-main">{`집사님의 위치를 조회중 입니다`}</span>
             <p className="font-sub">{`잠시만 기다려주세요 :)`}</p>
           </li>
           <li className="flex-h-center row width">
             <div className="local-wather-icon">
-              <LodingIcon></LodingIcon>
+              <LodingIcon width="20px" height="20px"></LodingIcon>
             </div>
           </li>
         </MyInfoCheck>

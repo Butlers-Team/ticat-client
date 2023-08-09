@@ -26,6 +26,7 @@ const MapListContainer = styled.section`
 `;
 
 const MapList = styled.article`
+  position: relative;
   background-color: var(--background-color);
   height: calc(100vh - 340px);
   border-radius: 30px 30px 0px 0px;
@@ -33,6 +34,7 @@ const MapList = styled.article`
   overflow: hidden;
   animation: showupLayout 0.5s forwards;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  z-index: 999;
 
   @keyframes showupLayout {
     0% {

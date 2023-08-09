@@ -1,6 +1,8 @@
 import useCustomToast from '@hooks/useCustomToast';
+import { getExp, resetExp, useExpStore } from '@store/useExpStore';
 import { resetMember, useMemberStore } from '@store/useMemberStore';
 import { getToken, clearTokens, useTokenStore } from '@store/useTokenStore';
+import { dateToSeconds } from '@utils/dateToSeconds';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
 
 /** 2023/07/04 - Axios instance 생성 - by sineTlsl */
@@ -36,15 +38,19 @@ instance.interceptors.request.use(
 async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: AxiosRequestConfig) {
   if (error.response && error.response.data === '리프레시 토큰이 만료되었습니다.') {
     clearTokens(); // 로컬스토리지 토큰 초기화
+    resetExp();
     resetMember(); // 로컬스토리지 멤버 초기화
+
     alert('로그인 필요: 다시 로그인해주세요.');
   }
 
   if (error.response && error.response.data === '액세스 토큰이 갱신되었습니다') {
     const newAccessToken = error.response.headers.authorization;
-
+    const newExp = dateToSeconds(error.response.headers.accesstokenexpiration);
     if (originalRequest.headers && !originalRequest.headers['No-Auth']) {
       instance.defaults.headers.common['Authorization'] = newAccessToken;
+      useExpStore.getState().setExp(+newExp);
+
       const { refreshToken } = getToken();
       instance.defaults.headers.common['Refresh'] = refreshToken;
       useTokenStore.getState().setAccessToken(newAccessToken);
@@ -64,7 +70,6 @@ async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: 
 instance.interceptors.response.use(
   res => {
     // 응답 데이터로 작업 수행
-
     return res;
   },
 
