@@ -24,7 +24,7 @@ export const useReviewLike = () => {
   });
   const deleteReviewLikeMutation = useMutation(apiDeleteReviewLike, {
     onSuccess: () => {
-      toast({ title: '좋아요를 취소했습니다.', status: 'success' });
+      toast({ title: '좋아요를 취소했습니다.', status: 'error' });
     },
     onError: (error: Error) => {
       toast({ title: `좋아요 취소에 실패했습니다.`, status: 'error' });
