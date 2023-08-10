@@ -1,20 +1,40 @@
 import styled from 'styled-components';
 import { useState } from 'react';
-import axios from 'axios';
 import ReactCalendar from '@components/calendar/ReactCalendar';
+
+import { CalendarListListType, CalendarListRequest } from 'types/api/calendar';
+import { getCalendarList } from '@api/calendar';
 
 const CalendarPage: React.FC = (props): JSX.Element => {
   const now = new Date();
+  const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
+  const [selecteDate, setSelectedDate] = useState<number>(date);
+  const [selecteMonth, setSelectedMonth] = useState<number>(month);
+  const [selecteYears, setSelectedYears] = useState<number>(year);
+
+  const fetchCalendarList = async () => {
+    const params: CalendarListRequest = {
+      page: 1,
+      year: selecteYears,
+      mouth: selecteMonth,
+      day: selecteDate,
+    };
+  };
 
   return (
     <CalendarContainer>
       <CalendarSection>
-        <ReactCalendar />
+        <ReactCalendar
+          startDate={new Date()}
+          setSelectedYears={setSelectedYears}
+          setSelectedDate={setSelectedDate}
+          setSelectedMonth={setSelectedMonth}
+        />
       </CalendarSection>
       <p className="today-date">
-        <span>{month + 1}월</span> <span>{date}일</span> 축제리스트
+        <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
       </p>
       <FestivalListSection>
         <EmptyListSection>

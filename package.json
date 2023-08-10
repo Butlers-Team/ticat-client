@@ -20,6 +20,7 @@
     "date-fns": "^2.30.0",
     "dompurify": "^3.0.5",
     "framer-motion": "^10.12.18",
+    "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-calendar": "^4.3.0",
     "react-datepicker": "^4.15.0",
