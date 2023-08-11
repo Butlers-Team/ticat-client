@@ -1,6 +1,6 @@
 import React from 'react';
-import FastivalCategoryButton from '@components/CommonCategoryButton';
-import FastivalCategoryItem from '@components/CommonCatogoryItem';
+import CommonCategoryButton from '@components/CommonCategoryButton';
+import CommonCatogoryItem from '@components/CommonCatogoryItem';
 import { CategoryOption } from '@utils/categories';
 
 interface Props {
@@ -12,11 +12,11 @@ interface Props {
 
 const CommonCategoryList: React.FC<Props> = ({ category, handleCategory, width }): JSX.Element => {
   return (
-    <FastivalCategoryButton width={width}>
+    <CommonCategoryButton width={width}>
       {CategoryOption.map(item => (
-        <FastivalCategoryItem key={item} item={item} category={category} handleCategory={handleCategory} />
+        <CommonCatogoryItem key={item} item={item} category={category} handleCategory={handleCategory} />
       ))}
-    </FastivalCategoryButton>
+    </CommonCategoryButton>
   );
 };
 
