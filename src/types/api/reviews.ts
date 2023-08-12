@@ -10,6 +10,7 @@ interface ReviewType {
   pictures: string[] | [];
   rating: number;
   reviewId: number;
+  festivalId: number;
   createdAt: string;
   modifiedAt?: string;
 }

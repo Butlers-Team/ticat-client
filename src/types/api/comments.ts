@@ -1,11 +1,13 @@
 export interface CommentResponse {
+  festivalId: number;
+  reviewCommentId: number;
+  reviewId: number;
+  memberId: number;
+  displayName: string;
+  profileUrl?: string;
   content: string;
   createdAt: string;
-  displayName: string;
-  memberId: number;
   modifiedAt?: string;
-  profileUrl?: string;
-  reviewCommentId: number;
 }
 
 // ============== 댓글 패치 요청 ===========================
@@ -47,7 +49,10 @@ export interface ApiCreateCommentHandler {
 // ==============댓글 수정 요청 ===========================
 
 /** 2023/08/07- 댓글 수정 요청 타입  - by leekoby */
-export interface ApiUpdateCommentRequest {}
+export interface ApiUpdateCommentRequest {
+  commentId: number;
+  content: string;
+}
 /** 2023/08/07- 댓글 수정 수신 타입  - by leekoby */
 export interface ApiUpdateCommentResponse {}
 /** 2023/08/07- 댓글 수정 핸들러  - by leekoby */
@@ -56,7 +61,9 @@ export interface ApiUpdateCommentHandler {
 }
 // ==============댓글 삭제 요청 ===========================
 /** 2023/08/07- 댓글 삭제 요청 타입  - by leekoby */
-export interface ApiDeleteCommentRequest {}
+export interface ApiDeleteCommentRequest {
+  commentId: number;
+}
 /** 2023/08/07- 댓글 삭제 수신 타입  - by leekoby */
 export interface ApiDeleteCommentResponse {}
 /** 2023/08/07- 댓글 삭제 핸들러  - by leekoby */
