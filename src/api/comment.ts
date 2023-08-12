@@ -31,3 +31,13 @@ export const apiCreateComment: ApiCreateCommentHandler = async ({ reviewId, cont
   const { data } = await instance.post<ApiCreateCommentResponse>(`/reviews/${reviewId}/comments`, { content });
   return data;
 };
+/** 2023/08/12 -  댓글 update 요청 - by leekoby */
+export const apiUpdateComment: ApiUpdateCommentHandler = async ({ commentId, content }) => {
+  const { data } = await instance.patch<ApiUpdateCommentResponse>(`/comments/${commentId}`, { content });
+  return data;
+};
+/** 2023/08/12 -  댓글 delete 요청 - by leekoby */
+export const apiDeleteComment: ApiDeleteCommentHandler = async ({ commentId }) => {
+  const { data } = await instance.delete<ApiDeleteCommentResponse>(`/comments/${commentId}`);
+  return data;
+};

@@ -18,9 +18,6 @@ import { createFormData } from '@utils/createFormData';
 export const apiFetchReviews: ApiFetchReviewsHandler = async ({ festivalId, ...body }) => {
   const { data } = await instance.get<ApiFetchReviewsResponse>(`/festivals/${festivalId}/reviews`, {
     params: body,
-    headers: {
-      'No-Auth': true,
-    },
   });
 
   return data;
