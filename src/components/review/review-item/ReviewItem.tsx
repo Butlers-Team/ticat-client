@@ -8,21 +8,39 @@ import styled from 'styled-components';
 //icon
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 //components
-import ReviewItemBottom from './ReviewLikes';
+import ReviewLikes from './ReviewLikes';
 import ReviewItemContent from './ReviewItemContent';
 import ReviewItemHeader from './ReviewItemHeader';
 import ReviewImage from './ReviewImage';
 import CommentForm from '../comment/CommentForm';
 import Comment from '../comment/Comment';
+import ReviewEditDelete from './ReviewEditDelete';
 //hooks
 //util
 //store
+import { useMemberStore } from '@store/useMemberStore';
+import ReviewEditor from '../ReviewEditor';
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Props {
+  festivalId: number;
   review: ReviewResponse;
+  showCommentForm: boolean;
+  onToggleCommentForm: () => void;
+  isEditMode: boolean;
+  onEditModeChange: () => void;
 }
 /** 2023/07/22 - 리뷰 아이템 - by leekoby */
-const ReviewItem: React.FC<Props> = ({ review }): JSX.Element => {
+const ReviewItem: React.FC<Props> = ({
+  festivalId,
+  review,
+  showCommentForm,
+  onToggleCommentForm,
+  isEditMode = false,
+  onEditModeChange,
+}): JSX.Element => {
+  const toast = useCustomToast();
+  const { member } = useMemberStore();
   const {
     commentCount,
     content,
@@ -38,11 +56,17 @@ const ReviewItem: React.FC<Props> = ({ review }): JSX.Element => {
     modifiedAt,
   } = review;
 
-  /** 2023/08/07 - 댓글 폼 보기  - by leekoby */
-  const [isShowForm, setIsShowForm] = useState(false);
-
+  // 수정 취소
+  const handleCancel = () => {
+    onEditModeChange();
+  };
+  //수정 등록
+  const handleSubmit = () => {
+    onEditModeChange();
+  };
   /** 2023/08/07 - 댓글 더 보기  - by leekoby */
   const [isShow, setIsShow] = useState(false);
+
   return (
     <>
       <ReviewItemContainer>
@@ -56,35 +80,58 @@ const ReviewItem: React.FC<Props> = ({ review }): JSX.Element => {
             <ReviewItemHeader displayName={displayName} rating={rating} createdAt={createdAt} modifiedAt={modifiedAt} />
           )}
         </HeaderWrapper>
-        <ReviewItemContent content={content} />
-        <ReviewImage pictures={pictures} />
-        <ReviewBottomWrapper>
-          <ReviewItemBottom
-            commentCount={commentCount}
-            disliked={disliked}
-            liked={liked}
-            reviewId={reviewId}
-            memberId={memberId}
+        {isEditMode ? (
+          <ReviewEditor
+            festivalId={festivalId}
+            review={review}
+            isEditMode
+            onCancel={handleCancel}
+            onSubmit={handleSubmit}
           />
+        ) : (
+          <>
+            <ReviewItemContent content={content} />
+            <ReviewImage pictures={pictures} />
+          </>
+        )}
+        <ReviewBottomWrapper>
+          <div className="button-wrapper">
+            <ReviewLikes
+              commentCount={commentCount}
+              disliked={disliked}
+              liked={liked}
+              reviewId={reviewId}
+              memberId={memberId}
+            />
+
+            {member?.memberId === memberId && !isEditMode && (
+              <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
+            )}
+          </div>
           <CommentButtonContainer>
             <CommentButtonWrapper>
-              <button type="button" onClick={() => setIsShowForm(prev => !prev)}>
-                댓글 남기기
+              <button type="button" onClick={onToggleCommentForm}>
+                댓글 {showCommentForm ? '작성 취소' : '남기기'}
               </button>
             </CommentButtonWrapper>
             {!!commentCount && (
               <CommentButtonWrapper onClick={() => setIsShow(prev => !prev)}>
                 <button type="button">
-                  {`댓글`} {isShow ? '닫기' : '보기'}
+                  {`댓글`} {isShow ? '닫기' : `${commentCount}개 보기`}
                 </button>
                 {isShow ? <FaAngleUp size={'1.3rem'} /> : <FaAngleDown size={'1.3rem'} />}
               </CommentButtonWrapper>
             )}
           </CommentButtonContainer>
         </ReviewBottomWrapper>
+        <CommentForm
+          show={showCommentForm}
+          festivalId={festivalId}
+          reviewId={reviewId}
+          setIsShowForm={onToggleCommentForm}
+          setIsShow={setIsShow}
+        />
         {isShow && commentCount > 0 && <Comment reviewId={reviewId} />}
-        {/* {isShowForm && <CommentForm reviewId={reviewId} />} */}
-        <CommentForm show={isShowForm} reviewId={reviewId} />
       </ReviewItemContainer>
     </>
   );
@@ -108,6 +155,10 @@ const HeaderWrapper = styled.div`
 const ReviewBottomWrapper = styled.div`
   display: flex;
   justify-content: space-between;
+  .button-wrapper {
+    display: flex;
+    gap: 1rem;
+  }
 `;
 
 const CommentButtonContainer = styled.div`
@@ -123,11 +174,8 @@ const CommentButtonWrapper = styled.div`
   gap: 0.1rem;
   cursor: pointer;
 
-  &:hover {
-    color: var(--color-sub);
-  }
   button {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: bold;
     background: none;
     border: none;
@@ -135,5 +183,8 @@ const CommentButtonWrapper = styled.div`
     color: inherit;
     cursor: pointer;
     outline: inherit;
+    &:hover {
+      color: var(--color-sub);
+    }
   }
 `;

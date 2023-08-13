@@ -17,7 +17,7 @@ const ReviewHeader: React.FC<Props> = ({ detailList }): JSX.Element => {
       </ReviewTitleContainer>
       <span className="score">
         <span>평점</span>
-        <span className="score-point">{reviewRating}</span>
+        <span className="score-point">{reviewRating.toFixed(1)}</span>
       </span>
     </ReviewHeaderContainer>
   );

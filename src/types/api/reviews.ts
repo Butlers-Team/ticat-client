@@ -76,7 +76,6 @@ export interface ApiUpdateReviewHandler {
 // ==============리뷰 삭제 요청 ===========================
 /** 2023/07/21- 리뷰 삭제 요청 타입  - by leekoby */
 export interface ApiDeleteReviewRequest {
-  festivalId: number;
   reviewId: number;
 }
 /** 2023/07/21- 리뷰 삭제 수신 타입  - by leekoby */

@@ -24,13 +24,7 @@ interface Props {
 }
 /** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
 
-const ReviewItemBottom: React.FC<Props> = ({
-  commentCount,
-  liked,
-  disliked,
-  reviewId,
-  memberId: writerId,
-}): JSX.Element => {
+const ReviewLikes: React.FC<Props> = ({ commentCount, liked, disliked, reviewId, memberId: writerId }): JSX.Element => {
   const { member } = useMemberStore();
 
   const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
@@ -137,7 +131,7 @@ const ReviewItemBottom: React.FC<Props> = ({
   );
 };
 
-export default ReviewItemBottom;
+export default ReviewLikes;
 
 const ReviewBottomContainer = styled.div`
   display: flex;

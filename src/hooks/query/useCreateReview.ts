@@ -22,7 +22,7 @@ export const useCreateReview = ({ festivalId, handleReset }: Options) => {
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 
-  const ReviewMutation = useMutation(apiCreateReview, {
+  const createReviewMutation = useMutation(apiCreateReview, {
     onSuccess: () => {
       toast({ title: '리뷰가 성공적으로 등록되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
@@ -33,5 +33,5 @@ export const useCreateReview = ({ festivalId, handleReset }: Options) => {
       console.error('리뷰 등록에 실패했습니다:', error.message);
     },
   });
-  return ReviewMutation;
+  return createReviewMutation;
 };

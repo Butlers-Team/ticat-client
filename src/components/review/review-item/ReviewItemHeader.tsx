@@ -32,7 +32,7 @@ const ReviewHeaderContainer = styled.div`
   justify-content: space-between;
 
   .createdAt {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     color: var(--color-dark-gray);
   }
 `;
