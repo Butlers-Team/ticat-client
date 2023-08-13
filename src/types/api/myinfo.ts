@@ -1,4 +1,4 @@
-// 회원정보 조회
+// ========================== 회원정보 ==========================
 /** 2023/07/21 - 회원정보 데이터 Type - by sineTlsl */
 export interface MyInfoType {
   memberId: number;
@@ -8,7 +8,13 @@ export interface MyInfoType {
   pureProfileUrl: string;
 }
 
-// 최근 축제목록 조회
+/** 2023/08/13 - 회원정보 수정 데이터 Type - by sineTlsl */
+export interface MyInfoPatchType {
+  displayName: string;
+  password: string;
+}
+
+// ========================== 최근 축제목록 조회 ==========================
 /** 2023/07/23 - 최근 축제 Type - by sineTlsl */
 export interface RecentListType {
   festivalId: number;
@@ -20,8 +26,13 @@ export interface RecentListType {
   favorite: boolean;
 }
 
-// 회원 관심사 조회
+// ========================== 회원 관심사 조회 ==========================
 /** 2023/08/09 - 관심사 Type - by sineTlsl */
 export interface InterestType {
+  categories: string[];
+}
+
+/** 2023/08/13 - 관심사 수정 데이터 Type - by sineTlsl */
+export interface InterestPatchType {
   categories: string[];
 }

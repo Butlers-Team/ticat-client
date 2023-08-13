@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MyInfoType } from 'types/api/myinfo';
-import { useQuery } from '@tanstack/react-query';
-import { getInterest } from '@api/myinfo';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
 
 // util
 import { CheckCategory } from '@utils/categories';
@@ -20,6 +20,7 @@ const ProfileUpdatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const memberInfo: MyInfoType = location.state.data;
+  const [memberName, setMemberName] = useState(memberInfo.displayName);
 
   const { data } = useQuery(['userInterest'], getInterest);
   const [category, setCategory] = useState<string[]>([]);
@@ -32,6 +33,23 @@ const ProfileUpdatePage = () => {
     }
   }, [data]);
 
+  /** 2023/08/13 - 관심사 업데이트 요청 함수 생성 - by sineTlsl */
+  const interestMutation = useMutation(patchInterest, {
+    onError: err => {
+      console.log(err);
+    },
+  });
+
+  /** 2023/08/13 - 프로필 업데이트 요청 함수 생성 - by sineTlsl */
+  const profileUpdatemutation = useMutation(patchMyInfo, {
+    onSuccess: () => {
+      navigate('/myinfo');
+    },
+    onError: err => {
+      console.log(err);
+    },
+  });
+
   /** 2023/08/07 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
     navigate('/myinfo');
@@ -41,6 +59,21 @@ const ProfileUpdatePage = () => {
   const handleCategory = (item: string) => {
     const maxLength = 5;
     setCategory(prev => CheckCategory(prev, item, maxLength));
+  };
+
+  /** 2023/08/13 - 프로필 업데이트 이벤트 함수 - by sineTlsl */
+  const handleProfileUpdate = () => {
+    const updateProfileBody = {
+      displayName: memberName,
+      password: '!a123123',
+    };
+
+    const updateInterestBody = {
+      categories: category,
+    };
+
+    profileUpdatemutation.mutate(updateProfileBody);
+    interestMutation.mutate(updateInterestBody);
   };
 
   return (
@@ -53,7 +86,7 @@ const ProfileUpdatePage = () => {
           {data && (
             <ProfileWrap>
               <ProfileImageUpdate profileUrl={memberInfo.profileUrl} />
-              <ProfileInfoNameUpdate name={memberInfo.displayName} email={memberInfo.email} />
+              <ProfileInfoNameUpdate memberName={memberName} setMemberName={setMemberName} email={memberInfo.email} />
             </ProfileWrap>
           )}
           <CategoryWrap>
@@ -61,7 +94,7 @@ const ProfileUpdatePage = () => {
           </CategoryWrap>
         </ProfileContentWrap>
         <ProfileUpdateWrap>
-          <Button onClick={() => console.log('헤헷 저장')}>저장</Button>
+          <Button onClick={handleProfileUpdate}>저장</Button>
         </ProfileUpdateWrap>
       </ProfileMainWrap>
     </ProfileUpdateContainer>
@@ -122,6 +155,6 @@ const CategoryWrap = styled.div`
 
 // 회원정보 저장 버튼
 const ProfileUpdateWrap = styled.div`
-  margin-top: 5rem;
+  margin-top: 2rem;
   width: 100%;
 `;

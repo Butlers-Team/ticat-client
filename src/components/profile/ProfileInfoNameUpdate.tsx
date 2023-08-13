@@ -1,15 +1,13 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 
 interface ProfileInfoNameProps {
-  name: string;
+  memberName: string;
+  setMemberName: (name: string) => void;
   email: string;
 }
 
 /** 2023/08/12 - 프로필 회원정보 업데이트 컴포넌트 - by sineTlsl */
-const ProfileInfoNameUpdate = ({ name, email }: ProfileInfoNameProps) => {
-  const [memberName, setMemberName] = useState(name);
-
+const ProfileInfoNameUpdate = ({ memberName, setMemberName, email }: ProfileInfoNameProps) => {
   return (
     <ProfileInfoNameContainer>
       <div className="name-wrap">
