@@ -47,7 +47,6 @@ const MyInfoButton = () => {
     }
   }, [location.latitude, location.latitude]);
 
-
   return (
     <div>
       <MyInfoCheck bgcolor="var(--color-main)" onClick={navigateStamp} className="cursor-pointer">

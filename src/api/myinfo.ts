@@ -1,7 +1,7 @@
 import instance from '@api/axiosInstance';
 
 // type
-import { MyInfoType, RecentListType } from 'types/api/myinfo';
+import { MyInfoType, RecentListType, InterestType } from 'types/api/myinfo';
 
 /** 2023/07/21 - 회원정보 GET 요청 - by sineTlsl */
 export const getMyInfo = async () => {
@@ -42,4 +42,11 @@ export const patchProfileImg = async (formData: FormData) => {
 /** 2023/08/07 - 프로필 이미지 DELETE 요청 - by sineTlsl */
 export const deleteProfileImg = async () => {
   return await instance.delete('/profile');
+};
+
+/** 2023/08/07 - 회원 관심사 GET 요청 - by sineTlsl */
+export const getInterest = async () => {
+  const { data } = await instance.get<InterestType>('/interest');
+
+  return data;
 };

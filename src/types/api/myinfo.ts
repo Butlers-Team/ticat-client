@@ -19,3 +19,9 @@ export interface RecentListType {
   imageUrl: string;
   favorite: boolean;
 }
+
+// 회원 관심사 조회
+/** 2023/08/09 - 관심사 Type - by sineTlsl */
+export interface InterestType {
+  categories: string[];
+}
