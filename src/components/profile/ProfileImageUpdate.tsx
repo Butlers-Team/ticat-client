@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { useMutation } from '@tanstack/react-query';
-import { patchProfileImg } from '@api/myinfo';
+import { deleteProfileImg, patchProfileImg } from '@api/myinfo';
 
 interface ProfileImageProps {
   profileUrl: string;
@@ -12,13 +12,22 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
   const [profileImg, setProfileImg] = useState<string>(profileUrl);
   const profileImgInput = useRef<HTMLInputElement>(null);
 
-  /** 2023/08/07 - 이미지 업데이트 함수 생성 - by sineTlsl */
-  const mutation = useMutation(patchProfileImg, {
+  /** 2023/08/07 - 이미지 수정 함수 생성 - by sineTlsl */
+  const patchimageMutation = useMutation(patchProfileImg, {
     onSuccess: data => {
       // 성공 시 업로드된 이미지 URL 설정
       setProfileImg(data.profileUrl);
     },
-    onError: err => console.log(err),
+    onError: err => {
+      console.log(err);
+    },
+  });
+
+  /** 2023/08/13 - 이미지 삭제 함수 생성 - by sineTlsl */
+  const deleteImageMutation = useMutation(deleteProfileImg, {
+    onError: err => {
+      console.log(err);
+    },
   });
 
   /** 2023/08/07 - 이미지 선택 대화상자 open - by sineTlsl */
@@ -35,16 +44,19 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
     if (e.target.files) {
       const uploadImgFile = e.target.files[0];
       const formData = new FormData();
-      formData.append('file', uploadImgFile);
+      formData.append('image', uploadImgFile);
+
+      console.log(formData);
 
       // mutation을 사용하여 이미지 업로드 요청
-      mutation.mutate(formData);
+      patchimageMutation.mutate(formData);
     }
   };
 
   /** 2023/08/07 - 프로필 이미지 제거 - by sineTlsl */
   const handlerRemoveImg = () => {
     setProfileImg('');
+    deleteImageMutation.mutate();
   };
 
   return (
