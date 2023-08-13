@@ -35,11 +35,13 @@ export const apiCreateReview: ApiCreateReviewHandler = async body => {
 };
 
 /** 2023/07/21 - 리뷰 수정 API 요청 by leekoby */
-export const apiUpdateReview: ApiUpdateReviewHandler = async ({ reviewId, review, reviewImages }) => {
-  const formData = createFormData({ request: { reviewId, review, reviewImages } });
-  formData.append('review', JSON.stringify(review));
-
-  const { data } = await instance.patch(`/reviews/${reviewId}`, formData);
+export const apiUpdateReview: ApiUpdateReviewHandler = async body => {
+  const formData = createFormData({ request: body });
+  const { data } = await instance.patch(`/reviews/${body.reviewId}`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
   return data;
 };
 
