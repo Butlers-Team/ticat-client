@@ -26,16 +26,16 @@ const MyInfoButton = () => {
   const navigate = useNavigate();
   const { location } = useLocationStore();
 
-  // const myLocationWeather = async () => {
-  //   const params: WeatherRequest = {
-  //     currentLongitude: location.longitude,
-  //     currentLatitude: location.latitude,
-  //   };
+  const myLocationWeather = async () => {
+    const params: WeatherRequest = {
+      currentLongitude: location.longitude,
+      currentLatitude: location.latitude,
+    };
 
-  //   const weather = await getWeather(params);
-  //   weather && setMyWeather(weather);
-  //   setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
-  // };
+    const weather = await getWeather(params);
+    weather && setMyWeather(weather);
+    setIsLoading(false); // Weather 데이터를 받아오면 로딩 상태 해제.
+  };
 
   const navigateStamp = () => {
     navigate(`/stamp/list`);
@@ -43,9 +43,9 @@ const MyInfoButton = () => {
 
   useEffect(() => {
     // 위치 정보를 가져온 후에 myLocationWeather 함수를 실행합니다.
-    // if (location) {
-    //   myLocationWeather();
-    // }
+    if (location) {
+      myLocationWeather();
+    }
   }, [location.latitude, location.latitude]);
 
   return (
@@ -74,7 +74,7 @@ const MyInfoButton = () => {
       ) : (
         <MyInfoCheck bgcolor="var(--color-sub)">
           <li className="flex-v-center column left-section">
-            {/* <span className="font-main">현재의 날씨는 {myWeather?.weather.sky} 입니다</span> */}
+            <span className="font-main">현재의 날씨는 {myWeather?.weather.sky} 입니다</span>
             <p className="font-sub">
               <HiLocationMarker className="icon-margin" />
               {myWeather?.region}
@@ -84,7 +84,9 @@ const MyInfoButton = () => {
             <div className="local-wather-icon flex-h-center">
               <WeatherIcon regionWeather={myWeather} />
             </div>
-            <div className="local-Temperature flex-v-center row">{/* <span>{myWeather?.weather.temp}˚</span> */}</div>
+            <div className="local-Temperature flex-v-center row">
+              <span>{myWeather?.weather.temp}˚</span>
+            </div>
           </li>
         </MyInfoCheck>
       )}
