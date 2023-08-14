@@ -32,6 +32,9 @@ interface Props {
 
 /** 2023/07/21- 리뷰 Editor - by leekoby */
 const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCancel, onSubmit }): JSX.Element => {
+  const { member } = useMemberStore();
+  const toast = useCustomToast();
+
   //댓글 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
   const convertNewLinesToBr = (content: string): string => {
     return content.replace(/\n/g, '<br>');
@@ -44,14 +47,12 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
     return content.replace(/<br\s*\/?>/g, '\n');
   };
 
-  const { member } = useMemberStore();
-
-  const toast = useCustomToast();
-
   const [rating, setRating] = useState<number | undefined>(isEditMode ? review?.rating : 0);
   const [content, setContent] = useState<string | undefined>(isEditMode ? contentBrtoNewLines(review?.content) : '');
 
   const [existingImages, setExistingImages] = useState<string[] | undefined>(review?.pictures); // 기존의 사진
+
+  const [updateImages, setUpdateImages] = useState<File[]>([]); // update 사진
 
   const [selectedImages, setSelectedImages] = useState<File[]>([]); // new 사진
 
@@ -77,6 +78,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
   const createReviewMutation = useCreateReview({ festivalId, handleReset });
   const updateReviewMutation = useUpdateReview({ festivalId, reviewId: review?.reviewId, handleReset });
 
+  // 댓글 작성 이미지 업로드
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     const fileList = Array.from(files || []);
@@ -92,12 +94,32 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
     e.target.value = '';
   };
 
+  // 댓글 수정 이미지 업로드
+  const handleImageUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    const fileList = Array.from(files || []);
+
+    if (updateImages.length + fileList.length > 4) {
+      return toast({ title: '파일은 최대 4개까지 추가 가능합니다.', status: 'error' });
+    }
+
+    if (fileList.length > 0) {
+      setUpdateImages((prevImages: File[]) => [...prevImages, ...fileList]);
+    }
+
+    e.target.value = '';
+  };
+
   const handleImageRemove = (idx: number) => {
-    setSelectedImages(prevImages => prevImages.filter((_, i) => i !== idx));
+    if (isEditMode) {
+      setUpdateImages(prevImages => prevImages.filter((_, i) => i !== idx));
+    } else setSelectedImages(prevImages => prevImages.filter((_, i) => i !== idx));
   };
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
+
+    if (!member) return toast({ title: '로그인후에 접근해주세요!', status: 'error' });
 
     if (!content && !rating) {
       return toast({ title: '리뷰 내용과 별점을 모두 입력해주세요.', status: 'warning' });
@@ -109,20 +131,23 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
 
     // 리뷰수정
     if (isEditMode && review?.reviewId) {
-      console.log('selectedImages', selectedImages);
+      if (content === review.content && rating === review.rating && updateImages.length === 0)
+        return toast({ title: '리뷰 수정 후 다시 시도해주세요.', status: 'error' });
+
       updateReviewMutation.mutate({
         reviewId: review.reviewId,
         review: {
           content: convertedContent,
           rating,
         },
-        reviewImages: selectedImages,
+        reviewImages: updateImages,
       });
 
       onSubmit && onSubmit(convertedContent);
       return;
     }
     // 리뷰등록
+
     createReviewMutation.mutate({
       festivalId,
       review: {
@@ -133,9 +158,6 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
     });
   };
 
-  useEffect(() => {
-    console.log('selectedImages', selectedImages);
-  }, [selectedImages]);
   return (
     <>
       <ReviewEditContaienr className="main">
@@ -171,16 +193,34 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
               <div className="content-bottom">
                 <p>부적절한 내용은 삭제될 수 있습니다.</p>
                 <div className="content-button">
-                  <label htmlFor="file-upload" className="img-upload-btn">
-                    <AiOutlinePicture size="34" color="var(--color-dark)" />
-                  </label>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    style={{ display: 'none' }}
-                    multiple
-                    onChange={handleImageUpload}
-                  />
+                  {isEditMode ? (
+                    <>
+                      <label htmlFor="file-update" className="img-update-btn">
+                        <AiOutlinePicture size="34" color="var(--color-dark)" />
+                      </label>
+                      <input
+                        id="file-update"
+                        type="file"
+                        style={{ display: 'none' }}
+                        multiple
+                        onChange={handleImageUpdate}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <label htmlFor="file-upload" className="img-upload-btn">
+                        <AiOutlinePicture size="34" color="var(--color-dark)" />
+                      </label>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        style={{ display: 'none' }}
+                        multiple
+                        onChange={handleImageUpload}
+                      />
+                    </>
+                  )}
+
                   <button className="post-button"> {isEditMode ? '리뷰 수정' : '리뷰 등록'}</button>
                   {isEditMode ? (
                     <button type="button" className="post-button" onClick={onCancel}>
@@ -196,12 +236,21 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
         </ReviewFormBox>
         <ReviewContentBox>
           <div className="file-box">
-            {isEditMode && selectedImages.length === 0
-              ? existingImages?.map((imgUrl, idx) => (
-                  <div className="img-box" key={idx}>
-                    <img src={imgUrl} alt={`existing image ${idx}`} />
-                  </div>
-                ))
+            {isEditMode
+              ? updateImages.length === 0
+                ? existingImages?.map((imgUrl, idx) => (
+                    <div className="img-box" key={idx}>
+                      <img src={imgUrl} alt={`existing image ${idx}`} />
+                    </div>
+                  ))
+                : updateImages.map((img, idx) => (
+                    <div className="img-box" key={idx + updateImages.length}>
+                      <img src={URL.createObjectURL(img)} alt={`image upload ${idx}`} />
+                      <button className="delete-button" type="button" onClick={() => handleImageRemove(idx)}>
+                        <TiDeleteOutline size={30} color="red" />
+                      </button>
+                    </div>
+                  ))
               : selectedImages.map((img, idx) => (
                   <div className="img-box" key={idx + selectedImages.length}>
                     <img src={URL.createObjectURL(img)} alt={`image upload ${idx}`} />

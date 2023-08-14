@@ -60,7 +60,7 @@ export interface ApiCreateReviewHandler {
 
 /** 2023/07/21- 리뷰 수정 요청 타입  - by leekoby */
 export interface ApiUpdateReviewRequest {
-  reviewId: number;
+  reviewId?: number;
   review: Review;
   reviewImages?: File[];
 }
