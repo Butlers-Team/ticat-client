@@ -13,6 +13,8 @@ import { useOptionStore, useCategoryStore, useKeywordStore, useLocationStore } f
 interface transformed {
   latitude: number;
   longitude: number;
+  title: string;
+  category: string;
 }
 
 const FastivalList = () => {
@@ -20,7 +22,8 @@ const FastivalList = () => {
   const { sortBy } = useOptionStore();
   const { category } = useCategoryStore();
   const { keyword } = useKeywordStore();
-  const { locationData, setLocationData } = useLocationStore();
+  const { setLocationData } = useLocationStore();
+  const [size, setSize] = useState<number>(25);
 
   const categoryJoin = category.join();
 
@@ -31,7 +34,7 @@ const FastivalList = () => {
       categories: categoryJoin,
       sortBy: sortBy,
       page: 1,
-      size: 10,
+      size: size,
     };
 
     const res = await getMapFastival(params);
@@ -45,7 +48,9 @@ const FastivalList = () => {
       res.data.forEach(item => {
         const latitude = item.mapy;
         const longitude = item.mapx;
-        transformedData.push({ latitude, longitude });
+        const title = item.title;
+        const category = item.category;
+        transformedData.push({ latitude, longitude, title, category });
       });
 
       setLocationData(transformedData);
@@ -53,7 +58,11 @@ const FastivalList = () => {
   };
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category, keyword]);
+  }, [sortBy, category, keyword, size]);
+
+  const handleLoadMore = () => {
+    setSize(prevSize => prevSize + 10); // Increase size by 10
+  };
 
   return (
     <FastivalListBox>
@@ -62,6 +71,7 @@ const FastivalList = () => {
           <Festival item={list} />
         </Link>
       ))}
+      <button onClick={handleLoadMore}> 더보기 </button>
     </FastivalListBox>
   );
 };
@@ -75,5 +85,15 @@ const FastivalListBox = styled.article`
   overflow-y: scroll;
   ::-webkit-scrollbar {
     display: none;
+  }
+
+  button {
+    background: var(--color-main);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+    margin: 10px 0px;
   }
 `;
