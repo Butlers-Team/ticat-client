@@ -14,7 +14,7 @@ const MySetting = () => {
 
     if (item === '회원탈퇴') {
       /** 2023/08/08 회원탈퇴 요청 - by mscojl24 */
-      console.log('회원탈퇴 요청좀 도와주실분~');
+      // console.log('회원탈퇴 요청좀 도와주실분~');
     }
   };
 
