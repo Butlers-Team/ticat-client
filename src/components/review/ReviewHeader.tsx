@@ -12,7 +12,7 @@ const ReviewHeader: React.FC<Props> = ({ detailList }): JSX.Element => {
   return (
     <ReviewHeaderContainer>
       <ReviewTitleContainer>
-        <h2>축제 평가</h2>
+        <h2>축제 후기</h2>
         <span>{reviewCount}개의 리뷰</span>
       </ReviewTitleContainer>
       <span className="score">
