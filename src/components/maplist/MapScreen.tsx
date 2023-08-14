@@ -40,7 +40,7 @@ const MapScreen = () => {
       const container = document.getElementById('map');
       const options = {
         center: new window.kakao.maps.LatLng(locationData[0].latitude, locationData[0].longitude), // 맨 첫번째 좌표를 기준
-        level: 8, // 지도 확대 레벨
+        level: 12, // 지도 확대 레벨
       };
       const map = new window.kakao.maps.Map(container, options);
 
@@ -63,6 +63,12 @@ const MapScreen = () => {
           position: new window.kakao.maps.LatLng(position.latitude, position.longitude),
           xAnchor: 0.5,
           yAnchor: 1.0,
+        });
+
+        // 마커 클릭 이벤트 리스너 추가
+        window.kakao.maps.event.addListener(infoOverlay, 'click', () => {
+          // 클릭한 마커 요소의 클래스 추가
+          infoElement.classList.add('clicked-marker'); // 원하는 클래스 이름으로 변경
         });
 
         infoOverlay.setMap(map);
@@ -96,8 +102,6 @@ const MapScreen = () => {
           검색
         </Button>
       </div>
-
-      {/* <div className="map-guide"></div> */}
     </MapView>
   );
 };
@@ -106,8 +110,12 @@ export default MapScreen;
 
 const MapView = styled.article`
   position: relative;
-  height: 400px;
+  height: 70%;
   background-color: var(--color-light-gray);
+
+  .clicked-marker {
+    background: red;
+  }
 
   .position-info {
     display: flex;
@@ -120,6 +128,10 @@ const MapView = styled.article`
     border: var(--color-main) solid 1px;
     padding: 3px 3px;
 
+    :hover {
+      color: var(--color-main);
+    }
+
     .info-marker {
       position: relative;
       max-width: 30px;
@@ -127,7 +139,7 @@ const MapView = styled.article`
       background-color: var(--color-main);
       overflow: hidden;
       border-radius: 30px;
-      margin: 2px 3px;
+      margin: 2px 7px 2px 3px;
     }
     .position-title {
       width: 120px;
