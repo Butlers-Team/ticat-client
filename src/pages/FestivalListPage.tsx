@@ -7,8 +7,8 @@ import { getCatergories } from '@api/category';
 import { CategoriesRequest } from 'types/api/category';
 
 // stores
-import { useAreaFilterStore } from '@store/areaFilterStore';
-import { useCategoryTabStore } from '@store/categoryTabStore';
+import { useAreaFilterStore } from '@store/useAreaFilterStore';
+import { useCategoryTabStore } from '@store/useCategoryTabStore';
 
 // components
 import CatergoryTabNav from '@components/festival/CategoryTabNav';

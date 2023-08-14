@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useCategoryTabStore } from '@store/categoryTabStore';
+import { useCategoryTabStore } from '@store/useCategoryTabStore';
 
 import { MdArrowBackIosNew, MdArrowForwardIos } from 'react-icons/md';
 
