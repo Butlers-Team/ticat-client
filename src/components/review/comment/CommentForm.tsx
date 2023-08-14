@@ -2,7 +2,7 @@
 import { FormEventHandler, useEffect, useState } from 'react';
 //api
 //types
-import { ApiCreateCommentRequest } from 'types/api';
+import { ApiCreateCommentRequest, CommentResponse } from 'types/api';
 //install library
 import styled from 'styled-components';
 //icon
@@ -11,6 +11,8 @@ import styled from 'styled-components';
 import useResizeTextarea from '@hooks/useResizeTextArea';
 import useCustomToast from '@hooks/useCustomToast';
 import { useCreateComment } from '@hooks/query/useCreateComment';
+import { useUpdateComment } from '@hooks/query/useUpdateComment';
+import { useFocusAndScroll } from '@hooks/useFocusAndScroll';
 
 //store
 import { useMemberStore } from '@store/useMemberStore';
@@ -18,53 +20,99 @@ import { useMemberStore } from '@store/useMemberStore';
 /** 2023/08/06- 댓글 작성 폼 - by leekoby */
 
 interface Props {
+  festivalId: number;
   reviewId: number;
+  comment?: CommentResponse;
   show: boolean;
+  setIsShowForm?: () => void;
+  setIsShow?: React.Dispatch<React.SetStateAction<boolean>>;
+  onCancel?: () => void;
+  onSubmit?: (updatedContent: string) => void;
+  isEditMode?: boolean;
 }
-const CommentForm: React.FC<Props> = ({ reviewId, show }): JSX.Element => {
-  const { member } = useMemberStore();
-  const toast = useCustomToast();
-  const [content, setContent] = useState<string>('');
 
-  const [textareaRef, handleResizeHeight] = useResizeTextarea();
-
-  const handleReset = () => {
-    setContent('');
-  };
-
-  const commentMutation = useCreateComment({ reviewId, handleReset });
-
+const CommentForm: React.FC<Props> = ({
+  festivalId,
+  reviewId,
+  comment,
+  show,
+  onCancel,
+  onSubmit,
+  setIsShowForm,
+  setIsShow,
+  isEditMode = false,
+}): JSX.Element => {
+  //댓글 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
   const convertNewLinesToBr = (content: string): string => {
     return content.replace(/\n/g, '<br>');
   };
 
+  //댓글 수정할때 <br> 태그를 TextArea /n 으로 바꾸는 함수
+  const contentBrtoNewLines = (content?: string): string => {
+    if (!content) return '';
+
+    return content.replace(/<br\s*\/?>/g, '\n');
+  };
+
+  const { member } = useMemberStore();
+  const toast = useCustomToast();
+  const [inputContent, setInputContent] = useState<string>(isEditMode ? contentBrtoNewLines(comment?.content) : '');
+
+  const [textareaRef, handleResizeHeight] = useResizeTextarea();
+
+  useEffect(() => {
+    if (isEditMode && handleResizeHeight) {
+      handleResizeHeight();
+    }
+  }, [isEditMode, handleResizeHeight]);
+
+  const [isFocused, setIsFocused] = useState(false);
+
+  useFocusAndScroll(textareaRef, show);
+
+  const handleReset = () => {
+    setInputContent('');
+  };
+
+  const createCommentMutation = useCreateComment({ festivalId, reviewId, handleReset });
+  const updateCommentMutation = useUpdateComment({ commentId: comment?.reviewCommentId, reviewId, handleReset });
   /** 2023/08/07 - 댓글 등록 - by leekoby */
+  /** 2023/08/13 - 댓글 수정 등록 - by leekoby */
   const onSubmitComment: FormEventHandler<HTMLFormElement> = event => {
     event.preventDefault();
 
     if (!member) return toast({ title: '로그인후에 접근해주세요!', status: 'error' });
-    if (!content.trim().length) return toast({ title: '답글을 입력해주세요!', status: 'warning' });
+    if (!inputContent.trim().length) return toast({ title: '댓글 내용을 입력해주세요!', status: 'warning' });
 
-    const convertedContent = convertNewLinesToBr(content);
+    const convertedContent = convertNewLinesToBr(inputContent);
 
-    const data: ApiCreateCommentRequest = {
+    //댓글 수정
+    if (isEditMode && comment?.reviewCommentId) {
+      updateCommentMutation.mutate({ commentId: comment.reviewCommentId, content: convertedContent });
+      onSubmit && onSubmit(convertedContent);
+      return;
+    }
+
+    //댓글 작성
+    createCommentMutation.mutate({
       reviewId,
       content: convertedContent,
-    };
-    commentMutation.mutate(data);
+    });
   };
 
   return (
     <CommentFormContainer show={show}>
-      <CommentFormBox>
+      <CommentFormBox isFocused={isFocused}>
         <form onSubmit={onSubmitComment}>
           <CommentContentBox>
             <div className="content-input">
               <textarea
                 ref={textareaRef}
-                value={content}
+                value={inputContent}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
                 onChange={e => {
-                  setContent(e.target.value);
+                  setInputContent(e.target.value);
                   handleResizeHeight();
                 }}
                 placeholder="댓글을 입력해주세요."
@@ -75,8 +123,17 @@ const CommentForm: React.FC<Props> = ({ reviewId, show }): JSX.Element => {
                 <p>부적절한 내용은 삭제될 수 있습니다.</p>
                 <div className="content-button">
                   <button type="submit" className="post-button">
-                    댓글 등록
+                    {isEditMode ? '댓글 수정' : '댓글 등록'}
                   </button>
+                  {isEditMode ? (
+                    <button type="button" className="post-button" onClick={onCancel}>
+                      취소
+                    </button>
+                  ) : (
+                    <button type="button" className="post-button" onClick={setIsShowForm}>
+                      취소
+                    </button>
+                  )}
                 </div>
               </div>
             </CommentContentBox>
@@ -95,10 +152,10 @@ const CommentFormContainer = styled.section<{ show: boolean }>`
   opacity: ${({ show }: { show: boolean }) => (show ? 1 : 0)};
   max-height: ${({ show }: { show: boolean }) => (show ? '500px' : '0')};
   overflow: hidden;
-  transition: all 0.5s ease-in-out;
+  transition: ${({ show }: { show: boolean }) => (show ? 'all 0.5s ease-in-out' : 0)};
 `;
-const CommentFormBox = styled.div`
-  border: 1px solid var(--color-dark-gray);
+const CommentFormBox = styled.div<{ isFocused: boolean }>`
+  border: 1px solid ${({ isFocused }) => (isFocused ? 'var(--color-sub)' : 'var(--color-light-gray)')};
   border-radius: 1.2rem;
   padding: 0.5rem;
   display: flex;
@@ -146,6 +203,13 @@ const CommentContentBox = styled.div`
         cursor: pointer;
         padding: 0;
         margin: 0;
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+          outline: none;
+        }
       }
       button {
         background: none;
@@ -161,7 +225,18 @@ const CommentContentBox = styled.div`
         font-size: 1.4rem;
         font-weight: bold;
         color: var(--color-light);
-        background-color: var(--color-sub);
+        background-color: var(--color-main);
+
+        transition: background-color 0.3s, color 0.3s;
+
+        /* 호버 효과  */
+        &:hover {
+          background-color: var(--color-sub);
+        }
+        /* 눌렀을 때 효과  */
+        &:active {
+          background-color: var(--color-sub);
+        }
       }
     }
   }

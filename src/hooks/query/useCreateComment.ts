@@ -8,19 +8,21 @@ import { QUERY_KEYS } from './queryKeys';
 import { apiCreateComment } from '@api/comment';
 
 interface Options {
+  festivalId: number;
   reviewId: number;
   handleReset: () => void;
 }
 
 /** 2023/08/07- 댓글 등록 뮤테이션 - by leekoby */
-export const useCreateComment = ({ reviewId, handleReset }: Options) => {
+export const useCreateComment = ({ festivalId, reviewId, handleReset }: Options) => {
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 
-  const CommentMutation = useMutation(apiCreateComment, {
+  const createCommentMutation = useMutation(apiCreateComment, {
     onSuccess: () => {
       toast({ title: '댓글이 성공적으로 등록되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.comment, reviewId]);
+      queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
       handleReset();
     },
     onError: (error: Error) => {
@@ -28,5 +30,5 @@ export const useCreateComment = ({ reviewId, handleReset }: Options) => {
       console.error('댓글 등록에 실패했습니다:', error.message);
     },
   });
-  return CommentMutation;
+  return createCommentMutation;
 };
