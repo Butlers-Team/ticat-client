@@ -14,6 +14,8 @@ import type {
   ApiUpdateCommentHandler,
   ApiUpdateCommentRequest,
   ApiUpdateCommentResponse,
+  ApiFetchMyCommentsHandler,
+  ApiFetchMyCommentsResponse,
 } from 'types/api/';
 
 /** 2023/08/07  - 댓글 패치 요청 - by leekoby */
@@ -39,5 +41,14 @@ export const apiUpdateComment: ApiUpdateCommentHandler = async ({ commentId, con
 /** 2023/08/12 -  댓글 delete 요청 - by leekoby */
 export const apiDeleteComment: ApiDeleteCommentHandler = async ({ commentId }) => {
   const { data } = await instance.delete<ApiDeleteCommentResponse>(`/comments/${commentId}`);
+  return data;
+};
+
+/** 2023/08/15  - 마이페이지 댓글 패치 요청 - by leekoby */
+export const apiFetchMyComments: ApiFetchMyCommentsHandler = async ({ ...params }) => {
+  const { data } = await instance.get<ApiFetchMyCommentsResponse>(`/mypage/comments`, {
+    params,
+  });
+
   return data;
 };

@@ -22,6 +22,7 @@ export const useDeleteComment = ({ commentId, reviewId, handleReset }: Options) 
     onSuccess: () => {
       toast({ title: '댓글이 성공적으로 삭제되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.comment, reviewId]);
+      queryClient.invalidateQueries([QUERY_KEYS.mycomment]);
     },
     onError: (error: Error) => {
       toast({ title: `댓글 삭제에 실패했습니다.`, status: 'error' });

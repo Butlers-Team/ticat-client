@@ -22,6 +22,7 @@ export const useUpdateComment = ({ commentId, reviewId, handleReset }: Options) 
     onSuccess: () => {
       toast({ title: '댓글이 성공적으로 수정되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.comment, reviewId]);
+      queryClient.invalidateQueries([QUERY_KEYS.mycomment]);
       handleReset && handleReset();
     },
     onError: (error: Error) => {

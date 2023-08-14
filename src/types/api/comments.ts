@@ -1,18 +1,23 @@
-export interface CommentResponse {
+import { PageInfoType } from '.';
+import { Member } from 'types/auth';
+
+interface CommentType {
   festivalId: number;
   reviewCommentId: number;
   reviewId: number;
-  memberId: number;
-  displayName: string;
-  profileUrl?: string;
   content: string;
   createdAt: string;
   modifiedAt?: string;
 }
 
-// ============== 댓글 패치 요청 ===========================
+export interface CommentResponse extends Member, CommentType {}
 
-import { PageInfoType } from '.';
+export interface MyCommentResponse extends CommentType {
+  memberId: number;
+  festivalTitle: string;
+}
+
+// ============== 댓글 패치 요청 ===========================
 
 /** 2023/08/07- 댓글 패치 요청 타입 - by leekoby */
 export interface ApiFetchCommentsRequest {
@@ -69,4 +74,22 @@ export interface ApiDeleteCommentResponse {}
 /** 2023/08/07- 댓글 삭제 핸들러  - by leekoby */
 export interface ApiDeleteCommentHandler {
   (body: ApiDeleteCommentRequest): Promise<ApiDeleteCommentResponse>;
+}
+
+// ============== 댓글 패치 요청 ===========================
+
+/** 2023/08/15- 마이페이지 댓글 패치 요청 타입 - by leekoby */
+export interface ApiFetchMyCommentsRequest {
+  page: number;
+  size: number;
+}
+
+/** 2023/08/07- 댓글 패치 수신 타입 - by leekoby */
+export interface ApiFetchMyCommentsResponse {
+  data: MyCommentResponse[];
+  pageInfo: PageInfoType;
+}
+/** 2023/08/07- 댓글 패치 핸들러 타입 - by leekoby */
+export interface ApiFetchMyCommentsHandler {
+  (body: ApiFetchMyCommentsRequest): Promise<ApiFetchMyCommentsResponse>;
 }

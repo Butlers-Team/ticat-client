@@ -6,7 +6,7 @@ import styled from 'styled-components';
 //install library
 //api
 //types
-import { CommentResponse } from 'types/api';
+import { CommentResponse, MyCommentResponse } from 'types/api';
 import CommentEditDelete from './CommentEditDelete';
 import CommentForm from './CommentForm';
 import ContentItemContent from './CommentItemContent';
@@ -18,7 +18,7 @@ import CommentItemHeader from './CommentItemHeader';
 //store
 
 interface Props {
-  comment: CommentResponse;
+  comment: CommentResponse | MyCommentResponse;
   isEditMode: boolean;
   onEditModeChange: () => void;
 }
@@ -27,8 +27,14 @@ interface Props {
 const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange }): JSX.Element => {
   const { member } = useMemberStore();
 
-  const { content, festivalId, reviewId, createdAt, displayName, memberId, reviewCommentId, modifiedAt, profileUrl } =
-    comment;
+  const { content, festivalId, reviewId, createdAt, memberId, reviewCommentId, modifiedAt } = comment;
+
+  const isReviewResponse = (comment: CommentResponse | MyCommentResponse): comment is CommentResponse => {
+    return 'profileUrl' in comment && 'displayName' in comment;
+  };
+
+  const displayName = isReviewResponse(comment) ? comment.displayName : member?.displayName;
+  const profileUrl = isReviewResponse(comment) ? comment.profileUrl : null;
 
   //취소
   const handleCancel = () => {
@@ -43,11 +49,9 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange })
     <>
       <CommentItemContainer>
         <HeaderWrapper>
-          {profileUrl ? (
-            <img src={profileUrl} />
-          ) : (
-            <img style={{ width: '2rem', height: '2rem' }} src="/assets/images/symbol-ticat1.png" />
-          )}
+          <ItemImgWrap>
+            <img src={profileUrl || '/assets/images/default-profile-image.png'} />
+          </ItemImgWrap>
           {displayName && <CommentItemHeader displayName={displayName} createdAt={createdAt} modifiedAt={modifiedAt} />}
         </HeaderWrapper>
         {isEditMode ? (
@@ -55,7 +59,7 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange })
             festivalId={comment.festivalId}
             reviewId={comment.reviewId}
             comment={comment}
-            show
+            isShow
             isEditMode
             onCancel={handleCancel}
             onSubmit={handleSubmit}
@@ -89,4 +93,15 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: center;
   gap: 1rem;
+`;
+
+const ItemImgWrap = styled.div`
+  height: 2rem;
+  width: 2rem;
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;

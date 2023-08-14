@@ -2,7 +2,7 @@
 import { FormEventHandler, useEffect, useState } from 'react';
 //api
 //types
-import { ApiCreateCommentRequest, CommentResponse } from 'types/api';
+import { ApiCreateCommentRequest, CommentResponse, MyCommentResponse } from 'types/api';
 //install library
 import styled from 'styled-components';
 //icon
@@ -22,8 +22,8 @@ import { useMemberStore } from '@store/useMemberStore';
 interface Props {
   festivalId: number;
   reviewId: number;
-  comment?: CommentResponse;
-  show: boolean;
+  comment?: CommentResponse | MyCommentResponse;
+  isShow: boolean;
   setIsShowForm?: () => void;
   setIsShow?: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel?: () => void;
@@ -35,7 +35,7 @@ const CommentForm: React.FC<Props> = ({
   festivalId,
   reviewId,
   comment,
-  show,
+  isShow,
   onCancel,
   onSubmit,
   setIsShowForm,
@@ -68,7 +68,7 @@ const CommentForm: React.FC<Props> = ({
 
   const [isFocused, setIsFocused] = useState(false);
 
-  useFocusAndScroll(textareaRef, show);
+  useFocusAndScroll(textareaRef, isShow);
 
   const handleReset = () => {
     setInputContent('');
@@ -101,7 +101,7 @@ const CommentForm: React.FC<Props> = ({
   };
 
   return (
-    <CommentFormContainer show={show}>
+    <CommentFormContainer isShow={isShow}>
       <CommentFormBox isFocused={isFocused}>
         <form onSubmit={onSubmitComment}>
           <CommentContentBox>
@@ -146,13 +146,13 @@ const CommentForm: React.FC<Props> = ({
 
 export default CommentForm;
 
-const CommentFormContainer = styled.section<{ show: boolean }>`
+const CommentFormContainer = styled.section<{ isShow: boolean }>`
   height: 100%;
   width: 100%;
-  opacity: ${({ show }: { show: boolean }) => (show ? 1 : 0)};
-  max-height: ${({ show }: { show: boolean }) => (show ? '500px' : '0')};
+  opacity: ${({ isShow }: { isShow: boolean }) => (isShow ? 1 : 0)};
+  max-height: ${({ isShow }: { isShow: boolean }) => (isShow ? '500px' : '0')};
   overflow: hidden;
-  transition: ${({ show }: { show: boolean }) => (show ? 'all 0.5s ease-in-out' : 0)};
+  transition: ${({ isShow }: { isShow: boolean }) => (isShow ? 'all 0.5s ease-in-out' : 0)};
 `;
 const CommentFormBox = styled.div<{ isFocused: boolean }>`
   border: 1px solid ${({ isFocused }) => (isFocused ? 'var(--color-sub)' : 'var(--color-light-gray)')};

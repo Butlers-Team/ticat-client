@@ -16,6 +16,7 @@ const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick }
 
   // 댓글 삭제 이벤트 핸들러
   const handleDeleteComment = () => {
+    if (!confirm('댓글을 삭제하시겠습니까? 삭제 이후 복구할 수 없습니다.')) return;
     deleteCommentMutation.mutate({ commentId });
   };
 

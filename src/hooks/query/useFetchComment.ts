@@ -7,15 +7,10 @@ import { apiFetchComments } from '@api/comment';
 import { QUERY_KEYS } from './queryKeys';
 
 //type
-import type { ApiFetchCommentsResponse } from 'types/api';
+import type { ApiFetchCommentsResponse, ApiFetchCommentsRequest } from 'types/api';
 
-interface Props {
-  reviewId: number;
-  page: number;
-  size: number;
-}
 /** 2023/08/07 - 리뷰에 달린 댓글들 패치하는 훅 - by leekoby */
-const useFetchComments = ({ reviewId, page, size }: Props) => {
+const useFetchComments = ({ reviewId, page, size }: ApiFetchCommentsRequest) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery<ApiFetchCommentsResponse>(
     [QUERY_KEYS.comment, reviewId],
     ({ pageParam = page }) => apiFetchComments({ reviewId, page: pageParam, size }),
