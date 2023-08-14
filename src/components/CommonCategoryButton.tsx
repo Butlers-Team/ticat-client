@@ -16,17 +16,15 @@ const FastivalCategory = styled.ul<{ width?: string }>`
   flex-wrap: wrap;
   /* width: 300px; */
   width: ${({ width }) => width};
-  overflow: hidden;
   border-radius: 10px;
   cursor: auto;
+  gap: 0.6rem;
 
   .tab-section {
-    margin: 0.5rem;
-    height: 5.5rem;
+    height: 5rem;
     border: 1px solid var(--color-dark-gray);
-    width: calc(30%);
+    width: calc(100% / 3 - 0.4rem);
     /* width: ${({ width }) => (width ? width : 'calc(30%)')}; */
-    padding: 15px 0px;
     font-size: 1.4rem;
     background-color: #fff;
     color: var(--color-dark);

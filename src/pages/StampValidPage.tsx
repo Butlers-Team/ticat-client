@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
+// component
 import Button from '@components/Button';
 
 const StampValidPage = () => {
+  const [isStampCheck, setIsStampCheck] = useState<boolean>(false);
   const navigate = useNavigate();
 
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
@@ -22,7 +25,11 @@ const StampValidPage = () => {
         <p className="sub-description">티캣 발급을 위해 위치 이동을 자제해주세요.</p>
       </DescriptionWrap>
       <StampBtnWrap>
-        <Button onClick={handleStampClick}>스탬프 찍기</Button>
+        {!isStampCheck ? (
+          <Button onClick={() => setIsStampCheck(true)}>위치 확인 중</Button>
+        ) : (
+          <Button onClick={handleStampClick}>스탬프 찍기</Button>
+        )}
       </StampBtnWrap>
     </StampValidContainer>
   );

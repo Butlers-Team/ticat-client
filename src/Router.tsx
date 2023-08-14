@@ -17,6 +17,7 @@ import InterestPage from '@pages/InterestPage';
 import MapListPage from '@pages/MapListPage';
 import MyPage from '@pages/MyPage';
 import MyInfoSettingPage from '@pages/SettingPage';
+import ProfileUpdatePage from '@pages/ProfileUpdatePage';
 
 const Router = () => {
   return (
@@ -37,6 +38,7 @@ const Router = () => {
         <Route path="/interest" element={<InterestPage />} />
         <Route path="/myinfo" element={<MyPage />} />
         <Route path="setting" element={<MyInfoSettingPage />} />
+        <Route path="/profile" element={<ProfileUpdatePage />} />
       </Routes>
     </Layout>
   );

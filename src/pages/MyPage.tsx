@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getMyInfo } from '@api/myinfo';
 
 // icons
 import { RxCounterClockwiseClock } from 'react-icons/rx';
@@ -24,14 +26,15 @@ const myInfoTabNav = [
 
 /** 2023/07/21 - 마이 페이지 - by sineTlsl */
 const MyPage = () => {
+  const { data } = useQuery(['userInfo'], getMyInfo);
   const [currentTab, setCurrentTab] = useState<string>(myInfoTabNav[0].label);
   const navigate = useNavigate();
 
   /** 2023/08/02 - 토큰 만료 요청 TEST - by leekoby */
   /**
    * TODO: 현재 서버 시간에 문제가 있습니다. 서버에서 응답으로 오는 만료시간이 현재시간보다 9시간 정도 빨라요. 서버에 수정사항이 반영되기 전에 이 주석을 해제하시면 무한요청이 실행되면서 브라우저가 정지되고 서버터질 위험이 있습니다.
-   
-   async function handleExpCheck() {
+  
+  async function handleExpCheck() {
     const currentDate = new Date();
     const currentDateNum = Math.floor(currentDate.getTime() / 1000);
     const expDataNum = useExpStore().exp;
@@ -46,19 +49,23 @@ const MyPage = () => {
   */
 
   /** 2023/07/21 - tabNav를 선택하고 변경하는 함수 - by sineTlsl */
-  const HandlerSelectTab = (tab: string) => {
+  const handlerSelectTab = (tab: string) => {
     setCurrentTab(tab);
 
     if (tab === '티켓스탬프') {
       navigate('/stamp/list');
+    } else if (tab === '정보수정') {
+      navigate('/profile', {
+        state: { data },
+      });
     }
   };
 
   return (
     <MyPageContainer>
       <MyInfoTopWrap>
-        <MyInfoDescription />
-        <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={HandlerSelectTab} />
+        {data && <MyInfoDescription memberInfo={data} />}
+        <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={handlerSelectTab} />
       </MyInfoTopWrap>
       {currentTab === '최근목록' && <RecentList textTitle={currentTab} />}
     </MyPageContainer>
