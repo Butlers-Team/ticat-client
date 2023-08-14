@@ -28,7 +28,7 @@ const MapListContainer = styled.section`
 const MapList = styled.article`
   position: relative;
   background-color: var(--background-color);
-  height: calc(100vh - 70% + 60px);
+  height: calc(100vh - 60% + 60px);
   border-radius: 30px 30px 0px 0px;
   margin-top: -60px;
   overflow: hidden;

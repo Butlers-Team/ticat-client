@@ -128,7 +128,7 @@ export default MapScreen;
 
 const MapView = styled.article`
   position: relative;
-  height: 70%;
+  height: 60%;
   background-color: var(--color-light-gray);
 
   .position-info {
