@@ -196,7 +196,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                   {isEditMode ? (
                     <>
                       <label htmlFor="file-update" className="img-update-btn">
-                        <AiOutlinePicture size="34" color="var(--color-dark)" />
+                        <AiOutlinePicture size="3rem" color="var(--color-dark)" />
                       </label>
                       <input
                         id="file-update"
@@ -209,7 +209,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                   ) : (
                     <>
                       <label htmlFor="file-upload" className="img-upload-btn">
-                        <AiOutlinePicture size="34" color="var(--color-dark)" />
+                        <AiOutlinePicture size="3rem" color="var(--color-dark)" />
                       </label>
                       <input
                         id="file-upload"
@@ -306,9 +306,10 @@ const ReviewContentBox = styled.div`
   }
   .content-bottom {
     padding: 0.5rem;
+    gap: 0.5rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: end;
     p {
       font-size: 1rem;
       color: var(--color-dark-gray);
@@ -331,6 +332,8 @@ const ReviewContentBox = styled.div`
         outline: none;
       }
       .post-button {
+        white-space: nowrap;
+
         height: 28px;
         border-radius: 0.5rem;
         padding: 0px 1.2rem;

@@ -44,7 +44,6 @@ const CommentList: React.FC<Props> = ({ reviewId }): JSX.Element => {
 export default CommentList;
 
 const CommentsContainer = styled.section`
-  padding: 1rem 1rem;
   display: flex;
   flex-direction: column;
   gap: 1rem;

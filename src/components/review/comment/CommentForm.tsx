@@ -187,9 +187,10 @@ const CommentContentBox = styled.div`
   }
   .content-bottom {
     padding: 0.5rem;
+    gap: 0.5rem;
     display: flex;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: end;
     p {
       font-size: 1rem;
       color: var(--color-dark-gray);
@@ -219,6 +220,8 @@ const CommentContentBox = styled.div`
         outline: none;
       }
       .post-button {
+        white-space: nowrap;
+
         height: 28px;
         border-radius: 0.5rem;
         padding: 0px 1.2rem;

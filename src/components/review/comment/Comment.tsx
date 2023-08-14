@@ -20,5 +20,5 @@ export default Comment;
 const CommentSection = styled.section`
   width: 100%;
   height: 100%;
-  padding: 2rem 2rem;
+  padding: 1rem 1rem;
 `;

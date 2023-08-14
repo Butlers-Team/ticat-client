@@ -111,13 +111,13 @@ const ReviewItem: React.FC<Props> = ({
           <CommentButtonContainer>
             <CommentButtonWrapper>
               <button type="button" onClick={onToggleCommentForm}>
-                댓글 {showCommentForm ? '작성 취소' : '남기기'}
+                {showCommentForm ? '작성 취소' : '댓글 작성'}
               </button>
             </CommentButtonWrapper>
             {!!commentCount && (
               <CommentButtonWrapper onClick={() => setIsShow(prev => !prev)}>
                 <button type="button">
-                  {`댓글`} {isShow ? '닫기' : `${commentCount}개 보기`}
+                  {`댓글`} {isShow ? '닫기' : `${commentCount}개`}
                 </button>
                 {isShow ? <FaAngleUp size={'1.3rem'} /> : <FaAngleDown size={'1.3rem'} />}
               </CommentButtonWrapper>
@@ -149,7 +149,7 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 const ReviewBottomWrapper = styled.div`
@@ -163,7 +163,7 @@ const ReviewBottomWrapper = styled.div`
 
 const CommentButtonContainer = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
 const CommentButtonWrapper = styled.div`
@@ -171,10 +171,11 @@ const CommentButtonWrapper = styled.div`
   align-items: center;
   justify-content: center;
   color: var(--color-main);
-  gap: 0.1rem;
+  gap: 0.5rem;
   cursor: pointer;
 
   button {
+    white-space: nowrap;
     font-size: 1.4rem;
     font-weight: bold;
     background: none;

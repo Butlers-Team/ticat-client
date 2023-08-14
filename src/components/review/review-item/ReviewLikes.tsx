@@ -142,7 +142,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
+  gap: 0.5rem;
 
   svg {
     width: 1.5rem;

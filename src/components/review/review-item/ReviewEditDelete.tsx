@@ -34,6 +34,7 @@ const ButtonWrapper = styled.div`
   gap: 0.5rem;
 
   button {
+    white-space: nowrap;
     font-size: 1.4rem;
     font-weight: bold;
     color: var(--color-main);

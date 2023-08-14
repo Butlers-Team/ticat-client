@@ -30,6 +30,7 @@ const ReviewHeaderContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 2rem;
   .score {
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -39,7 +40,7 @@ const ReviewHeaderContainer = styled.div`
     color: var(--color-main);
 
     .score-point {
-      font-size: 3.2rem;
+      font-size: 2.4rem;
     }
   }
 `;
@@ -48,14 +49,16 @@ const ReviewTitleContainer = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   > h2 {
+    white-space: nowrap;
     color: var(--color-dark);
     font-size: 2.4rem;
     font-weight: bold;
   }
   > span {
+    white-space: nowrap;
     font-size: 1.6rem;
     color: var(--color-dark-gray);
   }

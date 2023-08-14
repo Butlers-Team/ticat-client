@@ -20,5 +20,6 @@ export default ReviewItemContent;
 const ContentContainer = styled.div`
   p {
     font-size: 1.6rem;
+    overflow-wrap: break-word; /* 자동 줄 바꿈 설정 */
   }
 `;

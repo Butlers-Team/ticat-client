@@ -19,5 +19,6 @@ export default ContentItemContent;
 const ContentContainer = styled.div`
   p {
     font-size: 1.4rem;
+    overflow-wrap: break-word; /* 자동 줄 바꿈 설정 */
   }
 `;
