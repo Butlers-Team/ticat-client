@@ -36,8 +36,8 @@ export const useSignIn = () => {
         // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
         navigate('/interest');
       } else {
-        toast({ title: `메인페이지로 이동합니다.`, status: 'success' });
-        navigate('/main');
+        toast({ title: `로그인 성공, 페이지 이동합니다.`, status: 'success' });
+        navigate(-1);
       }
     },
 
