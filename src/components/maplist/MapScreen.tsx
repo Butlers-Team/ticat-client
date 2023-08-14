@@ -8,6 +8,7 @@ import Button from '@components/Button';
 
 //icon
 import { FaSearch } from 'react-icons/fa';
+import { MdRefresh } from 'react-icons/md';
 
 export interface LatLngType {
   latitude: number;
@@ -30,7 +31,9 @@ const MapScreen = () => {
 
   useEffect(() => {
     // This useEffect hook will run whenever locationData changes
-    setMarkerPositions(locationData);
+    if (locationData.length > 0) {
+      setMarkerPositions(locationData);
+    }
   }, [locationData]);
 
   useEffect(() => {
@@ -49,14 +52,14 @@ const MapScreen = () => {
         const infoElement = document.createElement('div');
         infoElement.className = 'position-info';
         infoElement.innerHTML = `
-          <div class="info-marker">
-            <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
-          </div>
-          <div class="info-text">
-            <p class="position-title">${position.title}</p>
-            <p class="position-category">${position.category}</p>
-          </div>
-        `;
+        <div class="info-marker">
+          <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
+        </div>
+        <div class="info-text">
+          <p class="position-title">${position.title}</p>
+          <p class="position-category">${position.category}</p>
+        </div>
+      `;
 
         const infoOverlay = new window.kakao.maps.CustomOverlay({
           content: infoElement,
@@ -65,10 +68,14 @@ const MapScreen = () => {
           yAnchor: 1.0,
         });
 
-        // 마커 클릭 이벤트 리스너 추가
-        window.kakao.maps.event.addListener(infoOverlay, 'click', () => {
-          // 클릭한 마커 요소의 클래스 추가
-          infoElement.classList.add('clicked-marker'); // 원하는 클래스 이름으로 변경
+        // 클릭 이벤트 핸들러 추가
+        infoElement.addEventListener('click', () => {
+          // 마커를 클릭했을 때 원하는 동작을 수행하도록 코드 작성
+          infoElement.classList.add('clicked');
+          console.log(`Marker clicked: ${position.title}`);
+          setKeyword(position.title);
+          setInputText(position.title);
+          // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.
         });
 
         infoOverlay.setMap(map);
@@ -78,6 +85,17 @@ const MapScreen = () => {
 
   return (
     <MapView>
+      {inputText && (
+        <RemoveKeyword
+          onClick={() => {
+            setKeyword('');
+            setInputText('');
+          }}>
+          <MdRefresh className="refresh-icon" />
+          검색 초기화
+        </RemoveKeyword>
+      )}
+
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
         <input
@@ -112,10 +130,6 @@ const MapView = styled.article`
   position: relative;
   height: 70%;
   background-color: var(--color-light-gray);
-
-  .clicked-marker {
-    background: red;
-  }
 
   .position-info {
     display: flex;
@@ -212,5 +226,30 @@ const MapView = styled.article`
     width: 100%;
     height: 100%;
     background: url('https://i.imgur.com/LcydlQy.png');
+  }
+`;
+
+const RemoveKeyword = styled.div`
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: var(--color-main);
+  z-index: 9;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+  .refresh-icon {
+    font-size: 1.6rem;
+    transform: translate(-3px, 3px);
+  }
+
+  ::hover {
+    background: var(--color-sub);
   }
 `;
