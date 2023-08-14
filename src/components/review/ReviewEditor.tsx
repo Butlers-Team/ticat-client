@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 //api
 
 //types
-import { ApiCreateReviewRequest, ReviewResponse } from 'types/api';
+import { ApiCreateReviewRequest, MyReviewResponse, ReviewResponse } from 'types/api';
 
 //install library
 import styled from 'styled-components';
@@ -24,7 +24,7 @@ import { useMemberStore } from '@store/useMemberStore';
 
 interface Props {
   festivalId: number;
-  review?: ReviewResponse;
+  review?: ReviewResponse | MyReviewResponse;
   isEditMode?: boolean;
   onCancel?: () => void;
   onSubmit?: (updatedContent: string) => void;
@@ -35,12 +35,12 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
   const { member } = useMemberStore();
   const toast = useCustomToast();
 
-  //댓글 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
+  //리뷰 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
   const convertNewLinesToBr = (content: string): string => {
     return content.replace(/\n/g, '<br>');
   };
 
-  //댓글 수정할때 <br> 태그를 TextArea /n 으로 바꾸는 함수
+  //리뷰 수정할때 <br> 태그를 TextArea /n 으로 바꾸는 함수
   const contentBrtoNewLines = (content?: string): string => {
     if (!content) return '';
 
@@ -77,11 +77,41 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
 
   const createReviewMutation = useCreateReview({ festivalId, handleReset });
   const updateReviewMutation = useUpdateReview({ festivalId, reviewId: review?.reviewId, handleReset });
+  /** 이미지 업로드 유효성 검사 */
+  const validateImageFile = (file: File): boolean => {
+    const acceptedImageFormats = /(\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.svg|\.webp)$/i;
+    const maxSize = 5 * 1024 * 1024; //5mb
 
-  // 댓글 작성 이미지 업로드
+    if (!file || !file.type.startsWith('image/')) {
+      toast({ title: '이미지 파일만 업로드할 수 있습니다.', status: 'error' });
+      return false;
+    }
+
+    if (!acceptedImageFormats.exec(file.name)) {
+      toast({
+        title: '지원되는 이미지 형식이 아닙니다. .jpg, .jpeg, .png, .gif, .bmp, .svg 또는 .webp 파일을 사용하세요.',
+        status: 'error',
+      });
+
+      return false;
+    }
+
+    if (file.size > maxSize) {
+      toast({
+        title: '파일 크기는 5MB를 초과할 수 없습니다.',
+        status: 'error',
+      });
+
+      return false;
+    }
+
+    return true;
+  };
+
+  // 리뷰 작성 이미지 업로드
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    const fileList = Array.from(files || []);
+    const fileList = Array.from(files || []).filter(file => validateImageFile(file as File));
 
     if (selectedImages.length + fileList.length > 4) {
       return toast({ title: '파일은 최대 4개까지 추가 가능합니다.', status: 'error' });
@@ -94,10 +124,10 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
     e.target.value = '';
   };
 
-  // 댓글 수정 이미지 업로드
+  // 리뷰 수정 이미지 업로드
   const handleImageUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    const fileList = Array.from(files || []);
+    const fileList = Array.from(files || []).filter(file => validateImageFile(file as File));
 
     if (updateImages.length + fileList.length > 4) {
       return toast({ title: '파일은 최대 4개까지 추가 가능합니다.', status: 'error' });
@@ -201,6 +231,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                       <input
                         id="file-update"
                         type="file"
+                        accept="image/jpeg, image/png, image/gif, image/bmp, image/svg+xml, image/webp"
                         style={{ display: 'none' }}
                         multiple
                         onChange={handleImageUpdate}
@@ -214,6 +245,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                       <input
                         id="file-upload"
                         type="file"
+                        accept="image/jpeg, image/png, image/gif, image/bmp, image/svg+xml, image/webp"
                         style={{ display: 'none' }}
                         multiple
                         onChange={handleImageUpload}
