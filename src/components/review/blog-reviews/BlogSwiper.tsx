@@ -13,6 +13,7 @@ import { ApiBlogPostsResponse } from 'types/api';
 //utils
 import { truncatedText } from '@utils/truncatedText';
 import { formatDate } from '@utils/formatDate';
+import { Link } from 'react-router-dom';
 
 interface Props {
   BlogPosts: ApiBlogPostsResponse;
@@ -76,16 +77,17 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
       <Swiper {...swiperOptions} className="mySwiper">
         {BlogPosts.map((post, index) => (
           <SwiperSlide key={`card-${index + 1}`} style={{ backgroundColor: randomPopularColor() }}>
-            <BlogCard>
-              <div className="card-text">
-                <TruncatedTitle text={post.title} maxLength={13} />
-                <PostInfo>
-                  <span>{truncatedText(post.bloggername, 13)}</span>
-                  <span>{formatDate(post.postdate)}</span>
-                </PostInfo>
-                <TruncatedText text={post.description} maxLength={50} />
-              </div>
-            </BlogCard>
+            <Link to={post.link}>
+              <BlogCard>
+                <div className="card-text">
+                  <TruncatedTitle text={post.title} maxLength={13} />
+                  <PostInfo>
+                    <span>{truncatedText(post.bloggername, 13)}</span>
+                    <span>{formatDate(post.postdate)}</span>
+                  </PostInfo>
+                </div>
+              </BlogCard>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
