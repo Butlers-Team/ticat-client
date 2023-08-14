@@ -20,8 +20,8 @@ const NicknameInputComponent: React.FC<Props> = ({ onValidNickname, value, onCha
       if (!/^[가-힣a-zA-Z0-9]+$/.test(name)) {
         return '닉네임은 한글, 영문, 숫자만 가능합니다.';
       }
-      if (name.length < 5) {
-        return '닉네임은 최소 5자 이상이어야 합니다.';
+      if (name.length < 2) {
+        return '닉네임은 최소 2자 이상이어야 합니다.';
       }
       if (name.length > 8) {
         return '닉네임은 최대 8자까지 가능합니다.';
@@ -66,7 +66,7 @@ const CharacterCount = styled.span`
   right: 5px;
   top: 42%;
   transform: translateY(-50%);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: var(--color-dark-gray);
 `;
 
@@ -78,7 +78,7 @@ const InputBox = styled.input`
   padding: 2px 5px;
   border-width: 0;
   outline: none;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   font-weight: bold;
   ::placeholder {
     font-size: 1.6rem;
