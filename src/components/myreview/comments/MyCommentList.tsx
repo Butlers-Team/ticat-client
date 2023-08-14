@@ -51,6 +51,7 @@ const MyCommentList: React.FC<Props> = (props): JSX.Element => {
               <CommnetItem
                 key={comment.reviewCommentId}
                 comment={comment}
+                isMyPage
                 isEditMode={activeEditModeComment === comment.reviewCommentId}
                 onEditModeChange={() => handleEditModeChange(comment.reviewCommentId)}
               />

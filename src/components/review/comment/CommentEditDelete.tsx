@@ -6,10 +6,11 @@ interface Props {
   commentId: number;
   reviewId: number;
   onEditClick: () => void;
+  isMyPage?: boolean;
 }
 
 /** 2023/08/12- 댓글 하단 수정 삭제 버튼 - by leekoby */
-const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick }): JSX.Element => {
+const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick, isMyPage }): JSX.Element => {
   // 댓글 삭제 mutation
 
   const deleteCommentMutation = useDeleteComment({ reviewId });
@@ -21,7 +22,7 @@ const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick }
   };
 
   return (
-    <ButtonWrapper>
+    <ButtonWrapper isMyPage={isMyPage}>
       <button onClick={onEditClick}>수정</button>|<button onClick={handleDeleteComment}>삭제</button>
     </ButtonWrapper>
   );
@@ -29,7 +30,7 @@ const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick }
 
 export default CommentEditDelete;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div<{ isMyPage?: boolean }>`
   color: var(--color-sub);
   display: flex;
   align-items: center;
@@ -37,8 +38,8 @@ const ButtonWrapper = styled.div`
   gap: 0.5rem;
 
   button {
-    font-size: 1.3rem;
-    font-weight: 500;
+    font-size: ${({ isMyPage }) => (isMyPage ? '1.4rem' : '1.3rem')};
+    font-weight: ${({ isMyPage }) => (isMyPage ? 'bold' : '500')};
     color: var(--color-main);
 
     background: none;

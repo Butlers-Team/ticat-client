@@ -90,6 +90,7 @@ const CommentForm: React.FC<Props> = ({
     if (isEditMode && comment?.reviewCommentId) {
       updateCommentMutation.mutate({ commentId: comment.reviewCommentId, content: convertedContent });
       onSubmit && onSubmit(convertedContent);
+      setIsShowForm?.();
       return;
     }
 
@@ -98,6 +99,7 @@ const CommentForm: React.FC<Props> = ({
       reviewId,
       content: convertedContent,
     });
+    setIsShowForm?.();
   };
 
   return (

@@ -20,11 +20,12 @@ import CommentItemHeader from './CommentItemHeader';
 interface Props {
   comment: CommentResponse | MyCommentResponse;
   isEditMode: boolean;
+  isMyPage?: boolean;
   onEditModeChange: () => void;
 }
 
 /** 2023/08/07- 댓글 아이템 - by leekoby */
-const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange }): JSX.Element => {
+const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, isMyPage }): JSX.Element => {
   const { member } = useMemberStore();
 
   const { content, festivalId, reviewId, createdAt, memberId, reviewCommentId, modifiedAt } = comment;
@@ -49,10 +50,17 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange })
     <>
       <CommentItemContainer>
         <HeaderWrapper>
-          <ItemImgWrap>
+          <ItemImgWrap isMyPage={isMyPage}>
             <img src={profileUrl || '/assets/images/default-profile-image.png'} />
           </ItemImgWrap>
-          {displayName && <CommentItemHeader displayName={displayName} createdAt={createdAt} modifiedAt={modifiedAt} />}
+          {displayName && (
+            <CommentItemHeader
+              displayName={displayName}
+              createdAt={createdAt}
+              modifiedAt={modifiedAt}
+              isMyPage={isMyPage}
+            />
+          )}
         </HeaderWrapper>
         {isEditMode ? (
           <CommentForm
@@ -66,12 +74,13 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange })
           />
         ) : (
           <>
-            <ContentItemContent content={content} />
+            <ContentItemContent content={content} isMyPage={isMyPage} />
             {member?.memberId === memberId && (
               <CommentEditDelete
                 reviewId={reviewId}
                 commentId={comment.reviewCommentId}
                 onEditClick={onEditModeChange}
+                isMyPage={isMyPage}
               />
             )}
           </>
@@ -92,12 +101,12 @@ const HeaderWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 `;
 
-const ItemImgWrap = styled.div`
-  height: 2rem;
-  width: 2rem;
+const ItemImgWrap = styled.div<{ isMyPage?: boolean }>`
+  height: ${({ isMyPage }) => (isMyPage ? '3rem' : '2rem')};
+  width: ${({ isMyPage }) => (isMyPage ? '3rem' : '2rem')};
   > img {
     width: 100%;
     height: 100%;
