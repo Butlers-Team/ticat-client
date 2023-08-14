@@ -201,6 +201,8 @@ export default SignUp;
 const SignUpContainer = styled.section`
   overflow: hidden;
   height: 100%;
+  max-width: 33rem;
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,6 +237,7 @@ const SignUpContainer = styled.section`
 
 const FormContainer = styled.form`
   position: relative;
+  width: 90%;
 `;
 
 /** 2023/06/29 - 회원가입 타이틀 - by leekoby */
@@ -250,7 +253,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 270px;
+  width: 100%;
 `;
 
 /** 2023/06/29 - 버튼 컨테이너 - by leekoby */
@@ -261,5 +264,5 @@ const ButtonContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin: 1rem auto;
-  width: 270px;
+  width: 100%;
 `;
