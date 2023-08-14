@@ -74,7 +74,7 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
   };
 
   const redirectToBlog = (link: string) => {
-    window.location.href = link;
+    window.open(link);
   };
   return (
     <>
