@@ -19,11 +19,12 @@ interface transformed {
 
 const FastivalList = () => {
   const [mapListData, setMapListData] = useState<MapFastivalType[]>([]);
+  const [totalPages, setTotalPages] = useState<number>();
   const { sortBy } = useOptionStore();
   const { category } = useCategoryStore();
   const { keyword } = useKeywordStore();
   const { setLocationData } = useLocationStore();
-  const [size, setSize] = useState<number>(25);
+  const [size, setSize] = useState<number>(15);
 
   const categoryJoin = category.join();
 
@@ -41,6 +42,10 @@ const FastivalList = () => {
     if (res.data) {
       setMapListData(res.data);
 
+      if (res.pageInfo) {
+        const page = res.pageInfo;
+        setTotalPages(page.totalElements);
+      }
       // 변환된 값을 저장할 스테이트 변수
       const transformedData: transformed[] = [];
 
@@ -71,7 +76,10 @@ const FastivalList = () => {
           <Festival item={list} />
         </Link>
       ))}
-      <button onClick={handleLoadMore}> 더보기 </button>
+      {mapListData.length === 0 && <div> 목록이 존재하지 않아요!</div>}
+      <button onClick={handleLoadMore} className={`${totalPages === mapListData.length && 'disabled'}`}>
+        축제 더보기
+      </button>
     </FastivalListBox>
   );
 };
@@ -95,5 +103,11 @@ const FastivalListBox = styled.article`
     width: 100%;
     color: #fff;
     margin: 10px 0px;
+    cursor: pointer;
+  }
+
+  .disabled {
+    background: var(--color-light-gray);
+    cursor: auto;
   }
 `;
