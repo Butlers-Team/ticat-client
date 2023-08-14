@@ -11,6 +11,6 @@ interface LocationState {
 }
 
 export const useLocationStore = create<LocationState>(set => ({
-  location: { latitude: 126.98834145916423, longitude: 37.54810058003352 }, // 초기값 설정
+  location: { latitude: 37.54810058003352, longitude: 126.98834145916423 }, // 초기값 설정
   setLocation: location => set({ location }),
 }));
