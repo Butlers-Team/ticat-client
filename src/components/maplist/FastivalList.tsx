@@ -76,7 +76,13 @@ const FastivalList = () => {
           <Festival item={list} />
         </Link>
       ))}
-      {mapListData.length === 0 && <div> 목록이 존재하지 않아요!</div>}
+      {mapListData.length === 0 && (
+        <DataUndefined className="flex-all-center column">
+          <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+          <p>검색된 축제가 없어요</p>
+          <p>{`다른 검색어를 입력해주세요 :(`}</p>
+        </DataUndefined>
+      )}
       <button onClick={handleLoadMore} className={`${totalPages === mapListData.length && 'disabled'}`}>
         축제 더보기
       </button>
@@ -107,7 +113,27 @@ const FastivalListBox = styled.article`
   }
 
   .disabled {
-    background: var(--color-light-gray);
+    background: #eee;
     cursor: auto;
+  }
+`;
+
+const DataUndefined = styled.div`
+  margin-bottom: 20px;
+
+  img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  :nth-child(2) {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+  }
+  :nth-child(3) {
+    font-size: 1.3rem;
+    color: var(--color-dark-gray);
   }
 `;
