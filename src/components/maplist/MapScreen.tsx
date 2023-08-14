@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useKeywordStore, useLocationStore } from '@store/mapListStore';
 
 //component
+
 import Button from '@components/Button';
 
 //icon
@@ -11,6 +12,8 @@ import { FaSearch } from 'react-icons/fa';
 export interface LatLngType {
   latitude: number;
   longitude: number;
+  title: string;
+  category: string;
 }
 
 const MapScreen = () => {
@@ -36,17 +39,33 @@ const MapScreen = () => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(37.5665, 126.978), // 서울시청 좌표를 기준으로 설정
-        level: 12, // 지도 확대 레벨
+        center: new window.kakao.maps.LatLng(locationData[0].latitude, locationData[0].longitude), // 맨 첫번째 좌표를 기준
+        level: 8, // 지도 확대 레벨
       };
       const map = new window.kakao.maps.Map(container, options);
 
-      // 마커들 생성 및 추가
+      // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
       markerPositions.forEach(position => {
-        const marker = new window.kakao.maps.Marker({
+        const infoElement = document.createElement('div');
+        infoElement.className = 'position-info';
+        infoElement.innerHTML = `
+          <div class="info-marker">
+            <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
+          </div>
+          <div class="info-text">
+            <p class="position-title">${position.title}</p>
+            <p class="position-category">${position.category}</p>
+          </div>
+        `;
+
+        const infoOverlay = new window.kakao.maps.CustomOverlay({
+          content: infoElement,
           position: new window.kakao.maps.LatLng(position.latitude, position.longitude),
+          xAnchor: 0.5,
+          yAnchor: 1.0,
         });
-        marker.setMap(map);
+
+        infoOverlay.setMap(map);
       });
     });
   }, [markerPositions]);
@@ -89,6 +108,65 @@ const MapView = styled.article`
   position: relative;
   height: 400px;
   background-color: var(--color-light-gray);
+
+  .position-info {
+    display: flex;
+    position: relative;
+    padding: 0px;
+    background: #ffffff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    border: var(--color-main) solid 1px;
+    padding: 3px 3px;
+
+    .info-marker {
+      position: relative;
+      max-width: 30px;
+      max-height: 30px;
+      background-color: var(--color-main);
+      overflow: hidden;
+      border-radius: 30px;
+      margin: 2px 3px;
+    }
+    .position-title {
+      width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .position-category {
+      margin-top: -5px;
+    }
+  }
+
+  .position-info::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 7px 7px 0;
+    border-color: #ffffff transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -7px;
+    left: 45%;
+  }
+
+  .position-info::before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 7px 7px 0;
+    border-color: var(--color-main) transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    bottom: -8px;
+    left: 45%;
+  }
 
   .map-search {
     position: absolute;
