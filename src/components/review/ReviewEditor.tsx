@@ -223,35 +223,21 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
               <div className="content-bottom">
                 <p>부적절한 내용은 삭제될 수 있습니다.</p>
                 <div className="content-button">
-                  {isEditMode ? (
-                    <>
-                      <label htmlFor="file-update" className="img-update-btn">
-                        <AiOutlinePicture size="3rem" color="var(--color-dark)" />
-                      </label>
-                      <input
-                        id="file-update"
-                        type="file"
-                        accept="image/jpeg, image/png, image/gif, image/bmp, image/svg+xml, image/webp"
-                        style={{ display: 'none' }}
-                        multiple
-                        onChange={handleImageUpdate}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <label htmlFor="file-upload" className="img-upload-btn">
-                        <AiOutlinePicture size="3rem" color="var(--color-dark)" />
-                      </label>
-                      <input
-                        id="file-upload"
-                        type="file"
-                        accept="image/jpeg, image/png, image/gif, image/bmp, image/svg+xml, image/webp"
-                        style={{ display: 'none' }}
-                        multiple
-                        onChange={handleImageUpload}
-                      />
-                    </>
-                  )}
+                  <>
+                    <label
+                      htmlFor={isEditMode ? 'file-update' : 'file-upload'}
+                      className={isEditMode ? 'img-update-btn' : 'img-upload-btn'}>
+                      <AiOutlinePicture size="3rem" color="var(--color-dark)" />
+                    </label>
+                    <input
+                      id={isEditMode ? 'file-update' : 'file-upload'}
+                      type="file"
+                      accept="image/jpeg, image/png, image/gif, image/bmp, image/svg+xml, image/webp"
+                      style={{ display: 'none' }}
+                      multiple
+                      onChange={isEditMode ? handleImageUpdate : handleImageUpload}
+                    />
+                  </>
 
                   <button className="post-button"> {isEditMode ? '리뷰 수정' : '리뷰 등록'}</button>
                   {isEditMode ? (
