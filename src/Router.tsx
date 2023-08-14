@@ -17,6 +17,8 @@ import InterestPage from '@pages/InterestPage';
 import MapListPage from '@pages/MapListPage';
 import MyPage from '@pages/MyPage';
 import MyInfoSettingPage from '@pages/SettingPage';
+import ProfileUpdatePage from '@pages/ProfileUpdatePage';
+
 import { useMemberStore } from '@store/useMemberStore';
 import { useTokenStore } from '@store/useTokenStore';
 
@@ -43,6 +45,7 @@ const Router = () => {
         <Route path="/interest" element={isAuthenticated ? <InterestPage /> : <Navigate to="/main" />} />
         <Route path="/myinfo" element={isAuthenticated ? <MyPage /> : <Navigate to="/signin" />} />
         <Route path="setting" element={<MyInfoSettingPage />} />
+        <Route path="/profile" element={<ProfileUpdatePage />} />
       </Routes>
     </Layout>
   );

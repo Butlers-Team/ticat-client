@@ -21,7 +21,7 @@ const FastivalCategory = styled.ul<{ width?: string }>`
   gap: 0.6rem;
 
   .tab-section {
-    height: 5rem; // 높이 넘 커서 0.5 줄였어용!
+    height: 5rem;
     border: 1px solid var(--color-dark-gray);
     width: calc(100% / 3 - 0.4rem);
     /* width: ${({ width }) => (width ? width : 'calc(30%)')}; */

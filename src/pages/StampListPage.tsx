@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { getStampList } from '@api/stamp';
 import { useQuery } from '@tanstack/react-query';
@@ -28,11 +27,10 @@ const StampListPage = () => {
 
   const { data } = useQuery(['stampList', params], getStampList);
   const [isSelectTicket, setIsSelectTicket] = useState<boolean>(true);
-  const navigate = useNavigate();
 
   /** 2023/07/22 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
-    navigate('/myinfo');
+    window.history.back();
   };
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
