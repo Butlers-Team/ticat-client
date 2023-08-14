@@ -17,14 +17,22 @@ interface Props {
   memberId: number | null;
   reviewId: number;
   commentCount: number;
-  liked: boolean;
-  disliked: boolean;
+  liked?: boolean;
+  disliked?: boolean;
   likedCount?: number;
   dislikedCount?: number;
 }
 /** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
 
-const ReviewLikes: React.FC<Props> = ({ commentCount, liked, disliked, reviewId, memberId: writerId }): JSX.Element => {
+const ReviewLikes: React.FC<Props> = ({
+  commentCount,
+  liked,
+  disliked,
+  reviewId,
+  memberId: writerId,
+  likedCount,
+  dislikedCount,
+}): JSX.Element => {
   const { member } = useMemberStore();
 
   const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
@@ -35,6 +43,7 @@ const ReviewLikes: React.FC<Props> = ({ commentCount, liked, disliked, reviewId,
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
   const handleLikeClick = () => {
+    if (member?.memberId === writerId) return;
     const previousIsLiked = isLiked;
 
     if (timer.current) {
@@ -74,6 +83,8 @@ const ReviewLikes: React.FC<Props> = ({ commentCount, liked, disliked, reviewId,
   };
 
   const handleDislikeClick = () => {
+    if (member?.memberId === writerId) return;
+
     const previousIsDisliked = isDisliked;
 
     if (timer.current) {
@@ -119,9 +130,11 @@ const ReviewLikes: React.FC<Props> = ({ commentCount, liked, disliked, reviewId,
           <button type="button" className={`like-btn`} onClick={handleLikeClick}>
             {isLiked ? <TrueLike /> : <FalseLike />}
           </button>
+          <span>({likedCount})</span>
           <button type="button" className={`dislike-btn`} onClick={handleDislikeClick}>
             {isDisliked ? <TrueDislike /> : <FalseDislike />}
           </button>
+          <span>({dislikedCount})</span>
           {/* <button type="button">
             <GoCommentDiscussion />
           </button> */}
@@ -142,7 +155,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.3rem;
 
   svg {
     width: 1.5rem;
@@ -158,6 +171,9 @@ const IconContainer = styled.div`
     padding: 0;
     cursor: pointer;
     outline: inherit;
+  }
+  span {
+    font-size: 1.4rem;
   }
   .like-btn {
     color: var(--color-main);

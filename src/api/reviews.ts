@@ -9,6 +9,8 @@ import type {
   ApiFetchReviewsResponse,
   ApiUpdateReviewHandler,
   ApiDeleteReviewHandler,
+  ApiFetchMyReviewsHandler,
+  ApiFetchMyReviewsResponse,
 } from 'types/api/';
 
 //utils
@@ -48,5 +50,14 @@ export const apiUpdateReview: ApiUpdateReviewHandler = async body => {
 /** 2023/07/21 - 리뷰 삭제 API 요청 by leekoby */
 export const apiDeleteReview: ApiDeleteReviewHandler = async ({ reviewId }) => {
   const { data } = await instance.delete(`/reviews/${reviewId}`);
+  return data;
+};
+
+/** 2023/08/14  - 마이 리뷰 패치 요청 - by leekoby */
+export const apiFetchMyReviews: ApiFetchMyReviewsHandler = async ({ ...params }) => {
+  const { data } = await instance.get<ApiFetchMyReviewsResponse>(`/mypage/reviews`, {
+    params,
+  });
+
   return data;
 };

@@ -23,6 +23,7 @@ export const useDeleteReview = ({ reviewId, festivalId, handleReset }: Options) 
       toast({ title: '리뷰가 성공적으로 삭제되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.review, reviewId]);
       queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
+      queryClient.invalidateQueries([QUERY_KEYS.myreview]);
     },
     onError: (error: Error) => {
       toast({ title: `리뷰 삭제에 실패했습니다.`, status: 'error' });

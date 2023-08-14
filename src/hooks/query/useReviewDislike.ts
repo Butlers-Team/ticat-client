@@ -24,7 +24,7 @@ export const useReviewDislike = () => {
   });
   const deleteReviewDislikeMutation = useMutation(apiDeleteReviewDislike, {
     onSuccess: () => {
-      toast({ title: '싫어요를 취소했습니다.', status: 'error' });
+      toast({ title: '싫어요를 취소했습니다.', status: 'success' });
     },
     onError: (error: Error) => {
       toast({ title: `싫어요 취소에 실패했습니다.`, status: 'error' });

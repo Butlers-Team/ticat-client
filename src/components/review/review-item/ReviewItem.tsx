@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 //api
 //types
-import { ReviewResponse } from 'types/api';
+import { MyReviewResponse, ReviewResponse } from 'types/api';
 //install library
 import styled from 'styled-components';
 //icon
@@ -15,19 +15,19 @@ import ReviewImage from './ReviewImage';
 import CommentForm from '../comment/CommentForm';
 import Comment from '../comment/Comment';
 import ReviewEditDelete from './ReviewEditDelete';
+import ReviewEditor from '../ReviewEditor';
 //hooks
 //util
 //store
 import { useMemberStore } from '@store/useMemberStore';
-import ReviewEditor from '../ReviewEditor';
-import useCustomToast from '@hooks/useCustomToast';
 
 interface Props {
   festivalId: number;
-  review: ReviewResponse;
+  review: ReviewResponse | MyReviewResponse;
   showCommentForm: boolean;
-  onToggleCommentForm: () => void;
+  onToggleCommentForm?: () => void;
   isEditMode: boolean;
+  isMyPage?: boolean;
   onEditModeChange: () => void;
 }
 /** 2023/07/22 - 리뷰 아이템 - by leekoby */
@@ -37,24 +37,32 @@ const ReviewItem: React.FC<Props> = ({
   showCommentForm,
   onToggleCommentForm,
   isEditMode = false,
+  isMyPage = false,
   onEditModeChange,
 }): JSX.Element => {
-  const toast = useCustomToast();
   const { member } = useMemberStore();
+
   const {
+    memberId,
     commentCount,
     content,
     disliked,
-    displayName,
     liked,
-    memberId,
     pictures,
-    profileUrl,
     rating,
     reviewId,
     createdAt,
     modifiedAt,
+    likedCount,
+    dislikedCount,
   } = review;
+
+  const isReviewResponse = (review: ReviewResponse | MyReviewResponse): review is ReviewResponse => {
+    return 'profileUrl' in review && 'displayName' in review;
+  };
+
+  const displayName = isReviewResponse(review) ? review.displayName : member?.displayName;
+  const profileUrl = isReviewResponse(review) ? review.profileUrl : null;
 
   // 수정 취소
   const handleCancel = () => {
@@ -71,11 +79,9 @@ const ReviewItem: React.FC<Props> = ({
     <>
       <ReviewItemContainer>
         <HeaderWrapper>
-          {profileUrl ? (
-            <img src={profileUrl} />
-          ) : (
-            <img style={{ width: '3rem', height: '3rem' }} src="/assets/images/symbol-ticat1.png" />
-          )}
+          <ItemImgWrap>
+            <img src={profileUrl || '/assets/images/default-profile-image.png'} />
+          </ItemImgWrap>
           {displayName && (
             <ReviewItemHeader displayName={displayName} rating={rating} createdAt={createdAt} modifiedAt={modifiedAt} />
           )}
@@ -95,37 +101,59 @@ const ReviewItem: React.FC<Props> = ({
           </>
         )}
         <ReviewBottomWrapper>
-          <div className="button-wrapper">
-            <ReviewLikes
-              commentCount={commentCount}
-              disliked={disliked}
-              liked={liked}
-              reviewId={reviewId}
-              memberId={memberId}
-            />
+          {isMyPage ? (
+            <>
+              <ReviewLikes
+                commentCount={commentCount}
+                likedCount={likedCount}
+                dislikedCount={dislikedCount}
+                disliked={disliked}
+                liked={liked}
+                reviewId={reviewId}
+                memberId={memberId}
+              />
 
-            {member?.memberId === memberId && !isEditMode && (
-              <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
-            )}
-          </div>
-          <CommentButtonContainer>
-            <CommentButtonWrapper>
-              <button type="button" onClick={onToggleCommentForm}>
-                {showCommentForm ? '작성 취소' : '댓글 작성'}
-              </button>
-            </CommentButtonWrapper>
-            {!!commentCount && (
-              <CommentButtonWrapper onClick={() => setIsShow(prev => !prev)}>
-                <button type="button">
-                  {`댓글`} {isShow ? '닫기' : `${commentCount}개`}
+              {member?.memberId === memberId && !isEditMode && (
+                <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
+              )}
+            </>
+          ) : (
+            <div className="button-wrapper">
+              <ReviewLikes
+                commentCount={commentCount}
+                likedCount={likedCount}
+                dislikedCount={dislikedCount}
+                disliked={disliked}
+                liked={liked}
+                reviewId={reviewId}
+                memberId={memberId}
+              />
+
+              {member?.memberId === memberId && !isEditMode && (
+                <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
+              )}
+            </div>
+          )}
+          {!isMyPage && (
+            <CommentButtonContainer>
+              <CommentButtonWrapper>
+                <button type="button" onClick={onToggleCommentForm}>
+                  {showCommentForm ? '작성 취소' : '댓글 작성'}
                 </button>
-                {isShow ? <FaAngleUp size={'1.3rem'} /> : <FaAngleDown size={'1.3rem'} />}
               </CommentButtonWrapper>
-            )}
-          </CommentButtonContainer>
+              {!!commentCount && (
+                <CommentButtonWrapper onClick={() => setIsShow(prev => !prev)}>
+                  <button type="button">
+                    {`댓글`} {isShow ? '닫기' : `${commentCount}개`}
+                  </button>
+                  {isShow ? <FaAngleUp size={'1.3rem'} /> : <FaAngleDown size={'1.3rem'} />}
+                </CommentButtonWrapper>
+              )}
+            </CommentButtonContainer>
+          )}
         </ReviewBottomWrapper>
         <CommentForm
-          show={showCommentForm}
+          isShow={showCommentForm}
           festivalId={festivalId}
           reviewId={reviewId}
           setIsShowForm={onToggleCommentForm}
@@ -187,5 +215,16 @@ const CommentButtonWrapper = styled.div`
     &:hover {
       color: var(--color-sub);
     }
+  }
+`;
+
+const ItemImgWrap = styled.div`
+  height: 3rem;
+  width: 3rem;
+  > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
   }
 `;

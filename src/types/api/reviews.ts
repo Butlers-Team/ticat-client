@@ -3,12 +3,11 @@ import { PageInfoType } from '.';
 
 interface ReviewType {
   commentCount: number;
-  disliked: boolean;
+  disliked?: boolean;
   dislikedCount: number;
-  liked: boolean;
+  liked?: boolean;
   likedCount: number;
   pictures: string[] | [];
-  rating: number;
   reviewId: number;
   festivalId: number;
   createdAt: string;
@@ -16,6 +15,11 @@ interface ReviewType {
 }
 
 export interface ReviewResponse extends Review, Member, ReviewType {}
+
+export interface MyReviewResponse extends ReviewType, Review {
+  festivalTitle: string;
+  memberId: number;
+}
 
 // ==============리뷰 패치 요청 ===========================
 /** 2023/07/21- 리뷰 패치 요청 타입 - by leekoby */
@@ -33,6 +37,7 @@ export interface ApiFetchReviewsResponse {
 export interface ApiFetchReviewsHandler {
   (body: ApiFetchReviewsRequest): Promise<ApiFetchReviewsResponse>;
 }
+
 // ==============리뷰 등록 ===========================
 
 /** 2023/07/21- 리뷰 타입 - by leekoby */
@@ -86,4 +91,20 @@ export interface ApiDeleteReviewResponse {
 /** 2023/07/21- 리뷰 삭제 핸들러  - by leekoby */
 export interface ApiDeleteReviewHandler {
   (body: ApiDeleteReviewRequest): Promise<ApiDeleteReviewResponse>;
+}
+
+// ============== 마이페이지 리뷰 패치 요청 ===========================
+/** 2023/08/14- 마이페이지 리뷰 패치 요청 타입 - by leekoby */
+export interface ApiFetchMyReviewsRequest {
+  page: number;
+  size: number;
+}
+/** 2023/07/21- 마이페이지 리뷰 패치 수신 타입 - by leekoby */
+export interface ApiFetchMyReviewsResponse {
+  data: MyReviewResponse[];
+  pageInfo: PageInfoType;
+}
+/** 2023/07/21- 마이페이지 리뷰 패치 핸들러 타입 - by leekoby */
+export interface ApiFetchMyReviewsHandler {
+  (body: ApiFetchMyReviewsRequest): Promise<ApiFetchMyReviewsResponse>;
 }
