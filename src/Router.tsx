@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from '@layout/index';
 
 // Pages
@@ -17,8 +17,14 @@ import InterestPage from '@pages/InterestPage';
 import MapListPage from '@pages/MapListPage';
 import MyPage from '@pages/MyPage';
 import MyInfoSettingPage from '@pages/SettingPage';
+import { useMemberStore } from '@store/useMemberStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 const Router = () => {
+  const { member } = useMemberStore();
+  const { accessToken, refreshToken } = useTokenStore();
+  const isAuthenticated = !!member && !!accessToken && !!refreshToken;
+
   return (
     <Layout>
       <Routes>
@@ -34,8 +40,8 @@ const Router = () => {
         <Route path="/signin" element={<SignInPage />} />
         <Route path="/wellcome" element={<WellcomePage />} />
         <Route path="/callback/:interest" element={<OauthCallbackPage />} />
-        <Route path="/interest" element={<InterestPage />} />
-        <Route path="/myinfo" element={<MyPage />} />
+        <Route path="/interest" element={isAuthenticated ? <InterestPage /> : <Navigate to="/main" />} />
+        <Route path="/myinfo" element={isAuthenticated ? <MyPage /> : <Navigate to="/signin" />} />
         <Route path="setting" element={<MyInfoSettingPage />} />
       </Routes>
     </Layout>
