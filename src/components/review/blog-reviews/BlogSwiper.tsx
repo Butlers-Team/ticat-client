@@ -48,14 +48,14 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
     loop: true,
   };
 
-  function TruncatedTitle({ text, maxLength }: { text: string; maxLength: number }) {
+  const TruncatedTitle = ({ text, maxLength }: { text: string; maxLength: number }) => {
     const truncated = text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     return <h3 dangerouslySetInnerHTML={{ __html: truncated }} />;
-  }
-  function TruncatedText({ text, maxLength }: { text: string; maxLength: number }) {
+  };
+  const TruncatedText = ({ text, maxLength }: { text: string; maxLength: number }) => {
     const truncated = text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     return <span dangerouslySetInnerHTML={{ __html: truncated }} />;
-  }
+  };
 
   // 임시 배경색
   const popularColors = [
@@ -68,26 +68,28 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
   ];
 
   //랜덤 배경색 선택
-  function randomPopularColor() {
+  const randomPopularColor = () => {
     const randomIndex = Math.floor(Math.random() * popularColors.length);
     return popularColors[randomIndex];
-  }
+  };
+
+  const redirectToBlog = (link: string) => {
+    window.location.href = link;
+  };
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
         {BlogPosts.map((post, index) => (
           <SwiperSlide key={`card-${index + 1}`} style={{ backgroundColor: randomPopularColor() }}>
-            <Link to={post.link}>
-              <BlogCard>
-                <div className="card-text">
-                  <TruncatedTitle text={post.title} maxLength={13} />
-                  <PostInfo>
-                    <span>{truncatedText(post.bloggername, 13)}</span>
-                    <span>{formatDate(post.postdate)}</span>
-                  </PostInfo>
-                </div>
-              </BlogCard>
-            </Link>
+            <BlogCard onClick={() => redirectToBlog(post.link)}>
+              <div className="card-text">
+                <TruncatedTitle text={post.title} maxLength={13} />
+                <PostInfo>
+                  <span>{truncatedText(post.bloggername, 13)}</span>
+                  <span>{formatDate(post.postdate)}</span>
+                </PostInfo>
+              </div>
+            </BlogCard>
           </SwiperSlide>
         ))}
       </Swiper>
