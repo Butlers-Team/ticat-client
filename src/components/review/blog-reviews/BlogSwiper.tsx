@@ -83,9 +83,9 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
           <SwiperSlide key={`card-${index + 1}`} style={{ backgroundColor: randomPopularColor() }}>
             <BlogCard onClick={() => redirectToBlog(post.link)}>
               <div className="card-text">
-                <TruncatedTitle text={post.title} maxLength={13} />
+                <TruncatedTitle text={post.title} maxLength={20} />
                 <PostInfo>
-                  <span>{truncatedText(post.bloggername, 13)}</span>
+                  <span>{truncatedText(post.bloggername, 10)}</span>
                   <span>{formatDate(post.postdate)}</span>
                 </PostInfo>
               </div>
@@ -100,12 +100,15 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
 export default BlogSwiper;
 
 const BlogCard = styled.section`
-  margin-bottom: 2rem;
-  width: 140px;
-  height: 120px;
   color: var(--color-dark);
   padding: 0.5rem;
+  min-height: 105px;
   .card-text {
+    min-height: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; // 공간 조정
     h3 {
       font-size: 1.5rem;
       font-weight: bold;
