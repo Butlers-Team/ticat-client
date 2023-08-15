@@ -5,8 +5,9 @@ import { MyInfoType } from 'types/api/myinfo';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
 
-// util
+// utils
 import { CheckCategory } from '@utils/categories';
+import { validateNickname } from '@utils/validateNickname';
 
 // components
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
@@ -63,6 +64,13 @@ const ProfileUpdatePage = () => {
 
   /** 2023/08/13 - 프로필 업데이트 이벤트 함수 - by sineTlsl */
   const handleProfileUpdate = () => {
+    // 닉네임 유효성 검사
+    const errorMessage = validateNickname(memberName);
+    if (errorMessage) {
+      alert(errorMessage);
+      return; // 에러가 있다면 이후 코드 실행 중지
+    }
+
     const updateProfileBody = {
       displayName: memberName,
     };
