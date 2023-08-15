@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MyInfoType } from 'types/api/myinfo';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
 
 // utils
@@ -20,6 +20,7 @@ import ProfileInfoNameUpdate from '@components/profile/ProfileInfoNameUpdate';
 const ProfileUpdatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const memberInfo: MyInfoType = location.state.data;
   const [memberName, setMemberName] = useState(memberInfo.displayName);
 
@@ -44,6 +45,7 @@ const ProfileUpdatePage = () => {
   /** 2023/08/13 - 프로필 업데이트 요청 함수 생성 - by sineTlsl */
   const profileUpdatemutation = useMutation(patchMyInfo, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['userInfo']);
       navigate('/myinfo');
     },
     onError: err => {
