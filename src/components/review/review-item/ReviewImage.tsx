@@ -34,7 +34,7 @@ const ReviewImage: React.FC<Props> = ({ pictures }): JSX.Element => {
   return (
     <>
       <ImageContainer>
-        {pictures.map((imgUrl, idx) => (
+        {pictures?.map((imgUrl, idx) => (
           <img
             src={imgUrl}
             key={imgUrl + idx}
