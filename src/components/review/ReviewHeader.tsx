@@ -1,18 +1,25 @@
+//style
 import styled from 'styled-components';
 
-interface Props {}
+//type
+import { FestivalDetailType } from 'types/api/detail';
+
+interface Props {
+  detailList: FestivalDetailType;
+}
 
 /** 2023/07/22- 리뷰 영역 헤더 - by leekoby */
-const ReviewHeader: React.FC<Props> = (): JSX.Element => {
+const ReviewHeader: React.FC<Props> = ({ detailList }): JSX.Element => {
+  const { reviewCount, reviewRating } = detailList;
   return (
     <ReviewHeaderContainer>
       <ReviewTitleContainer>
-        <h2>축제 평가</h2>
-        <span>n개의 리뷰</span>
+        <h2>축제 후기</h2>
+        <span>{reviewCount}개의 리뷰</span>
       </ReviewTitleContainer>
       <span className="score">
         <span>평점</span>
-        <span className="score-point">5.0</span>
+        <span className="score-point">{reviewRating.toFixed(1)}</span>
       </span>
     </ReviewHeaderContainer>
   );
@@ -25,6 +32,7 @@ const ReviewHeaderContainer = styled.div`
   justify-content: space-between;
   margin-bottom: 2rem;
   .score {
+    white-space: nowrap;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,7 +42,7 @@ const ReviewHeaderContainer = styled.div`
     color: var(--color-main);
 
     .score-point {
-      font-size: 3.2rem;
+      font-size: 2.4rem;
     }
   }
 `;
@@ -43,14 +51,16 @@ const ReviewTitleContainer = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
 
   > h2 {
+    white-space: nowrap;
     color: var(--color-dark);
     font-size: 2.4rem;
     font-weight: bold;
   }
   > span {
+    white-space: nowrap;
     font-size: 1.6rem;
     color: var(--color-dark-gray);
   }

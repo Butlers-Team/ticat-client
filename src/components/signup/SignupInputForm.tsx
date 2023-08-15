@@ -1,8 +1,9 @@
+//style
 import styled from 'styled-components';
+
+//icons
 import { TiDeleteOutline } from 'react-icons/ti';
 import { AiOutlineEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { GiConfirmed } from 'react-icons/gi';
-import { VscError } from 'react-icons/vsc';
 
 interface Props {
   label: string;
@@ -44,6 +45,7 @@ const SignInputForm: React.FC<Props> = ({
         name={name}
         value={value}
         onChange={onChange}
+        required
       />
       {value && (
         <ButtonWrapper>

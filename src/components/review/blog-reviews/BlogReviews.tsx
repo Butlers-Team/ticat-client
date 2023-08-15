@@ -1,6 +1,9 @@
-import { useFetchBlogPosts } from '@hooks/query/useFetchBlogPosts';
+//style
 import styled from 'styled-components';
-import BlogSwiper from './BlogSwiper';
+//components
+import BlogSwiper from '@components/review/blog-reviews/BlogSwiper';
+//hooks
+import { useFetchBlogPosts } from '@hooks/query/useFetchBlogPosts';
 
 interface Props {
   festivalName: string;

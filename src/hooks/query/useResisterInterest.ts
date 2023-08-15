@@ -1,13 +1,19 @@
-import { useMutation } from '@tanstack/react-query';
+//react
 import { useNavigate } from 'react-router-dom';
+
+//query
+import { useMutation } from '@tanstack/react-query';
 
 // api
 import { apiRegisterInterest } from '@api/interest';
 
 //type
-import { ApiInterestResponse, ApiInterestRequest } from 'types/api';
-import useCustomToast from '@hooks/useCustomToast';
 import { CustomAxiosError, Member } from 'types/auth';
+
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
+
+//store
 import { useMemberStore } from '@store/useMemberStore';
 
 /** 2023/07/15 - 닉네임, 관심사등록  뮤테이션 - by leekoby */
@@ -39,7 +45,7 @@ export const useRegisterInterest = () => {
     },
     onError: (error: CustomAxiosError) => {
       if (error.response) {
-        const { status, data } = error.response;
+        const { data } = error.response;
         if (data?.message) {
           toast({
             title: data.message,

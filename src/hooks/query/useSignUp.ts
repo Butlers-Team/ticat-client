@@ -1,8 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
-import { apiSignUp } from '@api/auth';
-import { ApiSignUpRequest, CustomAxiosError } from 'types/auth';
-import useCustomToast from '@hooks/useCustomToast';
+//react
 import { useNavigate } from 'react-router-dom';
+
+//query
+import { useMutation } from '@tanstack/react-query';
+
+//api
+import { apiSignUp } from '@api/auth';
+
+//type
+import { CustomAxiosError } from 'types/auth';
+
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 /** 2023/07/09 - 회원가입 뮤테이션  - by leekoby */
 export const useSignUp = () => {
@@ -16,7 +25,7 @@ export const useSignUp = () => {
     },
     onError: (error: CustomAxiosError) => {
       if (error.response) {
-        const { status, data } = error.response;
+        const { data } = error.response;
         if (data?.message) {
           toast({
             title: data.message,

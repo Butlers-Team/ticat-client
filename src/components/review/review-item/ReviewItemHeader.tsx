@@ -1,35 +1,42 @@
-import ReviewRating from '@components/ReviewRating';
+//style
 import styled from 'styled-components';
+//components
+import ReviewRating from '@components/ReviewRating';
+//libs
+import { getTimeDiff } from '@libs/time';
 
 interface Props {
   displayName: string;
   rating: number;
+  createdAt: string;
+  modifiedAt?: string;
 }
-/** 2023/07/22- 댓글 상단 프로필이미지/닉네임/별점/작성일 - by leekoby */
-const CommentHeader: React.FC<Props> = ({ displayName, rating }): JSX.Element => {
+/** 2023/07/22- 리뷰 상단 프로필이미지/닉네임/별점/작성일 - by leekoby */
+const ReviewItemHeader: React.FC<Props> = ({ displayName, rating, createdAt, modifiedAt }): JSX.Element => {
   return (
-    <CommentHeaderContainer>
+    <ReviewHeaderContainer>
       <InfoWrapper>
         <span className="nickname">{displayName}</span>
         <span className="rating">
           <ReviewRating size={16} reviewRating={rating} />
         </span>
       </InfoWrapper>
-      <span className="createdAt">2023.07.21</span>
-    </CommentHeaderContainer>
+      <span className="createdAt">{getTimeDiff(new Date(createdAt))}</span>
+    </ReviewHeaderContainer>
   );
 };
 
-export default CommentHeader;
+export default ReviewItemHeader;
 
-const CommentHeaderContainer = styled.div`
+const ReviewHeaderContainer = styled.div`
   display: flex;
   flex-grow: 1;
   justify-content: space-between;
 
   .createdAt {
-    font-size: 1.6rem;
+    font-size: 1.2rem;
     color: var(--color-dark-gray);
+    white-space: nowrap;
   }
 `;
 const InfoWrapper = styled.div`

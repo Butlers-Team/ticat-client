@@ -1,9 +1,9 @@
-import { ApiCreateCommentRequest, ApiUpdateCommentRequest } from 'types/api';
+import { ApiCreateReviewRequest, ApiUpdateReviewRequest } from 'types/api';
 
 interface Options {
-  request: ApiCreateCommentRequest | ApiUpdateCommentRequest;
+  request: ApiCreateReviewRequest | ApiUpdateReviewRequest;
 }
-/** 2023/07/21- 댓글 FormData 생성 유틸 - by leekoby */
+/** 2023/07/21- 리뷰 FormData 생성 유틸 - by leekoby */
 export const createFormData = ({ request }: Options): FormData => {
   const formData = new FormData();
 
