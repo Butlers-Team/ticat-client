@@ -2,12 +2,20 @@
 import styled from 'styled-components';
 
 import { settingData } from '@data/settingData';
+import { useMemberStore } from '@store/useMemberStore';
+import { useTokenStore } from '@store/useTokenStore';
+import { useExpStore } from '@store/useExpStore';
 
 const MySetting = () => {
+  const { clearMember } = useMemberStore();
+  const { clearTokens } = useTokenStore();
+  const { clearExp } = useExpStore();
   const handelMembershipSetting = (item: string) => {
     if (item === '로그아웃') {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
+      clearMember();
+      clearTokens();
+      clearExp();
+
       alert('로그아웃이 완료되었습니다');
       window.location.href = '/main';
     }
