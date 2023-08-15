@@ -3,14 +3,18 @@ import { useState, useEffect } from 'react';
 import { useKeywordStore, useLocationStore } from '@store/mapListStore';
 
 //component
+
 import Button from '@components/Button';
 
 //icon
 import { FaSearch } from 'react-icons/fa';
+import { MdRefresh } from 'react-icons/md';
 
 export interface LatLngType {
   latitude: number;
   longitude: number;
+  title: string;
+  category: string;
 }
 
 const MapScreen = () => {
@@ -27,7 +31,9 @@ const MapScreen = () => {
 
   useEffect(() => {
     // This useEffect hook will run whenever locationData changes
-    setMarkerPositions(locationData);
+    if (locationData.length > 0) {
+      setMarkerPositions(locationData);
+    }
   }, [locationData]);
 
   useEffect(() => {
@@ -36,23 +42,60 @@ const MapScreen = () => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(37.5665, 126.978), // 서울시청 좌표를 기준으로 설정
+        center: new window.kakao.maps.LatLng(locationData[0].latitude, locationData[0].longitude), // 맨 첫번째 좌표를 기준
         level: 12, // 지도 확대 레벨
       };
       const map = new window.kakao.maps.Map(container, options);
 
-      // 마커들 생성 및 추가
+      // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
       markerPositions.forEach(position => {
-        const marker = new window.kakao.maps.Marker({
+        const infoElement = document.createElement('div');
+        infoElement.className = 'position-info';
+        infoElement.innerHTML = `
+        <div class="info-marker">
+          <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
+        </div>
+        <div class="info-text">
+          <p class="position-title">${position.title}</p>
+          <p class="position-category">${position.category}</p>
+        </div>
+      `;
+
+        const infoOverlay = new window.kakao.maps.CustomOverlay({
+          content: infoElement,
           position: new window.kakao.maps.LatLng(position.latitude, position.longitude),
+          xAnchor: 0.5,
+          yAnchor: 1.0,
         });
-        marker.setMap(map);
+
+        // 클릭 이벤트 핸들러 추가
+        infoElement.addEventListener('click', () => {
+          // 마커를 클릭했을 때 원하는 동작을 수행하도록 코드 작성
+          infoElement.classList.add('clicked');
+          console.log(`Marker clicked: ${position.title}`);
+          setKeyword(position.title);
+          setInputText(position.title);
+          // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.
+        });
+
+        infoOverlay.setMap(map);
       });
     });
   }, [markerPositions]);
 
   return (
     <MapView>
+      {inputText && (
+        <RemoveKeyword
+          onClick={() => {
+            setKeyword('');
+            setInputText('');
+          }}>
+          <MdRefresh className="refresh-icon" />
+          검색 초기화
+        </RemoveKeyword>
+      )}
+
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
         <input
@@ -77,8 +120,6 @@ const MapScreen = () => {
           검색
         </Button>
       </div>
-
-      {/* <div className="map-guide"></div> */}
     </MapView>
   );
 };
@@ -87,8 +128,71 @@ export default MapScreen;
 
 const MapView = styled.article`
   position: relative;
-  height: 400px;
+  height: 60%;
   background-color: var(--color-light-gray);
+
+  .position-info {
+    display: flex;
+    position: relative;
+    padding: 0px;
+    background: #ffffff;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+    border: var(--color-main) solid 1px;
+    padding: 3px 3px;
+
+    :hover {
+      color: var(--color-main);
+    }
+
+    .info-marker {
+      position: relative;
+      max-width: 30px;
+      max-height: 30px;
+      background-color: var(--color-main);
+      overflow: hidden;
+      border-radius: 30px;
+      margin: 2px 7px 2px 3px;
+    }
+    .position-title {
+      width: 120px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .position-category {
+      margin-top: -5px;
+    }
+  }
+
+  .position-info::after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 7px 7px 0;
+    border-color: #ffffff transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -7px;
+    left: 45%;
+  }
+
+  .position-info::before {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 7px 7px 0;
+    border-color: var(--color-main) transparent;
+    display: block;
+    width: 0;
+    z-index: 0;
+    bottom: -8px;
+    left: 45%;
+  }
 
   .map-search {
     position: absolute;
@@ -122,5 +226,30 @@ const MapView = styled.article`
     width: 100%;
     height: 100%;
     background: url('https://i.imgur.com/LcydlQy.png');
+  }
+`;
+
+const RemoveKeyword = styled.div`
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1.4rem;
+  color: #fff;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 50px;
+  background: var(--color-main);
+  z-index: 9;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+  .refresh-icon {
+    font-size: 1.6rem;
+    transform: translate(-3px, 3px);
+  }
+
+  ::hover {
+    background: var(--color-sub);
   }
 `;

@@ -70,6 +70,8 @@ const useKeywordStore = create<keywordState>(set => ({
 type Location = {
   latitude: number;
   longitude: number;
+  title: string;
+  category: string;
 };
 
 type LocationDataState = {
@@ -82,6 +84,8 @@ export const useLocationStore = create<LocationDataState>(set => ({
     {
       latitude: 127.0,
       longitude: 25.0,
+      title: '',
+      category: '',
     },
   ],
   setLocationData: newData => set({ locationData: newData }), // updateData의 인자를 받아 state를 업데이트

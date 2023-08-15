@@ -25,7 +25,15 @@ export interface MapFastivalRequest {
   size: number;
 }
 
+export interface mapfastivalPageinfoType {
+  page?: number;
+  size?: number;
+  totalElements?: number;
+  totalPages?: number;
+}
+
 /** 2023/07/04 - 맵 리스트 Response   - by mscojl24 */
 export interface MapFastivalResponse {
   data?: MapFastivalType[];
+  pageInfo?: mapfastivalPageinfoType;
 }
