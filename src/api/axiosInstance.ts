@@ -1,9 +1,12 @@
-import useCustomToast from '@hooks/useCustomToast';
-import { getExp, resetExp, useExpStore } from '@store/useExpStore';
-import { resetMember, useMemberStore } from '@store/useMemberStore';
-import { getToken, clearTokens, useTokenStore } from '@store/useTokenStore';
-import { dateToSeconds } from '@utils/dateToSeconds';
 import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+
+//utils
+import { dateToSeconds } from '@utils/dateToSeconds';
+
+//store
+import { clearExp, useExpStore } from '@store/useExpStore';
+import { clearMember } from '@store/useMemberStore';
+import { getToken, clearTokens, useTokenStore } from '@store/useTokenStore';
 
 /** 2023/07/04 - Axios instance 생성 - by sineTlsl */
 export const instance = axios.create({
@@ -45,8 +48,8 @@ instance.interceptors.request.use(
 async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: AxiosRequestConfig) {
   if (error.response && error.response.data === '리프레시 토큰이 만료되었습니다.') {
     clearTokens(); // 로컬스토리지 토큰 초기화
-    resetExp();
-    resetMember(); // 로컬스토리지 멤버 초기화
+    clearExp();
+    clearMember(); // 로컬스토리지 멤버 초기화
 
     alert('로그인 유지 만료 다시 로그인해주세요.');
     window.location.href = '/signin';
@@ -90,8 +93,8 @@ instance.interceptors.response.use(
     } else if (error.response.status === 401) {
       alert('다시 로그인해주세요.');
       clearTokens(); // 로컬스토리지 토큰 초기화
-      resetExp();
-      resetMember(); // 로컬스토리지 멤버 초기화
+      clearExp();
+      clearMember(); // 로컬스토리지 멤버 초기화
       window.location.href = '/signin';
     }
     // 위의 경우가 아닌 경우 에러를 그대로 반환
