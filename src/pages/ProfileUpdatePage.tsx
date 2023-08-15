@@ -65,7 +65,6 @@ const ProfileUpdatePage = () => {
   const handleProfileUpdate = () => {
     const updateProfileBody = {
       displayName: memberName,
-      password: '!a123123',
     };
 
     const updateInterestBody = {

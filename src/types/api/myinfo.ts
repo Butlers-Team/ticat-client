@@ -11,7 +11,6 @@ export interface MyInfoType {
 /** 2023/08/13 - 회원정보 수정 데이터 Type - by sineTlsl */
 export interface MyInfoPatchBodyType {
   displayName: string;
-  password: string;
 }
 
 // ========================== 최근 축제목록 조회 ==========================
