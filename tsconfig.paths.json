@@ -12,7 +12,8 @@
       "@styles/*": ["styles/*"],
       "@types/*": ["types/*"],
       "@utils/*": ["utils/*"],
-      "@libs/*": ["libs/*"]
+      "@libs/*": ["libs/*"],
+      "@provider/*": ["provider/*"]
     }
   }
 }
