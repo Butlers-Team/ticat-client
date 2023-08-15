@@ -34,6 +34,7 @@ const ReviewHeaderContainer = styled.div`
   .createdAt {
     font-size: 1.2rem;
     color: var(--color-dark-gray);
+    white-space: nowrap;
   }
 `;
 const InfoWrapper = styled.div`

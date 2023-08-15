@@ -110,6 +110,7 @@ const ProfileImageContainer = styled.div`
 
   // 버튼 공통 속성
   > .img-btn-wrap > .img-common-btn {
+    white-space: nowrap;
     height: 3.3rem;
     padding: 0 1.7rem;
     text-align: center;

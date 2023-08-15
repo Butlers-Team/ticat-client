@@ -30,6 +30,7 @@ const CommentHeaderContainer = styled.div<{ isMyPage?: boolean }>`
   .createdAt {
     font-size: 1.2rem;
     color: var(--color-dark-gray);
+    white-space: nowrap;
   }
 `;
 const InfoWrapper = styled.div<{ isMyPage?: boolean }>`
