@@ -1,5 +1,7 @@
-import { getTimeDiff } from '@libs/time';
+//style
 import styled from 'styled-components';
+//libs
+import { getTimeDiff } from '@libs/time';
 
 interface Props {
   displayName: string;

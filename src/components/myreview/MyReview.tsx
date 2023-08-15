@@ -1,8 +1,11 @@
+//react
 import { useState } from 'react';
+//style
 import styled from 'styled-components';
-import MyCommentList from './comments/MyCommentList';
-import MyReviewToggle from './MyReviewToggle';
-import MyReviewList from './reviews/MyReviewList';
+//components
+import MyCommentList from '@components/myreview/comments/MyCommentList';
+import MyReviewToggle from '@components/myreview/MyReviewToggle';
+import MyReviewList from '@components/myreview/reviews/MyReviewList';
 
 interface Props {
   textTitle: string;

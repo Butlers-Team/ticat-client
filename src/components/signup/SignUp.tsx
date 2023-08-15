@@ -1,15 +1,21 @@
-import styled from 'styled-components';
+//react
 import { useCallback, useState } from 'react';
-import SignInputForm from './SignupInputForm';
-import Button from '@components/Button';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useSignUp } from '@hooks/query';
+
+//style
+import styled from 'styled-components';
+
+//type
 import { ApiSignUpRequest } from 'types/auth';
+
+//components
+import Button from '@components/Button';
+import SignInputForm from '@components/signup/SignupInputForm';
+
+//hooks
+import { useSignUp } from '@hooks/query';
 
 /** 2023/06/29 - 회원가입 컴포넌트 - by leekoby */
 const SignUp: React.FC = (): JSX.Element => {
-  const navigate = useNavigate();
   const signUpMutation = useSignUp();
 
   // 이름, 이메일, 비밀번호, 비밀번호 확인

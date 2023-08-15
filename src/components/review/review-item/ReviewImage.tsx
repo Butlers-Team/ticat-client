@@ -1,4 +1,6 @@
+//react
 import React, { useState } from 'react';
+//style
 import styled from 'styled-components';
 
 interface Props {

@@ -1,7 +1,9 @@
-import ReviewRating from '@components/ReviewRating';
-import { getTimeDiff } from '@libs/time';
-
+//style
 import styled from 'styled-components';
+//components
+import ReviewRating from '@components/ReviewRating';
+//libs
+import { getTimeDiff } from '@libs/time';
 
 interface Props {
   displayName: string;

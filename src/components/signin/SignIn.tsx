@@ -1,14 +1,23 @@
-import { ApiSignInRequest, ApiSignInSuccess } from 'types/auth';
+//react
 import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+//style
 import styled from 'styled-components';
-import OauthButton from './OauthButton';
+
+//type
+import { ApiSignInRequest } from 'types/auth';
+
+//components
+import OauthButton from '@components/signin/OauthButton';
+
+//hooks
 import { useSignIn } from '@hooks/query/index';
-import { useTokenStore } from '@store/useTokenStore';
 
 interface ButtonProps {
   buttonType: 'signin' | 'signup';
 }
+
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
   const navigate = useNavigate();

@@ -1,10 +1,14 @@
-import Pagination from '@components/Pagination';
-import ReviewItem from '@components/review/review-item/ReviewItem';
-import { useFetchMyReviewList } from '@hooks/query/useFetchMyReview';
+//react
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+//style
 import styled from 'styled-components';
-
+//components
+import ReviewItem from '@components/review/review-item/ReviewItem';
+import Pagination from '@components/Pagination';
+//hooks
+import { useFetchMyReviewList } from '@hooks/query/useFetchMyReview';
+//store
 interface Props {}
 
 /** 2023/08/14- 마이페이지 리뷰 리스트 - by leekoby */

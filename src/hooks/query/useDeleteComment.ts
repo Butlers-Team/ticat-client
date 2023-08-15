@@ -1,4 +1,4 @@
-import useCustomToast from '@hooks/useCustomToast';
+//query
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 //keys
@@ -6,6 +6,9 @@ import { QUERY_KEYS } from './queryKeys';
 
 // api
 import { apiDeleteComment } from '@api/comment';
+
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Options {
   commentId?: number;
@@ -23,6 +26,7 @@ export const useDeleteComment = ({ commentId, reviewId, handleReset }: Options) 
       toast({ title: '댓글이 성공적으로 삭제되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.comment, reviewId]);
       queryClient.invalidateQueries([QUERY_KEYS.mycomment]);
+      handleReset?.();
     },
     onError: (error: Error) => {
       toast({ title: `댓글 삭제에 실패했습니다.`, status: 'error' });

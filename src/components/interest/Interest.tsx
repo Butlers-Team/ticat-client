@@ -1,22 +1,25 @@
-import Button from '@components/Button';
-import { useRegisterInterest } from '@hooks/query';
-import { ApiInterestRequest } from 'types/api';
-import { useState, useCallback, useEffect } from 'react';
-import { MdArrowBackIosNew } from 'react-icons/md';
-import { Link, useNavigate } from 'react-router-dom';
+//react
+import { useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+//style
 import styled from 'styled-components';
-import { Category } from './Category';
-import { NicknameInput } from './NickNameInput';
+//types
+import { ApiInterestRequest } from 'types/api';
+//components
+import Button from '@components/Button';
+import { Category } from '@components/interest/Category';
+import { NicknameInput } from '@components/interest/NickNameInput';
+import TopHistoryBackNav from '@components/TopHistoryBackNav';
+//hooks
+import { useRegisterInterest } from '@hooks/query';
+//store
 import { useTokenStore } from '@store/useTokenStore';
 import { useMemberStore } from '@store/useMemberStore';
-import TopHistoryBackNav from '@components/TopHistoryBackNav';
 
 interface Props {}
 
 /** 2023/07/14 - 관심사등록 Component - by leekoby */
 const Interest: React.FC<Props> = (): JSX.Element => {
-  const { accessToken, refreshToken } = useTokenStore();
-  const { member } = useMemberStore();
   const navigate = useNavigate();
 
   const interestMutation = useRegisterInterest();

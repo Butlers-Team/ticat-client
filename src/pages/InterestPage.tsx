@@ -1,5 +1,8 @@
-import Interest from '@components/interest/Interest';
+//style
 import styled from 'styled-components';
+
+//components
+import Interest from '@components/interest/Interest';
 
 interface Props {}
 

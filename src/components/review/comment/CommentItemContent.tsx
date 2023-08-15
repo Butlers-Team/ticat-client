@@ -1,5 +1,7 @@
-import { getSanitizedContent } from '@utils/sanitizeContent';
+//style
 import styled from 'styled-components';
+//utils
+import { getSanitizedContent } from '@utils/sanitizeContent';
 
 interface Props {
   isMyPage?: boolean;

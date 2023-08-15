@@ -1,6 +1,9 @@
-import { useReviewDislike, useReviewLike } from '@hooks/query';
-import { useMemberStore } from '@store/useMemberStore';
+//react
 import { useRef, useState } from 'react';
+//hooks
+import { useReviewDislike, useReviewLike } from '@hooks/query';
+//store
+import { useMemberStore } from '@store/useMemberStore';
 
 import {
   BiDislike as FalseDislike,
@@ -8,9 +11,7 @@ import {
   BiSolidDislike as TrueDislike,
   BiSolidLike as TrueLike,
 } from 'react-icons/bi';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
-import { GoCommentDiscussion } from 'react-icons/go';
 import styled from 'styled-components';
 
 interface Props {
@@ -23,7 +24,6 @@ interface Props {
   dislikedCount?: number;
 }
 /** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
-
 const ReviewLikes: React.FC<Props> = ({
   commentCount,
   liked,
@@ -135,9 +135,6 @@ const ReviewLikes: React.FC<Props> = ({
             {isDisliked ? <TrueDislike /> : <FalseDislike />}
           </button>
           <span>({dislikedCount})</span>
-          {/* <button type="button">
-            <GoCommentDiscussion />
-          </button> */}
         </IconContainer>
       </ReviewBottomContainer>
     </>

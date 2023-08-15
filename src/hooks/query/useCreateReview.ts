@@ -1,6 +1,5 @@
-import useCustomToast from '@hooks/useCustomToast';
+//query
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
 
 //keys
 import { QUERY_KEYS } from './queryKeys';
@@ -8,8 +7,8 @@ import { QUERY_KEYS } from './queryKeys';
 // api
 import { apiCreateReview } from '@api/reviews';
 
-//type
-import { ApiCreateReviewRequest } from 'types/api/';
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Options {
   festivalId: number;
@@ -18,7 +17,6 @@ interface Options {
 
 /** 2023/07/21- 리뷰 등록 뮤테이션 - by leekoby */
 export const useCreateReview = ({ festivalId, handleReset }: Options) => {
-  const navigate = useNavigate();
   const toast = useCustomToast();
   const queryClient = useQueryClient();
 

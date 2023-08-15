@@ -1,23 +1,20 @@
 //react
 import React, { useState } from 'react';
-//api
+//style
+import styled from 'styled-components';
 //types
 import { MyReviewResponse, ReviewResponse } from 'types/api';
-//install library
-import styled from 'styled-components';
 //icon
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 //components
-import ReviewLikes from './ReviewLikes';
-import ReviewItemContent from './ReviewItemContent';
-import ReviewItemHeader from './ReviewItemHeader';
-import ReviewImage from './ReviewImage';
-import CommentForm from '../comment/CommentForm';
-import Comment from '../comment/Comment';
-import ReviewEditDelete from './ReviewEditDelete';
-import ReviewEditor from '../ReviewEditor';
-//hooks
-//util
+import ReviewEditor from '@components/review/ReviewEditor';
+import ReviewLikes from '@components/review/review-item/ReviewLikes';
+import ReviewItemContent from '@components/review/review-item/ReviewItemContent';
+import ReviewItemHeader from '@components/review/review-item/ReviewItemHeader';
+import ReviewImage from '@components/review/review-item/ReviewImage';
+import ReviewEditDelete from '@components/review/review-item/ReviewEditDelete';
+import CommentForm from '@components/review/comment/CommentForm';
+import Comment from '@components/review/comment/Comment';
 //store
 import { useMemberStore } from '@store/useMemberStore';
 

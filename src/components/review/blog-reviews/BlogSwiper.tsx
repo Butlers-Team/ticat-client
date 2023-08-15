@@ -1,19 +1,20 @@
+//react
 import React from 'react';
-import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+//style
+import styled from 'styled-components';
+import 'swiper/css';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
+import { ApiBlogPostsResponse } from 'types/api';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { ApiBlogPostsResponse } from 'types/api';
 
 //utils
 import { truncatedText } from '@utils/truncatedText';
 import { formatDate } from '@utils/formatDate';
-import { Link } from 'react-router-dom';
 
 interface Props {
   BlogPosts: ApiBlogPostsResponse;

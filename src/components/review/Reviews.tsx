@@ -1,13 +1,22 @@
-import { FestivalDetailType } from 'types/api/detail';
-import styled from 'styled-components';
-import BlogReviews from './blog-reviews/BlogReviews';
-import ReviewsList from './ReviewsList';
-import ReviewEditor from './ReviewEditor';
-import ReviewHeader from './ReviewHeader';
-import { getToken } from '@store/useTokenStore';
+//react
 import { Link } from 'react-router-dom';
-import { useMemberStore } from '@store/useMemberStore';
+
+//style
+import styled from 'styled-components';
+
+//types
+import { FestivalDetailType } from 'types/api/detail';
+
+//components
 import Button from '@components/Button';
+import BlogReviews from '@components/review/blog-reviews/BlogReviews';
+import ReviewHeader from '@components/review/ReviewHeader';
+import ReviewsList from '@components/review/ReviewsList';
+import ReviewEditor from '@components/review/ReviewEditor';
+
+//store
+import { useMemberStore } from '@store/useMemberStore';
+import { getToken } from '@store/useTokenStore';
 
 interface Props {
   detailList: FestivalDetailType;

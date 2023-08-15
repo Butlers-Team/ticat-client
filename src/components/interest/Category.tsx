@@ -1,8 +1,12 @@
+//react
+import React from 'react';
+//style
+import styled from 'styled-components';
+//components
 import Button from '@components/Button';
 import CommonCategoryList from '@components/CommonCategoryList';
+//util
 import { CheckCategory } from '@utils/categories';
-import React from 'react';
-import styled from 'styled-components';
 
 interface Props {
   category: string[];

@@ -1,4 +1,4 @@
-import useCustomToast from '@hooks/useCustomToast';
+// query
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 //keys
@@ -6,6 +6,9 @@ import { QUERY_KEYS } from './queryKeys';
 
 // api
 import { apiCreateComment } from '@api/comment';
+
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Options {
   festivalId: number;

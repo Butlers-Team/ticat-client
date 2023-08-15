@@ -1,5 +1,7 @@
-import { useDeleteReview } from '@hooks/query/useDeleteReview';
+//style
 import styled from 'styled-components';
+//hooks
+import { useDeleteReview } from '@hooks/query/useDeleteReview';
 
 interface Props {
   reviewId: number;

@@ -1,6 +1,8 @@
-import { FestivalDetailType } from 'types/api/detail';
-
+//style
 import styled from 'styled-components';
+
+//type
+import { FestivalDetailType } from 'types/api/detail';
 
 interface Props {
   detailList: FestivalDetailType;

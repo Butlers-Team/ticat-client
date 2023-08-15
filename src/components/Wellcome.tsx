@@ -1,6 +1,9 @@
+//react
 import { useEffect } from 'react';
-import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+
+//style
+import styled from 'styled-components';
 
 /** 2023/07/05 - 회원가입 결과 컴포넌트 - by leekoby */
 const Wellcome: React.FC = (): JSX.Element => {

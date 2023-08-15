@@ -1,5 +1,10 @@
-import ReactPaginate from 'react-paginate';
+//style
 import styled from 'styled-components';
+
+//install library
+import ReactPaginate from 'react-paginate';
+
+//icons
 import { HiChevronRight as Right, HiChevronLeft as Left } from 'react-icons/hi';
 
 interface PaginationProps {
@@ -7,8 +12,8 @@ interface PaginationProps {
   page: number;
   onPageChange: (selected: number) => void;
 }
-/** 2023/08/15- 페이지네이션 컴포넌트 - by leekoby */
 
+/** 2023/08/15- 페이지네이션 컴포넌트 - by leekoby */
 const Pagination = ({ totalPages, page, onPageChange }: PaginationProps) => {
   const handlePageClick = (selectedItem: { selected: number }) => {
     onPageChange(selectedItem.selected + 1);

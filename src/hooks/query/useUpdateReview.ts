@@ -1,4 +1,4 @@
-import useCustomToast from '@hooks/useCustomToast';
+//query
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 //keys
@@ -6,6 +6,9 @@ import { QUERY_KEYS } from './queryKeys';
 
 // api
 import { apiUpdateReview } from '@api/reviews';
+
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Options {
   festivalId: number;
@@ -24,6 +27,7 @@ export const useUpdateReview = ({ reviewId, festivalId, handleReset }: Options) 
       queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
       queryClient.invalidateQueries([QUERY_KEYS.review, reviewId]);
       queryClient.invalidateQueries([QUERY_KEYS.myreview]);
+      handleReset?.();
     },
     onError: (error: Error) => {
       toast({ title: `리뷰 수정에 실패했습니다.`, status: 'error' });

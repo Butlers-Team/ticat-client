@@ -1,8 +1,15 @@
-import Button from '@components/Button';
-import { useFetchReviews } from '@hooks/query/useFetchReviews';
+//react
 import { useState } from 'react';
+
+//style
 import styled from 'styled-components';
-import ReviewItem from './review-item/ReviewItem';
+
+//components
+import Button from '@components/Button';
+import ReviewItem from '@components/review/review-item/ReviewItem';
+
+//hooks
+import { useFetchReviews } from '@hooks/query/useFetchReviews';
 
 interface Props {
   festivalId: number;

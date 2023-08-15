@@ -1,21 +1,14 @@
-//react
 //style
-import { useMemberStore } from '@store/useMemberStore';
-import { useState } from 'react';
 import styled from 'styled-components';
-//install library
-//api
 //types
 import { CommentResponse, MyCommentResponse } from 'types/api';
-import CommentEditDelete from './CommentEditDelete';
-import CommentForm from './CommentForm';
-import ContentItemContent from './CommentItemContent';
-import CommentItemHeader from './CommentItemHeader';
-//icon
 //components
-//hooks
-//util
+import CommentEditDelete from '@components/review/comment/CommentEditDelete';
+import CommentForm from '@components/review/comment/CommentForm';
+import ContentItemContent from '@components/review/comment/CommentItemContent';
+import CommentItemHeader from '@components/review/comment/CommentItemHeader';
 //store
+import { useMemberStore } from '@store/useMemberStore';
 
 interface Props {
   comment: CommentResponse | MyCommentResponse;

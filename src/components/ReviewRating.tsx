@@ -1,4 +1,7 @@
+//style
 import styled from 'styled-components';
+
+//icons
 import { BsStarFill, BsStar, BsStarHalf } from 'react-icons/bs';
 
 export interface reviewRatingProps {

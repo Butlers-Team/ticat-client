@@ -1,8 +1,12 @@
-import Button from '@components/Button';
-import { useFetchComments } from '@hooks/query/useFetchComment';
+//react
 import { useState } from 'react';
+//style
 import styled from 'styled-components';
-import CommnetItem from './CommnetItem';
+//components
+import Button from '@components/Button';
+import CommnetItem from '@components/review/comment/CommnetItem';
+//hooks
+import { useFetchComments } from '@hooks/query/useFetchComment';
 
 interface Props {
   reviewId: number;

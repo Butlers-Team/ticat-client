@@ -1,6 +1,7 @@
-import { useDeleteComment } from '@hooks/query/useDeleteComment';
-import { useUpdateComment } from '@hooks/query/useUpdateComment';
+//style
 import styled from 'styled-components';
+//hooks
+import { useDeleteComment } from '@hooks/query/useDeleteComment';
 
 interface Props {
   commentId: number;
@@ -12,7 +13,6 @@ interface Props {
 /** 2023/08/12- 댓글 하단 수정 삭제 버튼 - by leekoby */
 const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick, isMyPage }): JSX.Element => {
   // 댓글 삭제 mutation
-
   const deleteCommentMutation = useDeleteComment({ reviewId });
 
   // 댓글 삭제 이벤트 핸들러

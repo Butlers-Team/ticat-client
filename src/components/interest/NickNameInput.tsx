@@ -1,4 +1,6 @@
+//react
 import React, { useState } from 'react';
+//style
 import styled from 'styled-components';
 
 interface Props {
@@ -7,6 +9,7 @@ interface Props {
   onChange: React.ChangeEventHandler<HTMLInputElement>;
   placeholder: string;
 }
+
 /** 2023/07/14 - 닉네임 입력창 - by leekoby */
 const NicknameInputComponent: React.FC<Props> = ({ onValidNickname, value, onChange, placeholder }): JSX.Element => {
   const [validationMessage, setValidationMessage] = useState('');

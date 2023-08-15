@@ -5,21 +5,14 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 //install library
 import Pagination from '@components/Pagination';
-//api
-//types
-//icon
 //components
-import ReviewItem from '@components/review/review-item/ReviewItem';
+import CommnetItem from '@components/review/comment/CommnetItem';
 //hooks
 import { useFetchMyCommentsList } from '@hooks/query/useFetchMyComment';
-import CommnetItem from '@components/review/comment/CommnetItem';
-
-//util
-
-//store
 
 interface Props {}
 
+/** 2023/08/15- 마이페이지 나의 리뷰 댓글 리스트  - by leekoby */
 const MyCommentList: React.FC<Props> = (props): JSX.Element => {
   const [page, setPage] = useState(1);
   const { data } = useFetchMyCommentsList({ page, size: 10 });

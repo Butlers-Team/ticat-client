@@ -1,12 +1,9 @@
 //react
 import { FormEventHandler, useEffect, useState } from 'react';
-//api
 //types
-import { ApiCreateCommentRequest, CommentResponse, MyCommentResponse } from 'types/api';
+import { CommentResponse, MyCommentResponse } from 'types/api';
 //install library
 import styled from 'styled-components';
-//icon
-//components
 //hooks
 import useResizeTextarea from '@hooks/useResizeTextArea';
 import useCustomToast from '@hooks/useCustomToast';
@@ -16,8 +13,6 @@ import { useFocusAndScroll } from '@hooks/useFocusAndScroll';
 
 //store
 import { useMemberStore } from '@store/useMemberStore';
-
-/** 2023/08/06- 댓글 작성 폼 - by leekoby */
 
 interface Props {
   festivalId: number;
@@ -31,6 +26,7 @@ interface Props {
   isEditMode?: boolean;
 }
 
+/** 2023/08/06- 댓글 작성 폼 - by leekoby */
 const CommentForm: React.FC<Props> = ({
   festivalId,
   reviewId,

@@ -3,16 +3,12 @@ import instance from './axiosInstance';
 //type
 import type {
   ApiFetchCommentsHandler,
-  ApiFetchCommentsRequest,
   ApiFetchCommentsResponse,
   ApiCreateCommentHandler,
-  ApiCreateCommentRequest,
   ApiCreateCommentResponse,
   ApiDeleteCommentHandler,
-  ApiDeleteCommentRequest,
   ApiDeleteCommentResponse,
   ApiUpdateCommentHandler,
-  ApiUpdateCommentRequest,
   ApiUpdateCommentResponse,
   ApiFetchMyCommentsHandler,
   ApiFetchMyCommentsResponse,

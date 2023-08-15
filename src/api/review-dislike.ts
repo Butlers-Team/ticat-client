@@ -1,4 +1,6 @@
 import instance from './axiosInstance';
+
+//type
 import type {
   ApiCreateDislikeHandler,
   ApiCreateDislikeRequest,
