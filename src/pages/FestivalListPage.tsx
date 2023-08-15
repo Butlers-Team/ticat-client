@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import styled from 'styled-components';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { getCatergories } from '@api/category';
-import { CategoriesRequest } from 'types/api/category';
+
+// hook
+import { useFetchCategories } from '@hooks/query/useFetchCategories';
 
 // stores
 import { useAreaFilterStore } from '@store/useAreaFilterStore';
@@ -20,50 +20,9 @@ import { IoMdOptions } from 'react-icons/io';
 const FestivalListPage = () => {
   const { categoryTab } = useCategoryTabStore();
   const { selectedItems } = useAreaFilterStore();
+  const { data, fetchNextPage, hasNextPage, isLoading } = useFetchCategories(categoryTab, selectedItems);
 
-  /** 2023/07/11 - 카테고리 클릭 시 API 요청하는 함수 (무한스크롤) - by sineTlsl */
-  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
-    ['categories', categoryTab],
-    ({ pageParam = 1 }) => {
-      let params: CategoriesRequest = {
-        page: pageParam,
-        size: 10,
-      };
-      if (categoryTab !== '전체' && selectedItems.length >= 1) {
-        const areas = selectedItems.join(',');
-
-        params = {
-          category: categoryTab,
-          ...params,
-          areas,
-        };
-      } else if (categoryTab === '전체' && selectedItems.length >= 1) {
-        const areas = selectedItems.join(',');
-
-        params = {
-          ...params,
-          areas,
-        };
-      } else if (categoryTab !== '전체') {
-        params = {
-          category: categoryTab,
-          ...params,
-        };
-      }
-
-      return getCatergories(params);
-    },
-    {
-      getNextPageParam: lastPage => {
-        const { page, totalPages } = lastPage.pageInfo;
-        const nextPage = page < totalPages ? page + 1 : undefined;
-
-        return nextPage;
-      },
-    },
-  );
-
-  /** 2023/07/11 - 사용자가 화면에 얼마나 보여야
+  /** 2023/07/11 - 사용자가 화면에 얼마나 보여야 ㅜ
    *  inView가 true가 바뀔지를 결정하는 옵션 - by sineTlsl */
   const { ref, inView } = useInView({
     threshold: 0,
