@@ -123,6 +123,7 @@ const OptionList = styled.aside`
   height: 70px;
   border-bottom: 1px solid rgba(173, 173, 173, 0.2);
   padding: 20px;
+  z-index: 3;
 
   > * {
     margin-right: 2px;
