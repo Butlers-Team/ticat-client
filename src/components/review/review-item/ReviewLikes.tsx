@@ -1,5 +1,9 @@
-import { useCommentDislike, useCommentLike } from '@hooks/query';
-import { useState } from 'react';
+//react
+import { useRef, useState } from 'react';
+//hooks
+import { useReviewDislike, useReviewLike } from '@hooks/query';
+//store
+import { useMemberStore } from '@store/useMemberStore';
 
 import {
   BiDislike as FalseDislike,
@@ -7,33 +11,43 @@ import {
   BiSolidDislike as TrueDislike,
   BiSolidLike as TrueLike,
 } from 'react-icons/bi';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
-import { GoCommentDiscussion } from 'react-icons/go';
 import styled from 'styled-components';
 
 interface Props {
+  memberId: number | null;
   reviewId: number;
   commentCount: number;
-  liked: boolean;
-  disliked: boolean;
+  liked?: boolean;
+  disliked?: boolean;
   likedCount?: number;
   dislikedCount?: number;
 }
-/** 2023/07/22- 댓글 하단 좋아요/싫어요/답글 보기/답글 작성 - by leekoby */
+/** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
+const ReviewLikes: React.FC<Props> = ({
+  commentCount,
+  liked,
+  disliked,
+  reviewId,
+  memberId: writerId,
+  likedCount,
+  dislikedCount,
+}): JSX.Element => {
+  const { member } = useMemberStore();
 
-const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewId }): JSX.Element => {
-  const { createCommentLikeMutation, deleteCommentLikeMutation } = useCommentLike();
-  const { createCommentDislikeMutation, deleteCommentDislikeMutation } = useCommentDislike();
+  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
+  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike();
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
 
-  let timer: ReturnType<typeof setTimeout>; // 타이머 생성
+  const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
+
   const handleLikeClick = () => {
+    if (member?.memberId === writerId) return;
     const previousIsLiked = isLiked;
 
-    if (timer) {
-      clearTimeout(timer); // 기존에 설정된 타이머가 있다면 초기화
+    if (timer.current) {
+      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
     }
 
     // Optimistic UI 업데이트
@@ -43,9 +57,9 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
     setIsLiked(prevState => !prevState);
 
     // 일정 시간 동안 대기 후 API 호출
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       if (!isLiked) {
-        createCommentLikeMutation.mutate(
+        createReviewLikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -55,7 +69,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       } else {
-        deleteCommentLikeMutation.mutate(
+        deleteReviewLikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -65,14 +79,16 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       }
-    }, 3000); // 3초 동안 다른 동작이 없으면 API 호출 진행
+    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   const handleDislikeClick = () => {
+    if (member?.memberId === writerId) return;
+
     const previousIsDisliked = isDisliked;
 
-    if (timer) {
-      clearTimeout(timer); // 기존에 설정된 타이머가 있다면 초기화
+    if (timer.current) {
+      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
     }
 
     // Optimistic UI 업데이트
@@ -82,9 +98,9 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
     setIsDisliked(prevState => !prevState);
 
     // 일정 시간 동안 대기 후 API 호출
-    timer = setTimeout(() => {
+    timer.current = setTimeout(() => {
       if (!isDisliked) {
-        createCommentDislikeMutation.mutate(
+        createReviewDislikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -94,7 +110,7 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       } else {
-        deleteCommentDislikeMutation.mutate(
+        deleteReviewDislikeMutation.mutate(
           { reviewId },
           {
             onError: () => {
@@ -104,35 +120,30 @@ const CommentBottom: React.FC<Props> = ({ commentCount, liked, disliked, reviewI
           },
         );
       }
-    }, 3000); // 3초 동안 다른 동작이 없으면 API 호출 진행
+    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   return (
-    <CommentBottomContainer>
-      <IconContainer>
-        <button className={`like-btn`} onClick={handleLikeClick}>
-          {isLiked ? <TrueLike /> : <FalseLike />}
-        </button>
-        <button className={`dislike-btn`} onClick={handleDislikeClick}>
-          {isDisliked ? <TrueDislike /> : <FalseDislike />}
-        </button>
-        <button>
-          <GoCommentDiscussion />
-        </button>
-      </IconContainer>
-      {!commentCount && (
-        <RecommentButtonContainer>
-          <FaAngleDown size={'1.3rem'} />
-          <button>{`답글 ${commentCount}개`}</button>
-        </RecommentButtonContainer>
-      )}
-    </CommentBottomContainer>
+    <>
+      <ReviewBottomContainer>
+        <IconContainer>
+          <button type="button" className={`like-btn`} onClick={handleLikeClick}>
+            {isLiked ? <TrueLike /> : <FalseLike />}
+          </button>
+          <span>({likedCount})</span>
+          <button type="button" className={`dislike-btn`} onClick={handleDislikeClick}>
+            {isDisliked ? <TrueDislike /> : <FalseDislike />}
+          </button>
+          <span>({dislikedCount})</span>
+        </IconContainer>
+      </ReviewBottomContainer>
+    </>
   );
 };
 
-export default CommentBottom;
+export default ReviewLikes;
 
-const CommentBottomContainer = styled.div`
+const ReviewBottomContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -141,7 +152,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
+  gap: 0.3rem;
 
   svg {
     width: 1.5rem;
@@ -158,6 +169,9 @@ const IconContainer = styled.div`
     cursor: pointer;
     outline: inherit;
   }
+  span {
+    font-size: 1.4rem;
+  }
   .like-btn {
     color: var(--color-main);
 
@@ -171,26 +185,5 @@ const IconContainer = styled.div`
     &:hover {
       color: #ff7a7a;
     }
-  }
-`;
-const RecommentButtonContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-main);
-  gap: 0.5rem;
-
-  &:hover {
-    color: var(--color-sub);
-  }
-  button {
-    font-size: 1.3rem;
-    font-weight: bold;
-    background: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    cursor: pointer;
-    outline: inherit;
   }
 `;

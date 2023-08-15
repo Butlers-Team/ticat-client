@@ -4,19 +4,19 @@ import { persist } from 'zustand/middleware';
 export interface ExpInfo {
   exp: number | null;
   setExp: (exp: number | null) => void;
-  resetExp: () => void;
+  clearExp: () => void;
 }
 
 // 초기값 설정
 const initialState = {
   exp: null,
   setExp: () => {},
-  resetExp: () => {},
+  clearExp: () => {},
 };
 
-const resetExp = () => {
-  const { resetExp } = useExpStore.getState();
-  resetExp();
+const clearExp = () => {
+  const { clearExp } = useExpStore.getState();
+  clearExp();
 };
 
 const getExp = () => {
@@ -30,10 +30,10 @@ const useExpStore = create(
     set => ({
       ...initialState,
       setExp: exp => set(state => ({ ...state, exp })),
-      resetExp: () => set(() => initialState),
+      clearExp: () => set(() => initialState),
     }),
     { name: 'exp', getStorage: () => localStorage },
   ),
 );
 
-export { useExpStore, resetExp, getExp };
+export { useExpStore, clearExp, getExp };

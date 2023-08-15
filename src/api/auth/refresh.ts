@@ -1,10 +1,11 @@
 import instance from '@api/axiosInstance';
-import { useExpStore } from '@store/useExpStore';
-import { useTokenStore } from '@store/useTokenStore';
+//utils
 import { dateToSeconds } from '@utils/dateToSeconds';
-
 //type
 import { ApiRefreshResponse, ApiRefreshHandler } from 'types/auth';
+//store
+import { useExpStore } from '@store/useExpStore';
+import { useTokenStore } from '@store/useTokenStore';
 
 //토큰갱신 요청
 /** 2023/08/02 - 토근 갱신 요청 - by leekoby */

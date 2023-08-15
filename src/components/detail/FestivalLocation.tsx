@@ -42,7 +42,6 @@ const FestivalLocation: React.FC<FestivalCoverProps> = ({ detailList }) => {
   const searchKakaoMap = () => {
     window.open(`https://map.kakao.com/link/to/${detailList.eventplace},${detailList.mapy},${detailList.mapx}`);
   };
-  console.log(detailList);
   return (
     <>
       <LocationContainer>

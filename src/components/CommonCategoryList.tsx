@@ -1,6 +1,11 @@
+//react
 import React from 'react';
+
+//components
 import CommonCategoryButton from '@components/CommonCategoryButton';
 import CommonCatogoryItem from '@components/CommonCatogoryItem';
+
+//utils
 import { CategoryOption } from '@utils/categories';
 
 interface Props {

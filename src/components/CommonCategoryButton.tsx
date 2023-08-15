@@ -1,4 +1,7 @@
+//react
 import { PropsWithChildren } from 'react';
+
+//style
 import styled from 'styled-components';
 
 interface Props {

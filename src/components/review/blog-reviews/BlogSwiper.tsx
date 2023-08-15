@@ -1,14 +1,16 @@
+//react
 import React from 'react';
-import styled from 'styled-components';
 import { useState, useEffect } from 'react';
+//style
+import styled from 'styled-components';
+import 'swiper/css';
 
 //type
 import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
+import { ApiBlogPostsResponse } from 'types/api';
 
 // Import Swiper
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
-import { ApiBlogPostsResponse } from 'types/api';
 
 //utils
 import { truncatedText } from '@utils/truncatedText';
@@ -47,14 +49,14 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
     loop: true,
   };
 
-  function TruncatedTitle({ text, maxLength }: { text: string; maxLength: number }) {
+  const TruncatedTitle = ({ text, maxLength }: { text: string; maxLength: number }) => {
     const truncated = text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     return <h3 dangerouslySetInnerHTML={{ __html: truncated }} />;
-  }
-  function TruncatedText({ text, maxLength }: { text: string; maxLength: number }) {
+  };
+  const TruncatedText = ({ text, maxLength }: { text: string; maxLength: number }) => {
     const truncated = text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
     return <span dangerouslySetInnerHTML={{ __html: truncated }} />;
-  }
+  };
 
   // 임시 배경색
   const popularColors = [
@@ -67,23 +69,26 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
   ];
 
   //랜덤 배경색 선택
-  function randomPopularColor() {
+  const randomPopularColor = () => {
     const randomIndex = Math.floor(Math.random() * popularColors.length);
     return popularColors[randomIndex];
-  }
+  };
+
+  const redirectToBlog = (link: string) => {
+    window.open(link);
+  };
   return (
     <>
       <Swiper {...swiperOptions} className="mySwiper">
         {BlogPosts.map((post, index) => (
           <SwiperSlide key={`card-${index + 1}`} style={{ backgroundColor: randomPopularColor() }}>
-            <BlogCard>
+            <BlogCard onClick={() => redirectToBlog(post.link)}>
               <div className="card-text">
-                <TruncatedTitle text={post.title} maxLength={13} />
+                <TruncatedTitle text={post.title} maxLength={20} />
                 <PostInfo>
-                  <span>{truncatedText(post.bloggername, 13)}</span>
+                  <span>{truncatedText(post.bloggername, 10)}</span>
                   <span>{formatDate(post.postdate)}</span>
                 </PostInfo>
-                <TruncatedText text={post.description} maxLength={50} />
               </div>
             </BlogCard>
           </SwiperSlide>
@@ -96,12 +101,15 @@ const BlogSwiper: React.FC<Props> = ({ BlogPosts }) => {
 export default BlogSwiper;
 
 const BlogCard = styled.section`
-  margin-bottom: 2rem;
-  width: 140px;
-  height: 120px;
   color: var(--color-dark);
   padding: 0.5rem;
+  min-height: 105px;
   .card-text {
+    min-height: 100px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; // 공간 조정
     h3 {
       font-size: 1.5rem;
       font-weight: bold;

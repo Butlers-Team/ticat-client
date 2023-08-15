@@ -15,6 +15,7 @@ import MyInfoTabNav from '@components/myinfo/MyInfoTabNav';
 import RecentList from '@components/myinfo/RecentList';
 import { useExpStore } from '@store/useExpStore';
 import { refreshApi } from '@api/auth';
+import MyReview from '@components/myreview/MyReview';
 
 // TabNav Data (label, icon)
 const myInfoTabNav = [
@@ -68,6 +69,7 @@ const MyPage = () => {
         <MyInfoTabNav myInfoTabNav={myInfoTabNav} currentTab={currentTab} onSelectTab={handlerSelectTab} />
       </MyInfoTopWrap>
       {currentTab === '최근목록' && <RecentList textTitle={currentTab} />}
+      {currentTab === '나의리뷰' && <MyReview textTitle={currentTab} />}
     </MyPageContainer>
   );
 };
