@@ -6,6 +6,7 @@ export interface MyInfoType {
   email: string;
   profileUrl: string;
   pureProfileUrl: string;
+  social: string;
 }
 
 /** 2023/08/13 - 회원정보 수정 데이터 Type - by sineTlsl */

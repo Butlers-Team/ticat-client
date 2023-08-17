@@ -26,7 +26,16 @@ const MyInfoDescription = ({ memberInfo }: MyInfoDescriptionProps) => {
         </MyInfoImgWrap>
         <MyInfoTextWrap>
           <p className="my-name">{memberInfo.displayName}</p>
-          <p className="my-email">{memberInfo.email}</p>
+          <div className="email-wrap">
+            {memberInfo.social !== 'local' && (
+              <>
+                {memberInfo.social === 'kakao' && <img src="/assets/images/kakao-logo.png" />}
+                {memberInfo.social === 'naver' && <img src="/assets/images/naver-logo.png" />}
+                {memberInfo.social === 'google' && <img src="/assets/images/google-logo.png" />}
+              </>
+            )}
+            <p className="my-email">{memberInfo.email}</p>
+          </div>
         </MyInfoTextWrap>
         <MyInfoSettingWrap onClick={NavSettingPage}>
           <FiSettings size="20px" color="#838383" />
@@ -75,8 +84,17 @@ const MyInfoTextWrap = styled.div`
     font-size: 18px;
     font-weight: 700;
   }
+  > .email-wrap {
+    display: flex;
+    gap: 0.5rem;
 
-  > .my-email {
+    > img {
+      object-fit: cover;
+      width: 20px;
+      height: 20px;
+    }
+  }
+  > .email-wrap > .my-email {
     color: var(--color-dark-gray);
     font-size: 14px;
     font-weight: 400;
