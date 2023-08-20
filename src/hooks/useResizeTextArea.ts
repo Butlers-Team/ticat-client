@@ -1,3 +1,4 @@
+//react
 import { useCallback, useRef } from 'react';
 
 /** 2023/07/21- textarea 리사이즈  - by leekoby */

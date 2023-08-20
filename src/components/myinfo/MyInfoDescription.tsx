@@ -1,14 +1,16 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
-import { getMyInfo } from '@api/myinfo';
+import { MyInfoType } from 'types/api/myinfo';
 
 // icon
 import { FiSettings } from 'react-icons/fi';
 
+interface MyInfoDescriptionProps {
+  memberInfo: MyInfoType;
+}
+
 /** 2023/07/21 - 회원 정보 소개 컴포넌트 - by sineTlsl */
-const MyInfoDescription = () => {
-  const { data } = useQuery(['userInfo'], getMyInfo);
+const MyInfoDescription = ({ memberInfo }: MyInfoDescriptionProps) => {
   const navigate = useNavigate();
 
   /** 2023/07/21 - 설정 페이지로 이동 - by sineTlsl */
@@ -18,20 +20,18 @@ const MyInfoDescription = () => {
 
   return (
     <MyInfoDescContainer>
-      {data && (
-        <>
-          <MyInfoImgWrap>
-            {data.profileUrl ? <img src={data.profileUrl} /> : <img src="/assets/images/default-profile-image.png" />}
-          </MyInfoImgWrap>
-          <MyInfoTextWrap>
-            <p className="my-name">{data.displayName}</p>
-            <p className="my-email">{data.email}</p>
-          </MyInfoTextWrap>
-          <MyInfoSettingWrap onClick={NavSettingPage}>
-            <FiSettings size="20px" color="#838383" />
-          </MyInfoSettingWrap>
-        </>
-      )}
+      <>
+        <MyInfoImgWrap>
+          <img src={memberInfo.profileUrl || '/assets/images/default-profile-image.png'} />
+        </MyInfoImgWrap>
+        <MyInfoTextWrap>
+          <p className="my-name">{memberInfo.displayName}</p>
+          <p className="my-email">{memberInfo.email}</p>
+        </MyInfoTextWrap>
+        <MyInfoSettingWrap onClick={NavSettingPage}>
+          <FiSettings size="20px" color="#838383" />
+        </MyInfoSettingWrap>
+      </>
     </MyInfoDescContainer>
   );
 };

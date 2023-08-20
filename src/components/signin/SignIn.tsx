@@ -1,14 +1,23 @@
-import { ApiSignInRequest, ApiSignInSuccess } from 'types/auth';
+//react
 import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+//style
 import styled from 'styled-components';
-import OauthButton from './OauthButton';
+
+//type
+import { ApiSignInRequest } from 'types/auth';
+
+//components
+import OauthButton from '@components/signin/OauthButton';
+
+//hooks
 import { useSignIn } from '@hooks/query/index';
-import { useTokenStore } from '@store/useTokenStore';
 
 interface ButtonProps {
   buttonType: 'signin' | 'signup';
 }
+
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
@@ -62,7 +71,7 @@ const SignIn: React.FC = (): JSX.Element => {
   return (
     <SignInContainer>
       <Title>로그인</Title>
-      <form onSubmit={handleSignin}>
+      <FormContainer onSubmit={handleSignin}>
         <InputContainer>
           <InputBox placeholder="아이디" name="userId" value={userId} onChange={handleChange} />
           <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={handleChange} />
@@ -72,7 +81,7 @@ const SignIn: React.FC = (): JSX.Element => {
             로그인
           </StyledButton>
         </ButtonContainer>
-      </form>
+      </FormContainer>
       <Link to="/signup">
         <ButtonContainer>
           <StyledButton buttonType="signup">회원가입</StyledButton>
@@ -100,11 +109,16 @@ export default SignIn;
 const SignInContainer = styled.div`
   overflow: hidden;
   height: 100%;
+  width: 90%;
+  max-width: 33rem;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
+  margin: auto;
+  a {
+    width: 100%;
+  }
   animation: showupLayout 0.5s forwards;
   .contents-box {
     padding: 20px;
@@ -144,7 +158,7 @@ const Title = styled.h1`
 const InputContainer = styled.div`
   display: inline-block;
   margin: 0 auto;
-  width: 270px;
+  width: 100%;
   align-content: center;
   text-align: center;
 `;
@@ -169,7 +183,9 @@ const InputBox = styled.input`
     }
   }
 `;
-
+const FormContainer = styled.form`
+  width: 100%;
+`;
 /** 2023/06/29 - 버튼 컨테이너 - by leekoby */
 const ButtonContainer = styled.div`
   display: flex;
@@ -178,7 +194,7 @@ const ButtonContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin: 5px auto;
-  width: 270px;
+  width: 100%;
 `;
 
 /** 2023/06/29 - Oauth 버튼 컨테이너 - by leekoby */
@@ -189,7 +205,7 @@ const OauthButtonContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin-top: 30px;
-  width: 270px;
+  width: 100%;
 `;
 
 /** 2023/06/29 - 로컬 로그인/회원가입 버튼  - by leekoby */

@@ -1,8 +1,12 @@
+//react
+import React from 'react';
+//style
+import styled from 'styled-components';
+//components
 import Button from '@components/Button';
 import CommonCategoryList from '@components/CommonCategoryList';
+//util
 import { CheckCategory } from '@utils/categories';
-import React from 'react';
-import styled from 'styled-components';
 
 interface Props {
   category: string[];
@@ -21,7 +25,7 @@ const CategoryComponent: React.FC<Props> = ({ category, setCategory, onSubmit })
 
   return (
     <>
-      <CommonCategoryList category={category} handleCategory={handleCategory} />
+      <CommonCategoryList category={category} handleCategory={handleCategory} width={'90%'} />
       <ButtonContainer>
         <Button fontSize="1.6rem" disabled={category.length < 1} onClick={onSubmit}>
           <span>확인</span>
@@ -43,8 +47,8 @@ const ButtonContainer = styled.div`
   align-content: center;
   text-align: center;
   flex-direction: column;
-  margin: 5px auto;
-  width: 300px;
+  margin: 0 auto;
+  width: 100%;
 
   Button {
     display: flex;

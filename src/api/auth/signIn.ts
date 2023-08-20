@@ -16,5 +16,10 @@ export const apiSignIn: ApiSignInHandler = async ({ id, password }) => {
     },
   );
 
-  return { data, accessToken: headers['authorization'], refreshToken: headers['refresh'] };
+  return {
+    data,
+    accessToken: headers['authorization'],
+    refreshToken: headers['refresh'],
+    accessTokenExpiration: headers['accesstokenexpiration'],
+  };
 };

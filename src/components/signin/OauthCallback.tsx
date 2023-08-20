@@ -1,5 +1,8 @@
+//react
 import { useEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+
+//store
 import { useTokenStore } from '@store/useTokenStore';
 import { useMemberStore } from '@store/useMemberStore';
 

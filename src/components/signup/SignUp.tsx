@@ -1,15 +1,21 @@
-import styled from 'styled-components';
+//react
 import { useCallback, useState } from 'react';
-import SignInputForm from './SignupInputForm';
-import Button from '@components/Button';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useSignUp } from '@hooks/query';
+
+//style
+import styled from 'styled-components';
+
+//type
 import { ApiSignUpRequest } from 'types/auth';
+
+//components
+import Button from '@components/Button';
+import SignInputForm from '@components/signup/SignupInputForm';
+
+//hooks
+import { useSignUp } from '@hooks/query';
 
 /** 2023/06/29 - 회원가입 컴포넌트 - by leekoby */
 const SignUp: React.FC = (): JSX.Element => {
-  const navigate = useNavigate();
   const signUpMutation = useSignUp();
 
   // 이름, 이메일, 비밀번호, 비밀번호 확인
@@ -201,6 +207,8 @@ export default SignUp;
 const SignUpContainer = styled.section`
   overflow: hidden;
   height: 100%;
+  max-width: 33rem;
+  margin: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,6 +243,7 @@ const SignUpContainer = styled.section`
 
 const FormContainer = styled.form`
   position: relative;
+  width: 90%;
 `;
 
 /** 2023/06/29 - 회원가입 타이틀 - by leekoby */
@@ -250,7 +259,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  width: 270px;
+  width: 100%;
 `;
 
 /** 2023/06/29 - 버튼 컨테이너 - by leekoby */
@@ -261,5 +270,5 @@ const ButtonContainer = styled.div`
   text-align: center;
   flex-direction: column;
   margin: 1rem auto;
-  width: 270px;
+  width: 100%;
 `;

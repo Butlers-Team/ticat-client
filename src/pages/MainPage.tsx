@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 // import { useState } from 'react';
 import { getMainRecommend } from '@api/mainfastival';
-import { getSurroundingFestival } from '@api/surroundingfestival';
+// import { getSurroundingFestival } from '@api/surroundingfestival';
 import { MainFastivalType } from 'types/api/mainfastival';
-import { surroundType, surroundTypeRequest } from 'types/api/surroundingfestival';
+// import { surroundType, surroundTypeRequest } from 'types/api/surroundingfestival';
 
 //components
 import MainSlider from '@components/main/MainSlider';

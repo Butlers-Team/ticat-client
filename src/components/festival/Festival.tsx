@@ -13,11 +13,26 @@ interface FestivalProps {
   item: FestivalListType;
 }
 
+const statusStlye = (state: string) => {
+  if (state === 'ONGOING') {
+    return { state: '진행중', style: 'ongoing' };
+  } else if (state === 'COMPLETED') {
+    return { state: '종료됨', style: 'completed' };
+  } else if (state === 'EXPECTED') {
+    return { state: '예정됨', style: 'expected' };
+  }
+  //상태가 명확하지 않을때 출력
+  return { state: '미확인', style: 'completed' };
+};
+
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const Festival = ({ item }: FestivalProps) => {
   return (
     <FestivalContainer>
       <ImgBox>
+        <div className={`festival-status flex-all-center ${statusStlye(item.status).style}`}>
+          {statusStlye(item.status).state}
+        </div>
         {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
       <DescriptionWrap>
@@ -62,6 +77,7 @@ const FestivalContainer = styled.div`
 
 // 축제 정보 이미지
 const ImgBox = styled.div`
+  position: relative;
   flex: 0 0 95px;
   height: 100%;
   width: 100%;
@@ -72,6 +88,28 @@ const ImgBox = styled.div`
     height: 100%;
     object-fit: cover;
     border-radius: 5px;
+  }
+
+  //축제 진행상태
+  .festival-status {
+    position: absolute;
+    top: 10px;
+    left: 0px;
+    width: 50px;
+    color: #fff;
+    border-radius: 4px 0px 4px 0px;
+  }
+
+  .ongoing {
+    background-color: var(--color-main);
+  }
+
+  .completed {
+    background-color: var(--color-dark-gray);
+  }
+
+  .expected {
+    background-color: #5597d4;
   }
 `;
 
@@ -123,7 +161,7 @@ const DescriptionWrap = styled.div`
     gap: 0.2rem;
   }
   > .festival-date {
-    color: var(--color-sub);
+    color: var(--color-dark-gray);
   }
 `;
 
