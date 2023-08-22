@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useKeywordStore, useLocationStore } from '@store/mapListStore';
+import { useKeywordStore, useLocationStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
 
 //component
 
@@ -20,7 +20,9 @@ export interface LatLngType {
 const MapScreen = () => {
   const [inputText, setInputText] = useState<string>('');
   const { setKeyword } = useKeywordStore();
+  const { zoomLv, setZoomLv } = useZoomLevelStore();
   const { locationData } = useLocationStore();
+  const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -30,7 +32,6 @@ const MapScreen = () => {
   };
 
   useEffect(() => {
-    // This useEffect hook will run whenever locationData changes
     if (locationData.length > 0) {
       setMarkerPositions(locationData);
     }
@@ -42,10 +43,23 @@ const MapScreen = () => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(locationData[0].latitude, locationData[0].longitude), // 맨 첫번째 좌표를 기준
-        level: 12, // 지도 확대 레벨
+        center: new window.kakao.maps.LatLng(screenLocation.latitude, screenLocation.longitude), // 맨 첫번째 좌표를 기준
+        level: zoomLv, // 지도 확대 레벨
       };
       const map = new window.kakao.maps.Map(container, options);
+
+      // 드래그가 끝났을 때 중앙 좌표값을 얻는 이벤트 핸들러 추가
+      window.kakao.maps.event.addListener(map, 'dragend', () => {
+        const center = map.getCenter(); // 지도의 중앙 좌표값을 얻어옴
+        const zoomLevel = map.getLevel();
+        const mapLocation = {
+          latitude: center.getLat(),
+          longitude: center.getLng(),
+        };
+        setZoomLv(zoomLevel);
+        setScreenLocation(mapLocation);
+        // 이후 필요한 로직을 수행할 수 있습니다.
+      });
 
       // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
       markerPositions.forEach(position => {
@@ -95,6 +109,13 @@ const MapScreen = () => {
           검색 초기화
         </RemoveKeyword>
       )}
+      <RemoveKeyword
+        onClick={() => {
+          setKeyword('');
+          setInputText('');
+        }}>
+        <MdRefresh className="refresh-icon" />내 위치에서 검색
+      </RemoveKeyword>
 
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
