@@ -8,7 +8,13 @@ import Festival from '@components/festival/Festival';
 
 //type
 import { MapFastivalType } from 'types/api/mapfastival';
-import { useOptionStore, useCategoryStore, useKeywordStore, useLocationStore } from '@store/mapListStore';
+import {
+  useOptionStore,
+  useCategoryStore,
+  useKeywordStore,
+  useLocationStore,
+  useMapLocationStore,
+} from '@store/mapListStore';
 
 interface transformed {
   latitude: number;
@@ -24,8 +30,10 @@ const FastivalList = () => {
   const { category } = useCategoryStore();
   const { keyword } = useKeywordStore();
   const { setLocationData } = useLocationStore();
+  const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [size, setSize] = useState<number>(15);
 
+  console.log(screenLocation);
   const categoryJoin = category.join();
 
   const fetchDetailList = async () => {
@@ -35,6 +43,9 @@ const FastivalList = () => {
       sortBy: sortBy,
       page: 1,
       size: size,
+      status: `ONGOING,EXPECTED,COMPLETED`,
+      latitude: screenLocation.latitude,
+      longitude: screenLocation.longitude,
     };
 
     const res = await getMapFastival(params);
@@ -62,7 +73,7 @@ const FastivalList = () => {
   };
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category, keyword, size]);
+  }, [sortBy, category, keyword, size, screenLocation]);
 
   const handleLoadMore = () => {
     setSize(prevSize => prevSize + 10); // Increase size by 10

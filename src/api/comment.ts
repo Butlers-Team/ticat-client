@@ -12,7 +12,7 @@ import type {
   ApiUpdateCommentResponse,
   ApiFetchMyCommentsHandler,
   ApiFetchMyCommentsResponse,
-} from 'types/api/';
+} from 'types/api';
 
 /** 2023/08/07  - 댓글 패치 요청 - by leekoby */
 export const apiFetchComments: ApiFetchCommentsHandler = async ({ reviewId, ...body }) => {
