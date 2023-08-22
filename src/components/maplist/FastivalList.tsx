@@ -28,7 +28,6 @@ const FastivalList = () => {
 
   const categoryJoin = category.join();
 
-  /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
   const fetchDetailList = async () => {
     const params = {
       keyword: keyword,
