@@ -97,6 +97,18 @@ const OptionButton: React.FC = () => {
             <IoIosArrowDown className="icon-position icon-margin" />
           )}
         </button>
+        <button
+          onClick={() => {
+            setOnCategoryList(!onCategoryList);
+          }}
+          className={category.length > 0 ? 'category-on' : 'category-off'}>
+          <IoIosOptions className="icon-margin" /> 진행축제
+          {onCategoryList ? (
+            <IoIosArrowUp className="icon-position icon-margin" />
+          ) : (
+            <IoIosArrowDown className="icon-position icon-margin" />
+          )}
+        </button>
         {mapOptions.map(option => (
           <button
             key={option.value}
