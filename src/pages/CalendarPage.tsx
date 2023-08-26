@@ -13,7 +13,7 @@ const CalendarPage: React.FC = (props): JSX.Element => {
   const [selecteDate, setSelectedDate] = useState<number>(date);
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
-
+  /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
   const fetchCalendarList = async () => {
     const params: CalendarListRequest = {
       page: 1,
@@ -21,6 +21,10 @@ const CalendarPage: React.FC = (props): JSX.Element => {
       mouth: selecteMonth,
       day: selecteDate,
     };
+  };
+  /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
+  const addSchedule = () => {
+    window.location.href = '/festival';
   };
 
   return (
@@ -40,7 +44,9 @@ const CalendarPage: React.FC = (props): JSX.Element => {
         <EmptyListSection>
           <img src={'assets/images/ticat-logo-icon-gray.png'}></img>
           <span>추가된 축제 일정이 없어요.</span>
-          <button className="add-calendar">일정 추가</button>
+          <button className="add-calendar" onClick={addSchedule}>
+            일정 추가
+          </button>
         </EmptyListSection>
       </FestivalListSection>
     </CalendarContainer>
