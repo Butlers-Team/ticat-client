@@ -35,6 +35,10 @@ const FestivalListPage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
+  {
+    console.log('data >> ', data);
+  }
+
   return (
     <FestivalListContainer>
       <CatergoryTabNav />
@@ -58,15 +62,24 @@ const FestivalListPage = () => {
       <FestivalScrollWrap>
         <ul>
           {data &&
-            data.pages.map(page =>
-              page.data.map(festival => (
-                <li key={festival.festivalId}>
-                  <Link to={`/detail/${festival.festivalId}`}>
-                    <Festival item={festival} />
-                  </Link>
-                </li>
-              )),
-            )}
+            data.pages.map(page => (
+              <>
+                {page.data.length > 0 ? (
+                  page.data.map(festival => (
+                    <li key={festival.festivalId}>
+                      <Link to={`/detail/${festival.festivalId}`}>
+                        <Festival item={festival} />
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <UndefinedData>
+                    <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+                    <p className="undefined-stamp-data">해당되는 축제가 없어요</p>
+                  </UndefinedData>
+                )}
+              </>
+            ))}
           <div ref={ref}>{isLoading && <h3>Loading ...</h3>}</div>
         </ul>
       </FestivalScrollWrap>
@@ -133,5 +146,26 @@ const FestivalScrollWrap = styled.div`
 
   @media screen and (max-width: 400px) {
     height: calc(100% - 11rem);
+  }
+`;
+
+/** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
+const UndefinedData = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  > .undefined-stamp-data {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
   }
 `;
