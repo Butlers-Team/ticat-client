@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useKeywordStore, useLocationStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
+// import { useLocationStore } from '@store/userLocation';
 
 //component
 
@@ -22,6 +23,7 @@ const MapScreen = () => {
   const { setKeyword } = useKeywordStore();
   const { zoomLv, setZoomLv } = useZoomLevelStore();
   const { locationData } = useLocationStore();
+  // console.log(locationData);
   const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
 
@@ -51,7 +53,7 @@ const MapScreen = () => {
       // 드래그가 끝났을 때 중앙 좌표값을 얻는 이벤트 핸들러 추가
       window.kakao.maps.event.addListener(map, 'dragend', () => {
         const center = map.getCenter(); // 지도의 중앙 좌표값을 얻어옴
-        const zoomLevel = map.getLevel();
+        const zoomLevel = map.getLevel(); //지도 확대 레벨을 저장함
         const mapLocation = {
           latitude: center.getLat(),
           longitude: center.getLng(),

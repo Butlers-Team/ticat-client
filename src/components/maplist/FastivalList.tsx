@@ -33,7 +33,6 @@ const FastivalList = () => {
   const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [size, setSize] = useState<number>(15);
 
-  console.log(screenLocation);
   const categoryJoin = category.join();
 
   const fetchDetailList = async () => {
