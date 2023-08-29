@@ -24,7 +24,7 @@ export const tabCategory = [
   '기타',
 ];
 
-export const tabState = ['진행중', '예정됨', '종료됨'];
+export const tabState = ['ONGOING', 'EXPECTED', 'COMPLETED'];
 
 // 지도 리스트 정렬방식 저장 (sortBy,setSortBy)
 interface OptionState {
@@ -100,6 +100,7 @@ type Location = {
   longitude: number;
   title: string;
   category: string;
+  status: string;
 };
 
 type LocationDataState = {
@@ -114,6 +115,7 @@ export const useLocationStore = create<LocationDataState>(set => ({
       longitude: 25.0,
       title: '',
       category: '',
+      status: '',
     },
   ],
   setLocationData: newData => set({ locationData: newData }), // updateData의 인자를 받아 state를 업데이트
