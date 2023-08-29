@@ -24,6 +24,8 @@ export const tabCategory = [
   '기타',
 ];
 
+export const tabState = ['진행중', '예정됨', '종료됨'];
+
 // 지도 리스트 정렬방식 저장 (sortBy,setSortBy)
 interface OptionState {
   sortBy: string;
@@ -52,6 +54,29 @@ export const useCategoryStore = create<CategoryState>(set => ({
           return { category: state.category.filter(item => item !== tab) };
         } else {
           return state.category.length < 5 ? { category: [...state.category, tab] } : state;
+        }
+      }
+    });
+  },
+}));
+
+// 지도 리스트 축제상태 저장 (category,setCategory)
+type statusState = {
+  status: string[];
+  setStatus: (tab: string) => void;
+};
+
+export const useStatusStore = create<statusState>(set => ({
+  status: [],
+  setStatus: tab => {
+    set(state => {
+      if (tab === '전체') {
+        return { status: [] };
+      } else {
+        if (state.status.includes(tab)) {
+          return { status: state.status.filter(item => item !== tab) };
+        } else {
+          return state.status.length < 5 ? { status: [...state.status, tab] } : state;
         }
       }
     });
