@@ -31,13 +31,24 @@ const OptionButton: React.FC = () => {
   const handleEnableOptions = (value: string) => {
     value !== sortBy ? setSortBy(value) : setSortBy('');
   };
-
   const handleCategoryChange = (tab: string) => {
     setCategory(tab);
   };
-
   const handleStateChange = (tab: string) => {
     setStatus(tab);
+  };
+
+  //Status 배열명 변경
+  const StatusLetterChange = (state: string) => {
+    if (state === 'ONGOING') {
+      return '진행중';
+    } else if (state === 'COMPLETED') {
+      return '종료됨';
+    } else if (state === 'EXPECTED') {
+      return '예정됨';
+    }
+    //상태가 명확하지 않을때 출력
+    return '미확인';
   };
 
   /**2023.07.13 버튼 가로 스크롤 이벤트 리스너 함수 - by mscojl24 */
@@ -115,7 +126,7 @@ const OptionButton: React.FC = () => {
                   onClick={() => {
                     handleStateChange(tab);
                   }}>
-                  {tab}
+                  {StatusLetterChange(tab)}
                 </li>
               ))}
             </FastivalCategory>

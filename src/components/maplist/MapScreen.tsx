@@ -12,6 +12,7 @@ import { FaSearch } from 'react-icons/fa';
 import { MdRefresh } from 'react-icons/md';
 
 export interface LatLngType {
+  status: string;
   latitude: number;
   longitude: number;
   title: string;
@@ -23,7 +24,6 @@ const MapScreen = () => {
   const { setKeyword } = useKeywordStore();
   const { zoomLv, setZoomLv } = useZoomLevelStore();
   const { locationData } = useLocationStore();
-  // console.log(locationData);
   const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
 
@@ -68,7 +68,9 @@ const MapScreen = () => {
         const infoElement = document.createElement('div');
         infoElement.className = 'position-info';
         infoElement.innerHTML = `
-        <div class="info-marker">
+        <div class="info-marker ${position.status === 'COMPLETED' && 'completed-marker'} ${
+          position.status === 'EXPECTED' && 'expected-marker'
+        }">
           <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
         </div>
         <div class="info-text">
@@ -177,6 +179,14 @@ const MapView = styled.article`
       overflow: hidden;
       border-radius: 30px;
       margin: 2px 7px 2px 3px;
+    }
+
+    .completed-marker {
+      background-color: #d4d7df;
+    }
+
+    .expected-marker {
+      background-color: var(--color-sub);
     }
     .position-title {
       width: 120px;
