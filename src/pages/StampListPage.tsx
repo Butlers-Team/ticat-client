@@ -21,9 +21,9 @@ const StampListPage = () => {
   const [year, setYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(currentMonth);
 
-  // 다음달로 넘어갈 수 있는 지 확인하고, 화살표 색상을 도와주는 변수
-  const canGoToLastMonth: boolean = year > currentYear || (year === currentYear && month > 1);
-  const canGoToNextMonth: boolean = year < currentYear || (year === currentYear && month < currentMonth);
+  // 저번달 or 이번달로 넘어갈 수 있는 지 확인하고, 화살표 색상을 도와주는 변수
+  const canGoToLastMonth: boolean = year <= currentYear; // 현재 연도보다 작거나 같을 경우 이전 달로
+  const canGoToNextMonth: boolean = year < currentYear || (year === currentYear && month < currentMonth); // 현재 연도보다 작거나, 현재 연도와 같은데 현재 달보다 작을 경우 다음 달로
 
   const params: StampListRequest = {
     year,
