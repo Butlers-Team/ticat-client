@@ -1,7 +1,11 @@
 //react
 import React, { useState } from 'react';
+
 //style
 import styled from 'styled-components';
+
+//util
+import { validateNickname } from '@utils/validateNickname';
 
 interface Props {
   onValidNickname: (valid: boolean) => void;
@@ -13,26 +17,6 @@ interface Props {
 /** 2023/07/14 - 닉네임 입력창 - by leekoby */
 const NicknameInputComponent: React.FC<Props> = ({ onValidNickname, value, onChange, placeholder }): JSX.Element => {
   const [validationMessage, setValidationMessage] = useState('');
-
-  // 빈칸없음, 완전한 한글, 최소 5자, 최대 8자
-  const validateNickname = (name: string): string => {
-    if (name.length > 0) {
-      if (/\s/.test(name)) {
-        return '닉네임에 공백을 포함할 수 없습니다.';
-      }
-      if (!/^[가-힣a-zA-Z0-9]+$/.test(name)) {
-        return '닉네임은 한글, 영문, 숫자만 가능합니다.';
-      }
-      if (name.length < 2) {
-        return '닉네임은 최소 2자 이상이어야 합니다.';
-      }
-      if (name.length > 8) {
-        return '닉네임은 최대 8자까지 가능합니다.';
-      }
-    }
-
-    return ''; // 유효한 닉네임인 경우, 빈 문자열을 반환
-  };
 
   // input value , onchange 핸들러
   const handleNicknameChange: React.ChangeEventHandler<HTMLInputElement> = e => {

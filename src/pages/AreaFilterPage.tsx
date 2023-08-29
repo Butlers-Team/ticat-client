@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { areas } from '@data/areaData';
-import { useAreaFilterStore } from '@store/areaFilterStore';
+import { useAreaFilterStore } from '@store/useAreaFilterStore';
 
 // components
 import Button from '@components/Button';

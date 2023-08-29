@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { areaData } from '@data/areaData';
-import { useAreaFilterStore } from '@store/areaFilterStore';
+import { useAreaFilterStore } from '@store/useAreaFilterStore';
 
 // icon
 import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';

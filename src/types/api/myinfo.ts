@@ -6,12 +6,12 @@ export interface MyInfoType {
   email: string;
   profileUrl: string;
   pureProfileUrl: string;
+  social: string;
 }
 
 /** 2023/08/13 - 회원정보 수정 데이터 Type - by sineTlsl */
-export interface MyInfoPatchType {
+export interface MyInfoPatchBodyType {
   displayName: string;
-  password: string;
 }
 
 // ========================== 최근 축제목록 조회 ==========================
@@ -33,6 +33,6 @@ export interface InterestType {
 }
 
 /** 2023/08/13 - 관심사 수정 데이터 Type - by sineTlsl */
-export interface InterestPatchType {
+export interface InterestPatchBodyType {
   categories: string[];
 }
