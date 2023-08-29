@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import styled from 'styled-components';
-import { useMutation } from '@tanstack/react-query';
+import { useQueryClient, useMutation } from '@tanstack/react-query';
 import { deleteProfileImg, patchProfileImg } from '@api/myinfo';
 
 interface ProfileImageProps {
@@ -11,12 +11,14 @@ interface ProfileImageProps {
 const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
   const [profileImg, setProfileImg] = useState<string>(profileUrl);
   const profileImgInput = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
   /** 2023/08/07 - 이미지 수정 함수 생성 - by sineTlsl */
   const patchimageMutation = useMutation(patchProfileImg, {
     onSuccess: data => {
       // 성공 시 업로드된 이미지 URL 설정
       setProfileImg(data.profileUrl);
+      queryClient.invalidateQueries(['userInfo']);
     },
     onError: err => {
       console.log(err);
@@ -25,6 +27,9 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
 
   /** 2023/08/13 - 이미지 삭제 함수 생성 - by sineTlsl */
   const deleteImageMutation = useMutation(deleteProfileImg, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['userInfo']);
+    },
     onError: err => {
       console.log(err);
     },

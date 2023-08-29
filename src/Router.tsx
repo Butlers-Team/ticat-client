@@ -49,7 +49,7 @@ const Router = () => {
         <Route path="/stamp/list" element={isAuthenticated && !!member ? <StampList /> : <Navigate to="/main" />} />
         <Route path="/myinfo" element={isAuthenticated && !!member ? <MyPage /> : <Navigate to="/signin" />} />
         <Route
-          path="setting"
+          path="/setting"
           element={isAuthenticated && !!member ? <MyInfoSettingPage /> : <Navigate to="/signin" />}
         />
         <Route

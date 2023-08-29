@@ -17,16 +17,22 @@ const RecentList = ({ textTitle }: RecentListProps) => {
   return (
     <MyInfoListContainer>
       <p className="myinfo-title">{textTitle}</p>
-      <ContentItemWrap>
-        {data &&
-          data.map(item => (
+      {data && data.length !== 0 ? (
+        <ContentItemWrap>
+          {data.map(item => (
             <li key={item.festivalId}>
               <Link to={`/detail/${item.festivalId}`}>
                 <RecentListItem recentItem={item} />
               </Link>
             </li>
           ))}
-      </ContentItemWrap>
+        </ContentItemWrap>
+      ) : (
+        <UndefinedData>
+          <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+          <p className="undefined-stamp-data">최근 목록이 비워져 있어요</p>
+        </UndefinedData>
+      )}
     </MyInfoListContainer>
   );
 };
@@ -68,4 +74,25 @@ const ContentItemWrap = styled.ul`
   }
   // firefox
   scrollbar-width: none;
+`;
+
+/** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
+const UndefinedData = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  > .undefined-stamp-data {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+  }
 `;

@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
-import styled from 'styled-components';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { getCatergories } from '@api/category';
-import { CategoriesRequest } from 'types/api/category';
+
+// hook
+import { useFetchCategories } from '@hooks/query/useFetchCategories';
 
 // stores
-import { useAreaFilterStore } from '@store/areaFilterStore';
-import { useCategoryTabStore } from '@store/categoryTabStore';
+import { useAreaFilterStore } from '@store/useAreaFilterStore';
+import { useCategoryTabStore } from '@store/useCategoryTabStore';
 
 // components
 import CatergoryTabNav from '@components/festival/CategoryTabNav';
@@ -20,50 +20,9 @@ import { IoMdOptions } from 'react-icons/io';
 const FestivalListPage = () => {
   const { categoryTab } = useCategoryTabStore();
   const { selectedItems } = useAreaFilterStore();
+  const { data, fetchNextPage, hasNextPage, isLoading } = useFetchCategories(categoryTab, selectedItems);
 
-  /** 2023/07/11 - 카테고리 클릭 시 API 요청하는 함수 (무한스크롤) - by sineTlsl */
-  const { data, fetchNextPage, hasNextPage, isLoading } = useInfiniteQuery(
-    ['categories', categoryTab],
-    ({ pageParam = 1 }) => {
-      let params: CategoriesRequest = {
-        page: pageParam,
-        size: 10,
-      };
-      if (categoryTab !== '전체' && selectedItems.length >= 1) {
-        const areas = selectedItems.join(',');
-
-        params = {
-          category: categoryTab,
-          ...params,
-          areas,
-        };
-      } else if (categoryTab === '전체' && selectedItems.length >= 1) {
-        const areas = selectedItems.join(',');
-
-        params = {
-          ...params,
-          areas,
-        };
-      } else if (categoryTab !== '전체') {
-        params = {
-          category: categoryTab,
-          ...params,
-        };
-      }
-
-      return getCatergories(params);
-    },
-    {
-      getNextPageParam: lastPage => {
-        const { page, totalPages } = lastPage.pageInfo;
-        const nextPage = page < totalPages ? page + 1 : undefined;
-
-        return nextPage;
-      },
-    },
-  );
-
-  /** 2023/07/11 - 사용자가 화면에 얼마나 보여야
+  /** 2023/07/11 - 사용자가 화면에 얼마나 보여야 ㅜ
    *  inView가 true가 바뀔지를 결정하는 옵션 - by sineTlsl */
   const { ref, inView } = useInView({
     threshold: 0,
@@ -75,6 +34,10 @@ const FestivalListPage = () => {
       fetchNextPage();
     }
   }, [inView, hasNextPage, fetchNextPage]);
+
+  {
+    console.log('data >> ', data);
+  }
 
   return (
     <FestivalListContainer>
@@ -99,15 +62,24 @@ const FestivalListPage = () => {
       <FestivalScrollWrap>
         <ul>
           {data &&
-            data.pages.map(page =>
-              page.data.map(festival => (
-                <li key={festival.festivalId}>
-                  <Link to={`/detail/${festival.festivalId}`}>
-                    <Festival item={festival} />
-                  </Link>
-                </li>
-              )),
-            )}
+            data.pages.map(page => (
+              <>
+                {page.data.length > 0 ? (
+                  page.data.map(festival => (
+                    <li key={festival.festivalId}>
+                      <Link to={`/detail/${festival.festivalId}`}>
+                        <Festival item={festival} />
+                      </Link>
+                    </li>
+                  ))
+                ) : (
+                  <UndefinedData>
+                    <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+                    <p className="undefined-stamp-data">해당되는 축제가 없어요</p>
+                  </UndefinedData>
+                )}
+              </>
+            ))}
           <div ref={ref}>{isLoading && <h3>Loading ...</h3>}</div>
         </ul>
       </FestivalScrollWrap>
@@ -174,5 +146,26 @@ const FestivalScrollWrap = styled.div`
 
   @media screen and (max-width: 400px) {
     height: calc(100% - 11rem);
+  }
+`;
+
+/** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
+const UndefinedData = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  > .undefined-stamp-data {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
   }
 `;
