@@ -8,13 +8,21 @@ import Festival from '@components/festival/Festival';
 
 //type
 import { MapFastivalType } from 'types/api/mapfastival';
-import { useOptionStore, useCategoryStore, useKeywordStore, useLocationStore } from '@store/mapListStore';
+import {
+  useOptionStore,
+  useCategoryStore,
+  useKeywordStore,
+  useLocationStore,
+  useMapLocationStore,
+  useStatusStore,
+} from '@store/mapListStore';
 
 interface transformed {
   latitude: number;
   longitude: number;
   title: string;
   category: string;
+  status: string;
 }
 
 const FastivalList = () => {
@@ -23,19 +31,25 @@ const FastivalList = () => {
   const { sortBy } = useOptionStore();
   const { category } = useCategoryStore();
   const { keyword } = useKeywordStore();
+  const { status } = useStatusStore();
   const { setLocationData } = useLocationStore();
+  const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [size, setSize] = useState<number>(15);
 
   const categoryJoin = category.join();
+  const StatusJoin = status.join();
 
-  /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
+  //API 요청 파람스
   const fetchDetailList = async () => {
     const params = {
-      keyword: keyword,
+      keyword,
       categories: categoryJoin,
-      sortBy: sortBy,
+      sortBy,
       page: 1,
-      size: size,
+      size,
+      status: StatusJoin,
+      latitude: screenLocation.latitude,
+      longitude: screenLocation.longitude,
     };
 
     const res = await getMapFastival(params);
@@ -55,15 +69,17 @@ const FastivalList = () => {
         const longitude = item.mapx;
         const title = item.title;
         const category = item.category;
-        transformedData.push({ latitude, longitude, title, category });
+        const status = item.status;
+        transformedData.push({ latitude, longitude, title, category, status });
       });
 
       setLocationData(transformedData);
     }
   };
+
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category, keyword, size]);
+  }, [sortBy, category, keyword, size, screenLocation, status]);
 
   const handleLoadMore = () => {
     setSize(prevSize => prevSize + 10); // Increase size by 10
