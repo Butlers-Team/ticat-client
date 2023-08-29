@@ -13,18 +13,18 @@ const CategoryTabNav = () => {
   const [maxScrollLeft, setMaxScrollLeft] = useState(0); // 가능한 최대 위치
 
   /** 2023/07/04 - 카테고리 탭 select 함수 - by sineTlsl */
-  const HandlerSelectTab = (tabName: string): void => {
+  const handlerSelectTab = (tabName: string): void => {
     setCategoryTab(tabName);
   };
 
   /** 2023/07/11 - left 화살표 클릭 시 왼쪽 스크롤 함수 - by sineTlsl */
-  const HandlerScrollLeft = () => {
+  const handlerScrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft -= scrollAmount;
     }
   };
   /** 2023/07/11 - right 화살표 클릭 시 오른쪽 스크롤 함수 - by sineTlsl */
-  const HandlerScrollRight = () => {
+  const handlerScrollRight = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollLeft += scrollAmount;
     }
@@ -49,30 +49,42 @@ const CategoryTabNav = () => {
     }
   }, [categoriesTab]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
 
+  /** 2023/08/29 - 메인에서 카테고리 아이콘 클릭 시 tabNav 스크롤 위치 조정 - by sineTlsl */
+  useEffect(() => {
+    if (scrollRef && scrollRef.current) {
+      const selectedTab = scrollRef.current.querySelector('.select-tab') as HTMLElement;
+      if (selectedTab) {
+        const centerPosition = selectedTab.offsetLeft - scrollRef.current.clientWidth / 2 + selectedTab.offsetWidth / 2;
+
+        scrollRef.current.scrollLeft = centerPosition;
+      }
+    }
+  }, [categoryTab]);
+
   return (
-    <CatergoryTabNavContainer>
+    <CategoryTabNavContainer>
       {scrollPosition > 0 && (
-        <ArrowWrap onClick={HandlerScrollLeft}>
+        <ArrowWrap onClick={handlerScrollLeft}>
           <MdArrowBackIosNew size="20px" color="var(--color-sub)" />
         </ArrowWrap>
       )}
       <ul ref={scrollRef}>
         {categoriesTab.map((tab, idx) => (
-          <li key={idx} className={categoryTab === tab ? 'select-tab' : ''} onClick={() => HandlerSelectTab(tab)}>
+          <li key={idx} className={categoryTab === tab ? 'select-tab' : ''} onClick={() => handlerSelectTab(tab)}>
             {tab}
           </li>
         ))}
       </ul>
-      <ArrowWrap onClick={HandlerScrollRight}>
+      <ArrowWrap onClick={handlerScrollRight}>
         {scrollPosition < maxScrollLeft && <MdArrowForwardIos size="20px" color="var(--color-sub)" />}
       </ArrowWrap>
-    </CatergoryTabNavContainer>
+    </CategoryTabNavContainer>
   );
 };
 
 export default CategoryTabNav;
 
-const CatergoryTabNavContainer = styled.div`
+const CategoryTabNavContainer = styled.div`
   height: 6rem;
   display: flex;
   padding: 0 2rem;
