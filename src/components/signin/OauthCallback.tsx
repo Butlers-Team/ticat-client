@@ -27,7 +27,14 @@ const OauthCallback: React.FC<Props> = (): JSX.Element => {
     // URL에서 Member 정보 값 얻기
 
     const profileUrl = queryParams.get('profileUrl');
-    const displayName = queryParams.get('displayName');
+
+    let displayName = null;
+
+    const displayNameParam = queryParams.get('displayName');
+    if (displayNameParam) {
+      displayName = decodeURIComponent(displayNameParam);
+      console.log('displayName:', displayName);
+    }
     const memberId = queryParams.get('memberId');
     // URL에서 토큰 값 얻기
     const accessToken = queryParams.get('Authorization');
