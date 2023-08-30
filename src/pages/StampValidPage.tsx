@@ -23,15 +23,11 @@ const StampValidPage = () => {
 
   const { data, isLoading } = useQuery(['stampDistance', params], getStampDistance);
 
-  console.log('data >> ', data, isLoading);
-
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
   const handleStampClick = (): void => {
     // 스탬프 찍는 페이지로 이동
     navigate('/stamp/list');
   };
-
-  console.log('location >> ', location);
 
   return (
     <StampValidContainer>

@@ -43,9 +43,11 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
     <>
       <CommentItemContainer>
         <HeaderWrapper>
-          <ItemImgWrap isMyPage={isMyPage}>
-            <img src={profileUrl || '/assets/images/default-profile-image.png'} />
-          </ItemImgWrap>
+          {!isMyPage && (
+            <ItemImgWrap isMyPage={isMyPage}>
+              <img src={profileUrl || '/assets/images/default-profile-image.png'} />
+            </ItemImgWrap>
+          )}
           {displayName && (
             <CommentItemHeader
               displayName={displayName}

@@ -51,8 +51,6 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
       const formData = new FormData();
       formData.append('image', uploadImgFile);
 
-      console.log(formData);
-
       // mutation을 사용하여 이미지 업로드 요청
       patchimageMutation.mutate(formData);
     }
