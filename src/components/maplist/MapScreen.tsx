@@ -90,7 +90,6 @@ const MapScreen = () => {
         infoElement.addEventListener('click', () => {
           // 마커를 클릭했을 때 원하는 동작을 수행하도록 코드 작성
           infoElement.classList.add('clicked');
-          console.log(`Marker clicked: ${position.title}`);
           setKeyword(position.title);
           setInputText(position.title);
           // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.

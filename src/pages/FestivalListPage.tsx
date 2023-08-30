@@ -35,10 +35,6 @@ const FestivalListPage = () => {
     }
   }, [inView, hasNextPage, fetchNextPage]);
 
-  {
-    console.log('data >> ', data);
-  }
-
   return (
     <FestivalListContainer>
       <CatergoryTabNav />
