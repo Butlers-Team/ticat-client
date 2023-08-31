@@ -10,6 +10,7 @@ import Recommend from '@components/detail/Recommend';
 import { FestivalDetailType } from 'types/api/detail';
 import { getDetailList } from '../api/detail';
 import Reviews from '@components/review/Reviews';
+import AddCalendar from '@components/calendar/AddCalendarForm';
 
 const DetailPage = () => {
   const [detailList, setDetailList] = useState<FestivalDetailType>();

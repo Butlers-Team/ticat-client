@@ -5,6 +5,7 @@ import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked
 import { getWeather } from '@api/weather';
 import { WeatherRequest, WeatherType } from 'types/api/weather';
 import { WeatherIcon } from '@components/WeatherIcon';
+import AddCalendar from '@components/calendar/AddCalendarForm';
 //import { getToken } from '@store/useTokenStore';
 
 //icon
@@ -20,8 +21,10 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  console.log(detailList.status);
   const token = window.localStorage.getItem('accessToken');
   const location = useLocation();
+  const [dateForm, setDateForm] = useState<boolean>(false);
   const [defaultImg, setDefaultImg] = useState(detailList.image);
   const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
   const [regionWeather, setRegionWeather] = useState<WeatherType | undefined>();
@@ -82,12 +85,18 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
     const res = await getWeather(params);
     setRegionWeather(res);
   };
+  /**2023-08-31 - 캘린더등록 버튼 클릭 이벤틑 함수 - by parksubeom */
+  const addCalendar = () => {
+    setDateForm(!dateForm);
+  };
 
   useEffect(() => {
     fetchWeather();
   }, []);
+
   return (
     <CoverContainer>
+      {dateForm && <AddCalendar setDateForm={setDateForm} festivalId={detailList.festivalId} />}
       <img src={defaultImg} onError={ImgErrorHandler}></img>
       <div className="wather-info flex-all-center">
         <span>{regionWeather ? regionWeather.region : 'Loding...'}</span>
@@ -98,7 +107,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
       <div className="festival-info">
         {detailList.status === 'ONGOING' ? (
           <button className="festival-proceeding">진행 중</button>
-        ) : detailList.status === 'PLANNED' ? (
+        ) : detailList.status === 'EXPECTED' ? (
           <button className="festival-proceeding">예정 됨</button>
         ) : (
           <button className="festival-ended">종료 됨</button>
@@ -111,7 +120,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
           <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
-          <button className="calendar-add-btn">
+          <button className="calendar-add-btn" onClick={addCalendar}>
             캘린더등록
             <span>
               <BsCalendarPlus />
