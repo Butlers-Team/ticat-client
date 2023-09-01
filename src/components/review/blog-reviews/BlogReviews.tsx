@@ -19,5 +19,5 @@ const BlogReviews: React.FC<Props> = ({ festivalName }): JSX.Element => {
 export default BlogReviews;
 
 const BlogReviewContainer = styled.section`
-  margin-bottom: 3rem;
+  margin-bottom: 1.5rem;
 `;

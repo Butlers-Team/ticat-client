@@ -90,7 +90,7 @@ instance.interceptors.response.use(
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       return refreshTokenAndUpdateRequest(error, originalRequest);
-    } else if (error.response.status === 401) {
+    } else if (error.response.status === 401 && originalRequest._retry) {
       alert('다시 로그인해주세요.');
       clearTokens(); // 로컬스토리지 토큰 초기화
       clearExp();
