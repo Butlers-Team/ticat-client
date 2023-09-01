@@ -27,8 +27,7 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId }) =>
       setDateForm(false);
       const params: CalendarAddRequest = {
         festivalId: festivalId,
-        memberId: member?.memberId,
-        scheduleDate: '2023-09-23',
+        scheduleDate: `${selectedDate?.toJSON().split('T')[0]}`,
       };
       addCalendarRequest(params);
     }
@@ -70,7 +69,7 @@ const DateBackground = styled.div`
   width: 100%;
   height: 100%;
   background-color: gray;
-  opacity: 0.8;
+
   position: absolute;
 `;
 
@@ -86,7 +85,7 @@ const DateContainer = styled.div`
 
 const AddBtn = styled.button`
   border: none;
-  color: blue;
+  background-color: #1692fe;
   width: 50px;
   height: 30px;
 `;
