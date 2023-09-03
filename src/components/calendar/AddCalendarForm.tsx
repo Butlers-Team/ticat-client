@@ -31,9 +31,6 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId }) =>
       };
       addCalendarRequest(params);
     }
-
-    //festivalId , member?.memberId ,selectedDate 파람스롤 넣어서 http://localhost:8080/calendar/save에 포스트요청 고고
-
     alert(`${selectedDate?.toLocaleDateString()}일에 일정이 추가되었습니다.`);
   };
 

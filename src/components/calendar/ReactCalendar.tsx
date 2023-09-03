@@ -6,15 +6,34 @@ interface CalendarProps {
   setSelectedDate: React.Dispatch<React.SetStateAction<number>>;
   setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
   setSelectedYears: React.Dispatch<React.SetStateAction<number>>;
+  selecteDate: number;
+  selecteMonth: number;
 }
 
-const ReactCalendar: React.FC<CalendarProps> = ({ startDate, setSelectedDate, setSelectedMonth, setSelectedYears }) => {
+const ReactCalendar: React.FC<CalendarProps> = ({
+  startDate,
+  setSelectedDate,
+  setSelectedMonth,
+  setSelectedYears,
+  selecteDate,
+  selecteMonth,
+}) => {
   const [currentDate, setCurrentDate] = useState(startDate);
 
   const prevWeek = () => {
     setCurrentDate(prevDate => {
       const prevWeekDate = new Date(prevDate);
       prevWeekDate.setDate(prevWeekDate.getDate() - 7);
+      setSelectedDate(prevWeekDate.getDate());
+      setSelectedMonth(prevWeekDate.getMonth());
+      setSelectedYears(prevWeekDate.getFullYear());
+      return prevWeekDate;
+    });
+  };
+  const prevDay = () => {
+    setCurrentDate(prevDate => {
+      const prevWeekDate = new Date(prevDate);
+      prevWeekDate.setDate(prevWeekDate.getDate() - 1);
       setSelectedDate(prevWeekDate.getDate());
       setSelectedMonth(prevWeekDate.getMonth());
       setSelectedYears(prevWeekDate.getFullYear());
@@ -32,12 +51,22 @@ const ReactCalendar: React.FC<CalendarProps> = ({ startDate, setSelectedDate, se
       return nextWeekDate;
     });
   };
+  const nextDay = () => {
+    setCurrentDate(prevDate => {
+      const nextWeekDate = new Date(prevDate);
+      nextWeekDate.setDate(nextWeekDate.getDate() + 1);
+      setSelectedDate(nextWeekDate.getDate());
+      setSelectedMonth(nextWeekDate.getMonth());
+      setSelectedYears(nextWeekDate.getFullYear());
+      return nextWeekDate;
+    });
+  };
 
   // 날짜 배열 생성 (일요일부터 토요일까지)
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
   // 캘린더의 렌더링 로직
-  const renderCalendar = () => {
+  const renderCalendar = (selecteDate: number) => {
     const weekStart = new Date(currentDate);
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
 
@@ -45,16 +74,28 @@ const ReactCalendar: React.FC<CalendarProps> = ({ startDate, setSelectedDate, se
     for (let i = 0; i < 7; i++) {
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + i);
-      calendar.push(<th key={i}>{date.getDate()}</th>);
+
+      // 현재 날짜와 selectDate를 비교하여 스타일을 변경합니다.
+      const isCurrentDate = date.getDate() === selecteDate;
+
+      // 스타일을 파란색으로 변경합니다.
+      const cellStyle = isCurrentDate ? { color: 'blue' } : {};
+
+      calendar.push(
+        <th key={i} style={cellStyle}>
+          {date.getDate()}
+        </th>,
+      );
     }
     return calendar;
   };
 
   return (
     <div>
-      <MonthSelect>{new Date().getMonth() + 1}월</MonthSelect>
+      <MonthSelect>{selecteMonth + 1}월</MonthSelect>
       <CalendarSection>
         <button onClick={prevWeek}>이전 주</button>
+        <button onClick={prevDay}>이전 날</button>
         <CalendarWeekTable>
           <CalendarWeekThead>
             <CalendarWeekTr>
@@ -64,9 +105,10 @@ const ReactCalendar: React.FC<CalendarProps> = ({ startDate, setSelectedDate, se
             </CalendarWeekTr>
           </CalendarWeekThead>
           <CalendarDayTbody>
-            <CalendarDayTr>{renderCalendar()}</CalendarDayTr>
+            <CalendarDayTr>{renderCalendar(selecteDate)}</CalendarDayTr>
           </CalendarDayTbody>
         </CalendarWeekTable>
+        <button onClick={nextDay}>다음 날</button>
         <button onClick={nextWeek}>다음 주</button>
       </CalendarSection>
     </div>
@@ -81,7 +123,7 @@ const CalendarSection = styled.div`
 `;
 
 const MonthSelect = styled.h1`
-  width: 100px;
+  width: 200px;
   left: 0;
   padding: 0 20px;
   font-size: 30px;

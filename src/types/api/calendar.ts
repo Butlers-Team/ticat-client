@@ -32,10 +32,11 @@ export interface CalendarListListType {
 export interface CalendarListRequest {
   page?: number;
   year: number;
-  mouth: number;
+  month: number;
   day: number;
 }
 /** 2023/07/04 - 축제 리스트 카테고리별 (Response) - by parksubeom */
 export interface CalendarListResponse {
+  json(): any;
   data?: CalendarListListType[];
 }

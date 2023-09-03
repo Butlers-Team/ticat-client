@@ -1,9 +1,10 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
 
 import { CalendarListListType, CalendarListRequest } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
+import { FestivalDetailType } from 'types/api/detail';
 
 const CalendarPage: React.FC = (props): JSX.Element => {
   const now = new Date();
@@ -13,20 +14,26 @@ const CalendarPage: React.FC = (props): JSX.Element => {
   const [selecteDate, setSelectedDate] = useState<number>(date);
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
+  const [detailList, setDetailList] = useState<FestivalDetailType>();
   /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
-  const fetchCalendarList = async () => {
-    const params: CalendarListRequest = {
-      page: 1,
-      year: selecteYears,
-      mouth: selecteMonth,
-      day: selecteDate,
-    };
-  };
+
   /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
   const addSchedule = () => {
     window.location.href = '/festival';
   };
-
+  console.log();
+  useEffect(() => {
+    const fetchCalendarList = async () => {
+      const params: CalendarListRequest = {
+        page: 1,
+        year: selecteYears,
+        month: selecteMonth + 1,
+        day: selecteDate,
+      };
+      getCalendarList(params);
+    };
+    fetchCalendarList();
+  }, [selecteDate, selecteMonth, selecteYears]);
   return (
     <CalendarContainer>
       <CalendarSection>
@@ -35,6 +42,8 @@ const CalendarPage: React.FC = (props): JSX.Element => {
           setSelectedYears={setSelectedYears}
           setSelectedDate={setSelectedDate}
           setSelectedMonth={setSelectedMonth}
+          selecteDate={selecteDate}
+          selecteMonth={selecteMonth}
         />
       </CalendarSection>
       <p className="today-date">
