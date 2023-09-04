@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useKeywordStore, useLocationStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
-// import { useLocationStore } from '@store/userLocation';
+import { useKeywordStore, useMarkerDataStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
+import { useLocationStore } from '@store/userLocation';
 
 //component
 
@@ -10,6 +10,7 @@ import Button from '@components/Button';
 //icon
 import { FaSearch } from 'react-icons/fa';
 import { MdRefresh } from 'react-icons/md';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 export interface LatLngType {
   status: string;
@@ -20,12 +21,13 @@ export interface LatLngType {
 }
 
 const MapScreen = () => {
+  const { location } = useLocationStore();
   const [inputText, setInputText] = useState<string>('');
   const { setKeyword } = useKeywordStore();
   const { zoomLv, setZoomLv } = useZoomLevelStore();
-  const { locationData } = useLocationStore();
+  const { markerData } = useMarkerDataStore();
   const { screenLocation, setScreenLocation } = useMapLocationStore();
-  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
+  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(markerData);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -34,10 +36,10 @@ const MapScreen = () => {
   };
 
   useEffect(() => {
-    if (locationData.length > 0) {
-      setMarkerPositions(locationData);
+    if (markerData.length > 0) {
+      setMarkerPositions(markerData);
     }
-  }, [locationData]);
+  }, [markerData]);
 
   useEffect(() => {
     // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
@@ -98,7 +100,7 @@ const MapScreen = () => {
         infoOverlay.setMap(map);
       });
     });
-  }, [markerPositions]);
+  }, [markerPositions, screenLocation]);
 
   return (
     <MapView>
@@ -108,18 +110,21 @@ const MapScreen = () => {
             setKeyword('');
             setInputText('');
           }}>
-          <MdRefresh className="refresh-icon" />
+          <RiDeleteBin6Line className="refresh-icon" />
           검색 초기화
         </RemoveKeyword>
       )}
-      <RemoveKeyword
-        onClick={() => {
-          setKeyword('');
-          setInputText('');
-        }}>
-        <MdRefresh className="refresh-icon" />내 위치에서 검색
-      </RemoveKeyword>
-
+      {screenLocation !== location && (
+        <MyLocationButton
+          className="position-btn"
+          onClick={() => {
+            setKeyword('');
+            setScreenLocation(location);
+            setInputText('');
+          }}>
+          <MdRefresh className="refresh-icon" />내 위치에서 검색
+        </MyLocationButton>
+      )}
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
         <input
@@ -263,15 +268,16 @@ const MapView = styled.article`
 
 const RemoveKeyword = styled.div`
   position: absolute;
-  bottom: 110px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.4rem;
-  color: #fff;
+  font-size: 1.3rem;
   font-weight: 700;
-  padding: 10px 20px;
+  padding: 7px 15px;
   border-radius: 50px;
-  background: var(--color-main);
+  background: #fff;
+  color: var(--color-main);
+
   z-index: 9;
   cursor: pointer;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -284,4 +290,11 @@ const RemoveKeyword = styled.div`
   ::hover {
     background: var(--color-sub);
   }
+`;
+
+const MyLocationButton = styled(RemoveKeyword)`
+  top: auto;
+  bottom: 110px;
+  background: var(--color-main);
+  color: #fff;
 `;
