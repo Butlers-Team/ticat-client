@@ -5,16 +5,26 @@ export interface CalendarListListType {
       memberId: number;
       festivalList: [
         {
+          address: string;
+          category: string;
+          eventEndDate: string;
+          eventhomepage: string;
+          eventplace: string;
+          eventStartDate: string;
           festivalId: number;
+          image: string;
+          liked: boolean;
+          mapx: number;
+          mapy: number;
+          overview: string;
+          playtime: string;
+          price: string;
+          status: string;
+          tel: string;
+          title: string;
           calendarId: number;
-          category: null;
-          status: null;
           scheduledDate: string;
           calendarDate: string;
-          eventStartDate: string;
-          eventEndDate: string;
-          title: string;
-          address: string;
         },
       ];
     },
@@ -25,6 +35,29 @@ export interface CalendarListListType {
     totalElements: number;
     totalPages: number;
   };
+}
+
+export interface CalendarListType {
+  address: string;
+  category: string;
+  eventEndDate: string;
+  eventhomepage: string;
+  eventplace: string;
+  eventStartDate: string;
+  festivalId: number;
+  image: string;
+  liked: boolean;
+  mapx: number;
+  mapy: number;
+  overview: string;
+  playtime: string;
+  price: string;
+  status: string;
+  tel: string;
+  title: string;
+  calendarId: number;
+  scheduledDate: string;
+  calendarDate: string;
 }
 
 // 축제 리스트 카테고리별
