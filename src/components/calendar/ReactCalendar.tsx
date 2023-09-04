@@ -94,8 +94,8 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     <div>
       <MonthSelect>{selecteMonth + 1}월</MonthSelect>
       <CalendarSection>
-        <button onClick={prevWeek}>이전 주</button>
-        <button onClick={prevDay}>이전 날</button>
+        <DateSelectBtn onClick={prevWeek}>이전 주</DateSelectBtn>
+        <DateSelectBtn onClick={prevDay}>이전 날</DateSelectBtn>
         <CalendarWeekTable>
           <CalendarWeekThead>
             <CalendarWeekTr>
@@ -108,8 +108,8 @@ const ReactCalendar: React.FC<CalendarProps> = ({
             <CalendarDayTr>{renderCalendar(selecteDate)}</CalendarDayTr>
           </CalendarDayTbody>
         </CalendarWeekTable>
-        <button onClick={nextDay}>다음 날</button>
-        <button onClick={nextWeek}>다음 주</button>
+        <DateSelectBtn onClick={nextDay}>다음 날</DateSelectBtn>
+        <DateSelectBtn onClick={nextWeek}>다음 주</DateSelectBtn>
       </CalendarSection>
     </div>
   );
@@ -117,6 +117,7 @@ const ReactCalendar: React.FC<CalendarProps> = ({
 
 export default ReactCalendar;
 const CalendarSection = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
   padding: 20px;
@@ -140,6 +141,7 @@ const CalendarWeekThead = styled.tbody`
   text-align: center;
 `;
 const CalendarWeekTr = styled.tr`
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -152,6 +154,7 @@ const CalendarWeekTr = styled.tr`
 const CalendarDayTbody = styled.tbody`
   font-size: 18px;
   text-align: center;
+  padding-bottom: 20px;
 `;
 const CalendarDayTr = styled.tr`
   display: flex;
@@ -160,4 +163,11 @@ const CalendarDayTr = styled.tr`
     width: 30px;
     padding: 0 20px;
   }
+`;
+
+const DateSelectBtn = styled.button`
+  border: none;
+  font-size: 12px;
+  background-color: transparent;
+  cursor: pointer;
 `;

@@ -23,6 +23,7 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId }) =>
   };
   /** 2023-07-29 원하는 날짜를 픽스하고, 해당날짜 캘린더에 축제를 추가하는 함수 - parksubeom */
   const exitForm = () => {
+    console.log(selectedDate?.toJSON().split('T')[0]);
     if (member) {
       setDateForm(false);
       const params: CalendarAddRequest = {
