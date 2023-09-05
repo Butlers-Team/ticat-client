@@ -1,27 +1,81 @@
 import styled from 'styled-components';
-import { useState } from 'react';
-import axios from 'axios';
+import { useState, useEffect } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
+import { Link } from 'react-router-dom';
+import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
+import { getCalendarList } from '@api/calendar';
+import CalendarFestival from '@components/calendar/CalendarFestval';
 
-const CalendarPage: React.FC = (props): JSX.Element => {
+const CalendarPage: React.FC = (): JSX.Element => {
   const now = new Date();
+  const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
+  const [selecteDate, setSelectedDate] = useState<number>(date);
+  const [selecteMonth, setSelectedMonth] = useState<number>(month);
+  const [selecteYears, setSelectedYears] = useState<number>(year);
+  const [calendarDetailList, setCalendarDetailList] = useState<CalendarListListType>();
+  const data: CalendarListType[] | undefined = calendarDetailList?.data[0].festivalList;
+
+  /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
+
+  /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
+  const addSchedule = () => {
+    window.location.href = '/festival';
+  };
+
+  useEffect(() => {
+    const fetchCalendarList = async () => {
+      const params: CalendarListRequest = {
+        page: 1,
+        year: selecteYears,
+        month: selecteMonth + 1,
+        day: selecteDate,
+      };
+      const res = await getCalendarList(params);
+      setCalendarDetailList(res);
+    };
+    fetchCalendarList();
+  }, [selecteDate, selecteMonth, selecteYears]);
+  console.log(data);
 
   return (
     <CalendarContainer>
       <CalendarSection>
-        <ReactCalendar />
+        <ReactCalendar
+          startDate={new Date()}
+          setSelectedYears={setSelectedYears}
+          setSelectedDate={setSelectedDate}
+          setSelectedMonth={setSelectedMonth}
+          selecteDate={selecteDate}
+          selecteMonth={selecteMonth}
+        />
       </CalendarSection>
       <p className="today-date">
-        <span>{month + 1}월</span> <span>{date}일</span> 축제리스트
+        <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
       </p>
       <FestivalListSection>
-        <EmptyListSection>
-          <img src={'assets/images/ticat-logo-icon-gray.png'}></img>
-          <span>추가된 축제 일정이 없어요.</span>
-          <button className="add-calendar">일정 추가</button>
-        </EmptyListSection>
+        {data?.length === undefined || data.length < 1 ? (
+          <EmptyListSection>
+            <img src={'assets/images/ticat-logo-icon-gray.png'}></img>
+            <span>추가된 축제 일정이 없어요.</span>
+            <button className="add-calendar" onClick={addSchedule}>
+              일정 추가
+            </button>
+          </EmptyListSection>
+        ) : (
+          <FestivalScrollWrap>
+            {data?.map(festival => {
+              return (
+                <li key={festival.festivalId}>
+                  <Link to={`/detail/${festival.festivalId}`}>
+                    <CalendarFestival item={festival} />
+                  </Link>
+                </li>
+              );
+            })}
+          </FestivalScrollWrap>
+        )}
       </FestivalListSection>
     </CalendarContainer>
   );
@@ -92,5 +146,23 @@ const EmptyListSection = styled.section`
       background-color: #b2d9fa;
       color: var(--color-light);
     }
+  }
+`;
+const FestivalScrollWrap = styled.div`
+  height: calc(100% - 13rem);
+  width: calc(100% - 4rem);
+  overflow: auto;
+  margin: 0 auto;
+
+  // 스크롤바 없애기
+  // chrome and safari
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  // firefox
+  scrollbar-width: none;
+
+  @media screen and (max-width: 400px) {
+    height: calc(100% - 11rem);
   }
 `;
