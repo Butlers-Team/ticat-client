@@ -17,7 +17,6 @@ export interface FestivalDetailType {
   status: string;
   tel: string;
   title: string;
-
   reviewRating: number;
   reviewCount: number;
 }
