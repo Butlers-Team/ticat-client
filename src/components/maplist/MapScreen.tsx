@@ -170,6 +170,7 @@ const MapView = styled.article`
     border-radius: 100px;
     border: var(--color-main) solid 1px;
     padding: 3px 3px;
+    transform: scale(0.8);
 
     :hover {
       color: var(--color-main);
