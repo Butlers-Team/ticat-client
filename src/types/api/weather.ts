@@ -2,7 +2,6 @@ export interface WeatherType {
   region: string;
   weather: {
     temp: number;
-    rainAmount: string;
     humid: number;
     lastUpdateTime: string;
     sky: string;

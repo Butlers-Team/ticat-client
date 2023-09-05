@@ -95,7 +95,7 @@ export const useKeywordStore = create<keywordState>(set => ({
 }));
 
 // API 요청 파람스 저장 (locationData,setLocationData)
-type Location = {
+type markers = {
   latitude: number;
   longitude: number;
   title: string;
@@ -104,12 +104,12 @@ type Location = {
 };
 
 type LocationDataState = {
-  locationData: Location[];
-  setLocationData: (newData: Location[]) => void;
+  markerData: markers[];
+  setMarkerData: (newData: markers[]) => void;
 };
 
-export const useLocationStore = create<LocationDataState>(set => ({
-  locationData: [
+export const useMarkerDataStore = create<LocationDataState>(set => ({
+  markerData: [
     {
       latitude: 127.0,
       longitude: 25.0,
@@ -118,7 +118,7 @@ export const useLocationStore = create<LocationDataState>(set => ({
       status: '',
     },
   ],
-  setLocationData: newData => set({ locationData: newData }), // updateData의 인자를 받아 state를 업데이트
+  setMarkerData: newData => set({ markerData: newData }), // updateData의 인자를 받아 state를 업데이트
 }));
 
 // 지도 화면 위치 저장 (screenLocation,setScreenLocation)

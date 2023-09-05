@@ -12,7 +12,7 @@ import {
   useOptionStore,
   useCategoryStore,
   useKeywordStore,
-  useLocationStore,
+  useMarkerDataStore,
   useMapLocationStore,
   useStatusStore,
 } from '@store/mapListStore';
@@ -32,8 +32,8 @@ const FastivalList = () => {
   const { category } = useCategoryStore();
   const { keyword } = useKeywordStore();
   const { status } = useStatusStore();
-  const { setLocationData } = useLocationStore();
-  const { screenLocation, setScreenLocation } = useMapLocationStore();
+  const { setMarkerData } = useMarkerDataStore();
+  const { screenLocation } = useMapLocationStore();
   const [size, setSize] = useState<number>(15);
 
   const categoryJoin = category.join();
@@ -73,7 +73,7 @@ const FastivalList = () => {
         transformedData.push({ latitude, longitude, title, category, status });
       });
 
-      setLocationData(transformedData);
+      setMarkerData(transformedData);
     }
   };
 
