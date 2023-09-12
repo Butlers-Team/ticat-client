@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
-import { useNavigate } from 'react-router-dom';
+
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
@@ -14,8 +14,8 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const [selecteDate, setSelectedDate] = useState<number>(date);
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
-  const [calendarDetailList, setCalendarDetailList] = useState<CalendarListListType>();
-  const data: CalendarListType[] | undefined = calendarDetailList?.data[0].festivalList;
+  const [calendarDatailList, setCalendarDatailList] = useState<CalendarListListType>();
+  const data: CalendarListType[] | undefined = calendarDatailList?.data[0].festivalList;
 
   /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
 
@@ -24,25 +24,19 @@ const CalendarPage: React.FC = (): JSX.Element => {
     window.location.href = '/festival';
   };
 
-  const routeStampPage = () => {
-    console.log(data);
-    const navigate = useNavigate();
-    navigate('/stamp/valid', { state: data });
-  };
-
   useEffect(() => {
     const fetchCalendarList = async () => {
       const params: CalendarListRequest = {
         page: 1,
         year: selecteYears,
         month: selecteMonth + 1,
-        day: selecteDate,
+        day: selecteDate - 1,
       };
       const res = await getCalendarList(params);
-      setCalendarDetailList(res);
+      setCalendarDatailList(res);
     };
     fetchCalendarList();
-  }, [selecteDate, selecteMonth, selecteYears]);
+  }, []);
 
   return (
     <CalendarContainer>
@@ -72,7 +66,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
           <FestivalScrollWrap>
             {data?.map(festival => {
               return (
-                <li key={festival.festivalId} onClick={routeStampPage}>
+                <li key={festival.festivalId}>
                   <CalendarFestival item={festival} />
                 </li>
               );

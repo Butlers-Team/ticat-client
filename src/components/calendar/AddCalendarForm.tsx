@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 
-import { addCalendarRequest } from '@api/addcalendar';
+import { addCalendarRequest } from '@api/calendar';
 import { CalendarAddRequest } from 'types/api/addcalendar';
 
 interface AddCalendarProps {
@@ -86,4 +86,5 @@ const AddBtn = styled.button`
   background-color: #1692fe;
   width: 50px;
   height: 30px;
+  z-index: 5;
 `;
