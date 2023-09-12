@@ -21,7 +21,6 @@ interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
-  console.log(detailList.status);
   const token = window.localStorage.getItem('accessToken');
   const location = useLocation();
   const [dateForm, setDateForm] = useState<boolean>(false);
