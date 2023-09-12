@@ -62,6 +62,17 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     });
   };
 
+  const selectDay = (date: number, month: number, year: number) => {
+    setCurrentDate(prevDate => {
+      const nextWeekDate = new Date(prevDate);
+      nextWeekDate.setDate(date);
+      setSelectedDate(date);
+      setSelectedMonth(month);
+      setSelectedYears(year);
+      return nextWeekDate;
+    });
+  };
+
   // 날짜 배열 생성 (일요일부터 토요일까지)
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -82,9 +93,12 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       const cellStyle = isCurrentDate ? { color: 'blue' } : {};
 
       calendar.push(
-        <th key={i} style={cellStyle}>
+        <DateTh
+          key={i}
+          style={cellStyle}
+          onClick={() => selectDay(date.getDate(), date.getMonth(), date.getFullYear())}>
           {date.getDate()}
-        </th>,
+        </DateTh>,
       );
     }
     return calendar;
@@ -169,5 +183,9 @@ const DateSelectBtn = styled.button`
   border: none;
   font-size: 12px;
   background-color: transparent;
+  cursor: pointer;
+`;
+
+const DateTh = styled.th`
   cursor: pointer;
 `;
