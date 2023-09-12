@@ -32,7 +32,7 @@ const Router = () => {
     <Layout>
       <Routes>
         <Route path="/main" element={<MainPage />} />
-        <Route path="/calendar" element={<CalendarPage />} />
+
         <Route path="/maplist" element={<MapListPage />} />
         <Route path="/festival" element={<FestivalListPage />} />
         <Route path="/festival/area" element={<AreaFilterPage />} />
@@ -45,6 +45,7 @@ const Router = () => {
         <Route path="/wellcome" element={!isAuthenticated && !member ? <WellcomePage /> : <Navigate to="/main" />} />
 
         {/* 로그인 안되어 있을때 접근 안되게  */}
+        <Route path="/calendar" element={isAuthenticated && !!member ? <CalendarPage /> : <Navigate to="/signin" />} />
         <Route path="/stamp/valid" element={isAuthenticated && !!member ? <StampCheck /> : <Navigate to="/main" />} />
         <Route path="/stamp/list" element={isAuthenticated && !!member ? <StampList /> : <Navigate to="/main" />} />
         <Route path="/myinfo" element={isAuthenticated && !!member ? <MyPage /> : <Navigate to="/signin" />} />
