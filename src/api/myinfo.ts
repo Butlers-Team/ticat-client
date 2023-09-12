@@ -1,7 +1,7 @@
 import instance from '@api/axiosInstance';
 
 // type
-import { MyInfoType, RecentListType, InterestType, MyInfoPatchType, InterestPatchType } from 'types/api/myinfo';
+import { MyInfoType, RecentListType, InterestType, MyInfoPatchBodyType, InterestPatchBodyType } from 'types/api/myinfo';
 
 // ========================== 회원정보 ==========================
 /** 2023/07/21 - 회원정보 GET 요청 - by sineTlsl */
@@ -12,7 +12,7 @@ export const getMyInfo = async () => {
 };
 
 /** 2023/08/13 - 회원정보 PATCH 요청 - by sineTlsl */
-export const patchMyInfo = async (body: MyInfoPatchType) => {
+export const patchMyInfo = async (body: MyInfoPatchBodyType) => {
   const { data } = await instance.patch('/members', body);
 
   return data;
@@ -63,7 +63,7 @@ export const getInterest = async () => {
 };
 
 /** 2023/08/13 - 회원 관심사 PATCH 요청 - by sineTlsl */
-export const patchInterest = async (body: InterestPatchType) => {
+export const patchInterest = async (body: InterestPatchBodyType) => {
   const { data } = await instance.patch('interest', body);
 
   return data;

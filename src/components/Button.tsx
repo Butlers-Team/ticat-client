@@ -36,11 +36,14 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   font-weight: bold;
   cursor: pointer;
 
-  :disabled {
+  &:disabled {
     color: var(--color-light);
-    background-color: var(--color-sub);
-    opacity: 0.5;
-    cursor: default;
+    background-color: var(--color-main);
+    cursor: not-allowed;
+
+    &:hover {
+      background-color: var(--color-main);
+    }
   }
 
   &:hover {

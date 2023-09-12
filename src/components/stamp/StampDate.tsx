@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 // icons
-import { AiOutlineLeft } from 'react-icons/ai';
-import { AiOutlineRight } from 'react-icons/ai';
+import { BiChevronLeft, BiChevronRight } from 'react-icons/bi';
 
 interface StampDateProps {
   year: number;
@@ -10,14 +9,24 @@ interface StampDateProps {
   onLastMonth: () => void;
   onNextMonth: () => void;
   onCurrentMonth: () => void;
+  canGoToLastMonth: boolean;
+  canGoToNextMonth: boolean;
 }
 
 /**  2023/07/24 - 스탬프 리스트 날짜 컴포넌트 - by sineTlsl */
-const StampDate = ({ year, month, onLastMonth, onNextMonth, onCurrentMonth }: StampDateProps) => {
+const StampDate = ({
+  year,
+  month,
+  onLastMonth,
+  onNextMonth,
+  onCurrentMonth,
+  canGoToLastMonth,
+  canGoToNextMonth,
+}: StampDateProps) => {
   return (
     <StampDateContainer>
       <button className="month-arrow" onClick={onLastMonth}>
-        <AiOutlineLeft size="18px" color="#D3D3D3" />
+        <BiChevronLeft size="30px" color={canGoToLastMonth ? '#878787' : '#dbdbdb'} />
       </button>
       <button className="current-date-btn" onClick={onCurrentMonth}>
         <p className="cal-month">
@@ -25,7 +34,7 @@ const StampDate = ({ year, month, onLastMonth, onNextMonth, onCurrentMonth }: St
         </p>
       </button>
       <button className="month-arrow" onClick={onNextMonth}>
-        <AiOutlineRight size="18px" color="#D3D3D3" />
+        <BiChevronRight size="30px" color={canGoToNextMonth ? '#878787' : '#dbdbdb'} />
       </button>
     </StampDateContainer>
   );
@@ -43,9 +52,11 @@ const StampDateContainer = styled.div`
     border: none;
     background: none;
     cursor: pointer;
+    padding: 0;
+    margin: 0;
   }
   > .month-arrow {
-    width: 20px;
+    width: 30px;
   }
   > .current-date-btn {
     display: flex;

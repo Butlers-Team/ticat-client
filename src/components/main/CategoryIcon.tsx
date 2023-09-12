@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useCategoryTabStore } from '@store/categoryTabStore';
+import { useCategoryTabStore } from '@store/useCategoryTabStore';
 
 //icon
 import { FaRunning, FaWineGlassAlt, FaCross, FaLightbulb } from 'react-icons/fa';

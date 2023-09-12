@@ -4,12 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 import { IoIosArrowDown, IoIosArrowUp, IoIosOptions } from 'react-icons/io';
 import { BiSolidStar } from 'react-icons/bi';
 
-import { mapOptions, tabCategory, useOptionStore, useCategoryStore } from '@store/mapListStore';
+import {
+  mapOptions,
+  tabCategory,
+  useOptionStore,
+  useCategoryStore,
+  tabState,
+  useStatusStore,
+} from '@store/mapListStore';
 
 const OptionButton: React.FC = () => {
   // const [sortBy, setSortBy] = useState<string>('');
   // const [category, setCategory] = useState<string[]>([]);
   const [onCategoryList, setOnCategoryList] = useState<boolean>(false);
+  const [onStateList, setOnStateList] = useState<boolean>(false);
 
   const [scrollStartPosition, setScrollStartPosition] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -17,14 +25,30 @@ const OptionButton: React.FC = () => {
   const scrollRef = useRef<HTMLDivElement>(null); // CategoryScroll 컴포넌트의 ref
   const { sortBy, setSortBy } = useOptionStore();
   const { category, setCategory } = useCategoryStore();
+  const { status, setStatus } = useStatusStore();
 
   /** 2023.07.13 선택된 옵션 저장 - by mscojl24 */
   const handleEnableOptions = (value: string) => {
     value !== sortBy ? setSortBy(value) : setSortBy('');
   };
-
   const handleCategoryChange = (tab: string) => {
     setCategory(tab);
+  };
+  const handleStateChange = (tab: string) => {
+    setStatus(tab);
+  };
+
+  //Status 배열명 변경
+  const StatusLetterChange = (state: string) => {
+    if (state === 'ONGOING') {
+      return '진행중';
+    } else if (state === 'COMPLETED') {
+      return '종료됨';
+    } else if (state === 'EXPECTED') {
+      return '예정됨';
+    }
+    //상태가 명확하지 않을때 출력
+    return '미확인';
   };
 
   /**2023.07.13 버튼 가로 스크롤 이벤트 리스너 함수 - by mscojl24 */
@@ -85,6 +109,29 @@ const OptionButton: React.FC = () => {
             </FastivalCategory>
           </div>
         )}
+        {onStateList && (
+          <div
+            className="onblur-event"
+            onClick={() => {
+              setOnStateList(false);
+            }}>
+            <FastivalCategory
+              onClick={e => {
+                e.stopPropagation();
+              }}>
+              {tabState.map(tab => (
+                <li
+                  key={tab}
+                  className={`tab-section flex-all-center ${status.includes(tab) && 'selected-category'}`}
+                  onClick={() => {
+                    handleStateChange(tab);
+                  }}>
+                  {StatusLetterChange(tab)}
+                </li>
+              ))}
+            </FastivalCategory>
+          </div>
+        )}
         <button
           onClick={() => {
             setOnCategoryList(!onCategoryList);
@@ -92,6 +139,18 @@ const OptionButton: React.FC = () => {
           className={category.length > 0 ? 'category-on' : 'category-off'}>
           <IoIosOptions className="icon-margin" /> 카테고리 {category.length > 0 && category.length}
           {onCategoryList ? (
+            <IoIosArrowUp className="icon-position icon-margin" />
+          ) : (
+            <IoIosArrowDown className="icon-position icon-margin" />
+          )}
+        </button>
+        <button
+          onClick={() => {
+            setOnStateList(!onCategoryList);
+          }}
+          className={status.length > 0 ? 'category-on' : 'category-off'}>
+          <IoIosOptions className="icon-margin" /> 진행축제 {status.length > 0 && status.length}
+          {onStateList ? (
             <IoIosArrowUp className="icon-position icon-margin" />
           ) : (
             <IoIosArrowDown className="icon-position icon-margin" />

@@ -22,23 +22,30 @@ const StampTicket = ({ stampList }: StampTicketProps) => {
 
   return (
     <StampTicketContainer>
-      {stampList.map((item, idx) => (
-        <TicketItemWrap key={idx} background={colorBg[idx % colorBg.length]}>
-          <ItemText>
-            <h4 className="item-title">{item.title}</h4>
-            <p className="item-place">
-              <MdPlace size="13px" color="var(--color-light)" />
-              <span>{splitAddress(item.address)}</span>
-            </p>
-            <p className="item-date">
-              {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
-            </p>
-          </ItemText>
-          <ItemPhoto>
-            <IoLogoOctocat size="50px" color="var(--color-light)" />
-          </ItemPhoto>
-        </TicketItemWrap>
-      ))}
+      {stampList.length !== 0 ? (
+        stampList.map((item, idx) => (
+          <TicketItemWrap key={idx} background={colorBg[idx % colorBg.length]}>
+            <ItemText>
+              <h4 className="item-title">{item.title}</h4>
+              <p className="item-place">
+                <MdPlace size="13px" color="var(--color-light)" />
+                <span>{splitAddress(item.address)}</span>
+              </p>
+              <p className="item-date">
+                {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
+              </p>
+            </ItemText>
+            <ItemPhoto>
+              <IoLogoOctocat size="50px" color="var(--color-light)" />
+            </ItemPhoto>
+          </TicketItemWrap>
+        ))
+      ) : (
+        <UndefinedData>
+          <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+          <p className="undefined-stamp-data">저장된 나의 티캣스탬프가 없어요</p>
+        </UndefinedData>
+      )}
     </StampTicketContainer>
   );
 };
@@ -102,4 +109,25 @@ const ItemPhoto = styled.div`
   justify-content: center;
   align-items: center;
   border-left: 1px dashed var(--color-light);
+`;
+
+/** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
+const UndefinedData = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  > .undefined-stamp-data {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+  }
 `;

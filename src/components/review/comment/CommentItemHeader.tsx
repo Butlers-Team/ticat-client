@@ -14,9 +14,7 @@ interface Props {
 const CommentItemHeader: React.FC<Props> = ({ displayName, createdAt, modifiedAt, isMyPage }): JSX.Element => {
   return (
     <CommentHeaderContainer isMyPage={isMyPage}>
-      <InfoWrapper isMyPage={isMyPage}>
-        <span className="nickname">{displayName}</span>
-      </InfoWrapper>
+      <InfoWrapper>{!isMyPage && <span className="nickname">{displayName}</span>}</InfoWrapper>
       <span className="createdAt">{getTimeDiff(new Date(createdAt))}</span>
     </CommentHeaderContainer>
   );

@@ -75,6 +75,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
 
   const createReviewMutation = useCreateReview({ festivalId, handleReset });
   const updateReviewMutation = useUpdateReview({ festivalId, reviewId: review?.reviewId, handleReset });
+
   /** 이미지 업로드 유효성 검사 */
   const validateImageFile = (file: File): boolean => {
     const acceptedImageFormats = /(\.jpg|\.jpeg|\.png|\.gif|\.bmp|\.svg|\.webp)$/i;

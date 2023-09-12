@@ -118,10 +118,10 @@ const InterestWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  height: calc(100% - 5rem); // TopHistoryBackNav의 높이를 계산에 포함
+  height: 80%;
   width: 90%;
   max-width: 33rem;
-  margin: 0 auto;
+  margin: 4rem auto;
 
   animation: showupLayout 0.5s forwards;
 

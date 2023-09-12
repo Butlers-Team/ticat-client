@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 
 export const mapOptions = [
   { optionName: '좋아요순', value: 'likeCount' },
@@ -24,22 +24,26 @@ export const tabCategory = [
   '기타',
 ];
 
+export const tabState = ['ONGOING', 'EXPECTED', 'COMPLETED'];
+
+// 지도 리스트 정렬방식 저장 (sortBy,setSortBy)
 interface OptionState {
   sortBy: string;
   setSortBy: (sortBy: string) => void;
 }
 
-const useOptionStore = create<OptionState>(set => ({
+export const useOptionStore = create<OptionState>(set => ({
   sortBy: '',
   setSortBy: (sortBy: string) => set({ sortBy }),
 }));
 
+// 지도 리스트 카테고리 저장 (category,setCategory)
 type CategoryState = {
   category: string[];
   setCategory: (tab: string) => void;
 };
 
-const useCategoryStore = create<CategoryState>(set => ({
+export const useCategoryStore = create<CategoryState>(set => ({
   category: [],
   setCategory: tab => {
     set(state => {
@@ -56,39 +60,93 @@ const useCategoryStore = create<CategoryState>(set => ({
   },
 }));
 
+// 지도 리스트 축제상태 저장 (category,setCategory)
+type statusState = {
+  status: string[];
+  setStatus: (tab: string) => void;
+};
+
+export const useStatusStore = create<statusState>(set => ({
+  status: [],
+  setStatus: tab => {
+    set(state => {
+      if (tab === '전체') {
+        return { status: [] };
+      } else {
+        if (state.status.includes(tab)) {
+          return { status: state.status.filter(item => item !== tab) };
+        } else {
+          return state.status.length < 5 ? { status: [...state.status, tab] } : state;
+        }
+      }
+    });
+  },
+}));
+
+// 지도 리스트 검색 키워드 저장 (keyword,setKeyword)
 interface keywordState {
   keyword: string;
   setKeyword: (keyword: string) => void;
 }
 
-const useKeywordStore = create<keywordState>(set => ({
+export const useKeywordStore = create<keywordState>(set => ({
   keyword: '',
   setKeyword: (keyword: string) => set({ keyword }),
 }));
 
-// 타입 정의
-type Location = {
+// API 요청 파람스 저장 (locationData,setLocationData)
+type markers = {
   latitude: number;
   longitude: number;
   title: string;
   category: string;
+  status: string;
 };
 
 type LocationDataState = {
-  locationData: Location[];
-  setLocationData: (newData: Location[]) => void;
+  markerData: markers[];
+  setMarkerData: (newData: markers[]) => void;
 };
 
-export const useLocationStore = create<LocationDataState>(set => ({
-  locationData: [
+export const useMarkerDataStore = create<LocationDataState>(set => ({
+  markerData: [
     {
       latitude: 127.0,
       longitude: 25.0,
       title: '',
       category: '',
+      status: '',
     },
   ],
-  setLocationData: newData => set({ locationData: newData }), // updateData의 인자를 받아 state를 업데이트
+  setMarkerData: newData => set({ markerData: newData }), // updateData의 인자를 받아 state를 업데이트
 }));
 
-export { useOptionStore, useCategoryStore, useKeywordStore };
+// 지도 화면 위치 저장 (screenLocation,setScreenLocation)
+type mapScreenLocation = {
+  latitude?: number;
+  longitude?: number;
+};
+
+type mapScreenLocationState = {
+  screenLocation: mapScreenLocation;
+  setScreenLocation: (newData: mapScreenLocation) => void;
+};
+
+export const useMapLocationStore = create<mapScreenLocationState>(set => ({
+  screenLocation: {
+    latitude: 37.566761113473376,
+    longitude: 126.97854474587949,
+  },
+  setScreenLocation: newData => set({ screenLocation: newData }),
+}));
+
+// 지도 확대레벨 저장
+interface zoomLevelState {
+  zoomLv: number;
+  setZoomLv: (zoomLv: number) => void;
+}
+
+export const useZoomLevelStore = create<zoomLevelState>(set => ({
+  zoomLv: 4,
+  setZoomLv: (zoomLv: number) => set({ zoomLv }),
+}));

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useKeywordStore, useLocationStore } from '@store/mapListStore';
+import { useKeywordStore, useMarkerDataStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
+import { useLocationStore } from '@store/userLocation';
 
 //component
 
@@ -9,8 +10,10 @@ import Button from '@components/Button';
 //icon
 import { FaSearch } from 'react-icons/fa';
 import { MdRefresh } from 'react-icons/md';
+import { RiDeleteBin6Line } from 'react-icons/ri';
 
 export interface LatLngType {
+  status: string;
   latitude: number;
   longitude: number;
   title: string;
@@ -18,10 +21,13 @@ export interface LatLngType {
 }
 
 const MapScreen = () => {
+  const { location } = useLocationStore();
   const [inputText, setInputText] = useState<string>('');
   const { setKeyword } = useKeywordStore();
-  const { locationData } = useLocationStore();
-  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(locationData);
+  const { zoomLv, setZoomLv } = useZoomLevelStore();
+  const { markerData } = useMarkerDataStore();
+  const { screenLocation, setScreenLocation } = useMapLocationStore();
+  const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(markerData);
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -30,11 +36,10 @@ const MapScreen = () => {
   };
 
   useEffect(() => {
-    // This useEffect hook will run whenever locationData changes
-    if (locationData.length > 0) {
-      setMarkerPositions(locationData);
+    if (markerData.length > 0) {
+      setMarkerPositions(markerData);
     }
-  }, [locationData]);
+  }, [markerData]);
 
   useEffect(() => {
     // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
@@ -42,17 +47,32 @@ const MapScreen = () => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
       const options = {
-        center: new window.kakao.maps.LatLng(locationData[0].latitude, locationData[0].longitude), // 맨 첫번째 좌표를 기준
-        level: 12, // 지도 확대 레벨
+        center: new window.kakao.maps.LatLng(screenLocation.latitude, screenLocation.longitude), // 맨 첫번째 좌표를 기준
+        level: zoomLv, // 지도 확대 레벨
       };
       const map = new window.kakao.maps.Map(container, options);
+
+      // 드래그가 끝났을 때 중앙 좌표값을 얻는 이벤트 핸들러 추가
+      window.kakao.maps.event.addListener(map, 'dragend', () => {
+        const center = map.getCenter(); // 지도의 중앙 좌표값을 얻어옴
+        const zoomLevel = map.getLevel(); //지도 확대 레벨을 저장함
+        const mapLocation = {
+          latitude: center.getLat(),
+          longitude: center.getLng(),
+        };
+        setZoomLv(zoomLevel);
+        setScreenLocation(mapLocation);
+        // 이후 필요한 로직을 수행할 수 있습니다.
+      });
 
       // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
       markerPositions.forEach(position => {
         const infoElement = document.createElement('div');
         infoElement.className = 'position-info';
         infoElement.innerHTML = `
-        <div class="info-marker">
+        <div class="info-marker ${position.status === 'COMPLETED' && 'completed-marker'} ${
+          position.status === 'EXPECTED' && 'expected-marker'
+        }">
           <img src='https://i.imgur.com/YIVVwVH.png' alt='marker-icon'>
         </div>
         <div class="info-text">
@@ -72,7 +92,6 @@ const MapScreen = () => {
         infoElement.addEventListener('click', () => {
           // 마커를 클릭했을 때 원하는 동작을 수행하도록 코드 작성
           infoElement.classList.add('clicked');
-          console.log(`Marker clicked: ${position.title}`);
           setKeyword(position.title);
           setInputText(position.title);
           // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.
@@ -81,7 +100,7 @@ const MapScreen = () => {
         infoOverlay.setMap(map);
       });
     });
-  }, [markerPositions]);
+  }, [markerPositions, screenLocation]);
 
   return (
     <MapView>
@@ -91,11 +110,21 @@ const MapScreen = () => {
             setKeyword('');
             setInputText('');
           }}>
-          <MdRefresh className="refresh-icon" />
+          <RiDeleteBin6Line className="refresh-icon" />
           검색 초기화
         </RemoveKeyword>
       )}
-
+      {screenLocation !== location && (
+        <MyLocationButton
+          className="position-btn"
+          onClick={() => {
+            setKeyword('');
+            setScreenLocation(location);
+            setInputText('');
+          }}>
+          <MdRefresh className="refresh-icon" />내 위치에서 검색
+        </MyLocationButton>
+      )}
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
         <input
@@ -141,6 +170,7 @@ const MapView = styled.article`
     border-radius: 100px;
     border: var(--color-main) solid 1px;
     padding: 3px 3px;
+    transform: scale(0.8);
 
     :hover {
       color: var(--color-main);
@@ -154,6 +184,14 @@ const MapView = styled.article`
       overflow: hidden;
       border-radius: 30px;
       margin: 2px 7px 2px 3px;
+    }
+
+    .completed-marker {
+      background-color: #d4d7df;
+    }
+
+    .expected-marker {
+      background-color: var(--color-sub);
     }
     .position-title {
       width: 120px;
@@ -231,15 +269,16 @@ const MapView = styled.article`
 
 const RemoveKeyword = styled.div`
   position: absolute;
-  bottom: 110px;
+  top: 70px;
   left: 50%;
   transform: translateX(-50%);
-  font-size: 1.4rem;
-  color: #fff;
+  font-size: 1.3rem;
   font-weight: 700;
-  padding: 10px 20px;
+  padding: 7px 15px;
   border-radius: 50px;
-  background: var(--color-main);
+  background: #fff;
+  color: var(--color-main);
+
   z-index: 9;
   cursor: pointer;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -252,4 +291,11 @@ const RemoveKeyword = styled.div`
   ::hover {
     background: var(--color-sub);
   }
+`;
+
+const MyLocationButton = styled(RemoveKeyword)`
+  top: auto;
+  bottom: 110px;
+  background: var(--color-main);
+  color: #fff;
 `;

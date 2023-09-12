@@ -17,8 +17,13 @@ const StampListPage = () => {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
+
   const [year, setYear] = useState<number>(currentYear);
   const [month, setMonth] = useState<number>(currentMonth);
+
+  // 저번달 or 이번달로 넘어갈 수 있는 지 확인하고, 화살표 색상을 도와주는 변수
+  const canGoToLastMonth: boolean = year <= currentYear; // 현재 연도보다 작거나 같을 경우 이전 달로
+  const canGoToNextMonth: boolean = year < currentYear || (year === currentYear && month < currentMonth); // 현재 연도보다 작거나, 현재 연도와 같은데 현재 달보다 작을 경우 다음 달로
 
   const params: StampListRequest = {
     year,
@@ -34,12 +39,12 @@ const StampListPage = () => {
   };
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
-  const HandlerToggle = () => {
+  const handlerToggle = () => {
     setIsSelectTicket(!isSelectTicket);
   };
 
   /** 2023/07/24 - 이전 달로 이동 - by sineTlsl */
-  const HandlerLastMonth = () => {
+  const handlerLastMonth = () => {
     setMonth(prev => {
       if (prev === 1) {
         setYear(year => year - 1); // 1월인 경우 연도 줄이기
@@ -50,7 +55,7 @@ const StampListPage = () => {
     });
   };
   /** 2023/07/24 - 다음 달로 이동 - by sineTlsl */
-  const HandlerNextMonth = () => {
+  const handlerNextMonth = () => {
     if (year === currentYear && month === currentMonth) {
       return;
     }
@@ -64,7 +69,7 @@ const StampListPage = () => {
     });
   };
   /** 2023/07/24 - 현재 달(날짜)로 이동 - by sineTlsl */
-  const HandlerCurrentMonth = () => {
+  const handlerCurrentMonth = () => {
     setYear(currentYear);
     setMonth(currentMonth);
   };
@@ -87,13 +92,15 @@ const StampListPage = () => {
         <StampDate
           year={year}
           month={month}
-          onLastMonth={HandlerLastMonth}
-          onNextMonth={HandlerNextMonth}
-          onCurrentMonth={HandlerCurrentMonth}
+          onLastMonth={handlerLastMonth}
+          onNextMonth={handlerNextMonth}
+          onCurrentMonth={handlerCurrentMonth}
+          canGoToLastMonth={canGoToLastMonth}
+          canGoToNextMonth={canGoToNextMonth}
         />
         {data && (isSelectTicket ? <StampTicket stampList={data.festivalList} /> : <StampCalendar />)}
         <div className="toggle-wrap">
-          <StampToggle isSelectTicket={isSelectTicket} onClick={HandlerToggle} />
+          <StampToggle isSelectTicket={isSelectTicket} onClick={handlerToggle} />
         </div>
       </StampItemsWrap>
     </StampListContainer>
@@ -154,13 +161,14 @@ const TopDescriptionWrap = styled.div`
 /** 2023/06/30 - 스탬프 리스트 - by sineTlsl */
 const StampItemsWrap = styled.div`
   z-index: 1;
-  top: 150px;
+  top: 180px;
   position: relative;
   display: flex;
   align-items: center;
   flex-direction: column;
   height: calc(100% - 200px);
   width: 100%;
+  animation: showupLayout 0.5s forwards;
   background: #fff;
   border-radius: 30px 30px 0px 0px;
   padding-bottom: 3rem;
@@ -189,5 +197,19 @@ const StampItemsWrap = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
+  }
+
+  @keyframes showupLayout {
+    0% {
+      opacity: 0;
+    }
+    80% {
+      opacity: 1;
+      transform: translateY(-40px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(-30px);
+    }
   }
 `;

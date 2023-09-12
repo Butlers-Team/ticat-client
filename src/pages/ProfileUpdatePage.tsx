@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { MyInfoType } from 'types/api/myinfo';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
 
-// util
+// utils
 import { CheckCategory } from '@utils/categories';
+import { validateNickname } from '@utils/validateNickname';
 
 // components
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
@@ -19,6 +20,7 @@ import ProfileInfoNameUpdate from '@components/profile/ProfileInfoNameUpdate';
 const ProfileUpdatePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const queryClient = useQueryClient();
   const memberInfo: MyInfoType = location.state.data;
   const [memberName, setMemberName] = useState(memberInfo.displayName);
 
@@ -43,6 +45,7 @@ const ProfileUpdatePage = () => {
   /** 2023/08/13 - 프로필 업데이트 요청 함수 생성 - by sineTlsl */
   const profileUpdatemutation = useMutation(patchMyInfo, {
     onSuccess: () => {
+      queryClient.invalidateQueries(['userInfo']);
       navigate('/myinfo');
     },
     onError: err => {
@@ -63,9 +66,15 @@ const ProfileUpdatePage = () => {
 
   /** 2023/08/13 - 프로필 업데이트 이벤트 함수 - by sineTlsl */
   const handleProfileUpdate = () => {
+    // 닉네임 유효성 검사
+    const errorMessage = validateNickname(memberName);
+    if (errorMessage) {
+      alert(errorMessage);
+      return; // 에러가 있다면 이후 코드 실행 중지
+    }
+
     const updateProfileBody = {
       displayName: memberName,
-      password: '!a123123',
     };
 
     const updateInterestBody = {

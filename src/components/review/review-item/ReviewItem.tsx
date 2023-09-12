@@ -76,11 +76,19 @@ const ReviewItem: React.FC<Props> = ({
     <>
       <ReviewItemContainer>
         <HeaderWrapper>
-          <ItemImgWrap>
-            <img src={profileUrl || '/assets/images/default-profile-image.png'} />
-          </ItemImgWrap>
+          {!isMyPage && (
+            <ItemImgWrap>
+              <img src={profileUrl || '/assets/images/default-profile-image.png'} />
+            </ItemImgWrap>
+          )}
           {displayName && (
-            <ReviewItemHeader displayName={displayName} rating={rating} createdAt={createdAt} modifiedAt={modifiedAt} />
+            <ReviewItemHeader
+              displayName={displayName}
+              rating={rating}
+              createdAt={createdAt}
+              modifiedAt={modifiedAt}
+              isMyPage={isMyPage}
+            />
           )}
         </HeaderWrapper>
         {isEditMode ? (

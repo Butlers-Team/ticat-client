@@ -15,3 +15,12 @@ export interface RecommendSwiperOptions {
   grabCursor: boolean;
   loop: boolean;
 }
+
+export interface blogSwiperOptions {
+  modules: any[];
+  spaceBetween: number;
+  slidesPerView: number;
+  grabCursor: boolean;
+  loop: boolean;
+  autoplay: { delay: number; disableOnInteraction: boolean };
+}

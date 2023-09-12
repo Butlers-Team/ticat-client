@@ -12,22 +12,20 @@ export const createFormData = ({ request }: Options): FormData => {
 
   formData.append('review', reviewBlob);
   if (request.reviewImages) {
-    request.reviewImages.forEach((image, index) => {
+    request.reviewImages.forEach(image => {
       formData.append(`reviewImage`, image, image.name);
     });
   }
   //TODO: Form 데이터 확인용
-  const readReviewBlob = formData.get('review');
+  // const readReviewBlob = formData.get('review');
 
-  if (readReviewBlob instanceof Blob) {
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      // console.log('review content:', fileReader.result);
-    };
-    fileReader.readAsText(reviewBlob);
-  }
-  // console.log('formData entries: ', Array.from(formData.entries()));
+  // if (readReviewBlob instanceof Blob) {
+  //   const fileReader = new FileReader();
+  //   fileReader.onload = () => {
+  //     console.log('review content:', fileReader.result);
+  //   };
+  //   fileReader.readAsText(reviewBlob);
+  // }
 
-  // ===============================
   return formData;
 };
