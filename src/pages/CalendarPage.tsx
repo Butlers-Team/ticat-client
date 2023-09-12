@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
@@ -24,6 +24,12 @@ const CalendarPage: React.FC = (): JSX.Element => {
     window.location.href = '/festival';
   };
 
+  const routeStampPage = () => {
+    console.log(data);
+    const navigate = useNavigate();
+    navigate('/stamp/valid', { state: data });
+  };
+
   useEffect(() => {
     const fetchCalendarList = async () => {
       const params: CalendarListRequest = {
@@ -37,7 +43,6 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     fetchCalendarList();
   }, [selecteDate, selecteMonth, selecteYears]);
-  console.log(data);
 
   return (
     <CalendarContainer>
@@ -67,10 +72,8 @@ const CalendarPage: React.FC = (): JSX.Element => {
           <FestivalScrollWrap>
             {data?.map(festival => {
               return (
-                <li key={festival.festivalId}>
-                  <Link to={`/detail/${festival.festivalId}`}>
-                    <CalendarFestival item={festival} />
-                  </Link>
+                <li key={festival.festivalId} onClick={routeStampPage}>
+                  <CalendarFestival item={festival} />
                 </li>
               );
             })}
