@@ -36,7 +36,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
       setCalendarDatailList(res);
     };
     fetchCalendarList();
-  }, []);
+  }, [selecteDate, selecteMonth, selecteYears]);
 
   return (
     <CalendarContainer>
