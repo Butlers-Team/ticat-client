@@ -34,7 +34,6 @@ const CalendarFestival = ({ item }: FestivalProps) => {
   const navigate = useNavigate();
 
   const routeStampPage = () => {
-    console.log(item);
     navigate('/stamp/valid', { state: item });
   };
   return (
