@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { CalendarListType } from 'types/api/calendar';
-
+import { CalendarListType, CalendarListListType } from 'types/api/calendar';
+import { useNavigate } from 'react-router-dom';
 // utils
 import { formatDate } from '@utils/formatDate';
 import { splitAddress } from '@utils/address';
-
+import { deleteCalendarRequest } from '@api/calendar';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
@@ -25,8 +25,17 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-/** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const CalendarFestival = ({ item }: FestivalProps) => {
+  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
+  const deleteCalendarList = () => {
+    deleteCalendarRequest(item.calendarId);
+    alert(`[${item.title}]일정이 삭제되었습니다.`);
+  };
+  const navigate = useNavigate();
+
+  const routeStampPage = () => {
+    navigate('/stamp/valid', { state: item });
+  };
   return (
     <FestivalContainer>
       <ImgBox>
@@ -35,7 +44,7 @@ const CalendarFestival = ({ item }: FestivalProps) => {
         </div>
         {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
-      <DescriptionWrap>
+      <DescriptionWrap onClick={routeStampPage}>
         <h3 className="festival-title">{item.title}</h3>
         <p className="festival-area">{splitAddress(item.address)}</p>
         <div className="icon-wrap">
@@ -51,9 +60,12 @@ const CalendarFestival = ({ item }: FestivalProps) => {
           {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
         </p>
       </DescriptionWrap>
-      <FestivalrCategoryWrap>
-        <p className="festival-right">{item.category}</p>
-      </FestivalrCategoryWrap>
+      <CalendarRightContainer>
+        <FestivalrCategoryWrap>
+          <p className="festival-right">{item.category}</p>
+        </FestivalrCategoryWrap>
+        <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
+      </CalendarRightContainer>
     </FestivalContainer>
   );
 };
@@ -161,6 +173,13 @@ const DescriptionWrap = styled.div`
   }
 `;
 
+const CalendarRightContainer = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 // 축제 카테고리
 const FestivalrCategoryWrap = styled.div`
   height: 100%;
@@ -176,4 +195,15 @@ const FestivalrCategoryWrap = styled.div`
   @media screen and (max-width: 400px) {
     font-size: 11px;
   }
+`;
+const CalendarDeleteBtn = styled.button`
+  width: 35px;
+  height: 20px;
+  border: none;
+  background-color: red;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 0;
+  margin-bottom: 20px;
+  cursor: pointer;
 `;
