@@ -17,14 +17,13 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const [calendarDatailList, setCalendarDatailList] = useState<CalendarListListType>();
   const data: CalendarListType[] | undefined = calendarDatailList?.data[0].festivalList;
 
-  /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
-
   /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
   const addSchedule = () => {
     window.location.href = '/festival';
   };
 
   useEffect(() => {
+    /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
     const fetchCalendarList = async () => {
       const params: CalendarListRequest = {
         page: 1,
@@ -50,6 +49,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
           selecteMonth={selecteMonth}
         />
       </CalendarSection>
+
       <p className="today-date">
         <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
       </p>
