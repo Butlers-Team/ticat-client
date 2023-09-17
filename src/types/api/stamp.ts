@@ -24,7 +24,7 @@ export interface StampListResponse {
 
 // ========================== 스탬프를 찍기 위한 축제 찾기 ==========================
 export interface StmapDistanceType {
-  contentId: number;
+  festivalId: number;
   title: string;
   image: string;
   address: string;

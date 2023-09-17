@@ -23,3 +23,10 @@ export const getStampDistance = async ({ queryKey }: QueryFunctionContext) => {
 
   return data;
 };
+
+/** 2023/09/17 - 스탬프 찍기 - by sineTlsl */
+export const postStamp = async (stampId: number) => {
+  const { data } = await instance.post(`/stamp/${stampId}`, {});
+
+  return data;
+};

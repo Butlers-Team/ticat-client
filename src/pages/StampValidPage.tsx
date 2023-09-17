@@ -1,19 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useLocationStore } from '@store/userLocation';
-import { getStampDistance } from '@api/stamp';
+
+// types
+import { StampDistanceRequest, StampListRequest } from 'types/api/stamp';
+import { CalendarListType } from 'types/api/calendar';
+
+// api
+import { getStampDistance, postStamp } from '@api/stamp';
 
 // component
 import Button from '@components/Button';
 import StampLocationCheck from '@components/stamp/StampLocationCheck';
 import TicketStamping from '@components/stamp/TicketStamping';
-import { useQuery } from '@tanstack/react-query';
-import { StampDistanceRequest } from 'types/api/stamp';
 
+/**  2023/09/17 - 티캣을 찍을 수 있도록 캘린더 일정과 거리를 확인하는 컴포넌트 - by sineTlsl */
 const StampValidPage = () => {
   const navigate = useNavigate();
+  const routerLocation = useLocation();
+  const queryClient = useQueryClient();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showAlert, setShowAlert] = useState<boolean>(false);
+
   const { location } = useLocationStore();
+  const calendarData: CalendarListType = routerLocation.state.item;
 
   const params: StampDistanceRequest = {
     mapX: location.longitude,
@@ -23,15 +35,65 @@ const StampValidPage = () => {
 
   const { data, isLoading } = useQuery(['stampDistance', params], getStampDistance);
 
+  console.log(data);
+  // 페이지를 들어오자마자 로딩 화면 처리
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // 캘린더에서 받아온 축제와 현재 거리에 있는 축제가 맞는지 확인
+  useEffect(() => {
+    if (data && calendarData) {
+      const matchItem = data.data.find(item => item.festivalId === calendarData.festivalId);
+      if (!matchItem) {
+        setShowAlert(true);
+      }
+    }
+  }, [data, calendarData]);
+
+  /** 2023/09/17 - 티켓 스탬프 post 요청 함수 생성 - by sineTlsl */
+  const stampMutation = useMutation(postStamp, {
+    onSuccess: () => {
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+
+      const params: StampListRequest = {
+        year,
+        month,
+      };
+
+      queryClient.invalidateQueries(['getStampList', params]);
+      navigate('/stamp/list');
+    },
+    onError: (err: any) => {
+      if (err.response.status === 409) {
+        alert('이미 찍은 스탬프입니다. 다른 축제로 가볼까요?!');
+        navigate('/calendar');
+      } else {
+        console.log(err);
+      }
+    },
+  });
+
   /** 2023/06/29 - 스탬프 버튼 클릭 함수 - by sineTlsl */
-  const handleStampClick = (): void => {
+  const handlerStampClick = (): void => {
     // 스탬프 찍는 페이지로 이동
-    navigate('/stamp/list');
+    stampMutation.mutate(calendarData.festivalId);
+  };
+
+  /** 2023/09/17 - 캘린더 페이지로 이동 함수 - by sineTlsl */
+  const goCalendarRedirect = (): void => {
+    // 스탬프 찍는 페이지로 이동
+    navigate('/calendar');
   };
 
   return (
     <StampValidContainer>
-      {!isLoading ? (
+      {!isLoading && loading ? (
         <>
           <StampLocationCheck />
           <StampBtnWrap>
@@ -40,10 +102,25 @@ const StampValidPage = () => {
         </>
       ) : (
         <>
-          <TicketStamping />
-          <StampBtnWrap>
-            <Button onClick={handleStampClick}>스탬프 찍기</Button>
-          </StampBtnWrap>
+          {!showAlert ? (
+            <>
+              <TicketStamping item={calendarData} />
+              <StampBtnWrap>
+                <Button onClick={handlerStampClick}>스탬프 찍기</Button>
+              </StampBtnWrap>
+            </>
+          ) : (
+            <>
+              <UndefinedData>
+                <img src="/assets/images/ticat-logo-icon-undefined.png" alt="ticat-logo-icon-undefined" />
+                <p>축제랑 위치가 너무 멀어요!</p>
+                <p>{`좀 더 가까운 곳으로 이동해주세요 :(`}</p>
+              </UndefinedData>
+              <StampBtnWrap>
+                <Button onClick={goCalendarRedirect}>캘린더 페이지로 이동</Button>
+              </StampBtnWrap>
+            </>
+          )}
         </>
       )}
     </StampValidContainer>
@@ -66,4 +143,36 @@ const StampBtnWrap = styled.div`
   position: absolute;
   bottom: 3rem;
   width: calc(100% - 4rem);
+`;
+
+/** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
+const UndefinedData = styled.div`
+  height: 100%;
+  width: 100%;
+  padding-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > img {
+    width: 150px;
+    height: 150px;
+    opacity: 0.1;
+  }
+
+  > .undefined-stamp-data {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+  }
+  :nth-child(2) {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-dark-gray);
+  }
+  :nth-child(3) {
+    font-size: 1.3rem;
+    color: var(--color-dark-gray);
+  }
 `;
