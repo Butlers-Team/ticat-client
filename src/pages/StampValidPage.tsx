@@ -35,7 +35,6 @@ const StampValidPage = () => {
 
   const { data, isLoading } = useQuery(['stampDistance', params], getStampDistance);
 
-  console.log(data);
   // 페이지를 들어오자마자 로딩 화면 처리
   useEffect(() => {
     const timer = setTimeout(() => {
