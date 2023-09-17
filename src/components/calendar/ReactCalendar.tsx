@@ -1,3 +1,4 @@
+import { color } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -113,9 +114,15 @@ const ReactCalendar: React.FC<CalendarProps> = ({
         <CalendarWeekTable>
           <CalendarWeekThead>
             <CalendarWeekTr>
-              {weekdays.map(day => (
-                <th key={day}>{day}</th>
-              ))}
+              {weekdays.map(day => {
+                if (day === '일') {
+                  return <SundayTh key={day}>{day}</SundayTh>;
+                } else if (day === '토') {
+                  return <SaturdayTh key={day}>{day}</SaturdayTh>;
+                } else {
+                  return <th key={day}>{day}</th>;
+                }
+              })}
             </CalendarWeekTr>
           </CalendarWeekThead>
           <CalendarDayTbody>
@@ -138,8 +145,7 @@ const CalendarSection = styled.div`
 `;
 
 const MonthSelect = styled.h1`
-  width: 200px;
-  left: 0;
+  height: 30px;
   padding: 0 20px;
   font-size: 30px;
 `;
@@ -188,4 +194,11 @@ const DateSelectBtn = styled.button`
 
 const DateTh = styled.th`
   cursor: pointer;
+`;
+
+const SundayTh = styled.th`
+  color: red;
+`;
+const SaturdayTh = styled.th`
+  color: blue;
 `;
