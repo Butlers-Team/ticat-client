@@ -55,6 +55,7 @@ export default StampTicket;
 const StampTicketContainer = styled.div`
   margin: 3rem 0 5rem 0;
   width: calc(100% - 4rem);
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -113,6 +114,7 @@ const ItemPhoto = styled.div`
 
 /** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
 const UndefinedData = styled.div`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

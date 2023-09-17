@@ -143,11 +143,16 @@ const FestivalScrollWrap = styled.div`
   @media screen and (max-width: 400px) {
     height: calc(100% - 11rem);
   }
+
+  > ul {
+    height: 100%;
+  }
 `;
 
 /** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
 const UndefinedData = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
