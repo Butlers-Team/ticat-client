@@ -147,6 +147,6 @@ interface zoomLevelState {
 }
 
 export const useZoomLevelStore = create<zoomLevelState>(set => ({
-  zoomLv: 4,
+  zoomLv: 6,
   setZoomLv: (zoomLv: number) => set({ zoomLv }),
 }));
