@@ -1,7 +1,8 @@
-import { color } from '@chakra-ui/react';
+import { background, color } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FcNext, FcPrevious } from 'react-icons/fc';
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardArrowDown } from 'react-icons/md';
+import { BiBorderRadius } from 'react-icons/bi';
 
 interface CalendarProps {
   startDate: Date;
@@ -72,10 +73,13 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       const isCurrentDate = date.getDate() === selecteDate;
 
       // 스타일을 파란색으로 변경합니다.
-      const cellStyle = isCurrentDate ? { color: 'blue' } : {};
+      const cellStyle = isCurrentDate
+        ? { color: 'var(--color-main)', background: '#E4F4FF', borderRadius: '20px' }
+        : {};
 
       calendar.push(
         <DateTh
+          className="flex-all-center"
           key={i}
           style={cellStyle}
           onClick={() => selectDay(date.getDate(), date.getMonth(), date.getFullYear())}>
@@ -87,11 +91,13 @@ const ReactCalendar: React.FC<CalendarProps> = ({
   };
 
   return (
-    <div>
-      <MonthSelect>{selecteMonth + 1}월</MonthSelect>
+    <CalendarBox>
+      <MonthSelect>
+        {selecteMonth + 1}월 <MdKeyboardArrowDown className="arr-icons-color2" />
+      </MonthSelect>
       <CalendarSection>
-        <DateSelectBtn onClick={prevWeek}>
-          <FcPrevious />
+        <DateSelectBtn onClick={prevWeek} className="arr-icons-color">
+          <MdKeyboardArrowLeft />
         </DateSelectBtn>
 
         <CalendarWeekTable>
@@ -113,27 +119,54 @@ const ReactCalendar: React.FC<CalendarProps> = ({
           </CalendarDayTbody>
         </CalendarWeekTable>
 
-        <DateSelectBtn onClick={nextWeek}>
-          <FcNext />
+        <DateSelectBtn onClick={nextWeek} className="arr-icons-color">
+          <MdKeyboardArrowRight />
         </DateSelectBtn>
       </CalendarSection>
-    </div>
+    </CalendarBox>
   );
 };
 
 export default ReactCalendar;
-const CalendarSection = styled.div`
-  width: 100%;
+
+const CalendarBox = styled.section`
   display: flex;
-  flex-direction: row;
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 25%;
+  box-shadow: 0px 10px 15px rgb(0, 0, 0, 0.1);
+  border-radius: 35px;
+  padding: 20px 0px;
+  color: var(--color-dark);
+  .arr-icons-color {
+    color: #999;
+  }
+
+  .arr-icons-color2 {
+    color: #999;
+    font-size: 2rem;
+  }
 `;
 
-const MonthSelect = styled.h1`
-  height: 30px;
-  padding: 0 20px;
-  font-size: 30px;
+//달력 날짜 및 주간표기
+const CalendarSection = styled.div`
+  display: flex;
+  width: calc(100% - 20px);
+  text-align: right;
+
+  margin-bottom: 10px;
 `;
+
+// 달력 월별 표기
+const MonthSelect = styled.h1`
+  width: calc(100% - 40px);
+  margin: 10px;
+  padding: 0px 0px 0px 10px;
+  font-size: 3rem;
+  text-align: left;
+`;
+//요일 및 날짜 전체 컴포넌트 -mscojl24
 const CalendarWeekTable = styled.table`
   display: flex;
   flex-direction: column;
@@ -141,38 +174,47 @@ const CalendarWeekTable = styled.table`
   align-items: center;
   width: 100%;
 `;
+
+// 달력 요일 표기 - mscojl24
 const CalendarWeekThead = styled.tbody`
-  font-size: 18px;
+  width: 100%;
   text-align: center;
 `;
 const CalendarWeekTr = styled.tr`
-  position: relative;
-  width: 100%;
   display: flex;
+  justify-content: space-around;
+  font-weight: 700;
+  width: 100%;
   flex-direction: row;
+  font-size: 1.5rem;
   > th {
-    width: 30px;
-    padding: 0 20px;
+    width: 35px;
   }
 `;
 
+// 달력 날짜 표기 - mscojl24
 const CalendarDayTbody = styled.tbody`
-  font-size: 18px;
+  width: 100%;
+  font-size: 1.5rem;
   text-align: center;
+  color: var(--color-dark-gray);
 `;
 const CalendarDayTr = styled.tr`
   display: flex;
+  justify-content: space-around;
   flex-direction: row;
   > th {
-    width: 30px;
-    padding: 0 20px;
+    width: 35px;
+    height: 35px;
   }
 `;
 
+// 날짜 주간 변경 버튼 - mscojl24
 const DateSelectBtn = styled.button`
   border: none;
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-dark-gray);
   background-color: transparent;
   cursor: pointer;
 `;
@@ -181,9 +223,12 @@ const DateTh = styled.th`
   cursor: pointer;
 `;
 
+//토요일 색상
 const SundayTh = styled.th`
-  color: red;
+  color: #ff5454;
 `;
+
+//일요일 색상
 const SaturdayTh = styled.th`
-  color: blue;
+  color: var(--color-main);
 `;

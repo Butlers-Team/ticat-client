@@ -61,6 +61,11 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0px;
   }
+
+  th{
+    font-weight: 500;
+  }
+
   P,span,
   div,ul,li,
   h6,h5,h4,h3,h2{
