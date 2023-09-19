@@ -1,6 +1,7 @@
 import { color } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { FcNext, FcPrevious } from 'react-icons/fc';
 
 interface CalendarProps {
   startDate: Date;
@@ -31,31 +32,11 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       return prevWeekDate;
     });
   };
-  const prevDay = () => {
-    setCurrentDate(prevDate => {
-      const prevWeekDate = new Date(prevDate);
-      prevWeekDate.setDate(prevWeekDate.getDate() - 1);
-      setSelectedDate(prevWeekDate.getDate());
-      setSelectedMonth(prevWeekDate.getMonth());
-      setSelectedYears(prevWeekDate.getFullYear());
-      return prevWeekDate;
-    });
-  };
 
   const nextWeek = () => {
     setCurrentDate(prevDate => {
       const nextWeekDate = new Date(prevDate);
       nextWeekDate.setDate(nextWeekDate.getDate() + 7);
-      setSelectedDate(nextWeekDate.getDate());
-      setSelectedMonth(nextWeekDate.getMonth());
-      setSelectedYears(nextWeekDate.getFullYear());
-      return nextWeekDate;
-    });
-  };
-  const nextDay = () => {
-    setCurrentDate(prevDate => {
-      const nextWeekDate = new Date(prevDate);
-      nextWeekDate.setDate(nextWeekDate.getDate() + 1);
       setSelectedDate(nextWeekDate.getDate());
       setSelectedMonth(nextWeekDate.getMonth());
       setSelectedYears(nextWeekDate.getFullYear());
@@ -109,8 +90,10 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     <div>
       <MonthSelect>{selecteMonth + 1}월</MonthSelect>
       <CalendarSection>
-        <DateSelectBtn onClick={prevWeek}>이전 주</DateSelectBtn>
-        <DateSelectBtn onClick={prevDay}>이전 날</DateSelectBtn>
+        <DateSelectBtn onClick={prevWeek}>
+          <FcPrevious />
+        </DateSelectBtn>
+
         <CalendarWeekTable>
           <CalendarWeekThead>
             <CalendarWeekTr>
@@ -129,8 +112,10 @@ const ReactCalendar: React.FC<CalendarProps> = ({
             <CalendarDayTr>{renderCalendar(selecteDate)}</CalendarDayTr>
           </CalendarDayTbody>
         </CalendarWeekTable>
-        <DateSelectBtn onClick={nextDay}>다음 날</DateSelectBtn>
-        <DateSelectBtn onClick={nextWeek}>다음 주</DateSelectBtn>
+
+        <DateSelectBtn onClick={nextWeek}>
+          <FcNext />
+        </DateSelectBtn>
       </CalendarSection>
     </div>
   );
@@ -174,7 +159,6 @@ const CalendarWeekTr = styled.tr`
 const CalendarDayTbody = styled.tbody`
   font-size: 18px;
   text-align: center;
-  padding-bottom: 20px;
 `;
 const CalendarDayTr = styled.tr`
   display: flex;
@@ -187,7 +171,8 @@ const CalendarDayTr = styled.tr`
 
 const DateSelectBtn = styled.button`
   border: none;
-  font-size: 12px;
+  font-size: 30px;
+  font-weight: bold;
   background-color: transparent;
   cursor: pointer;
 `;
