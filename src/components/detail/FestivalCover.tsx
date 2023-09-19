@@ -92,10 +92,17 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   useEffect(() => {
     fetchWeather();
   }, []);
-
+  console.log(detailList);
   return (
     <CoverContainer>
-      {dateForm && <AddCalendar setDateForm={setDateForm} festivalId={detailList.festivalId} />}
+      {dateForm && (
+        <AddCalendar
+          setDateForm={setDateForm}
+          festivalId={detailList.festivalId}
+          startdate={detailList.eventstartdate}
+          enddate={detailList.eventenddate}
+        />
+      )}
       <img src={defaultImg} onError={ImgErrorHandler}></img>
       <div className="wather-info flex-all-center">
         <span>{regionWeather ? regionWeather.region : 'Loding...'}</span>
@@ -119,12 +126,21 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
           <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
-          <button className="calendar-add-btn" onClick={addCalendar}>
-            캘린더등록
-            <span>
-              <BsCalendarPlus />
-            </span>
-          </button>
+          {detailList.status !== 'COMPLETED' ? (
+            <button className="calendar-add-btn" onClick={addCalendar}>
+              캘린더등록
+              <span>
+                <BsCalendarPlus />
+              </span>
+            </button>
+          ) : (
+            <button className="calendar-disaled-btn" onClick={addCalendar} disabled>
+              캘린더등록
+              <span>
+                <BsCalendarPlus />
+              </span>
+            </button>
+          )}
           <button className="calendar-icon-btn" onClick={LikedHandler}>
             {festivalLiked === true ? <BiSolidHeart /> : <FiHeart />}
           </button>
@@ -221,6 +237,23 @@ const BtnSection = styled.div`
     align-items: center;
     justify-items: space-between;
     background-color: var(--color-main);
+    color: var(--color-light);
+    height: 3.5rem;
+    border-radius: 5px;
+    border: none;
+    font-size: 1.5rem;
+    margin-right: 5px;
+    cursor: pointer;
+    > span {
+      font-size: 16px;
+      margin-left: 2rem;
+    }
+  }
+  > .calendar-disaled-btn {
+    display: flex;
+    align-items: center;
+    justify-items: space-between;
+    background-color: #949090;
     color: var(--color-light);
     height: 3.5rem;
     border-radius: 5px;

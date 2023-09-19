@@ -10,9 +10,19 @@ import { CalendarAddRequest } from 'types/api/addcalendar';
 interface AddCalendarProps {
   setDateForm: React.Dispatch<React.SetStateAction<boolean>>;
   festivalId: number;
+  startdate: string;
+  enddate: string;
 }
 
-const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId }) => {
+const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, startdate, enddate }) => {
+  const minyear = startdate.substring(0, 4);
+  const minmonth = startdate.substring(4, 6);
+  const minday = startdate.substring(6, 8);
+  const maxyear = enddate.substring(0, 4);
+  const maxmonth = enddate.substring(4, 6);
+  const maxday = enddate.substring(6, 8);
+  const mindate = new Date(`${minyear}-${minmonth}-${minday}`);
+  const maxdate = new Date(`${maxyear}-${maxmonth}-${maxday}`);
   const today = new Date();
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { member } = useMemberStore();
@@ -46,7 +56,8 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId }) =>
           id="datePicker"
           selected={selectedDate}
           onChange={handleDateChange}
-          minDate={today}
+          minDate={today > mindate ? today : mindate}
+          maxDate={maxdate}
           dateFormat="yyyy-MM-dd"
           placeholderText="날짜를 선택하세요"
           todayButton="오늘"
