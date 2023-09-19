@@ -5,8 +5,7 @@ import { StampType } from 'types/api/stamp';
 import { MdPlace } from 'react-icons/md';
 import { IoLogoOctocat } from 'react-icons/io';
 
-// utils
-import { formatDate } from '@utils/formatDate';
+// util
 import { splitAddress } from '@utils/address';
 
 interface StampTicketProps {
@@ -19,6 +18,10 @@ interface StampTicketBg {
 /**  2023/06/30 - 스탬프 티켓 컴포넌트 - by sineTlsl */
 const StampTicket = ({ stampList }: StampTicketProps) => {
   const colorBg = ['var(--color-main)', 'var(--color-sub)', '#FF6B6B'];
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getFullYear()}. ${(currentDate.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}. ${currentDate.getDate().toString().padStart(2, '0')}`;
 
   return (
     <StampTicketContainer>
@@ -31,9 +34,7 @@ const StampTicket = ({ stampList }: StampTicketProps) => {
                 <MdPlace size="13px" color="var(--color-light)" />
                 <span>{splitAddress(item.address)}</span>
               </p>
-              <p className="item-date">
-                {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
-              </p>
+              <p className="item-date">{formattedDate}</p>
             </ItemText>
             <ItemPhoto>
               <IoLogoOctocat size="50px" color="var(--color-light)" />
