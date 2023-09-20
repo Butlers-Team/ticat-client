@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
@@ -58,8 +58,8 @@ const FestivalListPage = () => {
       <FestivalScrollWrap>
         <ul>
           {data &&
-            data.pages.map(page => (
-              <>
+            data.pages.map((page, idx) => (
+              <React.Fragment key={idx}>
                 {page.data.length > 0 ? (
                   page.data.map(festival => (
                     <li key={festival.festivalId}>
@@ -74,7 +74,7 @@ const FestivalListPage = () => {
                     <p className="undefined-stamp-data">해당되는 축제가 없어요</p>
                   </UndefinedData>
                 )}
-              </>
+              </React.Fragment>
             ))}
           <div ref={ref}>{isLoading && <h3>Loading ...</h3>}</div>
         </ul>
@@ -143,11 +143,16 @@ const FestivalScrollWrap = styled.div`
   @media screen and (max-width: 400px) {
     height: calc(100% - 11rem);
   }
+
+  > ul {
+    height: 100%;
+  }
 `;
 
 /** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
 const UndefinedData = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;

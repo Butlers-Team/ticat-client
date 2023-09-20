@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { getStampList } from '@api/stamp';
 import { useQuery } from '@tanstack/react-query';
 import { StampListRequest } from 'types/api/stamp';
@@ -14,6 +15,7 @@ import StampToggle from '@components/stamp/StampToggle';
 /**  2023/07/24 - 스탬프 리스트 페이지 - by sineTlsl */
 const StampListPage = () => {
   // 현재 날짜를 기준으로 캘린더 정의
+  const navigate = useNavigate();
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -35,7 +37,7 @@ const StampListPage = () => {
 
   /** 2023/07/22 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
-    window.history.back();
+    navigate('/myinfo');
   };
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
@@ -98,7 +100,7 @@ const StampListPage = () => {
           canGoToLastMonth={canGoToLastMonth}
           canGoToNextMonth={canGoToNextMonth}
         />
-        {data && (isSelectTicket ? <StampTicket stampList={data.festivalList} /> : <StampCalendar />)}
+        {data && (isSelectTicket ? <StampTicket stampList={[...data.festivalList].reverse()} /> : <StampCalendar />)}
         <div className="toggle-wrap">
           <StampToggle isSelectTicket={isSelectTicket} onClick={handlerToggle} />
         </div>

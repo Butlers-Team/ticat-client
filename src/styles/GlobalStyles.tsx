@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
   font-family: 'Noto Sans KR', sans-serif;
   user-select: none; // 유저가 더블클릭 등을 이용하여 글자를 선택하는 것을 막을 수 있음
   -webkit-tap-highlight-color:rgba(255,255,255,0); // 버튼 클릭 시 나오는 음영 지우기
+  -webkit-touch-callout: none; // link long 터치 막기
 }
 	// 아래에 전역 스타일을 추가
   a{

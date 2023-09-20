@@ -30,15 +30,13 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   border: none;
   margin: ${({ margin }) => margin ?? '10px 0px'};
   background-color: var(--color-main);
-  cursor: pointer;
-
   color: var(--color-light);
   font-weight: bold;
   cursor: pointer;
 
   &:disabled {
     color: var(--color-light);
-    background-color: var(--color-main);
+    opacity: 0.5;
     cursor: not-allowed;
 
     &:hover {

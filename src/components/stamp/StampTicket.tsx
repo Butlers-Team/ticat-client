@@ -5,8 +5,7 @@ import { StampType } from 'types/api/stamp';
 import { MdPlace } from 'react-icons/md';
 import { IoLogoOctocat } from 'react-icons/io';
 
-// utils
-import { formatDate } from '@utils/formatDate';
+// util
 import { splitAddress } from '@utils/address';
 
 interface StampTicketProps {
@@ -19,6 +18,10 @@ interface StampTicketBg {
 /**  2023/06/30 - 스탬프 티켓 컴포넌트 - by sineTlsl */
 const StampTicket = ({ stampList }: StampTicketProps) => {
   const colorBg = ['var(--color-main)', 'var(--color-sub)', '#FF6B6B'];
+  const currentDate = new Date();
+  const formattedDate = `${currentDate.getFullYear()}. ${(currentDate.getMonth() + 1)
+    .toString()
+    .padStart(2, '0')}. ${currentDate.getDate().toString().padStart(2, '0')}`;
 
   return (
     <StampTicketContainer>
@@ -31,9 +34,7 @@ const StampTicket = ({ stampList }: StampTicketProps) => {
                 <MdPlace size="13px" color="var(--color-light)" />
                 <span>{splitAddress(item.address)}</span>
               </p>
-              <p className="item-date">
-                {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
-              </p>
+              <p className="item-date">{formattedDate}</p>
             </ItemText>
             <ItemPhoto>
               <IoLogoOctocat size="50px" color="var(--color-light)" />
@@ -55,6 +56,7 @@ export default StampTicket;
 const StampTicketContainer = styled.div`
   margin: 3rem 0 5rem 0;
   width: calc(100% - 4rem);
+  height: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -113,6 +115,7 @@ const ItemPhoto = styled.div`
 
 /** 2023/08/28 - 데이터 정보가 없을 때 - by sineTlsl  */
 const UndefinedData = styled.div`
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

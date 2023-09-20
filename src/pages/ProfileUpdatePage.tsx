@@ -37,6 +37,9 @@ const ProfileUpdatePage = () => {
 
   /** 2023/08/13 - 관심사 업데이트 요청 함수 생성 - by sineTlsl */
   const interestMutation = useMutation(patchInterest, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['userInterest']);
+    },
     onError: err => {
       console.log(err);
     },

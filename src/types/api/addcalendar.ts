@@ -1,4 +1,5 @@
 export interface CalendarAddRequest {
   festivalId: number;
-  scheduleDate: Date | string;
+  startDate: Date | string;
+  endDate: Date | string;
 }
