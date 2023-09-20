@@ -97,7 +97,6 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   useEffect(() => {
     fetchWeather();
   }, []);
-  console.log(detailList);
   return (
     <CoverContainer>
       {dateForm && (
