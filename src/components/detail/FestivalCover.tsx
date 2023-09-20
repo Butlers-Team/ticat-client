@@ -16,11 +16,16 @@ import { LuTicket } from 'react-icons/lu';
 import { BsCalendarPlus } from 'react-icons/bs';
 import { FestivalDetailType } from 'types/api/detail';
 import { formatDate } from '@utils/formatDate';
+import { useTokenStore } from '@store/useTokenStore';
+import { useMemberStore } from '@store/useMemberStore';
 
 interface FestivalCoverProps {
   detailList: FestivalDetailType;
 }
 const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
+  const { member } = useMemberStore();
+  const { accessToken, refreshToken } = useTokenStore();
+  const isAuthenticated = !!accessToken && !!refreshToken;
   const token = window.localStorage.getItem('accessToken');
   const location = useLocation();
   const [dateForm, setDateForm] = useState<boolean>(false);
@@ -126,7 +131,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
           <TiLocation /> {detailList.address}
         </span>
         <BtnSection>
-          {detailList.status !== 'COMPLETED' ? (
+          {detailList.status !== 'COMPLETED' && !!isAuthenticated && !!member ? (
             <button className="calendar-add-btn" onClick={addCalendar}>
               캘린더등록
               <span>
