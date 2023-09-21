@@ -40,7 +40,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
     cursor: not-allowed;
 
     &:hover {
-      background-color: var(--color-main);
+      background-color: ${({ color }) => color ?? 'var(--color-main)'};
     }
   }
 
