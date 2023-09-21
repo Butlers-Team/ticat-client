@@ -35,7 +35,7 @@ const StampValidPage = () => {
   const params: StampDistanceRequest = {
     mapX: location.longitude,
     mapY: location.latitude,
-    distance: 300000.0,
+    distance: 300.0,
   };
 
   const { data, isLoading } = useQuery(['stampDistance', params], getStampDistance);
