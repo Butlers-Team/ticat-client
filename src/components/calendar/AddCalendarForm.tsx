@@ -1,6 +1,9 @@
 import { useMemberStore } from '@store/useMemberStore';
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/locale';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import Button from '@components/Button';
@@ -24,53 +27,55 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
   const mindate = new Date(`${minyear}-${minmonth}-${minday}`);
   const maxdate = new Date(`${maxyear}-${maxmonth}-${maxday}`);
   const today = new Date();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { member } = useMemberStore();
   member?.memberId;
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const [dateRange, setDateRange] = useState<any>({
+    startDate: today > mindate ? today : mindate,
+    endDate: maxdate,
+    key: 'selection',
+  });
+  /** 2023-09-21 사용자가 선택한 날짜를 시작날짜와 끝나는날짜에 저장하는 함수. - parksubeom */
+  const handleDateChange = (ranges: any) => {
+    const { startDate, endDate } = ranges.selection;
+    setDateRange({ startDate, endDate, key: 'selection' });
   };
   /** 2023-07-29 원하는 날짜를 픽스하고, 해당날짜 캘린더에 축제를 추가하는 함수 - parksubeom */
-  const exitForm = () => {
-    if (selectedDate === null) {
-      return alert('날짜를 선택해주세요.');
-    }
-
+  const postForm = () => {
     if (member) {
       setDateForm(false);
-      const startDate = new Date();
-      startDate.setDate(selectedDate.getDate());
       const params: CalendarAddRequest = {
         festivalId: festivalId,
-        startDate: `${startDate?.toJSON().split('T')[0]}`,
-        endDate: `${startDate?.toJSON().split('T')[0]}`,
+        startDate: `${dateRange.startDate?.toJSON().split('T')[0]}`,
+        endDate: `${dateRange.endDate?.toJSON().split('T')[0]}`,
       };
       addCalendarRequest(params);
     }
-    alert(`${selectedDate?.toLocaleDateString()}일에 일정이 추가되었습니다.`);
+    alert(
+      `${dateRange.startDate?.toLocaleDateString()}일 부터 ${dateRange.endDate?.toLocaleDateString()}일 까지의 일정이 추가합니다. `,
+    );
   };
-
+  const exitForm = () => {
+    setDateForm(false);
+  };
   return (
     <DateBackground>
       <DateContainer>
-        <label htmlFor="datePicker">캘린더 날짜 선택: </label>
-        <DatePicker
-          id="datePicker"
-          selected={selectedDate}
+        <label htmlFor="datePicker">캘린더 일정을 선택해주세요. </label>
+        <DateRange
+          locale={ko}
+          dateDisplayFormat="yyyy.MM.dd"
+          editableDateInputs
           onChange={handleDateChange}
+          moveRangeOnFirstSelection={false}
+          ranges={[dateRange]}
           minDate={today > mindate ? today : mindate}
           maxDate={maxdate}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="날짜를 선택하세요"
-          todayButton="오늘"
-          customInput={<input />}
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
         />
-        {selectedDate && <p>선택한 날짜: {selectedDate.toLocaleDateString()}</p>}
-        <Button onClick={exitForm}>선택</Button>
+        <Button onClick={postForm}>선택</Button>
+        <Button onClick={exitForm} color="red">
+          취소
+        </Button>
       </DateContainer>
     </DateBackground>
   );
@@ -99,4 +104,15 @@ const DateContainer = styled.div`
   z-index: 10;
   width: 100%;
   height: 100%;
+  > .rdrCalendarWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    > .rdrMonths {
+      align-items: center;
+      > .rdrMonth {
+        width: 100%;
+      }
+    }
+  }
 `;

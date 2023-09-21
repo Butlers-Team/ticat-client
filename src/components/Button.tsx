@@ -29,7 +29,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   border-radius: 5px;
   border: none;
   margin: ${({ margin }) => margin ?? '10px 0px'};
-  background-color: var(--color-main);
+  background-color: ${({ color }) => color ?? 'var(--color-main)'};
   color: var(--color-light);
   font-weight: bold;
   cursor: pointer;

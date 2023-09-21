@@ -68,7 +68,7 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       return nextWeekDate;
     });
   };
-  const selectDay = (date: number, month: number, year: number) => {
+  const selectDay = (date: number) => {
     setCurrentDate(prevDate => {
       const nextWeekDate = new Date(prevDate);
       nextWeekDate.setDate(date);
@@ -155,17 +155,14 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + i);
 
-      // 현재 날짜와 selectDate를 비교하여 스타일을 변경합니다.
+      // 현재 날짜와 selectDate를 비교하여 스타일을 변경.
       const isCurrentDate = date.getDate() === selecteDate;
 
       // 스타일을 파란색으로 변경합니다.
       const cellStyle = isCurrentDate ? { color: 'blue' } : {};
 
       calendar.push(
-        <DateTh
-          key={i}
-          style={cellStyle}
-          onClick={() => selectDay(date.getDate(), date.getMonth(), date.getFullYear())}>
+        <DateTh key={i} style={cellStyle} onClick={() => selectDay(date.getDate())}>
           {`${date.getDate()}`} {/* 날짜와 요일 출력 */}
         </DateTh>,
       );
