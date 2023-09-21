@@ -8,12 +8,18 @@ interface TicketStampingProps {
   item: CalendarListType;
 }
 
+/** 2023/09/22 - 이미지 에러 시 기본 이미지로 대체 - by sineTlsl */
+const handlerImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const target = e.currentTarget;
+  target.src = '/assets/images/ticat-cover-image.png';
+};
+
 /**  2023/09/17 - 스탬프 찍을 축제 상세 컴포넌트 - by sineTlsl */
 const TicketStamping = ({ item }: TicketStampingProps) => {
   return (
     <TicketStampingContainer>
       <ItemImage>
-        <img src={item.image} />
+        <img src={item.image || '/assets/images/ticat-cover-image.png'} alt="" onError={handlerImgError} />
       </ItemImage>
       <ItemText>
         <p className="item-title">{item.title}</p>
