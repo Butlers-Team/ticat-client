@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getRecentList } from '@api/myinfo';
 
@@ -12,13 +13,7 @@ interface RecentListProps {
 
 /** 2023/07/23 - 마이페이지 최근 목록 리스트 컴포넌트 - by sineTlsl */
 const RecentList = ({ textTitle }: RecentListProps) => {
-  const queryClient = useQueryClient();
-
-  const { data } = useQuery(['recentList'], getRecentList, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['recentList']);
-    },
-  });
+  const { data } = useQuery(['recentList'], getRecentList, { staleTime: 0 });
 
   return (
     <MyInfoListContainer>
