@@ -25,6 +25,10 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
+const handlerImgError = () => {
+  return '/assets/images/ticat-cover-image.png';
+};
+
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const Festival = ({ item }: FestivalProps) => {
   return (
@@ -33,7 +37,11 @@ const Festival = ({ item }: FestivalProps) => {
         <div className={`festival-status flex-all-center ${statusStlye(item.status).style}`}>
           {statusStlye(item.status).state}
         </div>
-        {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
+        {item.image !== '' ? (
+          <img src={item.image} alt="" />
+        ) : (
+          <img src="/assets/images/ticat-cover-image.png" alt="" onError={handlerImgError} />
+        )}
       </ImgBox>
       <DescriptionWrap>
         <h3 className="festival-title">{item.title}</h3>
