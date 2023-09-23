@@ -44,7 +44,7 @@ const BtnLabel = styled.label.withConfig({
   border-radius: 2rem;
   background: #ebebeb;
   color: var(--color-dark);
-  font-size: 10px;
+  font-size: 1.2rem;
   display: flex;
   align-items: center;
 
@@ -61,7 +61,7 @@ const BtnLabel = styled.label.withConfig({
   }
 
   &::before {
-    content: ${props => (props.isSelectTicket ? "'COMMENTS'" : "'REVIEWS'")};
+    content: ${props => (props.isSelectTicket ? "'댓글 보기'" : "'후기 보기'")};
     padding-left: 0.3rem;
     width: 7rem;
     left: ${props => (props.isSelectTicket ? '7rem' : '0rem')};
@@ -69,7 +69,7 @@ const BtnLabel = styled.label.withConfig({
   }
 
   &::after {
-    content: ${props => (props.isSelectTicket ? "'REVIEWS'" : "'COMMENTS'")};
+    content: ${props => (props.isSelectTicket ? "'후기 보기'" : "'댓글 보기'")};
     background: #fff;
     font-weight: 700;
     width: ${props => (props.isSelectTicket ? '7rem' : '9rem')};

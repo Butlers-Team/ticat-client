@@ -9,8 +9,8 @@ import { MyReviewResponse, ReviewResponse } from 'types/api';
 
 //icon
 import { BsStarFill, BsStar } from 'react-icons/bs';
-import { AiOutlinePicture } from 'react-icons/ai';
-import { TiDeleteOutline } from 'react-icons/ti';
+import { HiMiniPhoto } from 'react-icons/hi2';
+import { FaMinus } from 'react-icons/fa';
 
 //hooks
 import { useCreateReview, useUpdateReview } from '@hooks/query';
@@ -226,7 +226,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                     <label
                       htmlFor={isEditMode ? 'file-update' : 'file-upload'}
                       className={isEditMode ? 'img-update-btn' : 'img-upload-btn'}>
-                      <AiOutlinePicture size="3rem" color="var(--color-dark)" />
+                      <HiMiniPhoto size="3rem" color="var(--color-dark)" />
                     </label>
                     <input
                       id={isEditMode ? 'file-update' : 'file-upload'}
@@ -264,7 +264,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                     <div className="img-box" key={idx + updateImages.length}>
                       <img src={URL.createObjectURL(img)} alt={`image upload ${idx}`} />
                       <button className="delete-button" type="button" onClick={() => handleImageRemove(idx)}>
-                        <TiDeleteOutline size={30} color="red" />
+                        <FaMinus size={25} color="white" />
                       </button>
                     </div>
                   ))
@@ -272,7 +272,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
                   <div className="img-box" key={idx + selectedImages.length}>
                     <img src={URL.createObjectURL(img)} alt={`image upload ${idx}`} />
                     <button className="delete-button" type="button" onClick={() => handleImageRemove(idx)}>
-                      <TiDeleteOutline size={30} color="red" />
+                      <FaMinus size={25} color="white" />
                     </button>
                   </div>
                 ))}
@@ -340,6 +340,8 @@ const ReviewContentBox = styled.div`
         cursor: pointer;
         padding: 0;
         margin: 0;
+        display: flex;
+        align-items: center;
       }
       button {
         background: none;
@@ -371,11 +373,11 @@ const ReviewContentBox = styled.div`
     }
   }
   .file-box {
-    justify-content: space-around;
+    justify-content: start;
     width: 100%;
     margin-top: 10px;
     display: flex;
-    gap: 1rem;
+    gap: 2rem;
   }
 
   .img-box {
@@ -384,8 +386,7 @@ const ReviewContentBox = styled.div`
   }
 
   .file-box img {
-    padding: 1px;
-    border: 1px solid var(--color-sub);
+    border: 2px solid var(--color-sub);
     width: 7rem;
     height: 7rem;
     object-fit: cover;
@@ -395,14 +396,14 @@ const ReviewContentBox = styled.div`
   .delete-button {
     outline: none;
     border: none;
-    background: transparent;
+    background: var(--color-main);
     position: absolute;
-    bottom: -2rem;
-    left: 50%;
+    bottom: 80%;
+    left: 95%;
     transform: translateX(-50%);
     border-radius: 50%;
-    width: 3rem;
-    height: 3rem;
+    width: 2rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
