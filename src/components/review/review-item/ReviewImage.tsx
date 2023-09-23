@@ -59,6 +59,7 @@ const ReviewImage: React.FC<Props> = ({ pictures }): JSX.Element => {
 export default ReviewImage;
 
 const ImageContainer = styled.div`
+  height: 7rem;
   width: 100%;
   display: flex;
   align-items: center;
@@ -67,8 +68,9 @@ const ImageContainer = styled.div`
   margin: auto;
   img {
     width: 20%;
-    height: 20%;
+    height: 100%;
     cursor: pointer;
+    object-fit: cover;
   }
 `;
 

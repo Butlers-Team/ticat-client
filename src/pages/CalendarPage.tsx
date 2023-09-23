@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
-
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
@@ -29,7 +28,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
         page: 1,
         year: selecteYears,
         month: selecteMonth + 1,
-        day: selecteDate - 1,
+        day: selecteDate,
       };
       const res = await getCalendarList(params);
       setCalendarDatailList(res);
@@ -47,6 +46,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
           setSelectedMonth={setSelectedMonth}
           selecteDate={selecteDate}
           selecteMonth={selecteMonth}
+          selectYears={selecteYears}
         />
       </CalendarSection>
 
@@ -127,7 +127,8 @@ const EmptyListSection = styled.section`
     border-radius: 10px;
     font-weight: bold;
     color: var(--color-sub);
-    border-color: var(--color-sub);
+    border: 2px solid var(--color-sub);
+    box-shadow: none;
     background-color: var(--background-color);
     margin-top: 1rem;
     &:hover {

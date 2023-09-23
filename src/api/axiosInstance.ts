@@ -86,7 +86,12 @@ instance.interceptors.response.use(
   /** 2023/07/09 - refresh 로직 추가  - by leekoby */
   async error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      error.response.data === '액세스 토큰이 갱신되었습니다'
+    ) {
+      console.log('error:', error);
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       return refreshTokenAndUpdateRequest(error, originalRequest);
@@ -97,6 +102,9 @@ instance.interceptors.response.use(
       clearMember(); // 로컬스토리지 멤버 초기화
       window.location.href = '/signin';
     }
+    clearTokens(); // 로컬스토리지 토큰 초기화
+    clearExp();
+    clearMember(); // 로컬스토리지 멤버 초기화
     // 위의 경우가 아닌 경우 에러를 그대로 반환
     return Promise.reject(error);
   },

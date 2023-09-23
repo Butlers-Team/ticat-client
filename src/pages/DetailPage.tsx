@@ -11,8 +11,13 @@ import { FestivalDetailType } from 'types/api/detail';
 import { getDetailList } from '../api/detail';
 import { recentPostRequest } from '@api/recent';
 import Reviews from '@components/review/Reviews';
+import { useTokenStore } from '@store/useTokenStore';
+import { useMemberStore } from '@store/useMemberStore';
 
 const DetailPage = () => {
+  const { member } = useMemberStore();
+  const { accessToken, refreshToken } = useTokenStore();
+  const isAuthenticated = !!accessToken && !!refreshToken;
   const [detailList, setDetailList] = useState<FestivalDetailType>();
   const contentId = useParams<string>().id;
   /** 2023/07/12 - 축제 상세 데이터 요청 함수 - by parksubeom */
@@ -32,7 +37,9 @@ const DetailPage = () => {
     fetchDetailList();
   }, []);
   useEffect(() => {
-    postRecntData();
+    if (!!isAuthenticated && !!member) {
+      postRecntData();
+    }
   }, [detailList]);
   return (
     <DetailPageContainer className="scroll">
