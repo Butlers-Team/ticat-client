@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { CalendarListType, CalendarListListType } from 'types/api/calendar';
 import { useNavigate } from 'react-router-dom';
+
 // utils
 import { formatDate } from '@utils/formatDate';
 import { splitAddress } from '@utils/address';
@@ -26,15 +27,19 @@ const statusStlye = (state: string) => {
 };
 
 const CalendarFestival = ({ item }: FestivalProps) => {
+  const navigate = useNavigate();
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
   const deleteCalendarList = () => {
     deleteCalendarRequest(item.calendarId);
     alert(`[${item.title}]일정이 삭제되었습니다.`);
   };
-  const navigate = useNavigate();
-
+  /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
   const routeStampPage = () => {
     navigate('/stamp/valid', { state: { item } });
+  };
+
+  const routeDetailPage = () => {
+    navigate(`/detail/${item.festivalId}`);
   };
   return (
     <FestivalContainer>
@@ -44,7 +49,7 @@ const CalendarFestival = ({ item }: FestivalProps) => {
         </div>
         {item.image !== '' ? <img src={item.image} /> : <img src="/assets/images/ticat-cover-image.png" />}
       </ImgBox>
-      <DescriptionWrap onClick={routeStampPage}>
+      <DescriptionWrap onClick={routeDetailPage}>
         <h3 className="festival-title">{item.title}</h3>
         <p className="festival-area">{splitAddress(item.address)}</p>
         <div className="icon-wrap">
@@ -64,6 +69,7 @@ const CalendarFestival = ({ item }: FestivalProps) => {
         <FestivalrCategoryWrap>
           <p className="festival-right">{item.category}</p>
         </FestivalrCategoryWrap>
+        <StampAddBtn onClick={routeStampPage}>스탬프찍기</StampAddBtn>
         <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
       </CalendarRightContainer>
     </FestivalContainer>
@@ -174,10 +180,12 @@ const DescriptionWrap = styled.div`
 `;
 
 const CalendarRightContainer = styled.div`
+  width: 60px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
+  margin-left: auto;
 `;
 
 // 축제 카테고리
@@ -201,6 +209,18 @@ const CalendarDeleteBtn = styled.button`
   height: 20px;
   border: none;
   background-color: red;
+  border-radius: 5px;
+  font-size: 12px;
+  padding: 0;
+  margin-bottom: 20px;
+  cursor: pointer;
+`;
+
+const StampAddBtn = styled.button`
+  width: 60px;
+  height: 20px;
+  border: none;
+  background-color: var(--color-main);
   border-radius: 5px;
   font-size: 12px;
   padding: 0;
