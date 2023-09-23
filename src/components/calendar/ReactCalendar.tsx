@@ -233,24 +233,39 @@ const Calendar = styled.div`
   }
 `;
 
-// //달력 날짜 및 주간표기
+//달력 날짜 및 주간표기
 const CalendarSection = styled.div`
   display: flex;
   width: calc(100% - 20px);
   text-align: right;
-
   margin-bottom: 10px;
 `;
 
-const MonthSelect = styled.div``;
+// 달력 월 표기
+const MonthSelect = styled.div`
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+`;
 
-// 달력 월별 표기
+// 달력 월간 변경 버튼
 const MonthChangeButton = styled.button`
   border: none;
-  font-size: 30px;
+  font-size: 3rem;
   font-weight: bold;
   background-color: transparent;
   cursor: pointer;
+  border-radius: 100px;
+  margin: 0px 10px;
+  transform: scale(0.5);
+  color: #999;
+  background-color: #eee;
+
+  :hover {
+    color: var(--color-main);
+    background-color: #e4f4ff;
+  }
 `;
 
 const CalendarWeekTable = styled.table`
@@ -292,6 +307,9 @@ const CalendarDayTr = styled.tr`
   justify-content: space-around;
   flex-direction: row;
   > th {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 35px;
     height: 35px;
   }
@@ -302,7 +320,6 @@ const DateSelectBtn = styled.button`
   border: none;
   font-size: 2.5rem;
   font-weight: 800;
-  color: var(--color-dark-gray);
   background-color: transparent;
   cursor: pointer;
 `;
