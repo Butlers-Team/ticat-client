@@ -9,6 +9,8 @@ import { deleteCalendarRequest } from '@api/calendar';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
+import { CgTrash } from 'react-icons/cg';
+import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
@@ -67,10 +69,13 @@ const CalendarFestival = ({ item }: FestivalProps) => {
       </DescriptionWrap>
       <CalendarRightContainer>
         <FestivalrCategoryWrap>
-          <p className="festival-right">{item.category}</p>
+          <CalendarDeleteBtn onClick={deleteCalendarList}>
+            <CgTrash />
+          </CalendarDeleteBtn>
         </FestivalrCategoryWrap>
-        <StampAddBtn onClick={routeStampPage}>스탬프찍기</StampAddBtn>
-        <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
+        <StampAddBtn onClick={routeStampPage}>
+          <LuStamp />
+        </StampAddBtn>
       </CalendarRightContainer>
     </FestivalContainer>
   );
@@ -129,7 +134,7 @@ const ImgBox = styled.div`
 
 // 축제 정보 텍스트
 const DescriptionWrap = styled.div`
-  width: calc(100% - 95px - 35px);
+  width: calc(100% - 115px - 35px);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -180,11 +185,10 @@ const DescriptionWrap = styled.div`
 `;
 
 const CalendarRightContainer = styled.div`
-  width: 60px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  align-items: end;
   margin-left: auto;
 `;
 
@@ -208,22 +212,30 @@ const CalendarDeleteBtn = styled.button`
   width: 35px;
   height: 20px;
   border: none;
-  background-color: red;
+  background-color: #ffffff;
   border-radius: 5px;
-  font-size: 12px;
-  padding: 0;
+  font-size: 1.5rem;
+  color: #ccc;
   margin-bottom: 20px;
   cursor: pointer;
+
+  :hover {
+    color: #ff5454;
+  }
 `;
 
 const StampAddBtn = styled.button`
-  width: 60px;
-  height: 20px;
-  border: none;
-  background-color: var(--color-main);
+  width: 50px;
+
+  border: 1px solid #eee;
+  background-color: #ffffff;
+  color: #b8b8b8;
   border-radius: 5px;
-  font-size: 12px;
-  padding: 0;
-  margin-bottom: 20px;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
   cursor: pointer;
+
+  :hover {
+    color: var(--color-main);
+  }
 `;

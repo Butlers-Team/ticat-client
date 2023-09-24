@@ -2,7 +2,13 @@
 
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { MdKeyboardArrowLeft, MdKeyboardArrowRight, MdKeyboardArrowDown } from 'react-icons/md';
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdKeyboardArrowDown,
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardDoubleArrowRight,
+} from 'react-icons/md';
 import { BiBorderRadius } from 'react-icons/bi';
 
 interface CalendarProps {
@@ -160,7 +166,7 @@ const ReactCalendar: React.FC<CalendarProps> = ({
         : {};
 
       calendar.push(
-        <DateTh key={i} style={cellStyle} onClick={() => selectDay(date.getDate())}>
+        <DateTh key={i} style={cellStyle} onClick={() => selectDay(date.getDate())} className="date-hover-color">
           {`${date.getDate()}`} {/* 날짜와 요일 출력 */}
         </DateTh>,
       );
@@ -172,11 +178,11 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     <Calendar>
       <MonthSelect>
         <MonthChangeButton onClick={() => changeMonth(selecteMonth - 1)}>
-          <MdKeyboardArrowLeft />
+          <MdOutlineKeyboardDoubleArrowLeft />
         </MonthChangeButton>
         {selecteMonth + 1}월
         <MonthChangeButton onClick={() => changeMonth(selecteMonth + 1)}>
-          <MdKeyboardArrowRight />
+          <MdOutlineKeyboardDoubleArrowRight />
         </MonthChangeButton>
       </MonthSelect>
       <CalendarSection>
@@ -231,6 +237,11 @@ const Calendar = styled.div`
     color: #999;
     font-size: 2rem;
   }
+
+  .date-hover-color:hover {
+    border-radius: 50px;
+    background-color: #f7f7f7;
+  }
 `;
 
 //달력 날짜 및 주간표기
@@ -260,12 +271,6 @@ const MonthChangeButton = styled.button`
   margin: 0px 10px;
   transform: scale(0.5);
   color: #999;
-  background-color: #eee;
-
-  :hover {
-    color: var(--color-main);
-    background-color: #e4f4ff;
-  }
 `;
 
 const CalendarWeekTable = styled.table`
@@ -326,6 +331,13 @@ const DateSelectBtn = styled.button`
 
 const DateTh = styled.th`
   cursor: pointer;
+  .date-hover-color {
+    border: 1px solid red;
+  }
+  :hover {
+    border: 1px solid red;
+    background-color: #efefef;
+  }
 `;
 
 //토요일 색상
