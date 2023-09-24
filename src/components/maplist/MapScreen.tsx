@@ -11,6 +11,8 @@ import Button from '@components/Button';
 import { FaSearch } from 'react-icons/fa';
 import { MdRefresh } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { FaLocationDot } from 'react-icons/fa6';
+import { TbKeyframeAlignCenter } from 'react-icons/tb';
 
 export interface LatLngType {
   status: string;
@@ -42,7 +44,6 @@ const MapScreen = () => {
   }, [markerData]);
 
   useEffect(() => {
-    // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
     window.kakao.maps.load(() => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
@@ -62,7 +63,6 @@ const MapScreen = () => {
         };
         setZoomLv(zoomLevel);
         setScreenLocation(mapLocation);
-        // 이후 필요한 로직을 수행할 수 있습니다.
       });
 
       // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
@@ -94,7 +94,6 @@ const MapScreen = () => {
           infoElement.classList.add('clicked');
           setKeyword(position.title);
           setInputText(position.title);
-          // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.
         });
 
         infoOverlay.setMap(map);
@@ -104,6 +103,9 @@ const MapScreen = () => {
 
   return (
     <MapView>
+      <MyPointer className="flex-all-center">
+        <TbKeyframeAlignCenter />
+      </MyPointer>
       {inputText && (
         <RemoveKeyword
           onClick={() => {
@@ -295,7 +297,19 @@ const RemoveKeyword = styled.div`
 
 const MyLocationButton = styled(RemoveKeyword)`
   top: auto;
-  bottom: 110px;
+  bottom: 80px;
   background: var(--color-main);
   color: #fff;
+`;
+
+const MyPointer = styled.div`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.6);
 `;
