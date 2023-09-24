@@ -6,7 +6,6 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
-import Button from '@components/Button';
 import { addCalendarRequest } from '@api/calendar';
 import { CalendarAddRequest } from 'types/api/addcalendar';
 
@@ -72,10 +71,12 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
           minDate={today > mindate ? today : mindate}
           maxDate={maxdate}
         />
-        <Button onClick={postForm}>선택</Button>
-        <Button onClick={exitForm} color="red">
-          취소
-        </Button>
+        <BtnGroup>
+          <ButtonL onClick={postForm}>일정등록</ButtonL>
+          <ButtonR onClick={exitForm} color="red">
+            취소
+          </ButtonR>
+        </BtnGroup>
       </DateContainer>
     </DateBackground>
   );
@@ -84,26 +85,50 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
 export default AddCalendar;
 
 const DateBackground = styled.div`
+  position: fixed;
   z-index: 5;
-  width: 100%;
+  width: 500px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.4);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  position: absolute;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DateContainer = styled.div`
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+
   z-index: 10;
   width: 100%;
-  height: 100%;
+  animation: showModal 0.5s forwards;
+
+  @keyframes showModal {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+
+  label {
+    color: #ccc;
+  }
+
   > .rdrCalendarWrapper {
     display: flex;
     flex-direction: column;
@@ -115,4 +140,39 @@ const DateContainer = styled.div`
       }
     }
   }
+`;
+
+// 버튼 디자인 수정
+
+const BtnGroup = styled.div`
+  border: 1px solid #dbdbdb;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+
+  > button:nth-child(1):hover {
+    color: var(--color-sub);
+    background-color: #f1f9ff;
+  }
+
+  > button:nth-child(2):hover {
+    color: #d66767;
+  }
+`;
+
+const ButtonL = styled.button`
+  cursor: pointer;
+  border: none;
+  background-color: #fff;
+  color: var(--color-main);
+  width: 100%;
+  height: 50px;
+  font-size: 1.4rem;
+  font-weight: 600;
+`;
+
+const ButtonR = styled(ButtonL)`
+  border-left: 1px solid #dbdbdb;
+  color: #aaaaaa;
+  background-color: #f7f7f7;
 `;
