@@ -24,6 +24,7 @@ export const useCreateReview = ({ festivalId, handleReset }: Options) => {
     onSuccess: () => {
       toast({ title: '리뷰가 성공적으로 등록되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
+      queryClient.invalidateQueries([QUERY_KEYS.myreview]);
       handleReset();
     },
     onError: (error: Error) => {
