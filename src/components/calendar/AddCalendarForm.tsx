@@ -44,10 +44,12 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
   const postForm = () => {
     if (member) {
       setDateForm(false);
+      const endDate = new Date(dateRange.endDate);
+      endDate.setDate(endDate.getDate() + 1);
       const params: CalendarAddRequest = {
         festivalId: festivalId,
         startDate: `${dateRange.startDate?.toJSON().split('T')[0]}`,
-        endDate: `${dateRange.endDate?.toJSON().split('T')[0]}`,
+        endDate: endDate.toISOString().split('T')[0] || '',
       };
       addCalendarRequest(params);
     }

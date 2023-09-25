@@ -69,7 +69,13 @@ const CalendarFestival = ({ item }: FestivalProps) => {
         <FestivalrCategoryWrap>
           <p className="festival-right">{item.category}</p>
         </FestivalrCategoryWrap>
-        <StampAddBtn onClick={routeStampPage}>스탬프찍기</StampAddBtn>
+        {item.status === 'EXPECTED' ? (
+          <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
+            스탬프찍기
+          </DisabledBtn>
+        ) : (
+          <StampAddBtn onClick={routeStampPage}>스탬프찍기</StampAddBtn>
+        )}
         <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
       </CalendarRightContainer>
     </FestivalContainer>
@@ -184,7 +190,8 @@ const CalendarRightContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end; /* 수정 */
+  align-items: flex-end; /* 수정 */
   margin-left: auto;
 `;
 
@@ -213,6 +220,7 @@ const CalendarDeleteBtn = styled.button`
   font-size: 12px;
   padding: 0;
   margin-bottom: 20px;
+  font-weight: bold;
   cursor: pointer;
 `;
 
@@ -223,7 +231,21 @@ const StampAddBtn = styled.button`
   background-color: var(--color-main);
   border-radius: 5px;
   font-size: 12px;
+  font-weight: bold;
   padding: 0;
   margin-bottom: 20px;
   cursor: pointer;
+`;
+
+const DisabledBtn = styled.button`
+  width: 60px;
+  height: 20px;
+  border: none;
+  background-color: gray;
+  color: #d2cfcf;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  margin-bottom: 20px;
 `;
