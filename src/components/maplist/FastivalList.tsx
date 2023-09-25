@@ -110,7 +110,7 @@ export default FastivalList;
 
 const FastivalListBox = styled.article`
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 70px);
   padding: 20px;
   overflow-y: scroll;
   ::-webkit-scrollbar {

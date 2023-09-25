@@ -21,14 +21,14 @@ const MapListPage = () => {
   return (
     <MapListContainer>
       <MapScreen />
-      <MapList display={listAppear ? -400 : -10}>
+      <MapList display={listAppear ? 0 : 450}>
         <AccordionBtn
           className={`flex-all-center ${listAppear ?? 'clicked-btn'}`}
           onClick={() => {
             setListAppear(!listAppear);
           }}>
           <MdOutlineFeaturedPlayList className="icon-margin" />
-          리스트 {listAppear ? '닫기' : '열기'}
+          리스트 {listAppear ? '내리기' : '보기'}
         </AccordionBtn>
         {screenLocation !== location && (
           <MyLocationBtn
@@ -55,13 +55,16 @@ interface display {
 
 const MapListContainer = styled.section`
   position: relative;
+
   height: calc(100vh - 70px);
   overflow: hidden;
 `;
 
 const MapList = styled.article<display>`
-  position: relative;
+  position: absolute;
+  bottom: 0px;
   background-color: var(--background-color);
+  width: 100%;
   height: calc(100vh - 60% + 30px);
   border-radius: 30px 30px 0px 0px;
   display: block;

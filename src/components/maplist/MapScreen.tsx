@@ -120,6 +120,7 @@ const MapScreen = () => {
           onClick={() => {
             setKeyword('');
             setInputText('');
+            setListAppear(false);
           }}>
           <RiDeleteBin6Line className="refresh-icon" />
           검색 초기화

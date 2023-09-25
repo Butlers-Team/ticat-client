@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 export const mapOptions = [
-  { optionName: '좋아요순', value: 'likeCount' },
-  { optionName: '평점순', value: 'reviewRating' },
-  { optionName: '리뷰순', value: 'reviewCount' },
+  { optionName: '🧡좋아요순', value: 'likeCount' },
+  { optionName: '⭐평점순', value: 'reviewRating' },
+  { optionName: '🌼리뷰순', value: 'reviewCount' },
 ];
 
 export const tabCategory = [
