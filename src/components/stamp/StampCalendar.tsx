@@ -32,10 +32,11 @@ const StampCalendar = ({ year, month, stampList }: StampCalendarProps) => {
   for (let i = 1; i <= daysInMonth; i++) {
     const isStamped = stampedDatesSet.has(i);
     const dayOfWeek = (firstDayOfMonth + i - 1) % 7;
-    const isWeekend = dayOfWeek === 0; // 0: 일요일
+    const isSat = dayOfWeek === 6; // 6: 토요일
+    const isSun = dayOfWeek === 0; // 0: 일요일
 
     calendarDays.push(
-      <Day key={i} $isStamped={isStamped} $isWeekend={isWeekend}>
+      <Day key={i} $isStamped={isStamped} $isSat={isSat} $isSun={isSun}>
         {i}
       </Day>,
     );
@@ -57,7 +58,7 @@ const StampCalendar = ({ year, month, stampList }: StampCalendarProps) => {
     <CalendarContainer>
       <WeekdayGrid>
         {weekdays.map((day, idx) => (
-          <Weekday key={idx} $isSunday={idx === 0}>
+          <Weekday key={idx} $isSat={idx === 6} $isSun={idx === 0}>
             {day}
           </Weekday>
         ))}
@@ -81,12 +82,12 @@ const WeekdayGrid = styled.div`
   text-align: center;
 `;
 
-const Weekday = styled.div<{ $isSunday?: boolean }>`
+const Weekday = styled.div<{ $isSat?: boolean; $isSun?: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 15px;
-  color: ${props => (props.$isSunday ? '#C72118' : 'var(--color-dark)')};
+  color: ${props => (props.$isSat ? 'var(--color-main)' : props.$isSun ? '#C72118' : 'var(--color-dark)')};
   font-weight: 700;
   padding-bottom: 1rem;
 `;
@@ -100,7 +101,7 @@ const CalendarGrid = styled.div`
   grid-template-columns: repeat(7, 1fr); // 7일, 일주일
 `;
 
-const Day = styled.div<{ $isOtherMonth?: boolean; $isStamped?: boolean; $isWeekend?: boolean }>`
+const Day = styled.div<{ $isOtherMonth?: boolean; $isStamped?: boolean; $isSat?: boolean; $isSun?: boolean }>`
   width: 35px;
   height: 35px;
   display: flex;
@@ -111,7 +112,9 @@ const Day = styled.div<{ $isOtherMonth?: boolean; $isStamped?: boolean; $isWeeke
   color: ${props =>
     props.$isStamped
       ? 'var(--color-light)'
-      : props.$isWeekend
+      : props.$isSat
+      ? 'var(--color-main)'
+      : props.$isSun
       ? '#C72118'
       : props.$isOtherMonth
       ? 'var(--color-light-gray)'
