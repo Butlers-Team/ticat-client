@@ -150,3 +150,14 @@ export const useZoomLevelStore = create<zoomLevelState>(set => ({
   zoomLv: 6,
   setZoomLv: (zoomLv: number) => set({ zoomLv }),
 }));
+
+// 지도 리스트 출력 여부
+interface listAppearState {
+  listAppear: boolean;
+  setListAppear: (listAppear: boolean) => void;
+}
+
+export const useListAppearState = create<listAppearState>(set => ({
+  listAppear: false,
+  setListAppear: (listAppear: boolean) => set({ listAppear }),
+}));

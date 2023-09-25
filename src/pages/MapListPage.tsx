@@ -1,15 +1,45 @@
 import styled from 'styled-components';
 
+import { useKeywordStore, useListAppearState, useMapLocationStore } from '@store/mapListStore';
+
 //component
 import MapScreen from '@components/maplist/MapScreen';
 import OptionButton from '@components/maplist/OptionButton';
 import FastivalList from '@components/maplist/FastivalList';
 
+//icon
+import { MdOutlineFeaturedPlayList, MdOutlineMyLocation } from 'react-icons/md';
+import { useLocationStore } from '@store/userLocation';
+
 const MapListPage = () => {
+  const { location } = useLocationStore();
+  const { screenLocation, setScreenLocation } = useMapLocationStore();
+  const { setKeyword } = useKeywordStore();
+
+  const { listAppear, setListAppear } = useListAppearState();
+
   return (
     <MapListContainer>
       <MapScreen />
-      <MapList>
+      <MapList display={listAppear ? -400 : -10}>
+        <AccordionBtn
+          className={`flex-all-center ${listAppear ?? 'clicked-btn'}`}
+          onClick={() => {
+            setListAppear(!listAppear);
+          }}>
+          <MdOutlineFeaturedPlayList className="icon-margin" />
+          리스트 {listAppear ? '닫기' : '열기'}
+        </AccordionBtn>
+        {screenLocation !== location && (
+          <MyLocationBtn
+            className={`flex-all-center ${listAppear ?? 'clicked-btn'}`}
+            onClick={() => {
+              setKeyword('');
+              setScreenLocation(location);
+            }}>
+            <MdOutlineMyLocation className="icon-margin" />내 위치 찾기
+          </MyLocationBtn>
+        )}
         <OptionButton />
         <FastivalList />
       </MapList>
@@ -19,34 +49,62 @@ const MapListPage = () => {
 
 export default MapListPage;
 
+interface display {
+  display: number;
+}
+
 const MapListContainer = styled.section`
   position: relative;
   height: calc(100vh - 70px);
   overflow: hidden;
 `;
 
-const MapList = styled.article`
+const MapList = styled.article<display>`
   position: relative;
   background-color: var(--background-color);
   height: calc(100vh - 60% + 30px);
   border-radius: 30px 30px 0px 0px;
-  margin-top: -30px;
-  overflow: hidden;
-  animation: showupLayout 0.5s forwards;
+  display: block;
+  transition: all ease-in-out 0.3s;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+  transform: translateY(${props => props.display}px);
   z-index: 999;
 
-  @keyframes showupLayout {
-    0% {
-      opacity: 0;
-    }
-    80% {
-      opacity: 1;
-      transform: translateY(-40px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(-30px);
-    }
+  .icon-margin {
+    margin-right: 5px;
   }
+  .clicked-btn {
+    border: 1px solid var(--color-sub);
+    color: var(--color-main);
+  }
+
+  > button:nth-child(1):hover {
+    color: var(--color-main);
+  }
+
+  > button:nth-child(2):hover {
+    background-color: var(--color-sub);
+  }
+`;
+
+const AccordionBtn = styled.button`
+  position: absolute;
+  background-color: #fff;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1.3rem;
+  top: -60px;
+  left: 20px;
+  border: none;
+  font-weight: 600;
+  color: var(--color-dark);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+`;
+
+const MyLocationBtn = styled(AccordionBtn)`
+  left: auto;
+  right: 20px;
+  background-color: var(--color-main);
+  color: #fff;
 `;
