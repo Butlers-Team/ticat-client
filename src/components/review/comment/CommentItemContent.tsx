@@ -24,7 +24,7 @@ const ContentContainer = styled.div<{ isMyPage?: boolean }>`
   display: flex;
   p {
     padding: 3px 3px;
-    font-size: ${({ isMyPage }) => (isMyPage ? '1.6rem' : '1.4rem')};
+    font-size: ${({ isMyPage }) => (isMyPage ? '1.4rem' : '1.6rem')};
     overflow-wrap: break-word; /* 자동 줄 바꿈 설정 */
     word-break: break-all;
   }
