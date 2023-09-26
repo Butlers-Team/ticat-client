@@ -4,24 +4,24 @@ import ReactCalendar from '@components/calendar/ReactCalendar';
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
-
+import Button from '@components/Button';
 const CalendarPage: React.FC = (): JSX.Element => {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
+  const [page, setPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>();
   const [selecteDate, setSelectedDate] = useState<number>(date);
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
-  const [calendarDatailList, setCalendarDatailList] = useState<CalendarListListType>();
-  const data: CalendarListType[] | undefined = calendarDatailList?.data[0].festivalList;
-
+  const [calendarDatailList, setCalendarDatailList] = useState<CalendarListType[]>([]);
   /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
   const addSchedule = () => {
     window.location.href = '/festival';
   };
-
   useEffect(() => {
+    setCalendarDatailList([]);
     /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
     const fetchCalendarList = async () => {
       const params: CalendarListRequest = {
@@ -31,11 +31,34 @@ const CalendarPage: React.FC = (): JSX.Element => {
         day: selecteDate,
       };
       const res = await getCalendarList(params);
-      setCalendarDatailList(res);
+      setCalendarDatailList(res.data[0].festivalList);
+      if (res.pageInfo) {
+        setTotalPages(res.pageInfo.totalElements);
+      }
     };
+    setPage(1);
     fetchCalendarList();
   }, [selecteDate, selecteMonth, selecteYears]);
 
+  const handleLoadMore = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+  useEffect(() => {
+    const MoreCalendarList = async () => {
+      const params: CalendarListRequest = {
+        page: page,
+        year: selecteYears,
+        month: selecteMonth + 1,
+        day: selecteDate,
+      };
+      const res = await getCalendarList(params);
+      setCalendarDatailList([...calendarDatailList, ...res.data[0].festivalList]);
+      if (res.pageInfo) {
+        setTotalPages(res.pageInfo.totalElements);
+      }
+    };
+    MoreCalendarList();
+  }, [page]);
   return (
     <CalendarContainer>
       <CalendarSection>
@@ -54,7 +77,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
         <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
       </p>
       <FestivalListSection>
-        {data?.length === undefined || data.length < 1 ? (
+        {calendarDatailList?.length === undefined || calendarDatailList.length < 1 ? (
           <EmptyListSection>
             <img src={'assets/images/ticat-logo-icon-gray.png'}></img>
             <span>추가된 축제 일정이 없어요.</span>
@@ -64,13 +87,14 @@ const CalendarPage: React.FC = (): JSX.Element => {
           </EmptyListSection>
         ) : (
           <FestivalScrollWrap>
-            {data?.map(festival => {
+            {calendarDatailList?.map(festival => {
               return (
                 <li key={festival.festivalId}>
                   <CalendarFestival item={festival} />
                 </li>
               );
             })}
+            {totalPages === calendarDatailList.length ? null : <Button onClick={handleLoadMore}>축제 더보기</Button>}
           </FestivalScrollWrap>
         )}
       </FestivalListSection>
@@ -147,11 +171,11 @@ const EmptyListSection = styled.section`
   }
 `;
 const FestivalScrollWrap = styled.div`
-  height: calc(100% - 13rem);
-  width: calc(100% - 4rem);
+  height: calc(100% - 100px);
+  width: 100%;
+  padding: 20px;
   overflow: auto;
   margin: 0 auto;
-
   // 스크롤바 없애기
   // chrome and safari
   ::-webkit-scrollbar {

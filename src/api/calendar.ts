@@ -15,6 +15,7 @@ export const getCalendarList = async (params: CalendarListRequest) => {
 export const addCalendarRequest = async ({ ...params }: CalendarAddRequest) => {
   try {
     const { data } = await instance.post<string>(`/calendar/save`, { ...params });
+    alert('성공적으로 추가되었습니다.');
     return data;
   } catch (error: any) {
     if (error.response && error.response.status === 409) {
