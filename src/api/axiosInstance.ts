@@ -86,11 +86,11 @@ instance.interceptors.response.use(
   /** 2023/07/09 - refresh 로직 추가  - by leekoby */
   async error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       return refreshTokenAndUpdateRequest(error, originalRequest);
-    } else if (error.response.status === 401 && originalRequest._retry) {
+    } else if (error.response?.status === 401 && originalRequest._retry) {
       alert('다시 로그인해주세요.');
       clearTokens(); // 로컬스토리지 토큰 초기화
       clearExp();
