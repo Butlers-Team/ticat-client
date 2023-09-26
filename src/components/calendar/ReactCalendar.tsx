@@ -1,6 +1,15 @@
+// import { background, color } from '@chakra-ui/react';
+
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FcNext, FcPrevious } from 'react-icons/fc';
+import {
+  MdKeyboardArrowLeft,
+  MdKeyboardArrowRight,
+  MdKeyboardArrowDown,
+  MdOutlineKeyboardDoubleArrowLeft,
+  MdOutlineKeyboardDoubleArrowRight,
+} from 'react-icons/md';
+import { BiBorderRadius } from 'react-icons/bi';
 
 interface CalendarProps {
   startDate: Date;
@@ -152,10 +161,12 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       const isCurrentDate = date.getDate() === selecteDate;
 
       // 스타일을 파란색으로 변경합니다.
-      const cellStyle = isCurrentDate ? { color: 'blue' } : {};
+      const cellStyle = isCurrentDate
+        ? { color: 'var(--color-main)', background: '#E4F4FF', borderRadius: '20px' }
+        : {};
 
       calendar.push(
-        <DateTh key={i} style={cellStyle} onClick={() => selectDay(date.getDate())}>
+        <DateTh key={i} style={cellStyle} onClick={() => selectDay(date.getDate())} className="date-hover-color">
           {`${date.getDate()}`} {/* 날짜와 요일 출력 */}
         </DateTh>,
       );
@@ -164,19 +175,19 @@ const ReactCalendar: React.FC<CalendarProps> = ({
   };
 
   return (
-    <div>
+    <Calendar>
       <MonthSelect>
         <MonthChangeButton onClick={() => changeMonth(selecteMonth - 1)}>
-          <FcPrevious />
+          <MdOutlineKeyboardDoubleArrowLeft />
         </MonthChangeButton>
         {selecteMonth + 1}월
         <MonthChangeButton onClick={() => changeMonth(selecteMonth + 1)}>
-          <FcNext />
+          <MdOutlineKeyboardDoubleArrowRight />
         </MonthChangeButton>
       </MonthSelect>
       <CalendarSection>
-        <DateSelectBtn onClick={prevWeek}>
-          <FcPrevious />
+        <DateSelectBtn onClick={prevWeek} className="arr-icons-color">
+          <MdKeyboardArrowLeft />
         </DateSelectBtn>
 
         <CalendarWeekTable>
@@ -198,35 +209,70 @@ const ReactCalendar: React.FC<CalendarProps> = ({
           </CalendarDayTbody>
         </CalendarWeekTable>
 
-        <DateSelectBtn onClick={nextWeek}>
-          <FcNext />
+        <DateSelectBtn onClick={nextWeek} className="arr-icons-color">
+          <MdKeyboardArrowRight />
         </DateSelectBtn>
       </CalendarSection>
-    </div>
+    </Calendar>
   );
 };
 export default ReactCalendar;
 
-const CalendarSection = styled.div`
+const Calendar = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
-  padding: 20px;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 25%;
+  box-shadow: 0px 10px 15px rgb(0, 0, 0, 0.1);
+  border-radius: 35px;
+  padding: 20px 0px;
+  color: var(--color-dark);
+  .arr-icons-color {
+    color: #999;
+  }
+
+  .arr-icons-color2 {
+    color: #999;
+    font-size: 2rem;
+  }
+
+  .date-hover-color:hover {
+    border-radius: 50px;
+    background-color: #f7f7f7;
+  }
 `;
 
-const MonthSelect = styled.h1`
-  height: 30px;
-  padding: 0 20px;
-  font-size: 30px;
+//달력 날짜 및 주간표기
+const CalendarSection = styled.div`
+  display: flex;
+  width: calc(100% - 20px);
+  text-align: right;
+  margin-bottom: 10px;
 `;
 
+// 달력 월 표기
+const MonthSelect = styled.div`
+  font-size: 3.5rem;
+  font-weight: 800;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+`;
+
+// 달력 월간 변경 버튼
 const MonthChangeButton = styled.button`
   border: none;
-  font-size: 30px;
+  font-size: 3rem;
   font-weight: bold;
   background-color: transparent;
   cursor: pointer;
+  border-radius: 100px;
+  margin: 0px 10px;
+  transform: scale(0.5);
+  color: #999;
 `;
+
 const CalendarWeekTable = styled.table`
   display: flex;
   flex-direction: column;
@@ -234,49 +280,72 @@ const CalendarWeekTable = styled.table`
   align-items: center;
   width: 100%;
 `;
+
+// 달력 요일 표기 - mscojl24
 const CalendarWeekThead = styled.tbody`
+  width: 100%;
   font-size: 14px;
   text-align: center;
 `;
 const CalendarWeekTr = styled.tr`
-  position: relative;
-  width: 100%;
   display: flex;
+  justify-content: space-around;
+  font-weight: 700;
+  width: 100%;
   flex-direction: row;
+  font-size: 1.5rem;
   > th {
-    width: 30px;
-    padding: 0 20px;
+    width: 35px;
   }
 `;
 
+// 달력 날짜 표기 - mscojl24
 const CalendarDayTbody = styled.tbody`
-  font-size: 14px;
+  width: 100%;
+  font-size: 1.5rem;
   text-align: center;
+  color: var(--color-dark-gray);
 `;
+
 const CalendarDayTr = styled.tr`
   display: flex;
+  justify-content: space-around;
   flex-direction: row;
   > th {
-    width: 30px;
-    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 35px;
+    height: 35px;
   }
 `;
 
+// 날짜 주간 변경 버튼 - mscojl24
 const DateSelectBtn = styled.button`
   border: none;
-  font-size: 30px;
-  font-weight: bold;
+  font-size: 2.5rem;
+  font-weight: 800;
   background-color: transparent;
   cursor: pointer;
 `;
 
 const DateTh = styled.th`
   cursor: pointer;
+  .date-hover-color {
+    border: 1px solid red;
+  }
+  :hover {
+    border: 1px solid red;
+    background-color: #efefef;
+  }
 `;
 
+//토요일 색상
 const SundayTh = styled.th`
-  color: red;
+  color: #ff5454;
 `;
+
+//일요일 색상
 const SaturdayTh = styled.th`
-  color: blue;
+  color: var(--color-main);
 `;

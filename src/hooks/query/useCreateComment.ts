@@ -26,6 +26,7 @@ export const useCreateComment = ({ festivalId, reviewId, handleReset }: Options)
       toast({ title: '댓글이 성공적으로 등록되었습니다.', status: 'success' });
       queryClient.invalidateQueries([QUERY_KEYS.comment, reviewId]);
       queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
+      queryClient.invalidateQueries([QUERY_KEYS.mycomment]);
       handleReset();
     },
     onError: (error: Error) => {

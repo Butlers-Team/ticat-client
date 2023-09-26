@@ -13,16 +13,18 @@ interface RecentListItemProps {
   recentItem: RecentListType;
 }
 
+/** 2023/09/22 - 이미지 에러 시 기본 이미지로 대체 - by sineTlsl */
+const handlerImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+  const target = e.currentTarget;
+  target.src = '/assets/images/ticat-cover-image.png';
+};
+
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const RecentListItem = ({ recentItem }: RecentListItemProps) => {
   return (
     <FestivalContainer>
       <ImgWrap>
-        {recentItem.imageUrl !== '' ? (
-          <img src={recentItem.imageUrl} />
-        ) : (
-          <img src="/assets/images/ticat-cover-image.png" />
-        )}
+        <img src={recentItem.imageUrl || '/assets/images/ticat-cover-image.png'} alt="" onError={handlerImgError} />
       </ImgWrap>
       <DescriptionWrap>
         <h3 className="festival-title">{recentItem.title}</h3>

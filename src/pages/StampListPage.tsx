@@ -100,7 +100,12 @@ const StampListPage = () => {
           canGoToLastMonth={canGoToLastMonth}
           canGoToNextMonth={canGoToNextMonth}
         />
-        {data && (isSelectTicket ? <StampTicket stampList={[...data.festivalList].reverse()} /> : <StampCalendar />)}
+        {data &&
+          (isSelectTicket ? (
+            <StampTicket stampList={[...data.festivalList].reverse()} />
+          ) : (
+            <StampCalendar year={year} month={month} stampList={data.festivalList} />
+          ))}
         <div className="toggle-wrap">
           <StampToggle isSelectTicket={isSelectTicket} onClick={handlerToggle} />
         </div>
