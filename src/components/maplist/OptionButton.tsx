@@ -164,7 +164,7 @@ const OptionButton: React.FC = () => {
             }}
             data-value={option.value}
             className={sortBy === option.value ? 'selected-option' : ''}>
-            {option.optionName} {sortBy === option.value && <BiSolidStar />}
+            {option.optionName}
           </button>
         ))}
       </CategoryScroll>

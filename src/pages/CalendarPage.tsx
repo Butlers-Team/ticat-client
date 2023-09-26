@@ -92,16 +92,7 @@ const CalendarContainer = styled.div`
   }
 `;
 /** 2023/07/02 - 축제 캘린더 섹션  - by parksubeom */
-const CalendarSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 25%;
-  box-shadow: 4px 10px 15px -10px gray;
-  border-radius: 35px;
-  text-align: center;
-  justify-content: center;
-`;
+const CalendarSection = styled.section``;
 /** 2023/07/02 - 축제 리스트 섹션  - by parksubeom */
 const FestivalListSection = styled.section`
   display: flex;

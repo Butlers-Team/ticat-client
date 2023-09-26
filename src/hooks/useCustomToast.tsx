@@ -1,6 +1,8 @@
 //install library
 import { UseToastOptions, useToast } from '@chakra-ui/react';
 
+import { TbXboxX } from 'react-icons/tb';
+
 /** 2023/07/07 - 기본 설정을 적용한 "chakra-ui"의 "toast" - by leekoby */
 const useCustomToast = () => {
   const chakraToast = useToast();
@@ -12,7 +14,7 @@ const useCustomToast = () => {
       isClosable: true,
       position: 'top',
       containerStyle: {
-        fontSize: '1.5rem', // 글자 크기 조절
+        fontSize: '1.3rem', // 글자 크기 조절
         maxWidth: '80%', // 원하는 최대 너비
       },
     });
