@@ -73,9 +73,15 @@ const CalendarFestival = ({ item }: FestivalProps) => {
             <CgTrash />
           </CalendarDeleteBtn>
         </FestivalrCategoryWrap>
-        <StampAddBtn onClick={routeStampPage}>
-          <LuStamp />
-        </StampAddBtn>
+        {item.status === 'EXPECTED' ? (
+          <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
+            스탬프찍기
+          </DisabledBtn>
+        ) : (
+          <StampAddBtn onClick={routeStampPage}>
+            <LuStamp />
+          </StampAddBtn>
+        )}
       </CalendarRightContainer>
     </FestivalContainer>
   );
@@ -188,7 +194,8 @@ const CalendarRightContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  justify-content: flex-end; /* 수정 */
+  align-items: flex-end; /* 수정 */
   margin-left: auto;
 `;
 
@@ -217,6 +224,7 @@ const CalendarDeleteBtn = styled.button`
   font-size: 1.5rem;
   color: #ccc;
   margin-bottom: 20px;
+  font-weight: bold;
   cursor: pointer;
 
   :hover {
@@ -238,4 +246,17 @@ const StampAddBtn = styled.button`
   :hover {
     color: var(--color-main);
   }
+`;
+
+const DisabledBtn = styled.button`
+  width: 60px;
+  height: 20px;
+  border: none;
+  background-color: gray;
+  color: #d2cfcf;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 0;
+  margin-bottom: 20px;
 `;
