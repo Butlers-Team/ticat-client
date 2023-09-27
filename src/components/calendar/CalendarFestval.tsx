@@ -78,9 +78,9 @@ const CalendarFestival = ({ item }: FestivalProps) => {
             스탬프찍기
           </DisabledBtn>
         ) : (
-               <StampAddBtn onClick={routeStampPage}>
-          <LuStamp />
-        </StampAddBtn>
+          <StampAddBtn onClick={routeStampPage}>
+            <LuStamp />
+          </StampAddBtn>
         )}
         <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
       </CalendarRightContainer>
