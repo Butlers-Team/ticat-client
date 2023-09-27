@@ -101,7 +101,7 @@ const ReviewItem: React.FC<Props> = ({
           />
         ) : (
           <>
-            <ReviewItemContent content={content} />
+            <ReviewItemContent content={content} isMyPage={isMyPage} />
             <ReviewImage pictures={pictures} />
           </>
         )}

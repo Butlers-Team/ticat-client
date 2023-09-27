@@ -61,6 +61,11 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0px;
   }
+
+  th{
+    font-weight: 500;
+  }
+
   P,span,
   div,ul,li,
   h6,h5,h4,h3,h2{
@@ -115,6 +120,12 @@ const GlobalStyles = createGlobalStyle`
     height:0;
   }
 
+  .chakra-portal button {
+    top: 8px;
+    border: none;
+    color:#fff;
+    font-size: 0.9rem;
+  }
   
   //수평,수직 중앙정렬
   .flex-all-center {
@@ -142,6 +153,7 @@ const GlobalStyles = createGlobalStyle`
   .row {
     flex-direction: row;
   }
+
 `;
 
 export default GlobalStyles;

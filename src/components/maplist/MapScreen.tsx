@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useKeywordStore, useMarkerDataStore, useMapLocationStore, useZoomLevelStore } from '@store/mapListStore';
+import {
+  useKeywordStore,
+  useMarkerDataStore,
+  useMapLocationStore,
+  useZoomLevelStore,
+  useListAppearState,
+} from '@store/mapListStore';
 import { useLocationStore } from '@store/userLocation';
 
 //component
@@ -11,6 +17,7 @@ import Button from '@components/Button';
 import { FaSearch } from 'react-icons/fa';
 import { MdRefresh } from 'react-icons/md';
 import { RiDeleteBin6Line } from 'react-icons/ri';
+import { TbKeyframeAlignCenter } from 'react-icons/tb';
 
 export interface LatLngType {
   status: string;
@@ -26,6 +33,7 @@ const MapScreen = () => {
   const { setKeyword } = useKeywordStore();
   const { zoomLv, setZoomLv } = useZoomLevelStore();
   const { markerData } = useMarkerDataStore();
+  const { listAppear, setListAppear } = useListAppearState();
   const { screenLocation, setScreenLocation } = useMapLocationStore();
   const [markerPositions, setMarkerPositions] = useState<LatLngType[]>(markerData);
 
@@ -42,7 +50,6 @@ const MapScreen = () => {
   }, [markerData]);
 
   useEffect(() => {
-    // 카카오 지도 API 스크립트가 로드된 후 실행되도록 함
     window.kakao.maps.load(() => {
       // 카카오 지도 생성
       const container = document.getElementById('map');
@@ -62,7 +69,6 @@ const MapScreen = () => {
         };
         setZoomLv(zoomLevel);
         setScreenLocation(mapLocation);
-        // 이후 필요한 로직을 수행할 수 있습니다.
       });
 
       // 각 위치에 정보를 표시할 HTML 요소 생성 및 배치
@@ -94,7 +100,7 @@ const MapScreen = () => {
           infoElement.classList.add('clicked');
           setKeyword(position.title);
           setInputText(position.title);
-          // 예시: 다른 동작을 수행하거나 팝업을 띄울 수 있습니다.
+          setListAppear(true);
         });
 
         infoOverlay.setMap(map);
@@ -104,26 +110,21 @@ const MapScreen = () => {
 
   return (
     <MapView>
+      {listAppear ? null : (
+        <MyPointer className="flex-all-center">
+          <TbKeyframeAlignCenter />
+        </MyPointer>
+      )}
       {inputText && (
         <RemoveKeyword
           onClick={() => {
             setKeyword('');
             setInputText('');
+            setListAppear(false);
           }}>
           <RiDeleteBin6Line className="refresh-icon" />
           검색 초기화
         </RemoveKeyword>
-      )}
-      {screenLocation !== location && (
-        <MyLocationButton
-          className="position-btn"
-          onClick={() => {
-            setKeyword('');
-            setScreenLocation(location);
-            setInputText('');
-          }}>
-          <MdRefresh className="refresh-icon" />내 위치에서 검색
-        </MyLocationButton>
       )}
       <div id="map" style={{ width: '100%', height: '100%' }}></div>
       <div className="map-search flex-v-center">
@@ -157,8 +158,9 @@ export default MapScreen;
 
 const MapView = styled.article`
   position: relative;
-  height: 60%;
+  height: 100%;
   background-color: var(--color-light-gray);
+  transition: ease-in-out 0.3s all;
 
   .position-info {
     display: flex;
@@ -288,14 +290,19 @@ const RemoveKeyword = styled.div`
     transform: translate(-3px, 3px);
   }
 
-  ::hover {
+  :hover {
     background: var(--color-sub);
   }
 `;
 
-const MyLocationButton = styled(RemoveKeyword)`
-  top: auto;
-  bottom: 110px;
-  background: var(--color-main);
-  color: #fff;
+const MyPointer = styled.div`
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  z-index: 5;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.6);
 `;

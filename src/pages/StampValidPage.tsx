@@ -11,6 +11,9 @@ import { CalendarListType } from 'types/api/calendar';
 // api
 import { getStampDistance, postStamp } from '@api/stamp';
 
+// hook
+import useCustomToast from '@hooks/useCustomToast';
+
 // component
 import Button from '@components/Button';
 import StampLocationCheck from '@components/stamp/StampLocationCheck';
@@ -21,6 +24,8 @@ const StampValidPage = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const queryClient = useQueryClient();
+  const toast = useCustomToast();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -66,11 +71,15 @@ const StampValidPage = () => {
       };
 
       queryClient.invalidateQueries(['getStampList', params]);
-      navigate('/stamp/list');
+      toast({ title: '도장 꾹~! 스탬프 리스트 페이지로 이동합니다 :(', status: 'success' });
+
+      setTimeout(() => {
+        navigate('/stamp/list');
+      }, 2000);
     },
     onError: (err: any) => {
       if (err.response.status === 409) {
-        alert('이미 찍은 스탬프입니다. 다른 축제로 가볼까요?!');
+        toast({ title: '이미 찍은 스탬프입니다.', status: 'error' });
         navigate('/calendar');
       } else {
         console.log(err);

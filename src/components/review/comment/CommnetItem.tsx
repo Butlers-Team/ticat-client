@@ -42,21 +42,21 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
   return (
     <>
       <CommentItemContainer>
-        <HeaderWrapper>
-          {!isMyPage && (
+        {!isMyPage && (
+          <HeaderWrapper>
             <ItemImgWrap isMyPage={isMyPage}>
               <img src={profileUrl || '/assets/images/default-profile-image.png'} />
             </ItemImgWrap>
-          )}
-          {displayName && (
-            <CommentItemHeader
-              displayName={displayName}
-              createdAt={createdAt}
-              modifiedAt={modifiedAt}
-              isMyPage={isMyPage}
-            />
-          )}
-        </HeaderWrapper>
+            {displayName && (
+              <CommentItemHeader
+                displayName={displayName}
+                createdAt={createdAt}
+                modifiedAt={modifiedAt}
+                isMyPage={isMyPage}
+              />
+            )}
+          </HeaderWrapper>
+        )}
         {isEditMode ? (
           <CommentForm
             festivalId={comment.festivalId}
@@ -69,7 +69,21 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
           />
         ) : (
           <>
-            <ContentItemContent content={content} isMyPage={isMyPage} />
+            {!isMyPage ? (
+              <ContentItemContent content={content} isMyPage={isMyPage} />
+            ) : (
+              <MyPageContent>
+                <ContentItemContent content={content} isMyPage={isMyPage} />
+                {displayName && (
+                  <CommentItemHeader
+                    displayName={displayName}
+                    createdAt={createdAt}
+                    modifiedAt={modifiedAt}
+                    isMyPage={isMyPage}
+                  />
+                )}
+              </MyPageContent>
+            )}
             {member?.memberId === memberId && (
               <CommentEditDelete
                 reviewId={reviewId}
@@ -108,4 +122,8 @@ const ItemImgWrap = styled.div<{ isMyPage?: boolean }>`
     object-fit: cover;
     border-radius: 50%;
   }
+`;
+
+const MyPageContent = styled.div`
+  display: flex;
 `;

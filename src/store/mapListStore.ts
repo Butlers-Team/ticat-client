@@ -1,9 +1,9 @@
 import { create } from 'zustand';
 
 export const mapOptions = [
-  { optionName: '좋아요순', value: 'likeCount' },
-  { optionName: '평점순', value: 'reviewRating' },
-  { optionName: '리뷰순', value: 'reviewCount' },
+  { optionName: '🧡좋아요순', value: 'likeCount' },
+  { optionName: '⭐평점순', value: 'reviewRating' },
+  { optionName: '🌼리뷰순', value: 'reviewCount' },
 ];
 
 export const tabCategory = [
@@ -147,6 +147,17 @@ interface zoomLevelState {
 }
 
 export const useZoomLevelStore = create<zoomLevelState>(set => ({
-  zoomLv: 4,
+  zoomLv: 6,
   setZoomLv: (zoomLv: number) => set({ zoomLv }),
+}));
+
+// 지도 리스트 출력 여부
+interface listAppearState {
+  listAppear: boolean;
+  setListAppear: (listAppear: boolean) => void;
+}
+
+export const useListAppearState = create<listAppearState>(set => ({
+  listAppear: false,
+  setListAppear: (listAppear: boolean) => set({ listAppear }),
 }));

@@ -50,7 +50,7 @@ const MyCommentList: React.FC<Props> = (props): JSX.Element => {
               />
             </li>
           ))}
-        {data && (
+        {data && data.pageInfo.totalPages > 1 && (
           <Pagination page={data.pageInfo.page} totalPages={data.pageInfo.totalPages} onPageChange={handlePageChange} />
         )}
       </ContentItemWrap>
@@ -72,7 +72,7 @@ const ContentItemWrap = styled.ul`
     padding: 1rem 1rem;
 
     h2 {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       padding: 1rem 0;
       border-bottom: 1px var(--color-light-gray) solid;
       margin: 0 0 1rem 0;

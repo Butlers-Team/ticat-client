@@ -12,9 +12,7 @@ interface RecentListProps {
 
 /** 2023/07/23 - 마이페이지 최근 목록 리스트 컴포넌트 - by sineTlsl */
 const RecentList = ({ textTitle }: RecentListProps) => {
-  const { data } = useQuery(['recentList'], getRecentList, {
-    refetchInterval: 1000,
-  });
+  const { data } = useQuery(['recentList'], getRecentList, { staleTime: 0 });
 
   return (
     <MyInfoListContainer>
