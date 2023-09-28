@@ -14,7 +14,7 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
   const queryClient = useQueryClient();
 
   /** 2023/08/07 - 이미지 수정 함수 생성 - by sineTlsl */
-  const patchimageMutation = useMutation(patchProfileImg, {
+  const patchImageMutation = useMutation(patchProfileImg, {
     onSuccess: data => {
       // 성공 시 업로드된 이미지 URL 설정
       setProfileImg(data.profileUrl);
@@ -52,7 +52,7 @@ const ProfileImageUpdate = ({ profileUrl }: ProfileImageProps) => {
       formData.append('image', uploadImgFile);
 
       // mutation을 사용하여 이미지 업로드 요청
-      patchimageMutation.mutate(formData);
+      patchImageMutation.mutate(formData);
     }
   };
 
