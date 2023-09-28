@@ -9,6 +9,12 @@ interface MyInfoDescriptionProps {
   memberInfo: MyInfoType;
 }
 
+const myInfoSocial = [
+  { socialType: 'kakao', imgSrc: 'kakao-logo' },
+  { socialType: 'naver', imgSrc: 'naver-logo' },
+  { socialType: 'google', imgSrc: 'google-logo' },
+];
+
 /** 2023/07/21 - 회원 정보 소개 컴포넌트 - by sineTlsl */
 const MyInfoDescription = ({ memberInfo }: MyInfoDescriptionProps) => {
   const navigate = useNavigate();
@@ -29,9 +35,11 @@ const MyInfoDescription = ({ memberInfo }: MyInfoDescriptionProps) => {
           <div className="email-wrap">
             {memberInfo.social !== 'local' && (
               <>
-                {memberInfo.social === 'kakao' && <img src="/assets/images/kakao-logo.png" />}
-                {memberInfo.social === 'naver' && <img src="/assets/images/naver-logo.png" />}
-                {memberInfo.social === 'google' && <img src="/assets/images/google-logo.png" />}
+                {myInfoSocial.map(item =>
+                  memberInfo.social === item.socialType ? (
+                    <img src={`/assets/images/${item.imgSrc}.png`} key={item.socialType} />
+                  ) : null,
+                )}
               </>
             )}
             <p className="my-email">{memberInfo.email}</p>
