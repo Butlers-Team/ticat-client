@@ -39,9 +39,16 @@ const AreaFilterPage = () => {
     setTempSelectedItems(newSelectedItems);
   };
 
+  /** 2023/09/28 - 지역 선택 완료 버튼 - by sineTlsl */
   const handlerSelectComplete = () => {
     setSelectedItems(tempSelectedItems);
     navigate('/festival');
+  };
+
+  /** 2023/09/28 - 지역 선택 초기화 버튼 - by sineTlsl */
+  const handlerReset = () => {
+    setTempSelectedItems([]);
+    setSelectedItems([]);
   };
 
   return (
@@ -74,7 +81,14 @@ const AreaFilterPage = () => {
         </div>
       </AreaWrap>
       <SelectedBtnWrap>
-        <Button onClick={handlerSelectComplete}>선택 완료</Button>
+        <BtnWrap>
+          <Button onClick={handlerSelectComplete} width="70%">
+            선택 완료
+          </Button>
+          <button className="reset-btn" onClick={handlerReset}>
+            지역 초기화
+          </button>
+        </BtnWrap>
       </SelectedBtnWrap>
     </AreaFilterContainer>
   );
@@ -150,4 +164,31 @@ const SelectedBtnWrap = styled.div`
   bottom: 0rem;
   width: calc(100% - 4rem);
   isolation: isolate;
+`;
+
+const BtnWrap = styled.div`
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+
+  > .reset-btn {
+    width: 30%;
+    height: 4.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1.5px solid var(--color-main);
+    margin: 1rem 0;
+    background: var(--background-color);
+    color: var(--color-main);
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover,
+    &:active {
+      background: #f5f7ff;
+    }
+  }
 `;
