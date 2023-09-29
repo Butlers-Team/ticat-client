@@ -18,6 +18,7 @@ import useCustomToast from '@hooks/useCustomToast';
 import Button from '@components/Button';
 import StampLocationCheck from '@components/stamp/StampLocationCheck';
 import TicketStamping from '@components/stamp/TicketStamping';
+import { AxiosError } from 'axios';
 
 /**  2023/09/17 - 티캣을 찍을 수 있도록 캘린더 일정과 거리를 확인하는 컴포넌트 - by sineTlsl */
 const StampValidPage = () => {
@@ -77,8 +78,10 @@ const StampValidPage = () => {
         navigate('/stamp/list');
       }, 2000);
     },
-    onError: (err: any) => {
-      if (err.response.status === 409) {
+    onError: err => {
+      const axiosError = err as AxiosError;
+
+      if (axiosError.response && axiosError.response.status === 409) {
         toast({ title: '이미 찍은 스탬프입니다.', status: 'error' });
         navigate('/calendar');
       } else {
