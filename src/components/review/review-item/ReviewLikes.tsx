@@ -13,8 +13,10 @@ import {
 } from 'react-icons/bi';
 
 import styled from 'styled-components';
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Props {
+  festivalId: number;
   memberId: number | null;
   reviewId: number;
   commentCount: number;
@@ -25,6 +27,7 @@ interface Props {
 }
 /** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
 const ReviewLikes: React.FC<Props> = ({
+  festivalId,
   commentCount,
   liked,
   disliked,
@@ -33,17 +36,20 @@ const ReviewLikes: React.FC<Props> = ({
   likedCount,
   dislikedCount,
 }): JSX.Element => {
+  const toast = useCustomToast();
+
   const { member } = useMemberStore();
 
-  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
-  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike();
+  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike({ festivalId });
+  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike({ festivalId });
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
 
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
   const handleLikeClick = () => {
-    if (member?.memberId === writerId) return;
+    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
+
     const previousIsLiked = isLiked;
 
     if (timer.current) {
@@ -83,7 +89,7 @@ const ReviewLikes: React.FC<Props> = ({
   };
 
   const handleDislikeClick = () => {
-    if (member?.memberId === writerId) return;
+    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
 
     const previousIsDisliked = isDisliked;
 
