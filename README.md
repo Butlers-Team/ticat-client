@@ -19,9 +19,9 @@
 ## ✨ Page
 
 <div align="center">
-  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/04be1c64-7733-4b9d-8842-7ae530733eff">
-  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f5bf6348-187e-441a-963d-99a079ef52da">
-  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f13c74e9-248a-496e-870a-297d8430f28a">
+  <img width="100%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/04be1c64-7733-4b9d-8842-7ae530733eff">
+  <img width="100%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f5bf6348-187e-441a-963d-99a079ef52da">
+  <img width="100%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f13c74e9-248a-496e-870a-297d8430f28a">
 </div>
 
 <br>
