@@ -102,9 +102,6 @@ instance.interceptors.response.use(
       clearMember(); // 로컬스토리지 멤버 초기화
       window.location.href = '/signin';
     }
-    clearTokens(); // 로컬스토리지 토큰 초기화
-    clearExp();
-    clearMember(); // 로컬스토리지 멤버 초기화
     // 위의 경우가 아닌 경우 에러를 그대로 반환
     return Promise.reject(error);
   },
