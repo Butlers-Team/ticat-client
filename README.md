@@ -1,46 +1,72 @@
-# Getting Started with Create React App
+# 🐈 TICAT - 축제 안내 서비스
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <img width="60%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/58ee326d-61a8-404c-84f6-9f03390b6d67">
+  <br>
+  <p>다양한 축제 정보를 효과적으로 제공하여 사용자가 쉽고 빠르게 <br>
+    흥미로운 축제를 찾아 새로운 경험을 할 수 있도록 도와줍니다.</p>
+</div>
 
-## Available Scripts
+<br>
 
-In the project directory, you can run:
+- `팀 명` : Butlers
+- `프로젝트명` : Ticat
+- `프로젝트 기간` : 2023.07. ~ ing
+- `배포 링크` : **[TICAT](https://d99pqcn6hzkdg.cloudfront.net/main)**
 
-### `npm start`
+<br>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## ✨ Page
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<div align="center">
+  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/04be1c64-7733-4b9d-8842-7ae530733eff">
+  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f5bf6348-187e-441a-963d-99a079ef52da">
+  <img width="70%" alt="TICAT" src="https://github.com/Butlers-Team/ticat-client/assets/97720335/f13c74e9-248a-496e-870a-297d8430f28a">
+</div>
 
-### `npm test`
+<br>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🛠️ Tech Stack
+- TypeScript
+- React
+- Styled-components
+- React-query
+- Zustand
+- AWS
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Front-End
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+<table>
+  <tr align="center">
+    <td style="min-width: 150px;" background-color="white">
+      <a href="https://github.com/mscojl24">
+        <img src="https://github.com/mscojl24.png" width="150" height="150" style="object-fit :cover">
+        <br />
+        <b>김주비</b>
+      </a>
+    </td>
+    <td style="min-width: 150px;" background-color="white">
+      <a href="https://github.com/parksubeom">
+        <img src="https://github.com/parksubeom.png" width="150" height="150" style="object-fit :cover">
+          <br />
+          <b>박수범</b>
+      </a> 
+    </td>
+    <td style="min-width: 150px;" background-color="white">
+      <a href="https://github.com/leekoby">
+        <img src="https://github.com/leekoby.png" width="150" height="150" style="object-fit :cover">
+        <br />
+        <b>이호승</b>
+      </a> 
+    </td>
+    <td style="min-width: 150px;" background-color="white">
+      <a href="https://github.com/sineTlsl">
+        <img src="https://github.com/sineTlsl.png" width="150" height="150" style="object-fit :cover">
+        <br />
+        <b>임시은</b>
+      </a> 
+    </td>
+  </tr>
+</table>
