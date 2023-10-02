@@ -82,7 +82,6 @@ const CalendarFestival = ({ item }: FestivalProps) => {
             <LuStamp />
           </StampAddBtn>
         )}
-        <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
       </CalendarRightContainer>
     </FestivalContainer>
   );
