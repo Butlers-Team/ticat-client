@@ -194,7 +194,8 @@ const CalendarRightContainer = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: end;
+  justify-content: flex-end; /* 수정 */
+  align-items: flex-end; /* 수정 */
   margin-left: auto;
 `;
 

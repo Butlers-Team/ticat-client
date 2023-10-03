@@ -86,7 +86,12 @@ instance.interceptors.response.use(
   /** 2023/07/09 - refresh 로직 추가  - by leekoby */
   async error => {
     const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      error.response.data === '엑세스 토큰이 갱신되었습니다.'
+    ) {
+      console.log('error', error);
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       return refreshTokenAndUpdateRequest(error, originalRequest);
@@ -104,5 +109,4 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
 export default instance;
