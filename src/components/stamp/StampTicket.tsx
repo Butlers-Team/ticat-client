@@ -63,7 +63,6 @@ const StampTicketContainer = styled.div`
 /** 2023/06/30 - 스탬프 티켓(item) 박스- by sineTlsl  */
 const TicketItemWrap = styled.div<StampTicketBg>`
   width: 100%;
-  height: 10rem;
   flex-shrink: 0;
   border-radius: 10px;
   background: ${({ background }) => background};

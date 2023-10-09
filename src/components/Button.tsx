@@ -10,11 +10,7 @@ interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<BtnProps> = ({ children, ...props }) => {
-  return (
-    <div>
-      <PublicButton {...props}>{children}</PublicButton>
-    </div>
-  );
+  return <PublicButton {...props}>{children}</PublicButton>;
 };
 export default Button;
 
