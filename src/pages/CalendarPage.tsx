@@ -109,7 +109,8 @@ const CalendarContainer = styled.div`
   height: 80vh;
   .today-date {
     font-size: 16px;
-    margin: 2rem 2rem;
+    margin: 0 2rem;
+    margin-top: 2rem;
     > span {
       font-weight: bold;
     }
@@ -124,7 +125,6 @@ const FestivalListSection = styled.section`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 75%;
   overflow: hidden;
 `;
 /** 2023/07/02 - 추가된 축제리스트가 없을 때 보여지는 섹션  - by parksubeom */
