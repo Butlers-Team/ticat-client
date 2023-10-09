@@ -1,7 +1,7 @@
 import { useMemberStore } from '@store/useMemberStore';
 import React, { useState } from 'react';
 import { ko } from 'date-fns/locale';
-import { DateRange } from 'react-date-range';
+import { DateRange, RangeKeyDict } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -29,15 +29,18 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
   const { member } = useMemberStore();
   member?.memberId;
 
-  const [dateRange, setDateRange] = useState<any>({
+  const [dateRange, setDateRange] = useState({
     startDate: today > mindate ? today : mindate,
-    endDate: maxdate,
+    endDate: today > mindate ? today : mindate,
     key: 'selection',
   });
+
   /** 2023-09-21 사용자가 선택한 날짜를 시작날짜와 끝나는날짜에 저장하는 함수. - parksubeom */
-  const handleDateChange = (ranges: any) => {
+  const handleDateChange = (ranges: RangeKeyDict) => {
     const { startDate, endDate } = ranges.selection;
-    setDateRange({ startDate, endDate, key: 'selection' });
+    if (startDate && endDate) {
+      setDateRange({ startDate, endDate, key: 'selection' });
+    }
   };
   /** 2023-07-29 원하는 날짜를 픽스하고, 해당날짜 캘린더에 축제를 추가하는 함수 - parksubeom */
   const postForm = () => {
