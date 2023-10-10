@@ -44,6 +44,8 @@ const ReviewLikes: React.FC<Props> = ({
   const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike({ festivalId });
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
+  const [likeCount, setLikeCount] = useState(likedCount || 0);
+  const [dislikeCount, setDislikeCount] = useState(dislikedCount || 0);
 
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
@@ -59,8 +61,14 @@ const ReviewLikes: React.FC<Props> = ({
     // Optimistic UI 업데이트
     if (isDisliked) {
       setIsDisliked(false);
+      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
     }
     setIsLiked(prevState => !prevState);
+    if (!isLiked) {
+      setLikeCount(count => count + 1); // 좋아요 카운트 증가
+    } else {
+      setLikeCount(count => count - 1); // 좋아요 카운트 감소
+    }
 
     // 일정 시간 동안 대기 후 API 호출
     timer.current = setTimeout(() => {
@@ -100,9 +108,14 @@ const ReviewLikes: React.FC<Props> = ({
     // Optimistic UI 업데이트
     if (isLiked) {
       setIsLiked(false);
+      setLikeCount(count => count - 1); // 좋아요 카운트 감소
     }
     setIsDisliked(prevState => !prevState);
-
+    if (!isDisliked) {
+      setDislikeCount(count => count + 1); // 싫어요 카운트 증가
+    } else {
+      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
+    }
     // 일정 시간 동안 대기 후 API 호출
     timer.current = setTimeout(() => {
       if (!isDisliked) {
@@ -136,11 +149,11 @@ const ReviewLikes: React.FC<Props> = ({
           <button type="button" className={`like-btn`} onClick={handleLikeClick}>
             {isLiked ? <TrueLike /> : <FalseLike />}
           </button>
-          <span>({likedCount})</span>
+          <span>({likeCount})</span>
           <button type="button" className={`dislike-btn`} onClick={handleDislikeClick}>
             {isDisliked ? <TrueDislike /> : <FalseDislike />}
           </button>
-          <span>({dislikedCount})</span>
+          <span>({dislikeCount})</span>
         </IconContainer>
       </ReviewBottomContainer>
     </>
