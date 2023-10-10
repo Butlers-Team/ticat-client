@@ -15,12 +15,11 @@ import OauthButton from '@components/signin/OauthButton';
 import { useSignIn } from '@hooks/query/index';
 
 interface ButtonProps {
-  buttonType: 'signin' | 'signup';
+  buttontype: 'signin' | 'signup';
 }
 
 /** 2023/06/29 - 로그인 컴포넌트 - by leekoby */
 const SignIn: React.FC = (): JSX.Element => {
-  const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
   const signInMutation = useSignIn();
@@ -77,25 +76,25 @@ const SignIn: React.FC = (): JSX.Element => {
           <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={handleChange} />
         </InputContainer>
         <ButtonContainer>
-          <StyledButton buttonType="signin" type="submit">
+          <StyledButton buttontype={'signin'} type="submit">
             로그인
           </StyledButton>
         </ButtonContainer>
       </FormContainer>
       <Link to="/signup">
         <ButtonContainer>
-          <StyledButton buttonType="signup">회원가입</StyledButton>
+          <StyledButton buttontype={'signup'}>회원가입</StyledButton>
         </ButtonContainer>
       </Link>
 
       <OauthButtonContainer>
-        <OauthButton buttonService="kakao" onClick={handleKakaoClick}>
+        <OauthButton buttonservice={'kakao'} onClick={handleKakaoClick}>
           카카오 로그인
         </OauthButton>
-        <OauthButton buttonService="naver" onClick={handleNaverClick}>
+        <OauthButton buttonservice={'naver'} onClick={handleNaverClick}>
           네이버 로그인
         </OauthButton>
-        <OauthButton buttonService="google" onClick={handleGoogleClick}>
+        <OauthButton buttonservice={'google'} onClick={handleGoogleClick}>
           구글 로그인
         </OauthButton>
       </OauthButtonContainer>
@@ -214,8 +213,8 @@ const StyledButton = styled.button<ButtonProps>`
   font-weight: bold;
   height: 45px;
   border: 1px solid
-    ${({ buttonType }) => {
-      switch (buttonType) {
+    ${({ buttontype }) => {
+      switch (buttontype) {
         case 'signin':
           return `var(--color-sub)`;
         case 'signup':
@@ -226,8 +225,8 @@ const StyledButton = styled.button<ButtonProps>`
   margin-bottom: 5px;
   border-radius: 12px;
 
-  background-color: ${props => (props.buttonType === 'signin' ? 'var(--color-sub)' : 'var(--background-color)')};
-  color: ${props => (props.buttonType === 'signin' ? `white` : `var(--color-dark)`)};
+  background-color: ${props => (props.buttontype === 'signin' ? 'var(--color-sub)' : 'var(--background-color)')};
+  color: ${props => (props.buttontype === 'signin' ? `white` : `var(--color-dark)`)};
 
   &:focus {
     outline: none;
