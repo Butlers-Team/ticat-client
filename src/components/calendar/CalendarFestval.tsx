@@ -14,6 +14,7 @@ import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
+  forceUpdate: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const statusStlye = (state: string) => {
@@ -28,11 +29,12 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item }: FestivalProps) => {
+const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
   const navigate = useNavigate();
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
   const deleteCalendarList = () => {
     deleteCalendarRequest(item.calendarId);
+    forceUpdate(1);
     alert(`[${item.title}]일정이 삭제되었습니다.`);
   };
   /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
