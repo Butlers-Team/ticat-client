@@ -13,8 +13,10 @@ import {
 } from 'react-icons/bi';
 
 import styled from 'styled-components';
+import useCustomToast from '@hooks/useCustomToast';
 
 interface Props {
+  festivalId: number;
   memberId: number | null;
   reviewId: number;
   commentCount: number;
@@ -25,6 +27,7 @@ interface Props {
 }
 /** 2023/07/22- 리뷰 하단 좋아요/싫어요/댓글 보기/댓글 작성 - by leekoby */
 const ReviewLikes: React.FC<Props> = ({
+  festivalId,
   commentCount,
   liked,
   disliked,
@@ -33,17 +36,22 @@ const ReviewLikes: React.FC<Props> = ({
   likedCount,
   dislikedCount,
 }): JSX.Element => {
+  const toast = useCustomToast();
+
   const { member } = useMemberStore();
 
-  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike();
-  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike();
+  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike({ festivalId });
+  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike({ festivalId });
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
+  const [likeCount, setLikeCount] = useState(likedCount || 0);
+  const [dislikeCount, setDislikeCount] = useState(dislikedCount || 0);
 
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
   const handleLikeClick = () => {
-    if (member?.memberId === writerId) return;
+    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
+
     const previousIsLiked = isLiked;
 
     if (timer.current) {
@@ -53,8 +61,14 @@ const ReviewLikes: React.FC<Props> = ({
     // Optimistic UI 업데이트
     if (isDisliked) {
       setIsDisliked(false);
+      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
     }
     setIsLiked(prevState => !prevState);
+    if (!isLiked) {
+      setLikeCount(count => count + 1); // 좋아요 카운트 증가
+    } else {
+      setLikeCount(count => count - 1); // 좋아요 카운트 감소
+    }
 
     // 일정 시간 동안 대기 후 API 호출
     timer.current = setTimeout(() => {
@@ -83,7 +97,7 @@ const ReviewLikes: React.FC<Props> = ({
   };
 
   const handleDislikeClick = () => {
-    if (member?.memberId === writerId) return;
+    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
 
     const previousIsDisliked = isDisliked;
 
@@ -94,9 +108,14 @@ const ReviewLikes: React.FC<Props> = ({
     // Optimistic UI 업데이트
     if (isLiked) {
       setIsLiked(false);
+      setLikeCount(count => count - 1); // 좋아요 카운트 감소
     }
     setIsDisliked(prevState => !prevState);
-
+    if (!isDisliked) {
+      setDislikeCount(count => count + 1); // 싫어요 카운트 증가
+    } else {
+      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
+    }
     // 일정 시간 동안 대기 후 API 호출
     timer.current = setTimeout(() => {
       if (!isDisliked) {
@@ -130,11 +149,11 @@ const ReviewLikes: React.FC<Props> = ({
           <button type="button" className={`like-btn`} onClick={handleLikeClick}>
             {isLiked ? <TrueLike /> : <FalseLike />}
           </button>
-          <span>({likedCount})</span>
+          <span>({likeCount})</span>
           <button type="button" className={`dislike-btn`} onClick={handleDislikeClick}>
             {isDisliked ? <TrueDislike /> : <FalseDislike />}
           </button>
-          <span>({dislikedCount})</span>
+          <span>({dislikeCount})</span>
         </IconContainer>
       </ReviewBottomContainer>
     </>

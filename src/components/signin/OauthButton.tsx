@@ -15,13 +15,13 @@ type ButtonService = 'kakao' | 'naver' | 'google';
 
 interface Props {
   children: ReactNode;
-  buttonService: ButtonService;
+  buttonservice: ButtonService;
   onClick: () => void;
 }
 
 /** 2023/06/29 - Service에 따라 다른 버튼 가져오는 함수 - by leekoby */
-const getIconByButtonService = (buttonService: ButtonService) => {
-  switch (buttonService) {
+const getIconByButtonService = (buttonservice: ButtonService) => {
+  switch (buttonservice) {
     case 'kakao':
       return <RiKakaoTalkFill size={14} color={OauthVariables.colorKakaoSymbol} />;
     case 'naver':
@@ -34,10 +34,10 @@ const getIconByButtonService = (buttonService: ButtonService) => {
 };
 
 /** 2023/06/29 - Oauth 버튼 컴포넌트 - by leekoby */
-const OauthButton: React.FC<Props> = ({ children, buttonService, onClick }): JSX.Element => {
+const OauthButton: React.FC<Props> = ({ children, buttonservice, onClick }): JSX.Element => {
   return (
-    <OauthBtn buttonService={buttonService} onClick={onClick}>
-      <IconWrapper>{getIconByButtonService(buttonService)}</IconWrapper>
+    <OauthBtn buttonservice={buttonservice} onClick={onClick}>
+      <IconWrapper>{getIconByButtonService(buttonservice)}</IconWrapper>
       <ChildrenWrapper>{children}</ChildrenWrapper>
     </OauthBtn>
   );
@@ -46,7 +46,7 @@ const OauthButton: React.FC<Props> = ({ children, buttonService, onClick }): JSX
 export default OauthButton;
 
 /** 2023/06/29 - Oauth 버튼 컴포넌트 스타일 - by leekoby */
-const OauthBtn = styled.button<{ buttonService: ButtonService }>`
+const OauthBtn = styled.button<{ buttonservice: ButtonService }>`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -54,8 +54,8 @@ const OauthBtn = styled.button<{ buttonService: ButtonService }>`
   font-weight: bold;
   height: 45px;
   border: 1px solid
-    ${({ buttonService }) => {
-      switch (buttonService) {
+    ${({ buttonservice }) => {
+      switch (buttonservice) {
         case 'kakao':
           return `${OauthVariables.colorKakao}`;
         case 'naver':
@@ -67,8 +67,8 @@ const OauthBtn = styled.button<{ buttonService: ButtonService }>`
 
   border-radius: 12px;
   margin-bottom: 5px;
-  background-color: ${({ buttonService }) => {
-    switch (buttonService) {
+  background-color: ${({ buttonservice }) => {
+    switch (buttonservice) {
       case 'kakao':
         return `${OauthVariables.colorKakao}`;
       case 'naver':
@@ -77,8 +77,8 @@ const OauthBtn = styled.button<{ buttonService: ButtonService }>`
         return `${OauthVariables.colorGoogle}`;
     }
   }};
-  color: ${({ buttonService }) => {
-    switch (buttonService) {
+  color: ${({ buttonservice }) => {
+    switch (buttonservice) {
       case 'kakao':
         return `${OauthVariables.colorKakaoText}`;
       case 'naver':

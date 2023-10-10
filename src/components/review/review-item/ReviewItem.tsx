@@ -109,6 +109,7 @@ const ReviewItem: React.FC<Props> = ({
           {isMyPage ? (
             <>
               <ReviewLikes
+                festivalId={festivalId}
                 commentCount={commentCount}
                 likedCount={likedCount}
                 dislikedCount={dislikedCount}
@@ -125,6 +126,7 @@ const ReviewItem: React.FC<Props> = ({
           ) : (
             <div className="button-wrapper">
               <ReviewLikes
+                festivalId={festivalId}
                 commentCount={commentCount}
                 likedCount={likedCount}
                 dislikedCount={dislikedCount}

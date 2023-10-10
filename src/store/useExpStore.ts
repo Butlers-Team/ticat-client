@@ -2,21 +2,13 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export interface ExpInfo {
-  exp: number | null;
+  exp?: number | null;
   setExp: (exp: number | null) => void;
   clearExp: () => void;
 }
 
-// 초기값 설정
-const initialState = {
-  exp: null,
-  setExp: () => {},
-  clearExp: () => {},
-};
-
 const clearExp = () => {
-  const { clearExp } = useExpStore.getState();
-  clearExp();
+  localStorage.removeItem('exp');
 };
 
 const getExp = () => {
@@ -28,9 +20,10 @@ const getExp = () => {
 const useExpStore = create(
   persist<ExpInfo>(
     set => ({
-      ...initialState,
       setExp: exp => set(state => ({ ...state, exp })),
-      clearExp: () => set(() => initialState),
+      clearExp: () => {
+        clearExp();
+      },
     }),
     { name: 'exp', getStorage: () => localStorage },
   ),

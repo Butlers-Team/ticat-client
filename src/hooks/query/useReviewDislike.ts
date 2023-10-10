@@ -1,19 +1,22 @@
 //query
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 // api
 import { apiCreateReviewDislike, apiDeleteReviewDislike } from '@api/review-dislike';
 
 //hooks
 import useCustomToast from '@hooks/useCustomToast';
+import { QUERY_KEYS } from './queryKeys';
 
 /** 2023/07/22- 리뷰 싫어요 뮤테이션 - by leekoby */
-export const useReviewDislike = () => {
+export const useReviewDislike = ({ festivalId }: { festivalId: number }) => {
   const toast = useCustomToast();
+  const queryClient = useQueryClient();
 
   const createReviewDislikeMutation = useMutation(apiCreateReviewDislike, {
     onSuccess: () => {
       toast({ title: '싫어요를 눌렀습니다.', status: 'success' });
+      queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
     },
     onError: (error: Error) => {
       toast({ title: `싫어요 등록에 실패했습니다.`, status: 'error' });
@@ -23,6 +26,7 @@ export const useReviewDislike = () => {
   const deleteReviewDislikeMutation = useMutation(apiDeleteReviewDislike, {
     onSuccess: () => {
       toast({ title: '싫어요를 취소했습니다.', status: 'success' });
+      queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
     },
     onError: (error: Error) => {
       toast({ title: `싫어요 취소에 실패했습니다.`, status: 'error' });
