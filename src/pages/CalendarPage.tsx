@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
@@ -16,6 +16,8 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
   const [calendarDatailList, setCalendarDatailList] = useState<CalendarListType[]>([]);
+  const [trigger, forceUpdate] = useReducer(x => x + 1, 0);
+
   /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
   const addSchedule = () => {
     window.location.href = '/festival';
@@ -37,8 +39,10 @@ const CalendarPage: React.FC = (): JSX.Element => {
       }
     };
     setPage(1);
-    fetchCalendarList();
-  }, [selecteDate, selecteMonth, selecteYears]);
+    const timer = setTimeout(() => {
+      fetchCalendarList();
+    }, 30);
+  }, [selecteDate, selecteMonth, selecteYears, trigger]);
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
@@ -90,7 +94,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
             {calendarDatailList?.map(festival => {
               return (
                 <li key={festival.festivalId}>
-                  <CalendarFestival item={festival} />
+                  <CalendarFestival item={festival} forceUpdate={forceUpdate} />
                 </li>
               );
             })}
