@@ -60,6 +60,7 @@ const NavIconbox = styled.div`
   height: 70px;
   color: #a5a5a5;
   font-family: 'Orbit', sans-serif;
+  cursor: pointer;
 
   > div {
     font-size: 2.3rem;
