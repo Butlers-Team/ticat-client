@@ -46,14 +46,6 @@ instance.interceptors.request.use(
 );
 /** 2023/07/23 -  토큰갱신 - by leekoby */
 async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: AxiosRequestConfig) {
-  if (error.response && error.response.data === '리프레시 토큰이 만료되었습니다.') {
-    clearTokens(); // 로컬스토리지 토큰 초기화
-    clearExp();
-    clearMember(); // 로컬스토리지 멤버 초기화
-
-    alert('로그인 유지 만료 다시 로그인해주세요.');
-    window.location.href = '/signin';
-  }
   if (error.response && error.response.data === '액세스 토큰이 갱신되었습니다') {
     const newAccessToken = error.response.headers.authorization;
     const newExp = dateToSeconds(error.response.headers.accesstokenexpiration);
@@ -69,11 +61,10 @@ async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: 
       delete instance.defaults.headers.common['Refresh'];
     }
   }
-
   if (originalRequest.data instanceof FormData) {
     originalRequest.headers && (originalRequest.headers['Content-Type'] = 'multipart/form-data');
   }
-
+  console.log('토큰 갱신');
   return instance(originalRequest);
 }
 /** 2023/07/04 - Response interceptor 설정- by sineTlsl */
@@ -86,22 +77,23 @@ instance.interceptors.response.use(
   /** 2023/07/09 - refresh 로직 추가  - by leekoby */
   async error => {
     const originalRequest = error.config;
-    if (
-      error.response?.status === 401 &&
-      !originalRequest._retry &&
-      error.response.data === '엑세스 토큰이 갱신되었습니다.'
-    ) {
-      console.log('error', error);
+    if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true; // 재시도 플래그를 true로 설정
 
       return refreshTokenAndUpdateRequest(error, originalRequest);
-    } else if (error.response?.status === 401 && originalRequest._retry) {
-      alert('다시 로그인해주세요.');
+    } else if (
+      error.response?.status === 401 &&
+      originalRequest._retry &&
+      error.response.data === '리프레시 토큰이 만료되었습니다.'
+    ) {
       clearTokens(); // 로컬스토리지 토큰 초기화
       clearExp();
       clearMember(); // 로컬스토리지 멤버 초기화
+      alert('로그인 유지 만료 다시 로그인해주세요.');
       window.location.href = '/signin';
+      return Promise.reject(error);
     }
+
     // 위의 경우가 아닌 경우 에러를 그대로 반환
     return Promise.reject(error);
   },
