@@ -39,9 +39,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
       }
     };
     setPage(1);
-    const timer = setTimeout(() => {
-      fetchCalendarList();
-    }, 30);
+    fetchCalendarList();
   }, [selecteDate, selecteMonth, selecteYears, trigger]);
 
   const handleLoadMore = () => {
