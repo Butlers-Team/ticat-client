@@ -8,24 +8,17 @@ export interface MemberInfo {
   clearMember: () => void;
 }
 
-// 초기값 설정
-const initialState: MemberInfo = {
-  member: null,
-  setMember: () => {},
-  clearMember: () => {},
-};
-// clearMember를 외부에서 사용하기 위한 함수
 const clearMember = () => {
-  const { clearMember } = useMemberStore.getState();
-  clearMember();
+  localStorage.removeItem('member');
 };
 /** 2023/07/22 - 로그인 응답 데이터 저장소 - by leekoby */
 const useMemberStore = create(
   persist<MemberInfo>(
     set => ({
-      ...initialState,
       setMember: member => set(state => ({ ...state, member })),
-      clearMember: () => set(() => initialState),
+      clearMember: () => {
+        clearMember();
+      },
     }),
     { name: 'member', getStorage: () => localStorage },
   ),
