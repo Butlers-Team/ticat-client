@@ -26,7 +26,7 @@ export const useReviewDislike = ({ festivalId }: { festivalId: number }) => {
   const deleteReviewDislikeMutation = useMutation(apiDeleteReviewDislike, {
     onSuccess: () => {
       toast({ title: '싫어요를 취소했습니다.', status: 'success' });
-      queryClient.invalidateQueries([QUERY_KEYS.review]);
+      queryClient.invalidateQueries([QUERY_KEYS.review, festivalId]);
     },
     onError: (error: Error) => {
       toast({ title: `싫어요 취소에 실패했습니다.`, status: 'error' });
