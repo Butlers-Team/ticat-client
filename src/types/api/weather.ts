@@ -1,4 +1,5 @@
 export interface WeatherType {
+  data(data: any): unknown;
   region: string;
   weather: {
     temp: number;
