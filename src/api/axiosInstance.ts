@@ -64,7 +64,6 @@ async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: 
   if (originalRequest.data instanceof FormData) {
     originalRequest.headers && (originalRequest.headers['Content-Type'] = 'multipart/form-data');
   }
-  console.log('토큰 갱신');
   return instance(originalRequest);
 }
 /** 2023/07/04 - Response interceptor 설정- by sineTlsl */
