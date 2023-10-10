@@ -18,9 +18,8 @@ const tabMenulist = [
 ];
 
 const TabNav = () => {
-  const [selectMenu, setSelectMenu] = useState<number>(0);
   const { accessToken, refreshToken } = getToken();
-
+  const selectMenu = sessionStorage.getItem('menuIdx');
   const navigate = useNavigate();
 
   /** 2023/07/21 - 로그인 상태일 때만 마이페이지로 이동할 수 있도록 하는 함수 - by sineTlsl */
@@ -28,7 +27,7 @@ const TabNav = () => {
     if (link === '/myinfo' && !(accessToken && refreshToken)) {
       navigate('/signin');
     } else {
-      setSelectMenu(idx);
+      sessionStorage.setItem('menuIdx', `${idx}`);
       navigate(link);
     }
   };
@@ -38,7 +37,7 @@ const TabNav = () => {
       {tabMenulist.map((menu, index) => (
         <NavIconbox
           key={index}
-          className={index === selectMenu ? 'over-tab' : 'null'}
+          className={String(index) === selectMenu ? 'over-tab' : 'null'}
           onClick={() => checkToken(menu.link, index)}>
           <div>{menu.icon}</div>
           <p>{menu.name}</p>

@@ -63,6 +63,7 @@ const Interest: React.FC<Props> = (): JSX.Element => {
   };
 
   const NavigateMainPage = () => {
+    sessionStorage.setItem('menuIdx', `0`);
     navigate('/');
   };
   return (

@@ -44,6 +44,7 @@ export const useSignIn = () => {
       } else {
         toast({ title: `로그인 성공, 메인 페이지로 이동합니다.`, status: 'success' });
         setTimeout(() => {
+          sessionStorage.setItem('menuIdx', `0`);
           navigate('/');
         }, 0);
       }

@@ -41,6 +41,7 @@ export const useRegisterInterest = () => {
         setMember(defaultMember);
       }
       toast({ title: '관심사 등록이 완료되었습니다.', status: 'success' });
+      sessionStorage.setItem('menuIdx', `0`);
       navigate('/');
     },
     onError: (error: CustomAxiosError) => {
