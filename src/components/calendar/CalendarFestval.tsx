@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarListType, CalendarListListType } from 'types/api/calendar';
+import { CalendarListType } from 'types/api/calendar';
 import { useNavigate } from 'react-router-dom';
 
 // utils
@@ -32,8 +32,8 @@ const statusStlye = (state: string) => {
 const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
   const navigate = useNavigate();
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  const deleteCalendarList = () => {
-    deleteCalendarRequest(item.calendarId);
+  const deleteCalendarList = async () => {
+    await deleteCalendarRequest(item.calendarId);
     forceUpdate(1);
     alert(`[${item.title}]일정이 삭제되었습니다.`);
   };
