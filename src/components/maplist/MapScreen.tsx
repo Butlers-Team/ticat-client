@@ -142,7 +142,7 @@ const MapScreen = () => {
         <Button
           margin="0px"
           height="40px"
-          width="70px"
+          width="80px"
           onClick={() => {
             setKeyword(inputText);
           }}>
