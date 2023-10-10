@@ -40,14 +40,14 @@ const Router = () => {
         <Route path="/callback/:interest" element={<OauthCallbackPage />} />
 
         {/* 로그인 되어있을때 접근 안되게 */}
-        <Route path="/signup" element={!isAuthenticated && !member ? <SignUpPage /> : <Navigate to="/main" />} />
-        <Route path="/signin" element={!isAuthenticated && !member ? <SignInPage /> : <Navigate to="/main" />} />
-        <Route path="/wellcome" element={!isAuthenticated && !member ? <WellcomePage /> : <Navigate to="/main" />} />
+        <Route path="/signup" element={!isAuthenticated && !member ? <SignUpPage /> : <Navigate to="/" />} />
+        <Route path="/signin" element={!isAuthenticated && !member ? <SignInPage /> : <Navigate to="/" />} />
+        <Route path="/wellcome" element={!isAuthenticated && !member ? <WellcomePage /> : <Navigate to="/" />} />
 
         {/* 로그인 안되어 있을때 접근 안되게  */}
         <Route path="/calendar" element={isAuthenticated && !!member ? <CalendarPage /> : <Navigate to="/signin" />} />
-        <Route path="/stamp/valid" element={isAuthenticated && !!member ? <StampCheck /> : <Navigate to="/main" />} />
-        <Route path="/stamp/list" element={isAuthenticated && !!member ? <StampList /> : <Navigate to="/main" />} />
+        <Route path="/stamp/valid" element={isAuthenticated && !!member ? <StampCheck /> : <Navigate to="/" />} />
+        <Route path="/stamp/list" element={isAuthenticated && !!member ? <StampList /> : <Navigate to="/" />} />
         <Route path="/myinfo" element={isAuthenticated && !!member ? <MyPage /> : <Navigate to="/signin" />} />
         <Route
           path="/setting"
@@ -61,7 +61,7 @@ const Router = () => {
         {/* 로그인되어있고, displayName이 없을때 */}
         <Route
           path="/interest"
-          element={isAuthenticated && !member?.displayName ? <InterestPage /> : <Navigate to="/main" />}
+          element={isAuthenticated && !member?.displayName ? <InterestPage /> : <Navigate to="/" />}
         />
       </Routes>
     </Layout>

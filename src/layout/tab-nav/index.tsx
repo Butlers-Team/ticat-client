@@ -10,7 +10,7 @@ import { BsCardList, BsPerson } from 'react-icons/bs';
 import { RxCalendar } from 'react-icons/rx';
 
 const tabMenulist = [
-  { icon: <AiOutlineHome />, name: '홈', link: '/main' },
+  { icon: <AiOutlineHome />, name: '홈', link: '/' },
   { icon: <IoMapOutline />, name: '지도', link: '/maplist' },
   { icon: <BsCardList />, name: '축제목록', link: '/festival' },
   { icon: <RxCalendar />, name: '캘린더', link: '/calendar' },

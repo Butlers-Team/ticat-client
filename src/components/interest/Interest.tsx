@@ -63,7 +63,7 @@ const Interest: React.FC<Props> = (): JSX.Element => {
   };
 
   const NavigateMainPage = () => {
-    navigate('/main');
+    navigate('/');
   };
   return (
     <>

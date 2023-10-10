@@ -12,7 +12,7 @@
 - `팀 명` : Butlers
 - `프로젝트명` : Ticat
 - `프로젝트 기간` : 2023.07. ~ ing
-- `배포 링크` : **[TICAT](https://d99pqcn6hzkdg.cloudfront.net/main)**
+- `배포 링크` : **[TICAT](https://d99pqcn6hzkdg.cloudfront.net/)**
 
 <br>
 
@@ -27,6 +27,7 @@
 <br>
 
 ## 🛠️ Tech Stack
+
 - TypeScript
 - React
 - Styled-components
