@@ -29,7 +29,7 @@ export const addCalendarRequest = async ({ ...params }: CalendarAddRequest) => {
   }
 };
 
-/** 2023/09/12 - 캘린더 축제 POST 요청 - by parksubeom */
+/** 2023/09/12 - 캘린더 축제 Delete 요청 - by parksubeom */
 export const deleteCalendarRequest = async (festivalId: number) => {
   const { data } = await instance.delete<string>(`/calendar/${festivalId}`, {});
 
