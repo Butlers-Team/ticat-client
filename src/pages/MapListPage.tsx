@@ -21,7 +21,7 @@ const MapListPage = () => {
   return (
     <MapListContainer>
       <MapScreen />
-      <MapList display={listAppear ? 0 : 450}>
+      <MapList display={listAppear ? 0 : 100}>
         <AccordionBtn
           className={`flex-all-center ${listAppear ?? 'clicked-btn'}`}
           onClick={() => {
@@ -70,7 +70,7 @@ const MapList = styled.article<display>`
   display: block;
   transition: all ease-in-out 0.3s;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-  transform: translateY(${props => props.display}px);
+  transform: translateY(${props => props.display}%);
   z-index: 999;
 
   .icon-margin {
@@ -103,6 +103,12 @@ const AccordionBtn = styled.button`
   color: var(--color-dark);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+
+  @media (max-width: 300px) {
+    font-size: 1.3rem;
+    padding: 7px 10px;
+    top: -50px;
+  }
 `;
 
 const MyLocationBtn = styled(AccordionBtn)`
