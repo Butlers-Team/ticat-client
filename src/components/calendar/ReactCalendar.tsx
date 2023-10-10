@@ -297,6 +297,11 @@ const CalendarWeekTr = styled.tr`
   > th {
     width: 35px;
   }
+  @media (max-width: 350px) {
+    > th {
+      width: 25px;
+    }
+  }
 `;
 
 // 달력 날짜 표기 - mscojl24
@@ -305,6 +310,10 @@ const CalendarDayTbody = styled.tbody`
   font-size: 1.5rem;
   text-align: center;
   color: var(--color-dark-gray);
+
+  @media (max-width: 350px) {
+    font-size: 1.3rem;
+  }
 `;
 
 const CalendarDayTr = styled.tr`
@@ -317,6 +326,13 @@ const CalendarDayTr = styled.tr`
     align-items: center;
     width: 35px;
     height: 35px;
+  }
+
+  @media (max-width: 350px) {
+    > th {
+      width: 25px;
+      height: 25px;
+    }
   }
 `;
 
@@ -332,7 +348,6 @@ const DateSelectBtn = styled.button`
 const DateTh = styled.th`
   cursor: pointer;
   .date-hover-color {
-    border: 1px solid red;
   }
   :hover {
     border: 1px solid red;

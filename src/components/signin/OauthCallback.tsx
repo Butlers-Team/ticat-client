@@ -53,7 +53,8 @@ const OauthCallback: React.FC<Props> = (): JSX.Element => {
         });
         // 페이지 리디렉션 (예:메인 페이지)
         if (hasInterest) {
-          navigate('/main');
+          sessionStorage.setItem('menuIdx', `0`);
+          navigate('/');
         } else {
           navigate('/interest');
         }

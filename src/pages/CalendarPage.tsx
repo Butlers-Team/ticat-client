@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useReducer } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
@@ -16,6 +16,8 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const [selecteMonth, setSelectedMonth] = useState<number>(month);
   const [selecteYears, setSelectedYears] = useState<number>(year);
   const [calendarDatailList, setCalendarDatailList] = useState<CalendarListType[]>([]);
+  const [trigger, forceUpdate] = useReducer(x => x + 1, 0);
+
   /** 2023/08/20 - 등록된 일정이 없다면 축제목록으로 경로이동시켜준다. - parksubeom */
   const addSchedule = () => {
     window.location.href = '/festival';
@@ -38,7 +40,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     setPage(1);
     fetchCalendarList();
-  }, [selecteDate, selecteMonth, selecteYears]);
+  }, [selecteDate, selecteMonth, selecteYears, trigger]);
 
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
@@ -90,7 +92,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
             {calendarDatailList?.map(festival => {
               return (
                 <li key={festival.festivalId}>
-                  <CalendarFestival item={festival} />
+                  <CalendarFestival item={festival} forceUpdate={forceUpdate} />
                 </li>
               );
             })}
@@ -109,7 +111,8 @@ const CalendarContainer = styled.div`
   height: 80vh;
   .today-date {
     font-size: 16px;
-    margin: 2rem 2rem;
+    margin: 0 2rem;
+    margin-top: 2rem;
     > span {
       font-weight: bold;
     }
@@ -124,7 +127,6 @@ const FestivalListSection = styled.section`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 75%;
   overflow: hidden;
 `;
 /** 2023/07/02 - 추가된 축제리스트가 없을 때 보여지는 섹션  - by parksubeom */

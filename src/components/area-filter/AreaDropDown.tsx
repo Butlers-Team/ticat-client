@@ -163,10 +163,6 @@ const DropDownContainer = styled.div`
     color: var(--color-dark);
     cursor: pointer;
     border-radius: 0.5rem;
-
-    &:hover {
-      color: var(--color-main);
-    }
   }
 
   > .area-item-box > .selected-btn {
