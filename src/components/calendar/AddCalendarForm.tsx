@@ -92,7 +92,8 @@ export default AddCalendar;
 const DateBackground = styled.div`
   position: fixed;
   z-index: 5;
-  width: 500px;
+  width: 100%;
+  max-width: 500px;
   height: 100%;
   background: rgba(0, 0, 0, 0.4);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
