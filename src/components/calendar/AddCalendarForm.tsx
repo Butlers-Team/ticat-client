@@ -1,9 +1,11 @@
 import { useMemberStore } from '@store/useMemberStore';
 import React, { useState } from 'react';
-import DatePicker from 'react-datepicker';
+import { ko } from 'date-fns/locale';
+import { DateRange, RangeKeyDict } from 'react-date-range';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
-import Button from '@components/Button';
 import { addCalendarRequest } from '@api/calendar';
 import { CalendarAddRequest } from 'types/api/addcalendar';
 
@@ -24,53 +26,62 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
   const mindate = new Date(`${minyear}-${minmonth}-${minday}`);
   const maxdate = new Date(`${maxyear}-${maxmonth}-${maxday}`);
   const today = new Date();
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const { member } = useMemberStore();
   member?.memberId;
 
-  const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
+  const [dateRange, setDateRange] = useState({
+    startDate: today > mindate ? today : mindate,
+    endDate: today > mindate ? today : mindate,
+    key: 'selection',
+  });
+
+  /** 2023-09-21 사용자가 선택한 날짜를 시작날짜와 끝나는날짜에 저장하는 함수. - parksubeom */
+  const handleDateChange = (ranges: RangeKeyDict) => {
+    const { startDate, endDate } = ranges.selection;
+    if (startDate && endDate) {
+      setDateRange({ startDate, endDate, key: 'selection' });
+    }
   };
   /** 2023-07-29 원하는 날짜를 픽스하고, 해당날짜 캘린더에 축제를 추가하는 함수 - parksubeom */
-  const exitForm = () => {
-    if (selectedDate === null) {
-      return alert('날짜를 선택해주세요.');
-    }
-
+  const postForm = () => {
     if (member) {
       setDateForm(false);
-      const startDate = new Date();
-      startDate.setDate(selectedDate.getDate());
+      const endDate = new Date(dateRange.endDate);
+      endDate.setDate(endDate.getDate() + 1);
       const params: CalendarAddRequest = {
         festivalId: festivalId,
-        startDate: `${startDate?.toJSON().split('T')[0]}`,
-        endDate: `${startDate?.toJSON().split('T')[0]}`,
+        startDate: `${dateRange.startDate?.toJSON().split('T')[0]}`,
+        endDate: endDate.toISOString().split('T')[0] || '',
       };
       addCalendarRequest(params);
     }
-    alert(`${selectedDate?.toLocaleDateString()}일에 일정이 추가되었습니다.`);
+    alert(
+      `${dateRange.startDate?.toLocaleDateString()}일 부터 ${dateRange.endDate?.toLocaleDateString()}일 까지의 일정이 추가합니다. `,
+    );
   };
-
+  const exitForm = () => {
+    setDateForm(false);
+  };
   return (
     <DateBackground>
       <DateContainer>
-        <label htmlFor="datePicker">캘린더 날짜 선택: </label>
-        <DatePicker
-          id="datePicker"
-          selected={selectedDate}
+        <label htmlFor="datePicker">캘린더 일정을 선택해주세요. </label>
+        <DateRange
+          locale={ko}
+          dateDisplayFormat="yyyy.MM.dd"
+          editableDateInputs
           onChange={handleDateChange}
+          moveRangeOnFirstSelection={false}
+          ranges={[dateRange]}
           minDate={today > mindate ? today : mindate}
           maxDate={maxdate}
-          dateFormat="yyyy-MM-dd"
-          placeholderText="날짜를 선택하세요"
-          todayButton="오늘"
-          customInput={<input />}
-          showMonthDropdown
-          showYearDropdown
-          dropdownMode="select"
         />
-        {selectedDate && <p>선택한 날짜: {selectedDate.toLocaleDateString()}</p>}
-        <Button onClick={exitForm}>선택</Button>
+        <BtnGroup>
+          <ButtonL onClick={postForm}>일정등록</ButtonL>
+          <ButtonR onClick={exitForm} color="red">
+            취소
+          </ButtonR>
+        </BtnGroup>
       </DateContainer>
     </DateBackground>
   );
@@ -79,24 +90,95 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
 export default AddCalendar;
 
 const DateBackground = styled.div`
+  position: fixed;
   z-index: 5;
   width: 100%;
+  max-width: 500px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(0, 0, 0, 0.4);
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  position: absolute;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const DateContainer = styled.div`
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+
   z-index: 10;
   width: 100%;
-  height: 100%;
+  animation: showModal 0.5s forwards;
+
+  @keyframes showModal {
+    0% {
+      opacity: 0;
+      transform: translateY(-40px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0px);
+    }
+  }
+
+  label {
+    color: #ccc;
+  }
+
+  > .rdrCalendarWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    > .rdrMonths {
+      align-items: center;
+      > .rdrMonth {
+        width: 100%;
+      }
+    }
+  }
+`;
+
+// 버튼 디자인 수정
+
+const BtnGroup = styled.div`
+  border: 1px solid #dbdbdb;
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+
+  > button:nth-child(1):hover {
+    color: var(--color-sub);
+    background-color: #f1f9ff;
+  }
+
+  > button:nth-child(2):hover {
+    color: #d66767;
+  }
+`;
+
+const ButtonL = styled.button`
+  cursor: pointer;
+  border: none;
+  background-color: #fff;
+  color: var(--color-main);
+  width: 100%;
+  height: 50px;
+  font-size: 1.4rem;
+  font-weight: 600;
+`;
+
+const ButtonR = styled(ButtonL)`
+  border-left: 1px solid #dbdbdb;
+  color: #aaaaaa;
+  background-color: #f7f7f7;
 `;

@@ -7,6 +7,7 @@ import { IoLogoOctocat } from 'react-icons/io';
 
 // util
 import { splitAddress } from '@utils/address';
+import { convertDateFormat } from '@utils/formatDate';
 
 interface StampTicketProps {
   stampList: StampType[];
@@ -18,10 +19,6 @@ interface StampTicketBg {
 /**  2023/06/30 - 스탬프 티켓 컴포넌트 - by sineTlsl */
 const StampTicket = ({ stampList }: StampTicketProps) => {
   const colorBg = ['var(--color-main)', 'var(--color-sub)', '#FF6B6B'];
-  const currentDate = new Date();
-  const formattedDate = `${currentDate.getFullYear()}. ${(currentDate.getMonth() + 1)
-    .toString()
-    .padStart(2, '0')}. ${currentDate.getDate().toString().padStart(2, '0')}`;
 
   return (
     <StampTicketContainer>
@@ -34,7 +31,7 @@ const StampTicket = ({ stampList }: StampTicketProps) => {
                 <MdPlace size="13px" color="var(--color-light)" />
                 <span>{splitAddress(item.address)}</span>
               </p>
-              <p className="item-date">{formattedDate}</p>
+              <p className="item-date">{convertDateFormat(item.stampDate)}</p>
             </ItemText>
             <ItemPhoto>
               <IoLogoOctocat size="50px" color="var(--color-light)" />
@@ -66,7 +63,6 @@ const StampTicketContainer = styled.div`
 /** 2023/06/30 - 스탬프 티켓(item) 박스- by sineTlsl  */
 const TicketItemWrap = styled.div<StampTicketBg>`
   width: 100%;
-  height: 10rem;
   flex-shrink: 0;
   border-radius: 10px;
   background: ${({ background }) => background};

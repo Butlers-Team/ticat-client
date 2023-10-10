@@ -59,19 +59,19 @@ const BtnLabel = styled.label.withConfig({
   }
 
   &::before {
-    content: ${props => (props.isSelectTicket ? "'CALENDAR'" : "'TICKET'")};
+    content: ${props => (props.isSelectTicket ? "'달력'" : "'리스트로 보기'")};
     padding-left: 0.3rem;
-    width: 7rem;
-    left: ${props => (props.isSelectTicket ? '7rem' : '0rem')};
+    width: ${props => (props.isSelectTicket ? '7rem' : '10rem')};
+    left: ${props => (props.isSelectTicket ? '9rem' : '0rem')};
     color: #a7a7a7;
   }
 
   &::after {
-    content: ${props => (props.isSelectTicket ? "'TICKET'" : "'CALENDAR'")};
+    content: ${props => (props.isSelectTicket ? "'리스트로 보기'" : "'달력'")};
     background: #fff;
     font-weight: 700;
-    width: ${props => (props.isSelectTicket ? '7rem' : '9rem')};
-    left: ${props => (props.isSelectTicket ? '0rem' : '7rem')};
+    width: ${props => (props.isSelectTicket ? '10rem' : '7rem')};
+    left: ${props => (props.isSelectTicket ? '0rem' : '10rem')};
     box-shadow: 1px 2px 8px rgba(0, 0, 0, 0.25);
   }
 `;

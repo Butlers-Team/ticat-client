@@ -10,11 +10,7 @@ interface BtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<BtnProps> = ({ children, ...props }) => {
-  return (
-    <div>
-      <PublicButton {...props}>{children}</PublicButton>
-    </div>
-  );
+  return <PublicButton {...props}>{children}</PublicButton>;
 };
 export default Button;
 
@@ -29,7 +25,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   border-radius: 5px;
   border: none;
   margin: ${({ margin }) => margin ?? '10px 0px'};
-  background-color: var(--color-main);
+  background-color: ${({ color }) => color ?? 'var(--color-main)'};
   color: var(--color-light);
   font-weight: bold;
   cursor: pointer;
@@ -40,7 +36,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
     cursor: not-allowed;
 
     &:hover {
-      background-color: var(--color-main);
+      background-color: ${({ color }) => color ?? 'var(--color-main)'};
     }
   }
 

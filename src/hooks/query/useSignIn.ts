@@ -42,9 +42,10 @@ export const useSignIn = () => {
           navigate('/interest');
         }, 0);
       } else {
-        toast({ title: `로그인 성공, 페이지 이동합니다.`, status: 'success' });
+        toast({ title: `로그인 성공, 메인 페이지로 이동합니다.`, status: 'success' });
         setTimeout(() => {
-          navigate(-1);
+          sessionStorage.setItem('menuIdx', `0`);
+          navigate('/');
         }, 0);
       }
     },

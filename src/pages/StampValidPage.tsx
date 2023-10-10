@@ -11,16 +11,22 @@ import { CalendarListType } from 'types/api/calendar';
 // api
 import { getStampDistance, postStamp } from '@api/stamp';
 
+// hook
+import useCustomToast from '@hooks/useCustomToast';
+
 // component
 import Button from '@components/Button';
 import StampLocationCheck from '@components/stamp/StampLocationCheck';
 import TicketStamping from '@components/stamp/TicketStamping';
+import { AxiosError } from 'axios';
 
 /**  2023/09/17 - 티캣을 찍을 수 있도록 캘린더 일정과 거리를 확인하는 컴포넌트 - by sineTlsl */
 const StampValidPage = () => {
   const navigate = useNavigate();
   const routerLocation = useLocation();
   const queryClient = useQueryClient();
+  const toast = useCustomToast();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [showAlert, setShowAlert] = useState<boolean>(false);
 
@@ -66,11 +72,17 @@ const StampValidPage = () => {
       };
 
       queryClient.invalidateQueries(['getStampList', params]);
-      navigate('/stamp/list');
+      toast({ title: '도장 꾹~! 스탬프 리스트 페이지로 이동합니다 :(', status: 'success' });
+
+      setTimeout(() => {
+        navigate('/stamp/list');
+      }, 2000);
     },
-    onError: (err: any) => {
-      if (err.response.status === 409) {
-        alert('이미 찍은 스탬프입니다. 다른 축제로 가볼까요?!');
+    onError: err => {
+      const axiosError = err as AxiosError;
+
+      if (axiosError.response && axiosError.response.status === 409) {
+        toast({ title: '이미 찍은 스탬프입니다.', status: 'error' });
         navigate('/calendar');
       } else {
         console.log(err);

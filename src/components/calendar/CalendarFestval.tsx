@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { CalendarListType, CalendarListListType } from 'types/api/calendar';
+import { CalendarListType } from 'types/api/calendar';
 import { useNavigate } from 'react-router-dom';
 
 // utils
@@ -9,9 +9,12 @@ import { deleteCalendarRequest } from '@api/calendar';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
+import { CgTrash } from 'react-icons/cg';
+import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
+  forceUpdate: React.Dispatch<React.SetStateAction<number>>;
 }
 
 const statusStlye = (state: string) => {
@@ -26,11 +29,12 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item }: FestivalProps) => {
+const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
   const navigate = useNavigate();
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  const deleteCalendarList = () => {
-    deleteCalendarRequest(item.calendarId);
+  const deleteCalendarList = async () => {
+    await deleteCalendarRequest(item.calendarId);
+    forceUpdate(1);
     alert(`[${item.title}]일정이 삭제되었습니다.`);
   };
   /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
@@ -67,10 +71,19 @@ const CalendarFestival = ({ item }: FestivalProps) => {
       </DescriptionWrap>
       <CalendarRightContainer>
         <FestivalrCategoryWrap>
-          <p className="festival-right">{item.category}</p>
+          <CalendarDeleteBtn onClick={deleteCalendarList}>
+            <CgTrash />
+          </CalendarDeleteBtn>
         </FestivalrCategoryWrap>
-        <StampAddBtn onClick={routeStampPage}>스탬프찍기</StampAddBtn>
-        <CalendarDeleteBtn onClick={deleteCalendarList}>삭제</CalendarDeleteBtn>
+        {item.status === 'EXPECTED' ? (
+          <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
+            스탬프찍기
+          </DisabledBtn>
+        ) : (
+          <StampAddBtn onClick={routeStampPage}>
+            <LuStamp />
+          </StampAddBtn>
+        )}
       </CalendarRightContainer>
     </FestivalContainer>
   );
@@ -129,7 +142,7 @@ const ImgBox = styled.div`
 
 // 축제 정보 텍스트
 const DescriptionWrap = styled.div`
-  width: calc(100% - 95px - 35px);
+  width: calc(100% - 115px - 35px);
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
@@ -180,11 +193,11 @@ const DescriptionWrap = styled.div`
 `;
 
 const CalendarRightContainer = styled.div`
-  width: 60px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end; /* 수정 */
+  align-items: flex-end; /* 수정 */
   margin-left: auto;
 `;
 
@@ -208,22 +221,44 @@ const CalendarDeleteBtn = styled.button`
   width: 35px;
   height: 20px;
   border: none;
-  background-color: red;
+  background-color: #ffffff;
   border-radius: 5px;
-  font-size: 12px;
-  padding: 0;
+  font-size: 1.5rem;
+  color: #ccc;
   margin-bottom: 20px;
+  font-weight: bold;
   cursor: pointer;
+
+  :hover {
+    color: #ff5454;
+  }
 `;
 
 const StampAddBtn = styled.button`
+  width: 50px;
+
+  border: 1px solid #eee;
+  background-color: #ffffff;
+  color: #b8b8b8;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  cursor: pointer;
+
+  :hover {
+    color: var(--color-main);
+  }
+`;
+
+const DisabledBtn = styled.button`
   width: 60px;
   height: 20px;
   border: none;
-  background-color: var(--color-main);
+  background-color: gray;
+  color: #d2cfcf;
   border-radius: 5px;
   font-size: 12px;
+  font-weight: bold;
   padding: 0;
   margin-bottom: 20px;
-  cursor: pointer;
 `;

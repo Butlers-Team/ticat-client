@@ -8,7 +8,7 @@ import SignIn from '@components/signin/SignIn';
 const SignInPage: React.FC = (props): JSX.Element => {
   return (
     <SignInPageContainer>
-      <SignIn />;
+      <SignIn />
     </SignInPageContainer>
   );
 };

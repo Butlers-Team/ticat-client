@@ -37,6 +37,7 @@ const RecommendFestival = () => {
   const navigate = useNavigate();
   const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
   const [regionWeather] = useState<WeatherType | undefined>();
+  console.log(FestivalData);
 
   const getMainData = async () => {
     const res = await getMainFastival();
@@ -49,6 +50,18 @@ const RecommendFestival = () => {
 
   const routingFestivalPage = (id: number) => {
     navigate(`/detail/${id}`);
+  };
+
+  const watherIcon = (x: number, y: number) => {
+    // <WeatherIcon regionWeather={regionWeather} />
+    const fastivalWather = {
+      currentLongitude: x,
+      currentLatitude: y,
+    };
+
+    // 여기에서 res를 가지고 필요한 작업을 수행할 수 있습니다.
+    const result = <WeatherIcon regionWeather={regionWeather} />;
+    return result;
   };
 
   /** 2023.07.05 main banner swiper options - by mscojl24 */
@@ -74,12 +87,10 @@ const RecommendFestival = () => {
             onClick={() => {
               routingFestivalPage(festival.festivalId);
             }}>
-            <div className="wather-info flex-all-center">
+            {/* <div className="wather-info flex-all-center">
               <span>축제날씨</span>
-              <span className="wather-icon flex-all-center">
-                <WeatherIcon regionWeather={regionWeather} />
-              </span>
-            </div>
+              <span className="wather-icon flex-all-center">{watherIcon(festival.mapx, festival.mapy)}</span>
+            </div> */}
             <div className="festival-info">
               <p>
                 {formatDate(festival.eventstartdate)} - {formatDate(festival.eventenddate)}
