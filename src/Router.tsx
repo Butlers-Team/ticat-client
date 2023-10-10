@@ -31,7 +31,7 @@ const Router = () => {
   return (
     <Layout>
       <Routes>
-        <Route path="/main" element={<MainPage />} />
+        <Route path="/" element={<MainPage />} />
 
         <Route path="/maplist" element={<MapListPage />} />
         <Route path="/festival" element={<FestivalListPage />} />
