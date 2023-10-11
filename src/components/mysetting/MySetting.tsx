@@ -6,10 +6,16 @@ import { useMemberStore } from '@store/useMemberStore';
 import { useTokenStore } from '@store/useTokenStore';
 import { useExpStore } from '@store/useExpStore';
 
+// hook
+import { useDeleteMember } from '@hooks/query/useDeleteMember';
+
 const MySetting = () => {
   const { clearMember } = useMemberStore();
   const { clearTokens } = useTokenStore();
   const { clearExp } = useExpStore();
+
+  const deleteMemberMutation = useDeleteMember();
+
   const handelMembershipSetting = (item: string) => {
     if (item === '로그아웃') {
       clearMember();
@@ -19,10 +25,8 @@ const MySetting = () => {
       alert('로그아웃이 완료되었습니다');
       window.location.href = '/';
     }
-
     if (item === '회원탈퇴') {
-      /** 2023/08/08 회원탈퇴 요청 - by mscojl24 */
-      // console.log('회원탈퇴 요청좀 도와주실분~');
+      deleteMemberMutation.mutate();
     }
   };
 
