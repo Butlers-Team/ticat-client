@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
+
+// hook
+import { usePostFestivalLike } from '@hooks/query/usePostFestivalLike';
+import { usePostFestivalUnLike } from '@hooks/query/usePostFestivalUnLike';
 
 // utils
 import { formatDate } from '@utils/formatDate';
@@ -8,6 +13,7 @@ import { RecentListType } from 'types/api/myinfo';
 // icons
 import { MdPlace } from 'react-icons/md';
 import { TiHeartFullOutline } from 'react-icons/ti';
+import { useState } from 'react';
 
 interface RecentListItemProps {
   recentItem: RecentListType;
@@ -21,23 +27,42 @@ const handlerImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
 
 /** 2023/07/08 - 축제 컴포넌트 - by sineTlsl */
 const RecentListItem = ({ recentItem }: RecentListItemProps) => {
+  const postFestivalLike = usePostFestivalLike({ festivalId: recentItem.festivalId });
+  const postFestivalUnLike = usePostFestivalUnLike({ festivalId: recentItem.festivalId });
+  const [itemIsLike, setIsItemLike] = useState<boolean>(recentItem.favorite);
+
+  /** 2023/10/10 - 축제 좋아요/좋아요 취소 - by sineTlsl */
+  const handlerFestivalLike = () => {
+    setIsItemLike(!itemIsLike);
+
+    if (!itemIsLike) {
+      postFestivalLike.mutate();
+    } else {
+      postFestivalUnLike.mutate();
+    }
+  };
+
   return (
     <FestivalContainer>
-      <ImgWrap>
-        <img src={recentItem.imageUrl || '/assets/images/ticat-cover-image.png'} alt="" onError={handlerImgError} />
-      </ImgWrap>
-      <DescriptionWrap>
-        <h3 className="festival-title">{recentItem.title}</h3>
-        <div className="area-wrap">
-          <MdPlace size="13px" color="var(--color-dark)" />
-          <p className="festival-area">{splitAddress(recentItem.address)}</p>
-        </div>
-        <p className="festival-date">
-          {formatDate(recentItem.eventStartDate)} ~ {formatDate(recentItem.eventEndDate)}
-        </p>
-      </DescriptionWrap>
+      <Link className="link-wrap" to={`/detail/${recentItem.festivalId}`}>
+        <ImgWrap>
+          <img src={recentItem.imageUrl || '/assets/images/ticat-cover-image.png'} alt="" onError={handlerImgError} />
+        </ImgWrap>
+        <DescriptionWrap>
+          <h3 className="festival-title">{recentItem.title}</h3>
+          <div className="area-wrap">
+            <MdPlace size="13px" color="var(--color-dark)" />
+            <p className="festival-area">{splitAddress(recentItem.address)}</p>
+          </div>
+          <p className="festival-date">
+            {formatDate(recentItem.eventStartDate)} ~ {formatDate(recentItem.eventEndDate)}
+          </p>
+        </DescriptionWrap>
+      </Link>
       <FestivalLikeWrap>
-        <TiHeartFullOutline size="14px" color={recentItem.favorite ? 'var(--color-sub)' : 'var(--color-light-gray)'} />
+        <button onClick={handlerFestivalLike}>
+          <TiHeartFullOutline size="14px" color={itemIsLike ? 'var(--color-sub)' : 'var(--color-light-gray)'} />
+        </button>
       </FestivalLikeWrap>
     </FestivalContainer>
   );
@@ -48,12 +73,18 @@ export default RecentListItem;
 // 최근 목록 컨테이너
 const FestivalContainer = styled.div`
   display: flex;
-  align-items: center;
   margin: 0 auto;
   width: calc(100% - 4rem);
   height: 105px;
   color: var(--color-dark);
   font-size: 13px;
+
+  > .link-wrap {
+    display: flex;
+    width: calc(100% - 20px);
+    height: 100%;
+    align-items: center;
+  }
 `;
 
 // 이미지
@@ -102,8 +133,15 @@ const DescriptionWrap = styled.div`
 // 축제 좋아요
 const FestivalLikeWrap = styled.div`
   height: 100%;
-  width: 14px;
+  width: 20px;
   display: flex;
   align-items: flex-start;
-  padding-top: 2.5rem;
+  padding-top: 2rem;
+
+  > button {
+    border: none;
+    padding: none;
+    margin: none;
+    background: none;
+  }
 `;
