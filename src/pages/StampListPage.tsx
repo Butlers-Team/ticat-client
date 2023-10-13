@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { getStampList } from '@api/stamp';
 import { useQuery } from '@tanstack/react-query';
 import { StampListRequest } from 'types/api/stamp';
@@ -16,6 +16,9 @@ import StampToggle from '@components/stamp/StampToggle';
 const StampListPage = () => {
   // 현재 날짜를 기준으로 캘린더 정의
   const navigate = useNavigate();
+  const routerLocation = useLocation();
+  const goBackPageMode: string = routerLocation.state.page;
+
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth() + 1;
@@ -37,7 +40,7 @@ const StampListPage = () => {
 
   /** 2023/07/22 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
-    navigate('/myinfo');
+    navigate(goBackPageMode);
   };
 
   /** 2023/07/01 - 토글 클릭 시 상태 전환 - by sineTlsl */
