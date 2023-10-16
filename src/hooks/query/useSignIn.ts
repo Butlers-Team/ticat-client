@@ -35,14 +35,18 @@ export const useSignIn = () => {
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
       setMember(response.data);
-      if (response.data.displayName === null) {
-        toast({ title: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
+      if (!response.data.interest) {
+        toast({ title: '로그인 성공', description: '닉네임 등록 및 관심사 등록이 필요합니다.', status: 'success' });
         // 닉네임 설정 및 관심사 등록이 필요한 경우 처리 추가
         setTimeout(() => {
           navigate('/interest');
         }, 0);
       } else {
-        toast({ title: `로그인 성공, 메인 페이지로 이동합니다.`, status: 'success' });
+        toast({
+          title: `로그인 성공`,
+          description: `메인 페이지로 이동합니다.`,
+          status: 'success',
+        });
         setTimeout(() => {
           sessionStorage.setItem('menuIdx', `0`);
           navigate('/');

@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { Member } from 'types/auth';
+import { loginInfo } from 'types/auth';
 import { persist } from 'zustand/middleware';
 
 export interface MemberInfo {
-  member?: Member | null;
-  setMember: (member: Member | null) => void;
+  member?: loginInfo | null;
+  setMember: (member: loginInfo | null) => void;
   clearMember: () => void;
 }
 
@@ -18,6 +18,7 @@ const useMemberStore = create(
       setMember: member => set(state => ({ ...state, member })),
       clearMember: () => {
         clearMember();
+        set({ member: null });
       },
     }),
     { name: 'member', getStorage: () => localStorage },

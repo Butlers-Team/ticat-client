@@ -26,7 +26,8 @@ const Router = () => {
   /** 2023/08/15- 접근 보안 추가 - by leekoby */
   const { member } = useMemberStore();
   const { accessToken, refreshToken } = useTokenStore();
-  const isAuthenticated = !!accessToken && !!refreshToken;
+  const isAuthenticated = !!accessToken && !!refreshToken && !!member;
+  const isAuthenticatedWithInterest = !!isAuthenticated && !member.interest;
 
   return (
     <Layout>
@@ -40,29 +41,22 @@ const Router = () => {
         <Route path="/callback/:interest" element={<OauthCallbackPage />} />
 
         {/* 로그인 되어있을때 접근 안되게 */}
-        <Route path="/signup" element={!isAuthenticated && !member ? <SignUpPage /> : <Navigate to="/" />} />
-        <Route path="/signin" element={!isAuthenticated && !member ? <SignInPage /> : <Navigate to="/" />} />
-        <Route path="/wellcome" element={!isAuthenticated && !member ? <WellcomePage /> : <Navigate to="/" />} />
+        <Route path="/signup" element={isAuthenticated ? <Navigate to="/" /> : <SignUpPage />} />
+        <Route path="/signin" element={isAuthenticated ? <Navigate to="/" /> : <SignInPage />} />
+        <Route path="/wellcome" element={isAuthenticated ? <Navigate to="/" /> : <WellcomePage />} />
 
         {/* 로그인 안되어 있을때 접근 안되게  */}
-        <Route path="/calendar" element={isAuthenticated && !!member ? <CalendarPage /> : <Navigate to="/signin" />} />
-        <Route path="/stamp/valid" element={isAuthenticated && !!member ? <StampCheck /> : <Navigate to="/" />} />
-        <Route path="/stamp/list" element={isAuthenticated && !!member ? <StampList /> : <Navigate to="/" />} />
-        <Route path="/myinfo" element={isAuthenticated && !!member ? <MyPage /> : <Navigate to="/signin" />} />
-        <Route
-          path="/setting"
-          element={isAuthenticated && !!member ? <MyInfoSettingPage /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/profile"
-          element={isAuthenticated && !!member ? <ProfileUpdatePage /> : <Navigate to="/signin" />}
-        />
+        <Route path="/calendar" element={isAuthenticated ? <CalendarPage /> : <Navigate to="/signin" />} />
+        <Route path="/stamp/valid" element={isAuthenticated ? <StampCheck /> : <Navigate to="/signin" />} />
+        <Route path="/stamp/list" element={isAuthenticated ? <StampList /> : <Navigate to="/signin" />} />
+        <Route path="/myinfo" element={isAuthenticated ? <MyPage /> : <Navigate to="/signin" />} />
+        <Route path="/setting" element={isAuthenticated ? <MyInfoSettingPage /> : <Navigate to="/signin" />} />
+        <Route path="/profile" element={isAuthenticated ? <ProfileUpdatePage /> : <Navigate to="/signin" />} />
 
         {/* 로그인되어있고, displayName이 없을때 */}
-        <Route
-          path="/interest"
-          element={isAuthenticated && !member?.displayName ? <InterestPage /> : <Navigate to="/" />}
-        />
+        <Route path="/interest" element={isAuthenticatedWithInterest ? <Navigate to="/" /> : <InterestPage />} />
+
+        <Route path="*" element={<>404 not found</>} />
       </Routes>
     </Layout>
   );
