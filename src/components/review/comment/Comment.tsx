@@ -21,4 +21,6 @@ const CommentSection = styled.section`
   width: 100%;
   height: 100%;
   padding: 1rem 1rem;
+  background-color: #f1f3f5;
+  border-radius: 1rem;
 `;
