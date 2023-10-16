@@ -67,6 +67,9 @@ async function refreshTokenAndUpdateRequest(error: AxiosError, originalRequest: 
   return instance(originalRequest);
 }
 /** 2023/07/04 - Response interceptor 설정- by sineTlsl */
+
+let isFirstRequest = false;
+
 instance.interceptors.response.use(
   res => {
     // 응답 데이터로 작업 수행
@@ -88,7 +91,11 @@ instance.interceptors.response.use(
       clearTokens(); // 로컬스토리지 토큰 초기화
       clearExp();
       clearMember(); // 로컬스토리지 멤버 초기화
-      alert('로그인 유지 만료 다시 로그인해주세요.');
+      if (!isFirstRequest) {
+        isFirstRequest = true;
+        alert('로그인 유지 만료 다시 로그인해주세요.');
+      }
+
       window.location.href = '/signin';
       return Promise.reject(error);
     }
