@@ -2,8 +2,6 @@
 import { useRef, useState } from 'react';
 //hooks
 import { useReviewDislike, useReviewLike } from '@hooks/query';
-//store
-import { useMemberStore } from '@store/useMemberStore';
 
 import {
   BiDislike as FalseDislike,
@@ -13,7 +11,6 @@ import {
 } from 'react-icons/bi';
 
 import styled from 'styled-components';
-import useCustomToast from '@hooks/useCustomToast';
 import { optimisticUpdateWithMutate } from '@utils/optimisticUpdateWithMutate';
 
 interface Props {
@@ -51,9 +48,9 @@ const ReviewLikes: React.FC<Props> = ({
       timer,
       isLiked,
       setIsLiked,
-      500,
       createReviewLikeMutation,
       deleteReviewLikeMutation,
+      500,
       setLikeCount,
       isDisliked,
       setIsDisliked,
@@ -66,9 +63,9 @@ const ReviewLikes: React.FC<Props> = ({
       timer,
       isDisliked,
       setIsDisliked,
-      500,
       createReviewDislikeMutation,
       deleteReviewDislikeMutation,
+      500,
       setDislikeCount,
       isLiked,
       setIsLiked,
