@@ -2,16 +2,18 @@
 import styled from 'styled-components';
 //libs
 import { getTimeDiff } from '@libs/time';
+//hooks
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
 
 interface Props {
   displayName: string;
   createdAt: string;
   modifiedAt?: string;
-  isMyPage?: boolean;
 }
 
 /** 2023/08/08- 댓글 상단 프로필이미지/닉네임/작성일- by leekoby */
-const CommentItemHeader: React.FC<Props> = ({ displayName, createdAt, modifiedAt, isMyPage }): JSX.Element => {
+const CommentItemHeader: React.FC<Props> = ({ displayName, createdAt, modifiedAt }): JSX.Element => {
+  const isMyPage = useIsSameLocation('/myinfo');
   return (
     <CommentHeaderContainer isMyPage={isMyPage}>
       <InfoWrapper>{!isMyPage && <span className="nickname">{displayName}</span>}</InfoWrapper>

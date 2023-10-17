@@ -17,6 +17,8 @@ import CommentForm from '@components/review/comment/CommentForm';
 import Comment from '@components/review/comment/Comment';
 //store
 import { useMemberStore } from '@store/useMemberStore';
+//hooks
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
 
 interface Props {
   festivalId: number;
@@ -24,7 +26,6 @@ interface Props {
   showCommentForm: boolean;
   onToggleCommentForm?: () => void;
   isEditMode: boolean;
-  isMyPage?: boolean;
   onEditModeChange: () => void;
 }
 /** 2023/07/22 - 리뷰 아이템 - by leekoby */
@@ -34,9 +35,9 @@ const ReviewItem: React.FC<Props> = ({
   showCommentForm,
   onToggleCommentForm,
   isEditMode = false,
-  isMyPage = false,
   onEditModeChange,
 }): JSX.Element => {
+  const isMyPage = useIsSameLocation('/myinfo');
   const { member } = useMemberStore();
 
   const {
@@ -82,13 +83,7 @@ const ReviewItem: React.FC<Props> = ({
             </ItemImgWrap>
           )}
           {displayName && (
-            <ReviewItemHeader
-              displayName={displayName}
-              rating={rating}
-              createdAt={createdAt}
-              modifiedAt={modifiedAt}
-              isMyPage={isMyPage}
-            />
+            <ReviewItemHeader displayName={displayName} rating={rating} createdAt={createdAt} modifiedAt={modifiedAt} />
           )}
         </HeaderWrapper>
         {isEditMode ? (
@@ -101,7 +96,7 @@ const ReviewItem: React.FC<Props> = ({
           />
         ) : (
           <>
-            <ReviewItemContent content={content} isMyPage={isMyPage} />
+            <ReviewItemContent content={content} />
             <ReviewImage pictures={pictures} />
           </>
         )}

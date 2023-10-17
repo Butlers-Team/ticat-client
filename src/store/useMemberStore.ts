@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { loginInfo } from 'types/auth';
 import { persist } from 'zustand/middleware';
 
-export interface MemberInfo {
+export interface MemberState {
   member?: loginInfo | null;
   setMember: (member: loginInfo | null) => void;
   clearMember: () => void;
@@ -13,7 +13,7 @@ const clearMember = () => {
 };
 /** 2023/07/22 - 로그인 응답 데이터 저장소 - by leekoby */
 const useMemberStore = create(
-  persist<MemberInfo>(
+  persist<MemberState>(
     set => ({
       setMember: member => set(state => ({ ...state, member })),
       clearMember: () => {

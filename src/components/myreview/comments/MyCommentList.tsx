@@ -13,7 +13,7 @@ import { useFetchMyCommentsList } from '@hooks/query/useFetchMyComment';
 interface Props {}
 
 /** 2023/08/15- 마이페이지 나의 리뷰 댓글 리스트  - by leekoby */
-const MyCommentList: React.FC<Props> = (props): JSX.Element => {
+const MyCommentList: React.FC<Props> = (): JSX.Element => {
   const [page, setPage] = useState(1);
   const { data } = useFetchMyCommentsList({ page, size: 10 });
 
@@ -44,7 +44,6 @@ const MyCommentList: React.FC<Props> = (props): JSX.Element => {
               <CommnetItem
                 key={comment.reviewCommentId}
                 comment={comment}
-                isMyPage
                 isEditMode={activeEditModeComment === comment.reviewCommentId}
                 onEditModeChange={() => handleEditModeChange(comment.reviewCommentId)}
               />

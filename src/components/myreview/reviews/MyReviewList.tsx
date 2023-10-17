@@ -54,7 +54,6 @@ const MyReviewList: React.FC<Props> = (props): JSX.Element => {
                 isEditMode={activeEditModeReivew === review.reviewId}
                 onEditModeChange={() => handleEditModeChange(review.reviewId)}
                 showCommentForm={openedReviewId === review.reviewId}
-                isMyPage={true}
               />
             </li>
           ))}

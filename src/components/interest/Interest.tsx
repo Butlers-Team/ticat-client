@@ -13,8 +13,6 @@ import TopHistoryBackNav from '@components/TopHistoryBackNav';
 //hooks
 import { useRegisterInterest } from '@hooks/query';
 //store
-import { useTokenStore } from '@store/useTokenStore';
-import { useMemberStore } from '@store/useMemberStore';
 
 interface Props {}
 

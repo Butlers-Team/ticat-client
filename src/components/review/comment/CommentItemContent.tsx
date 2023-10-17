@@ -2,14 +2,16 @@
 import styled from 'styled-components';
 //utils
 import { getSanitizedContent } from '@utils/sanitizeContent';
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
 
 interface Props {
-  isMyPage?: boolean;
   content: string;
 }
 /** 2023/08/08- 댓글 내용 - by leekoby */
-const ContentItemContent: React.FC<Props> = ({ content, isMyPage }): JSX.Element => {
+const ContentItemContent: React.FC<Props> = ({ content }): JSX.Element => {
   const sanitizedContent = getSanitizedContent(content);
+  const isMyPage = useIsSameLocation('/myinfo');
+
   return (
     <ContentContainer isMyPage={isMyPage}>
       <p dangerouslySetInnerHTML={{ __html: sanitizedContent }} />

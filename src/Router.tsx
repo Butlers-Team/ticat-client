@@ -27,7 +27,7 @@ const Router = () => {
   const { member } = useMemberStore();
   const { accessToken, refreshToken } = useTokenStore();
   const isAuthenticated = !!accessToken && !!refreshToken && !!member;
-  const isAuthenticatedWithInterest = !!isAuthenticated && !member.interest;
+  const isAuthenticatedWithInterest = !!isAuthenticated && member.interest;
 
   return (
     <Layout>

@@ -9,16 +9,17 @@ import ContentItemContent from '@components/review/comment/CommentItemContent';
 import CommentItemHeader from '@components/review/comment/CommentItemHeader';
 //store
 import { useMemberStore } from '@store/useMemberStore';
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
 
 interface Props {
   comment: CommentResponse | MyCommentResponse;
   isEditMode: boolean;
-  isMyPage?: boolean;
   onEditModeChange: () => void;
 }
 
 /** 2023/08/07- 댓글 아이템 - by leekoby */
-const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, isMyPage }): JSX.Element => {
+const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange }): JSX.Element => {
+  const isMyPage = useIsSameLocation('/myinfo');
   const { member } = useMemberStore();
 
   const { content, festivalId, reviewId, createdAt, memberId, reviewCommentId, modifiedAt } = comment;
@@ -48,12 +49,7 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
               <img src={profileUrl || '/assets/images/default-profile-image.png'} />
             </ItemImgWrap>
             {displayName && (
-              <CommentItemHeader
-                displayName={displayName}
-                createdAt={createdAt}
-                modifiedAt={modifiedAt}
-                isMyPage={isMyPage}
-              />
+              <CommentItemHeader displayName={displayName} createdAt={createdAt} modifiedAt={modifiedAt} />
             )}
           </HeaderWrapper>
         )}
@@ -70,17 +66,12 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
         ) : (
           <>
             {!isMyPage ? (
-              <ContentItemContent content={content} isMyPage={isMyPage} />
+              <ContentItemContent content={content} />
             ) : (
               <MyPageContent>
-                <ContentItemContent content={content} isMyPage={isMyPage} />
+                <ContentItemContent content={content} />
                 {displayName && (
-                  <CommentItemHeader
-                    displayName={displayName}
-                    createdAt={createdAt}
-                    modifiedAt={modifiedAt}
-                    isMyPage={isMyPage}
-                  />
+                  <CommentItemHeader displayName={displayName} createdAt={createdAt} modifiedAt={modifiedAt} />
                 )}
               </MyPageContent>
             )}
@@ -89,7 +80,6 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
                 reviewId={reviewId}
                 commentId={comment.reviewCommentId}
                 onEditClick={onEditModeChange}
-                isMyPage={isMyPage}
               />
             )}
           </>

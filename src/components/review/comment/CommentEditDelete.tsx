@@ -2,16 +2,18 @@
 import styled from 'styled-components';
 //hooks
 import { useDeleteComment } from '@hooks/query/useDeleteComment';
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
 
 interface Props {
   commentId: number;
   reviewId: number;
   onEditClick: () => void;
-  isMyPage?: boolean;
 }
 
 /** 2023/08/12- 댓글 하단 수정 삭제 버튼 - by leekoby */
-const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick, isMyPage }): JSX.Element => {
+const CommentEditDelete: React.FC<Props> = ({ commentId, reviewId, onEditClick }): JSX.Element => {
+  const isMyPage = useIsSameLocation('/myinfo');
+
   // 댓글 삭제 mutation
   const deleteCommentMutation = useDeleteComment({ reviewId });
 
