@@ -31,6 +31,7 @@ const CategoryIcon = () => {
 
   /** 2023.07.23 아이콘 클릭시 관련 카테고리 탭으로 라우팅 - by mscojl24 */
   const handleRouting = (tab: string) => {
+    sessionStorage.setItem('menuIdx', `2`);
     navigate(`/festival`);
     setCategoryTab(tab);
   };
