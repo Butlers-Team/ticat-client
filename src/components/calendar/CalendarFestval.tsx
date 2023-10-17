@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react'; // useState 추가
 import { CalendarListType } from 'types/api/calendar';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,13 +31,48 @@ const statusStlye = (state: string) => {
 };
 
 const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
+  const [selected, setSelected] = useState(false);
+  const [selectedCalendars, setSelectedCalendars] = useState<number[]>([]);
   const navigate = useNavigate();
-  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  const deleteCalendarList = async () => {
-    await deleteCalendarRequest(item.calendarId);
-    forceUpdate(1);
-    alert(`[${item.title}]일정이 삭제되었습니다.`);
+
+  // 수정: 체크박스 클릭 핸들러
+  const handleCheckboxChange = (clickedItem: CalendarListType) => {
+    setSelected(prevSelected => {
+      const isSelected = selectedCalendars.includes(clickedItem.calendarId);
+      let updatedCalendars;
+
+      if (isSelected) {
+        // 이미 선택된 경우, 배열에서 해당 아이템을 제거합니다.
+        updatedCalendars = selectedCalendars.filter(calendar => calendar !== clickedItem.calendarId);
+      } else {
+        // 선택되지 않은 경우, 배열에 해당 아이템을 추가합니다.
+        updatedCalendars = [...selectedCalendars, clickedItem.calendarId];
+      }
+
+      setSelectedCalendars(updatedCalendars);
+      console.log(selectedCalendars); // 이 부분에서 아직 업데이트되지 않았을 수 있습니다.
+
+      return !prevSelected; // 체크박스 상태를 반전
+    });
   };
+
+  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
+  // 수정: 선택한 캘린더를 삭제하는 함수
+  const deleteSelectedCalendars = async () => {
+    if (selectedCalendars.length === 0) {
+      alert('선택된 캘린더가 없습니다.');
+      return;
+    }
+    // 여기에서 selectedCalendars 배열을 순회하면서 각 캘린더를 삭제하는 요청을 보냅니다.
+    for (const calendar of selectedCalendars) {
+      await deleteCalendarRequest(calendar);
+    }
+    // 삭제 후, 배열 초기화 및 갱신
+    setSelectedCalendars([]);
+    forceUpdate(1);
+    alert('선택한 캘린더가 삭제되었습니다.');
+  };
+
   /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
   const routeStampPage = () => {
     navigate('/stamp/valid', { state: { item } });
@@ -45,6 +81,10 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
   const routeDetailPage = () => {
     navigate(`/detail/${item.festivalId}`);
   };
+
+  useEffect(() => {
+    console.log('Updated selectedCalendars:', selectedCalendars);
+  }, [selectedCalendars]);
   return (
     <FestivalContainer>
       <ImgBox>
@@ -71,9 +111,7 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
       </DescriptionWrap>
       <CalendarRightContainer>
         <FestivalrCategoryWrap>
-          <CalendarDeleteBtn onClick={deleteCalendarList}>
-            <CgTrash />
-          </CalendarDeleteBtn>
+          <input type="checkbox" checked={selected} onChange={() => handleCheckboxChange(item)}></input>
         </FestivalrCategoryWrap>
         {item.status === 'EXPECTED' ? (
           <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
@@ -84,6 +122,9 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
             <LuStamp />
           </StampAddBtn>
         )}
+        <button onClick={deleteSelectedCalendars}>
+          <CgTrash />
+        </button>
       </CalendarRightContainer>
     </FestivalContainer>
   );
@@ -219,14 +260,12 @@ const FestivalrCategoryWrap = styled.div`
 `;
 const CalendarDeleteBtn = styled.button`
   width: 35px;
-  height: 20px;
-  border: none;
+  border: 1px solid #eee;
   background-color: #ffffff;
+  color: #e62e2e;
   border-radius: 5px;
-  font-size: 1.5rem;
-  color: #ccc;
-  margin-bottom: 20px;
-  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 5px;
   cursor: pointer;
 
   :hover {
@@ -236,7 +275,6 @@ const CalendarDeleteBtn = styled.button`
 
 const StampAddBtn = styled.button`
   width: 50px;
-
   border: 1px solid #eee;
   background-color: #ffffff;
   color: #b8b8b8;
