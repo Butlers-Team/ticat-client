@@ -14,6 +14,7 @@ import {
 
 import styled from 'styled-components';
 import useCustomToast from '@hooks/useCustomToast';
+import { optimisticUpdateWithMutate } from '@utils/optimisticUpdateWithMutate';
 
 interface Props {
   festivalId: number;
@@ -32,16 +33,12 @@ const ReviewLikes: React.FC<Props> = ({
   liked,
   disliked,
   reviewId,
-  memberId: writerId,
+  memberId,
   likedCount,
   dislikedCount,
 }): JSX.Element => {
-  const toast = useCustomToast();
-
-  const { member } = useMemberStore();
-
-  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike({ festivalId });
-  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike({ festivalId });
+  const { createReviewLikeMutation, deleteReviewLikeMutation } = useReviewLike({ festivalId, reviewId });
+  const { createReviewDislikeMutation, deleteReviewDislikeMutation } = useReviewDislike({ festivalId, reviewId });
   const [isLiked, setIsLiked] = useState(liked);
   const [isDisliked, setIsDisliked] = useState(disliked);
   const [likeCount, setLikeCount] = useState(likedCount || 0);
@@ -50,92 +47,33 @@ const ReviewLikes: React.FC<Props> = ({
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
   const handleLikeClick = () => {
-    const previousIsLiked = isLiked;
-
-    if (timer.current) {
-      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
-    }
-
-    // Optimistic UI 업데이트
-    if (isDisliked) {
-      setIsDisliked(false);
-      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
-    }
-    setIsLiked(prevState => !prevState);
-    if (!isLiked) {
-      setLikeCount(count => count + 1); // 좋아요 카운트 증가
-    } else {
-      setLikeCount(count => count - 1); // 좋아요 카운트 감소
-    }
-
-    // 일정 시간 동안 대기 후 API 호출
-    timer.current = setTimeout(() => {
-      if (!isLiked) {
-        createReviewLikeMutation.mutate(
-          { reviewId },
-          {
-            onError: () => {
-              // 에러 발생 시 원래 상태
-              setIsLiked(previousIsLiked);
-            },
-          },
-        );
-      } else {
-        deleteReviewLikeMutation.mutate(
-          { reviewId },
-          {
-            onError: () => {
-              // 에러 발생 시 원래 상태
-              setIsLiked(previousIsLiked);
-            },
-          },
-        );
-      }
-    }, 500); // 1초 동안 다른 동작이 없으면 API 호출 진행
+    optimisticUpdateWithMutate(
+      timer,
+      isLiked,
+      setIsLiked,
+      500,
+      createReviewLikeMutation,
+      deleteReviewLikeMutation,
+      setLikeCount,
+      isDisliked,
+      setIsDisliked,
+      setDislikeCount,
+    );
   };
 
   const handleDislikeClick = () => {
-    const previousIsDisliked = isDisliked;
-
-    if (timer.current) {
-      clearTimeout(timer.current); // 기존에 설정된 타이머가 있다면 초기화
-    }
-
-    // Optimistic UI 업데이트
-    if (isLiked) {
-      setIsLiked(false);
-      setLikeCount(count => count - 1); // 좋아요 카운트 감소
-    }
-    setIsDisliked(prevState => !prevState);
-    if (!isDisliked) {
-      setDislikeCount(count => count + 1); // 싫어요 카운트 증가
-    } else {
-      setDislikeCount(count => count - 1); // 싫어요 카운트 감소
-    }
-    // 일정 시간 동안 대기 후 API 호출
-    timer.current = setTimeout(() => {
-      if (!isDisliked) {
-        createReviewDislikeMutation.mutate(
-          { reviewId },
-          {
-            onError: () => {
-              // 에러 발생 시 원래 상태로
-              setIsDisliked(previousIsDisliked);
-            },
-          },
-        );
-      } else {
-        deleteReviewDislikeMutation.mutate(
-          { reviewId },
-          {
-            onError: () => {
-              // 에러 발생 시 원래 상태로
-              setIsDisliked(previousIsDisliked);
-            },
-          },
-        );
-      }
-    }, 500); // 1초 동안 다른 동작이 없으면 API 호출 진행
+    optimisticUpdateWithMutate(
+      timer,
+      isDisliked,
+      setIsDisliked,
+      500,
+      createReviewDislikeMutation,
+      deleteReviewDislikeMutation,
+      setDislikeCount,
+      isLiked,
+      setIsLiked,
+      setLikeCount,
+    );
   };
 
   return (

@@ -1,3 +1,8 @@
+export interface ReviewLikeTypes {
+  festivalId: number;
+  reviewId: number;
+}
+
 // ============================== 리뷰 좋아요 생성 ==============================
 /** 2023/07/22 - 리뷰 좋아요 생성 송신 타입 - by leekoby */
 export interface ApiCreateLikeRequest {
