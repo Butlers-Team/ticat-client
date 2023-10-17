@@ -19,7 +19,7 @@ const PostEditDeleteButton: React.FC<Props> = ({ onEditClick, onDeleteClick, fon
 
 export default PostEditDeleteButton;
 
-interface ButtonWrapperProps extends Pick<Props, 'fontSize' | 'fontWeight'> {}
+interface ButtonWrapperProps extends Partial<Props> {}
 
 const ButtonWrapper = styled.div<ButtonWrapperProps>`
   color: var(--color-sub);
