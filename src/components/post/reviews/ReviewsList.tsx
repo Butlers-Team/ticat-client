@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 //components
 import Button from '@components/Button';
-import ReviewItem from '@components/review/review-item/ReviewItem';
+import ReviewItem from '@components/post/reviews/ReviewItem';
 
 //hooks
 import { useFetchReviews } from '@hooks/query/useFetchReviews';

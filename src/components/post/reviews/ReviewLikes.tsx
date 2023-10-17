@@ -50,8 +50,6 @@ const ReviewLikes: React.FC<Props> = ({
   const timer = useRef<ReturnType<typeof setTimeout>>(); // 타이머 생성 레퍼런스를 사용
 
   const handleLikeClick = () => {
-    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
-
     const previousIsLiked = isLiked;
 
     if (timer.current) {
@@ -93,12 +91,10 @@ const ReviewLikes: React.FC<Props> = ({
           },
         );
       }
-    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
+    }, 500); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   const handleDislikeClick = () => {
-    if (member?.memberId === writerId) return toast({ title: '본인이 작성한 글입니다.', status: 'error' });
-
     const previousIsDisliked = isDisliked;
 
     if (timer.current) {
@@ -139,7 +135,7 @@ const ReviewLikes: React.FC<Props> = ({
           },
         );
       }
-    }, 1000); // 1초 동안 다른 동작이 없으면 API 호출 진행
+    }, 500); // 1초 동안 다른 동작이 없으면 API 호출 진행
   };
 
   return (

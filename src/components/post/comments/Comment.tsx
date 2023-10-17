@@ -1,7 +1,7 @@
 //install library
 import styled from 'styled-components';
 //components
-import CommentList from '@components/review/comment/CommentList';
+import CommentList from '@components/post/comments/CommentList';
 
 interface Props {
   reviewId: number;

@@ -13,6 +13,7 @@ import { useFocusAndScroll } from '@hooks/useFocusAndScroll';
 
 //store
 import { useMemberStore } from '@store/useMemberStore';
+import { contentBrtoNewLines, convertNewLinesToBr } from '@utils/convertLine';
 
 interface Props {
   festivalId: number;
@@ -20,14 +21,13 @@ interface Props {
   comment?: CommentResponse | MyCommentResponse;
   isShow: boolean;
   setIsShowForm?: () => void;
-  setIsShow?: React.Dispatch<React.SetStateAction<boolean>>;
   onCancel?: () => void;
   onSubmit?: (updatedContent: string) => void;
   isEditMode?: boolean;
 }
 
 /** 2023/08/06- 댓글 작성 폼 - by leekoby */
-const CommentForm: React.FC<Props> = ({
+const CommentEditorForm: React.FC<Props> = ({
   festivalId,
   reviewId,
   comment,
@@ -35,21 +35,8 @@ const CommentForm: React.FC<Props> = ({
   onCancel,
   onSubmit,
   setIsShowForm,
-  setIsShow,
   isEditMode = false,
 }): JSX.Element => {
-  //댓글 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
-  const convertNewLinesToBr = (content: string): string => {
-    return content.replace(/\n/g, '<br>');
-  };
-
-  //댓글 수정할때 <br> 태그를 TextArea /n 으로 바꾸는 함수
-  const contentBrtoNewLines = (content?: string): string => {
-    if (!content) return '';
-
-    return content.replace(/<br\s*\/?>/g, '\n');
-  };
-
   const { member } = useMemberStore();
   const toast = useCustomToast();
   const [inputContent, setInputContent] = useState<string>(isEditMode ? contentBrtoNewLines(comment?.content) : '');
@@ -72,6 +59,7 @@ const CommentForm: React.FC<Props> = ({
 
   const createCommentMutation = useCreateComment({ festivalId, reviewId, handleReset });
   const updateCommentMutation = useUpdateComment({ commentId: comment?.reviewCommentId, reviewId, handleReset });
+
   /** 2023/08/07 - 댓글 등록 - by leekoby */
   /** 2023/08/13 - 댓글 수정 등록 - by leekoby */
   const onSubmitComment: FormEventHandler<HTMLFormElement> = event => {
@@ -84,6 +72,12 @@ const CommentForm: React.FC<Props> = ({
 
     //댓글 수정
     if (isEditMode && comment?.reviewCommentId) {
+      if (comment.content === convertedContent)
+        return toast({
+          title: '변경된 내용이 없습니다.',
+          description: '수정 후 다시 시도해주세요.',
+          status: 'warning',
+        });
       updateCommentMutation.mutate({ commentId: comment.reviewCommentId, content: convertedContent });
       onSubmit && onSubmit(convertedContent);
       setIsShowForm?.();
@@ -142,7 +136,7 @@ const CommentForm: React.FC<Props> = ({
   );
 };
 
-export default CommentForm;
+export default CommentEditorForm;
 
 const CommentFormContainer = styled.section<{ isShow: boolean }>`
   height: 100%;
@@ -181,6 +175,7 @@ const CommentContentBox = styled.div`
       border: none;
       width: 100%;
       outline: none;
+      background-color: transparent;
     }
   }
   .content-bottom {

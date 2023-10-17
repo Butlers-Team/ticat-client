@@ -3,25 +3,31 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 //style
 import styled from 'styled-components';
-//install library
-import Pagination from '@components/Pagination';
 //components
-import CommnetItem from '@components/review/comment/CommnetItem';
+import ReviewItem from '@components/post/reviews/ReviewItem';
+import Pagination from '@components/Pagination';
 //hooks
-import { useFetchMyCommentsList } from '@hooks/query/useFetchMyComment';
-
+import { useFetchMyReviewList } from '@hooks/query/useFetchMyReview';
+import { da } from 'date-fns/locale';
+//store
 interface Props {}
 
-/** 2023/08/15- 마이페이지 나의 리뷰 댓글 리스트  - by leekoby */
-const MyCommentList: React.FC<Props> = (): JSX.Element => {
+/** 2023/08/14- 마이페이지 리뷰 리스트 - by leekoby */
+const MyReviewList: React.FC<Props> = (props): JSX.Element => {
   const [page, setPage] = useState(1);
-  const { data } = useFetchMyCommentsList({ page, size: 10 });
 
-  const [activeEditModeComment, setActiveEditModeComment] = useState<number | null>(null);
+  const { data } = useFetchMyReviewList({ page, size: 10 });
 
-  const handleEditModeChange = (commentId: number) => {
-    setActiveEditModeComment(activeEditModeComment === commentId ? null : commentId);
+  // 수정 모드 확인
+  const [activeEditModeReivew, setActiveEditModeReview] = useState<number | null>(null);
+
+  //리뷰 수정모드 핸들러
+  const handleEditModeChange = (reviewId: number) => {
+    setActiveEditModeReview(activeEditModeReivew === reviewId ? null : reviewId);
   };
+
+  // 댓글 폼 오픈 여부
+  const [openedReviewId, setOpenedReviewId] = useState<number | null>(null);
 
   // 페이지네이션
   const contentItemWrapRef = useRef<HTMLUListElement>(null);
@@ -36,16 +42,18 @@ const MyCommentList: React.FC<Props> = (): JSX.Element => {
     <>
       <ContentItemWrap ref={contentItemWrapRef}>
         {data &&
-          data?.data.map(comment => (
+          data?.data.map(review => (
             <li>
-              <Link to={`/detail/${comment.festivalId}`}>
-                <h2>{comment.festivalTitle}</h2>
+              <Link to={`/detail/${review.festivalId}`}>
+                <h2>{review.festivalTitle}</h2>
               </Link>
-              <CommnetItem
-                key={comment.reviewCommentId}
-                comment={comment}
-                isEditMode={activeEditModeComment === comment.reviewCommentId}
-                onEditModeChange={() => handleEditModeChange(comment.reviewCommentId)}
+              <ReviewItem
+                key={review.reviewId}
+                festivalId={review.festivalId}
+                review={review}
+                isEditMode={activeEditModeReivew === review.reviewId}
+                onEditModeChange={() => handleEditModeChange(review.reviewId)}
+                showCommentForm={openedReviewId === review.reviewId}
               />
             </li>
           ))}
@@ -57,7 +65,8 @@ const MyCommentList: React.FC<Props> = (): JSX.Element => {
   );
 };
 
-export default MyCommentList;
+export default MyReviewList;
+
 const ContentItemWrap = styled.ul`
   width: 100%;
   display: flex;

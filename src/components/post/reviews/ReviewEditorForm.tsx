@@ -19,6 +19,7 @@ import useCustomToast from '@hooks/useCustomToast';
 
 //store
 import { useMemberStore } from '@store/useMemberStore';
+import { contentBrtoNewLines, convertNewLinesToBr } from '@utils/convertLine';
 
 interface Props {
   festivalId: number;
@@ -29,21 +30,9 @@ interface Props {
 }
 
 /** 2023/07/21- 리뷰 Editor - by leekoby */
-const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCancel, onSubmit }): JSX.Element => {
+const ReviewEditorForm: React.FC<Props> = ({ festivalId, review, isEditMode, onCancel, onSubmit }): JSX.Element => {
   const { member } = useMemberStore();
   const toast = useCustomToast();
-
-  //리뷰 등록할때 TextArea /n 태그를 <br>로 바꾸는 함수
-  const convertNewLinesToBr = (content: string): string => {
-    return content.replace(/\n/g, '<br>');
-  };
-
-  //리뷰 수정할때 <br> 태그를 TextArea /n 으로 바꾸는 함수
-  const contentBrtoNewLines = (content?: string): string => {
-    if (!content) return '';
-
-    return content.replace(/<br\s*\/?>/g, '\n');
-  };
 
   const [rating, setRating] = useState<number | undefined>(isEditMode ? review?.rating : 0);
   const [content, setContent] = useState<string | undefined>(isEditMode ? contentBrtoNewLines(review?.content) : '');
@@ -161,7 +150,11 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
     // 리뷰수정
     if (isEditMode && review?.reviewId) {
       if (content === review.content && rating === review.rating && updateImages.length === 0)
-        return toast({ title: '리뷰 수정 후 다시 시도해주세요.', status: 'error' });
+        return toast({
+          title: '변경된 내용이 없습니다.',
+          description: '리뷰 수정 후 다시 시도해주세요.',
+          status: 'error',
+        });
 
       updateReviewMutation.mutate({
         reviewId: review.reviewId,
@@ -283,7 +276,7 @@ const ReviewEditor: React.FC<Props> = ({ festivalId, review, isEditMode, onCance
   );
 };
 
-export default ReviewEditor;
+export default ReviewEditorForm;
 const ReviewEditContaienr = styled.section`
   height: 100%;
   width: 100%;

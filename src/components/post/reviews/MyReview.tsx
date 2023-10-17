@@ -3,9 +3,9 @@ import { useState } from 'react';
 //style
 import styled from 'styled-components';
 //components
-import MyCommentList from '@components/myreview/comments/MyCommentList';
-import MyReviewToggle from '@components/myreview/MyReviewToggle';
-import MyReviewList from '@components/myreview/reviews/MyReviewList';
+import MyCommentList from '@components/post/comments/MyCommentList';
+import MyReviewToggle from '@components/post/reviews/MyReviewToggle';
+import MyReviewList from '@components/post/reviews/MyReviewList';
 
 interface Props {
   textTitle: string;

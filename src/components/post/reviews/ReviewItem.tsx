@@ -7,18 +7,19 @@ import { MyReviewResponse, ReviewResponse } from 'types/api';
 //icon
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 //components
-import ReviewEditor from '@components/review/ReviewEditor';
-import ReviewLikes from '@components/review/review-item/ReviewLikes';
-import ReviewItemContent from '@components/review/review-item/ReviewItemContent';
-import ReviewItemHeader from '@components/review/review-item/ReviewItemHeader';
-import ReviewImage from '@components/review/review-item/ReviewImage';
-import ReviewEditDelete from '@components/review/review-item/ReviewEditDelete';
-import CommentForm from '@components/review/comment/CommentForm';
-import Comment from '@components/review/comment/Comment';
+import ReviewEditorForm from '@components/post/reviews/ReviewEditorForm';
+import ReviewLikes from '@components/post/reviews/ReviewLikes';
+import ReviewImage from '@components/post/reviews/ReviewImage';
+import PostHeader from '../PostHeader';
+import PostEditDeleteButton from '../PostEditDeleteButton';
+import CommentEditorForm from '@components/post/comments/CommentEditorForm';
+import Comment from '@components/post/comments/Comment';
+import PostContent from '../PostContent';
 //store
 import { useMemberStore } from '@store/useMemberStore';
 //hooks
 import { useIsSameLocation } from '@hooks/useIsSameLocation';
+import { useDeleteReview } from '@hooks/query/useDeleteReview';
 
 interface Props {
   festivalId: number;
@@ -38,6 +39,8 @@ const ReviewItem: React.FC<Props> = ({
   onEditModeChange,
 }): JSX.Element => {
   const isMyPage = useIsSameLocation('/myinfo');
+  const fontSize = isMyPage ? '1.4rem' : '1.6rem';
+  const visible = isMyPage ? false : true;
   const { member } = useMemberStore();
 
   const {
@@ -73,6 +76,13 @@ const ReviewItem: React.FC<Props> = ({
   /** 2023/08/07 - 댓글 더 보기  - by leekoby */
   const [isShow, setIsShow] = useState(false);
 
+  // 리뷰 삭제 mutation
+  const deleteReviewMutation = useDeleteReview({ reviewId, festivalId });
+  // 리뷰 삭제 이벤트 핸들러
+  const handleDeleteReview = () => {
+    if (!confirm('리뷰를 삭제하시겠습니까? 삭제 이후 복구할 수 없습니다.')) return;
+    deleteReviewMutation.mutate({ reviewId });
+  };
   return (
     <>
       <ReviewItemContainer>
@@ -83,11 +93,20 @@ const ReviewItem: React.FC<Props> = ({
             </ItemImgWrap>
           )}
           {displayName && (
-            <ReviewItemHeader displayName={displayName} rating={rating} createdAt={createdAt} modifiedAt={modifiedAt} />
+            <PostHeader
+              displayName={displayName}
+              rating={rating}
+              createdAt={createdAt}
+              modifiedAt={modifiedAt}
+              fontSize=""
+              gap="1.5rem"
+              visible={visible}
+            />
           )}
         </HeaderWrapper>
+
         {isEditMode ? (
-          <ReviewEditor
+          <ReviewEditorForm
             festivalId={festivalId}
             review={review}
             isEditMode
@@ -96,7 +115,7 @@ const ReviewItem: React.FC<Props> = ({
           />
         ) : (
           <>
-            <ReviewItemContent content={content} />
+            <PostContent fontSize={fontSize} content={content} />
             <ReviewImage pictures={pictures} />
           </>
         )}
@@ -115,7 +134,14 @@ const ReviewItem: React.FC<Props> = ({
               />
 
               {member?.memberId === memberId && !isEditMode && (
-                <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
+                <>
+                  <PostEditDeleteButton
+                    onEditClick={onEditModeChange}
+                    onDeleteClick={handleDeleteReview}
+                    fontSize={'1.4rem'}
+                    fontWeight={'bold'}
+                  />
+                </>
               )}
             </>
           ) : (
@@ -132,7 +158,14 @@ const ReviewItem: React.FC<Props> = ({
               />
 
               {member?.memberId === memberId && !isEditMode && (
-                <ReviewEditDelete reviewId={reviewId} festivalId={festivalId} onEditClick={onEditModeChange} />
+                <>
+                  <PostEditDeleteButton
+                    onEditClick={onEditModeChange}
+                    onDeleteClick={handleDeleteReview}
+                    fontSize={'1.4rem'}
+                    fontWeight={'bold'}
+                  />
+                </>
               )}
             </div>
           )}
@@ -154,12 +187,11 @@ const ReviewItem: React.FC<Props> = ({
             </CommentButtonContainer>
           )}
         </ReviewBottomWrapper>
-        <CommentForm
+        <CommentEditorForm
           isShow={showCommentForm}
           festivalId={festivalId}
           reviewId={reviewId}
           setIsShowForm={onToggleCommentForm}
-          setIsShow={setIsShow}
         />
         {isShow && commentCount > 0 && <Comment reviewId={reviewId} />}
       </ReviewItemContainer>
