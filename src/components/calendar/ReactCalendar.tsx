@@ -224,7 +224,6 @@ const Calendar = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 25%;
   box-shadow: 0px 10px 15px rgb(0, 0, 0, 0.1);
   border-radius: 35px;
   padding: 20px 0px;
