@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 // utils
 import { formatDate } from '@utils/formatDate';
 import { splitAddress } from '@utils/address';
-import { deleteCalendarRequest } from '@api/calendar';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
@@ -15,7 +14,9 @@ import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
-  forceUpdate: React.Dispatch<React.SetStateAction<number>>;
+  deleteSelectedCalendars: () => void;
+  selectedCalendars: number[];
+  setSelectedCalendars: React.Dispatch<React.SetStateAction<number[]>>;
 }
 
 const statusStlye = (state: string) => {
@@ -30,9 +31,13 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
+const CalendarFestival = ({
+  item,
+  deleteSelectedCalendars,
+  selectedCalendars,
+  setSelectedCalendars,
+}: FestivalProps) => {
   const [selected, setSelected] = useState(false);
-  const [selectedCalendars, setSelectedCalendars] = useState<number[]>([]);
   const navigate = useNavigate();
 
   // 수정: 체크박스 클릭 핸들러
@@ -40,7 +45,6 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
     setSelected(prevSelected => {
       const isSelected = selectedCalendars.includes(clickedItem.calendarId);
       let updatedCalendars;
-
       if (isSelected) {
         // 이미 선택된 경우, 배열에서 해당 아이템을 제거합니다.
         updatedCalendars = selectedCalendars.filter(calendar => calendar !== clickedItem.calendarId);
@@ -48,29 +52,9 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
         // 선택되지 않은 경우, 배열에 해당 아이템을 추가합니다.
         updatedCalendars = [...selectedCalendars, clickedItem.calendarId];
       }
-
       setSelectedCalendars(updatedCalendars);
-      console.log(selectedCalendars); // 이 부분에서 아직 업데이트되지 않았을 수 있습니다.
-
       return !prevSelected; // 체크박스 상태를 반전
     });
-  };
-
-  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  // 수정: 선택한 캘린더를 삭제하는 함수
-  const deleteSelectedCalendars = async () => {
-    if (selectedCalendars.length === 0) {
-      alert('선택된 캘린더가 없습니다.');
-      return;
-    }
-    // 여기에서 selectedCalendars 배열을 순회하면서 각 캘린더를 삭제하는 요청을 보냅니다.
-    for (const calendar of selectedCalendars) {
-      await deleteCalendarRequest(calendar);
-    }
-    // 삭제 후, 배열 초기화 및 갱신
-    setSelectedCalendars([]);
-    forceUpdate(1);
-    alert('선택한 캘린더가 삭제되었습니다.');
   };
 
   /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
@@ -122,9 +106,6 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
             <LuStamp />
           </StampAddBtn>
         )}
-        <button onClick={deleteSelectedCalendars}>
-          <CgTrash />
-        </button>
       </CalendarRightContainer>
     </FestivalContainer>
   );
@@ -136,11 +117,14 @@ export default CalendarFestival;
 const FestivalContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  margin: 3px auto;
+  padding: 0px 5px;
   width: 100%;
   height: 105px;
   color: var(--color-dark);
   font-size: 13px;
+  border: solid 0.5px rgba(223, 218, 218, 0.5);
+  border-radius: 5px;
 `;
 
 // 축제 정보 이미지

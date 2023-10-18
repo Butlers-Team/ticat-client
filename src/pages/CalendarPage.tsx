@@ -4,12 +4,15 @@ import ReactCalendar from '@components/calendar/ReactCalendar';
 import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
+import { deleteCalendarRequest } from '@api/calendar';
 import Button from '@components/Button';
+import { CgTrash } from 'react-icons/cg';
 const CalendarPage: React.FC = (): JSX.Element => {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
+  const [selectedCalendars, setSelectedCalendars] = useState<number[]>([]);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>();
   const [selecteDate, setSelectedDate] = useState<number>(date);
@@ -42,6 +45,23 @@ const CalendarPage: React.FC = (): JSX.Element => {
     fetchCalendarList();
   }, [selecteDate, selecteMonth, selecteYears, trigger]);
 
+  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
+  // 수정: 선택한 캘린더를 삭제하는 함수
+  const deleteSelectedCalendars = async () => {
+    if (selectedCalendars.length === 0) {
+      alert('선택된 캘린더가 없습니다.');
+      return;
+    }
+    // 여기에서 selectedCalendars 배열을 순회하면서 각 캘린더를 삭제하는 요청을 보냅니다.
+    for (const calendar of selectedCalendars) {
+      await deleteCalendarRequest(calendar);
+    }
+    // 삭제 후, 배열 초기화 및 갱신
+    setSelectedCalendars([]);
+    forceUpdate();
+    alert('선택한 캘린더가 삭제되었습니다.');
+  };
+
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
@@ -61,6 +81,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     MoreCalendarList();
   }, [page]);
+  console.log(selectedCalendars); // 이 부분에서 아직 업데이트되지 않았을 수 있습니다.
   return (
     <CalendarContainer>
       <CalendarSection>
@@ -89,10 +110,22 @@ const CalendarPage: React.FC = (): JSX.Element => {
           </EmptyListSection>
         ) : (
           <FestivalScrollWrap>
+            <DeleteBtnSection>
+              {' '}
+              <button onClick={() => deleteSelectedCalendars()}>
+                <CgTrash />
+              </button>
+            </DeleteBtnSection>
+
             {calendarDatailList?.map(festival => {
               return (
                 <li key={festival.festivalId}>
-                  <CalendarFestival item={festival} forceUpdate={forceUpdate} />
+                  <CalendarFestival
+                    item={festival}
+                    selectedCalendars={selectedCalendars}
+                    setSelectedCalendars={setSelectedCalendars}
+                    deleteSelectedCalendars={deleteSelectedCalendars}
+                  />
                 </li>
               );
             })}
@@ -179,8 +212,25 @@ const FestivalScrollWrap = styled.div`
   }
   // firefox
   scrollbar-width: none;
-
   @media screen and (max-width: 400px) {
     height: calc(100% - 11rem);
+  }
+`;
+const DeleteBtnSection = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  margin: 0;
+  > button {
+    width: 8rem;
+    height: 3rem;
+    border-radius: 10px;
+    font-weight: bold;
+    color: red;
+    border: 2px solid red;
+    box-shadow: none;
+    background-color: var(--background-color);
+    margin-top: 1rem;
   }
 `;

@@ -91,7 +91,7 @@ const ReactCalendar: React.FC<CalendarProps> = ({
         } else {
           setSelectedMonth(selecteMonth - 1); // 이전 달로 변경
         }
-      } else if (selecteDate > 22 && date < 6) {
+      } else if (selecteDate > 22 && date < 6 && selecteDate - date > 6) {
         //  현재날짜가 22일보다 크고, 클릭한 날짜가 6보다 작을 떄 (현재달의 후반과 이전달의 초반부가 보이는 캘린더)
         if (selecteMonth === 11) {
           // 현재 월이 12월인 경우
@@ -189,7 +189,6 @@ const ReactCalendar: React.FC<CalendarProps> = ({
         <DateSelectBtn onClick={prevWeek} className="arr-icons-color">
           <MdKeyboardArrowLeft />
         </DateSelectBtn>
-
         <CalendarWeekTable>
           <CalendarWeekThead>
             <CalendarWeekTr>
@@ -208,7 +207,6 @@ const ReactCalendar: React.FC<CalendarProps> = ({
             <CalendarDayTr>{renderCalendar(selecteDate)}</CalendarDayTr>
           </CalendarDayTbody>
         </CalendarWeekTable>
-
         <DateSelectBtn onClick={nextWeek} className="arr-icons-color">
           <MdKeyboardArrowRight />
         </DateSelectBtn>
