@@ -5,11 +5,9 @@ import styled from 'styled-components';
 import {
   MdKeyboardArrowLeft,
   MdKeyboardArrowRight,
-  MdKeyboardArrowDown,
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
 } from 'react-icons/md';
-import { BiBorderRadius } from 'react-icons/bi';
 
 interface CalendarProps {
   startDate: Date;
