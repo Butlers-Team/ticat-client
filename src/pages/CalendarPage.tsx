@@ -13,6 +13,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const month = now.getMonth();
   const date = now.getDate();
   const [selectedCalendars, setSelectedCalendars] = useState<number[]>([]);
+  const [select, setSelect] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>();
   const [selecteDate, setSelectedDate] = useState<number>(date);
@@ -43,10 +44,14 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     setPage(1);
     fetchCalendarList();
+    setSelectedCalendars([]);
+    setSelect(false);
   }, [selecteDate, selecteMonth, selecteYears, trigger]);
-
+  const selectDeleteList = () => {
+    setSelect(!select);
+    setSelectedCalendars([]);
+  };
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  // 수정: 선택한 캘린더를 삭제하는 함수
   const deleteSelectedCalendars = async () => {
     if (selectedCalendars.length === 0) {
       alert('선택된 캘린더가 없습니다.');
@@ -95,10 +100,28 @@ const CalendarPage: React.FC = (): JSX.Element => {
           selectYears={selecteYears}
         />
       </CalendarSection>
+      <CalendarTopSection>
+        {' '}
+        <p className="today-date">
+          <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
+        </p>
+        {select ? (
+          <DeleteBtnSection>
+            {' '}
+            <button className="select-list" onClick={() => selectDeleteList()}>
+              선택취소
+            </button>
+          </DeleteBtnSection>
+        ) : (
+          <DeleteBtnSection>
+            {' '}
+            <button className="unselect-list" onClick={() => selectDeleteList()}>
+              선택삭제
+            </button>
+          </DeleteBtnSection>
+        )}
+      </CalendarTopSection>
 
-      <p className="today-date">
-        <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
-      </p>
       <FestivalListSection>
         {calendarDatailList?.length === undefined || calendarDatailList.length < 1 ? (
           <EmptyListSection>
@@ -110,13 +133,6 @@ const CalendarPage: React.FC = (): JSX.Element => {
           </EmptyListSection>
         ) : (
           <FestivalScrollWrap>
-            <DeleteBtnSection>
-              {' '}
-              <button onClick={() => deleteSelectedCalendars()}>
-                <CgTrash />
-              </button>
-            </DeleteBtnSection>
-
             {calendarDatailList?.map(festival => {
               return (
                 <li key={festival.festivalId}>
@@ -124,11 +140,25 @@ const CalendarPage: React.FC = (): JSX.Element => {
                     item={festival}
                     selectedCalendars={selectedCalendars}
                     setSelectedCalendars={setSelectedCalendars}
-                    deleteSelectedCalendars={deleteSelectedCalendars}
+                    select={select}
                   />
                 </li>
               );
             })}
+            {select && selectedCalendars.length > 0 ? (
+              <Button
+                color="#ff5454"
+                onClick={
+                  deleteSelectedCalendars
+                }>{`선택한 리스트 삭제 ${selectedCalendars.length}/${calendarDatailList.length}`}</Button>
+            ) : select ? (
+              <Button
+                disabled
+                color="#ff5454;"
+                onClick={
+                  deleteSelectedCalendars
+                }>{`선택한 리스트 삭제 ${selectedCalendars.length}/${calendarDatailList.length}`}</Button>
+            ) : null}
             {totalPages === calendarDatailList.length ? null : <Button onClick={handleLoadMore}>축제 더보기</Button>}
           </FestivalScrollWrap>
         )}
@@ -153,6 +183,11 @@ const CalendarContainer = styled.div`
     }
   }
 `;
+const CalendarTopSection = styled.section`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+`;
 /** 2023/07/02 - 축제 캘린더 섹션  - by parksubeom */
 const CalendarSection = styled.section``;
 /** 2023/07/02 - 축제 리스트 섹션  - by parksubeom */
@@ -164,6 +199,7 @@ const FestivalListSection = styled.section`
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  margin-top: 2rem;
 `;
 /** 2023/07/02 - 추가된 축제리스트가 없을 때 보여지는 섹션  - by parksubeom */
 const EmptyListSection = styled.section`
@@ -200,11 +236,12 @@ const EmptyListSection = styled.section`
   }
 `;
 const FestivalScrollWrap = styled.div`
-  height: calc(100% - 100px);
+  height: 100%;
   width: 100%;
   padding: 20px;
   overflow: auto;
   margin: 0 auto;
+
   // 스크롤바 없애기
   // chrome and safari
   ::-webkit-scrollbar {
@@ -212,25 +249,35 @@ const FestivalScrollWrap = styled.div`
   }
   // firefox
   scrollbar-width: none;
-  @media screen and (max-width: 400px) {
-    height: calc(100% - 11rem);
-  }
 `;
 const DeleteBtnSection = styled.div`
-  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: right;
-  margin: 0;
-  > button {
-    width: 8rem;
-    height: 3rem;
-    border-radius: 10px;
+  margin: 0 2rem;
+  margin-top: 2rem;
+
+  > .select-list {
+    width: 6rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    font-size: 12px;
     font-weight: bold;
-    color: red;
-    border: 2px solid red;
+    color: #ff5454;
+    border: 1px solid #ff5454;
     box-shadow: none;
     background-color: var(--background-color);
-    margin-top: 1rem;
+  }
+  > .unselect-list {
+    width: 6rem;
+    height: 2.5rem;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #787474;
+    border: 1px solid #eee;
+    background-color: #ffffff;
+    box-shadow: none;
+    background-color: var(--background-color);
   }
 `;

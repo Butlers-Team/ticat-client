@@ -32,7 +32,7 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
 
   &:disabled {
     color: var(--color-light);
-    opacity: 0.5;
+    opacity: 0.3;
     cursor: not-allowed;
 
     &:hover {
@@ -41,6 +41,6 @@ const PublicButton = styled.button<Pick<BtnProps, 'width' | 'height' | 'fontSize
   }
 
   &:hover {
-    background-color: var(--color-sub);
+    background-color: ${({ color }) => color ?? `var(--color-sub)`};
   }
 `;

@@ -9,14 +9,13 @@ import { splitAddress } from '@utils/address';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
-import { CgTrash } from 'react-icons/cg';
 import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
-  deleteSelectedCalendars: () => void;
   selectedCalendars: number[];
   setSelectedCalendars: React.Dispatch<React.SetStateAction<number[]>>;
+  select: boolean;
 }
 
 const statusStlye = (state: string) => {
@@ -31,12 +30,7 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({
-  item,
-  deleteSelectedCalendars,
-  selectedCalendars,
-  setSelectedCalendars,
-}: FestivalProps) => {
+const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendars }: FestivalProps) => {
   const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
 
@@ -67,8 +61,8 @@ const CalendarFestival = ({
   };
 
   useEffect(() => {
-    console.log('Updated selectedCalendars:', selectedCalendars);
-  }, [selectedCalendars]);
+    setSelected(false);
+  }, [select]);
   return (
     <FestivalContainer>
       <ImgBox>
@@ -93,20 +87,25 @@ const CalendarFestival = ({
           {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
         </p>
       </DescriptionWrap>
-      <CalendarRightContainer>
-        <FestivalrCategoryWrap>
-          <input type="checkbox" checked={selected} onChange={() => handleCheckboxChange(item)}></input>
-        </FestivalrCategoryWrap>
-        {item.status === 'EXPECTED' ? (
-          <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
-            스탬프찍기
-          </DisabledBtn>
-        ) : (
-          <StampAddBtn onClick={routeStampPage}>
-            <LuStamp />
-          </StampAddBtn>
-        )}
-      </CalendarRightContainer>
+      {select ? (
+        <CalendarRightContainer>
+          <FestivalrCategoryWrap>
+            <input type="checkbox" checked={selected} onChange={() => handleCheckboxChange(item)}></input>
+          </FestivalrCategoryWrap>
+        </CalendarRightContainer>
+      ) : (
+        <CalendarRightContainer>
+          {item.status === 'EXPECTED' ? (
+            <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
+              스탬프찍기
+            </DisabledBtn>
+          ) : (
+            <StampAddBtn onClick={routeStampPage}>
+              <LuStamp />
+            </StampAddBtn>
+          )}
+        </CalendarRightContainer>
+      )}
     </FestivalContainer>
   );
 };
