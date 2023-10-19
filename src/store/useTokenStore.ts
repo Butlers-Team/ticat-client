@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-interface Token {
+interface TokenState {
   accessToken: string;
   refreshToken: string;
   setAccessToken: (accessToken: string) => void;
@@ -45,7 +45,7 @@ const clearTokens = () => {
 };
 
 /** 2023/07/10 - 로그인 응답 헤더 토큰 저장소 - by leekoby */
-const useTokenStore = create<Token>(set => ({
+const useTokenStore = create<TokenState>(set => ({
   ...getTokenStateFromStorage(),
   setAccessToken: (accessToken: string) => {
     setTokenToStorage('accessToken', accessToken);

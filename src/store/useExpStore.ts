@@ -23,6 +23,7 @@ const useExpStore = create(
       setExp: exp => set(state => ({ ...state, exp })),
       clearExp: () => {
         clearExp();
+        set({ exp: null });
       },
     }),
     { name: 'exp', getStorage: () => localStorage },

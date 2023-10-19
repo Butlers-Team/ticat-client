@@ -13,7 +13,7 @@ import { GoCodeReview } from 'react-icons/go';
 import MyInfoDescription from '@components/myinfo/MyInfoDescription';
 import MyInfoTabNav from '@components/myinfo/MyInfoTabNav';
 import RecentList from '@components/myinfo/RecentList';
-import MyReview from '@components/myreview/MyReview';
+import MyReview from '@components/post/reviews/MyReview';
 
 // TabNav Data (label, icon)
 const myInfoTabNav = [

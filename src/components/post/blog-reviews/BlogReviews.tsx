@@ -1,7 +1,7 @@
 //style
 import styled from 'styled-components';
 //components
-import BlogSwiper from '@components/review/blog-reviews/BlogSwiper';
+import BlogSwiper from '@components/post/blog-reviews/BlogSwiper';
 //hooks
 import { useFetchBlogPosts } from '@hooks/query/useFetchBlogPosts';
 

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 //style
 import styled from 'styled-components';
 //components
-import ReviewItem from '@components/review/review-item/ReviewItem';
+import ReviewItem from '@components/post/reviews/ReviewItem';
 import Pagination from '@components/Pagination';
 //hooks
 import { useFetchMyReviewList } from '@hooks/query/useFetchMyReview';
@@ -54,7 +54,6 @@ const MyReviewList: React.FC<Props> = (props): JSX.Element => {
                 isEditMode={activeEditModeReivew === review.reviewId}
                 onEditModeChange={() => handleEditModeChange(review.reviewId)}
                 showCommentForm={openedReviewId === review.reviewId}
-                isMyPage={true}
               />
             </li>
           ))}

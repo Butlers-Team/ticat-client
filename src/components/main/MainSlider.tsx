@@ -37,7 +37,6 @@ const RecommendFestival = () => {
   const navigate = useNavigate();
   const [FestivalData, setFestivalData] = useState<MainFastivalType[]>([]);
   const [regionWeather] = useState<WeatherType | undefined>();
-  console.log(FestivalData);
 
   const getMainData = async () => {
     const res = await getMainFastival();

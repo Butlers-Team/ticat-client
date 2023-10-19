@@ -4,7 +4,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 //components
 import Button from '@components/Button';
-import CommnetItem from '@components/review/comment/CommnetItem';
+import CommnetItem from '@components/post/comments/CommnetItem';
 //hooks
 import { useFetchComments } from '@hooks/query/useFetchComment';
 

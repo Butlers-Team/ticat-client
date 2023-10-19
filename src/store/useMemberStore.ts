@@ -1,10 +1,10 @@
 import { create } from 'zustand';
-import { Member } from 'types/auth';
+import { loginInfo } from 'types/auth';
 import { persist } from 'zustand/middleware';
 
-export interface MemberInfo {
-  member?: Member | null;
-  setMember: (member: Member | null) => void;
+export interface MemberState {
+  member?: loginInfo | null;
+  setMember: (member: loginInfo | null) => void;
   clearMember: () => void;
 }
 
@@ -13,11 +13,12 @@ const clearMember = () => {
 };
 /** 2023/07/22 - 로그인 응답 데이터 저장소 - by leekoby */
 const useMemberStore = create(
-  persist<MemberInfo>(
+  persist<MemberState>(
     set => ({
       setMember: member => set(state => ({ ...state, member })),
       clearMember: () => {
         clearMember();
+        set({ member: null });
       },
     }),
     { name: 'member', getStorage: () => localStorage },

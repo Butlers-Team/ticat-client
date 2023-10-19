@@ -10,7 +10,7 @@ import Recommend from '@components/detail/Recommend';
 import { FestivalDetailType } from 'types/api/detail';
 import { getDetailList } from '../api/detail';
 import { recentPostRequest } from '@api/recent';
-import Reviews from '@components/review/Reviews';
+import Reviews from '@components/post/reviews/Reviews';
 import { useTokenStore } from '@store/useTokenStore';
 import { useMemberStore } from '@store/useMemberStore';
 

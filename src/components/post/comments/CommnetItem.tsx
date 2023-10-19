@@ -3,22 +3,26 @@ import styled from 'styled-components';
 //types
 import { CommentResponse, MyCommentResponse } from 'types/api';
 //components
-import CommentEditDelete from '@components/review/comment/CommentEditDelete';
-import CommentForm from '@components/review/comment/CommentForm';
-import ContentItemContent from '@components/review/comment/CommentItemContent';
-import CommentItemHeader from '@components/review/comment/CommentItemHeader';
+import PostEditDeleteButton from '../PostEditDeleteButton';
+import CommentEditorForm from '@components/post/comments/CommentEditorForm';
+import PostContent from '../PostContent';
+import PostHeader from '../PostHeader';
 //store
 import { useMemberStore } from '@store/useMemberStore';
+import { useIsSameLocation } from '@hooks/useIsSameLocation';
+import { useDeleteComment } from '@hooks/query';
 
 interface Props {
   comment: CommentResponse | MyCommentResponse;
   isEditMode: boolean;
-  isMyPage?: boolean;
   onEditModeChange: () => void;
 }
 
 /** 2023/08/07- 댓글 아이템 - by leekoby */
-const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, isMyPage }): JSX.Element => {
+const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange }): JSX.Element => {
+  const isMyPage = useIsSameLocation('/myinfo');
+  const fontSize = isMyPage ? '1.4rem' : '1.6rem';
+  const padding = isMyPage ? undefined : '3px 3px';
   const { member } = useMemberStore();
 
   const { content, festivalId, reviewId, createdAt, memberId, reviewCommentId, modifiedAt } = comment;
@@ -39,6 +43,15 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
     onEditModeChange();
   };
 
+  // 댓글 삭제 mutation
+  const deleteCommentMutation = useDeleteComment({ festivalId, reviewId });
+
+  // 댓글 삭제 이벤트 핸들러
+  const handleDeleteComment = () => {
+    if (!confirm('댓글을 삭제하시겠습니까? 삭제 이후 복구할 수 없습니다.')) return;
+    deleteCommentMutation.mutate({ commentId: reviewCommentId });
+  };
+
   return (
     <>
       <CommentItemContainer>
@@ -48,17 +61,12 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
               <img src={profileUrl || '/assets/images/default-profile-image.png'} />
             </ItemImgWrap>
             {displayName && (
-              <CommentItemHeader
-                displayName={displayName}
-                createdAt={createdAt}
-                modifiedAt={modifiedAt}
-                isMyPage={isMyPage}
-              />
+              <PostHeader displayName={displayName} createdAt={createdAt} modifiedAt={modifiedAt} fontSize="1.4rem" />
             )}
           </HeaderWrapper>
         )}
         {isEditMode ? (
-          <CommentForm
+          <CommentEditorForm
             festivalId={comment.festivalId}
             reviewId={comment.reviewId}
             comment={comment}
@@ -70,27 +78,31 @@ const CommnetItem: React.FC<Props> = ({ comment, isEditMode, onEditModeChange, i
         ) : (
           <>
             {!isMyPage ? (
-              <ContentItemContent content={content} isMyPage={isMyPage} />
+              <>
+                <PostContent content={content} fontSize={fontSize} />
+              </>
             ) : (
               <MyPageContent>
-                <ContentItemContent content={content} isMyPage={isMyPage} />
+                <PostContent content={content} padding={padding} fontSize={fontSize} />
                 {displayName && (
-                  <CommentItemHeader
+                  <PostHeader
                     displayName={displayName}
                     createdAt={createdAt}
                     modifiedAt={modifiedAt}
-                    isMyPage={isMyPage}
+                    fontSize="1.4rem"
                   />
                 )}
               </MyPageContent>
             )}
             {member?.memberId === memberId && (
-              <CommentEditDelete
-                reviewId={reviewId}
-                commentId={comment.reviewCommentId}
-                onEditClick={onEditModeChange}
-                isMyPage={isMyPage}
-              />
+              <>
+                <PostEditDeleteButton
+                  onEditClick={onEditModeChange}
+                  onDeleteClick={handleDeleteComment}
+                  fontSize={isMyPage ? '1.4rem' : '1.3rem'}
+                  fontWeight={isMyPage ? 'bold' : '500'}
+                />
+              </>
             )}
           </>
         )}

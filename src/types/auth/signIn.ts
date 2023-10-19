@@ -5,6 +5,9 @@ export interface Member {
   displayName: string | null;
 }
 
+export interface loginInfo extends Member {
+  interest?: boolean;
+}
 // ============================== 로그인 ==============================
 /** 2023/07/07 - 로그인 요청 타입 - by leekoby */
 export interface ApiSignInRequest {
@@ -20,7 +23,7 @@ export interface ApiSignInSuccess {
 }
 
 /** 2023/07/07 - 로그인 응답 타입 - by leekoby */
-export type ApiSignInResponse = Member;
+export type ApiSignInResponse = loginInfo;
 
 /** 2023/07/07 - 로그인 핸들러 - by leekoby */
 export interface ApiSignInHandler {

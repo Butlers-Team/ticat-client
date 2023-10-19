@@ -33,7 +33,6 @@ const OauthCallback: React.FC<Props> = (): JSX.Element => {
     const displayNameParam = queryParams.get('displayName');
     if (displayNameParam) {
       displayName = decodeURIComponent(displayNameParam);
-      console.log('displayName:', displayName);
     }
     const memberId = queryParams.get('memberId');
     // URL에서 토큰 값 얻기
