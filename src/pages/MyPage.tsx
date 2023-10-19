@@ -34,7 +34,7 @@ const MyPage = () => {
     setCurrentTab(tab);
 
     if (tab === '티켓스탬프') {
-      navigate('/stamp/list');
+      navigate('/stamp/list', { state: { page: '/myinfo' } });
     } else if (tab === '정보수정') {
       navigate('/profile', {
         state: { data },

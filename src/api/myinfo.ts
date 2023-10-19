@@ -18,6 +18,13 @@ export const patchMyInfo = async (body: MyInfoPatchBodyType) => {
   return data;
 };
 
+/** 2023/10/11 - 회원 탈퇴 DELETE 요청 - by sineTlsl */
+export const deleteMember = async () => {
+  const { data } = await instance.delete('/members');
+
+  return data;
+};
+
 // ========================== 축제 최근목록 ==========================
 /** 2023/07/23 - 축제 최근목록 GET 요청 - by sineTlsl */
 export const getRecentList = async () => {

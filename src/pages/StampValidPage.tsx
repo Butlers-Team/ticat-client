@@ -75,7 +75,7 @@ const StampValidPage = () => {
       toast({ title: '도장 꾹~! 스탬프 리스트 페이지로 이동합니다 :(', status: 'success' });
 
       setTimeout(() => {
-        navigate('/stamp/list');
+        navigate('/stamp/list', { state: { page: '/stamp/valid' } });
       }, 2000);
     },
     onError: err => {

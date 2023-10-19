@@ -37,7 +37,7 @@ const MyInfoButton = () => {
   };
 
   const navigateStamp = () => {
-    navigate(`/stamp/list`);
+    navigate('/stamp/list', { state: { page: '/' } });
   };
 
   useEffect(() => {

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getRecentList } from '@api/myinfo';
 
@@ -21,9 +20,7 @@ const RecentList = ({ textTitle }: RecentListProps) => {
         <ContentItemWrap>
           {data.map(item => (
             <li key={item.festivalId}>
-              <Link to={`/detail/${item.festivalId}`}>
-                <RecentListItem recentItem={item} />
-              </Link>
+              <RecentListItem recentItem={item} />
             </li>
           ))}
         </ContentItemWrap>

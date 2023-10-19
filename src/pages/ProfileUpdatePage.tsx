@@ -102,6 +102,7 @@ const ProfileUpdatePage = () => {
             </ProfileWrap>
           )}
           <CategoryWrap>
+            <p className="category-title">* 관심사는 최대 5개까지 등록 가능합니다.</p>
             <CommonCategoryList width="100%" category={category} handleCategory={handleCategory} />
           </CategoryWrap>
         </ProfileContentWrap>
@@ -163,6 +164,13 @@ const CategoryWrap = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+
+  > .category-title {
+    width: 100%;
+    font-size: 13px;
+    color: var(--color-dark-gray);
+    padding-bottom: 1rem;
+  }
 `;
 
 // 회원정보 저장 버튼

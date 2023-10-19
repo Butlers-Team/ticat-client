@@ -17,7 +17,7 @@ const SettingPage = () => {
   return (
     <SettingContainer>
       <TopHistoryBackNav textTitle="설정 관리" onNavigation={goBackPage} />
-      <MySetting></MySetting>
+      <MySetting />
     </SettingContainer>
   );
 };
