@@ -261,8 +261,8 @@ const DeleteBtnSection = styled.div`
     border-radius: 5px;
     font-size: 12px;
     font-weight: bold;
-    color: #ff5454;
-    border: 1px solid #ff5454;
+    color: #787474;
+    border: 1px solid #eee;
     box-shadow: none;
     background-color: var(--background-color);
   }
@@ -272,8 +272,8 @@ const DeleteBtnSection = styled.div`
     border-radius: 5px;
     font-size: 12px;
     font-weight: bold;
-    color: #787474;
-    border: 1px solid #eee;
+    color: #ff5454;
+    border: 1px solid #ff5454;
     background-color: #ffffff;
     box-shadow: none;
     background-color: var(--background-color);

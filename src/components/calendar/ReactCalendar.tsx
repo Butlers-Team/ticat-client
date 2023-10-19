@@ -1,5 +1,4 @@
-// import { background, color } from '@chakra-ui/react';
-
+// 필요한 React 및 라이브러리 import
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import {
@@ -9,6 +8,7 @@ import {
   MdOutlineKeyboardDoubleArrowRight,
 } from 'react-icons/md';
 
+// CalendarProps 인터페이스 정의
 interface CalendarProps {
   startDate: Date;
   setSelectedDate: React.Dispatch<React.SetStateAction<number>>;
@@ -19,6 +19,7 @@ interface CalendarProps {
   selectYears: number;
 }
 
+// ReactCalendar 컴포넌트 정의
 const ReactCalendar: React.FC<CalendarProps> = ({
   startDate,
   setSelectedDate,
@@ -28,21 +29,26 @@ const ReactCalendar: React.FC<CalendarProps> = ({
   selecteMonth,
   selectYears,
 }) => {
+  // 컴포넌트 상태 관리를 위한 useState 훅 사용
   const [currentDate, setCurrentDate] = useState(startDate);
 
+  // 이전 주로 이동하는 함수
   const prevWeek = () => {
     setCurrentDate(prevDate => {
       const prevWeekDate = new Date(prevDate);
       prevWeekDate.setDate(prevWeekDate.getDate() - 7);
+
+      // 이전 주의 월이 현재 선택한 월과 다를 경우, 월을 업데이트
       if (prevWeekDate.getMonth() !== selecteMonth) {
         setSelectedMonth(prevWeekDate.getMonth());
+
+        // 이전 주의 월이 1월인 경우, 연도를 업데이트 (1을 빼서 이전 연도로 변경)
         if (prevWeekDate.getMonth() === 0) {
-          // 0으로 변경
-          setSelectedYears(prevWeekDate.getFullYear() - 1); // 1을 빼서 이전 연도로 변경
+          setSelectedYears(prevWeekDate.getFullYear() - 1);
         }
       }
 
-      // 날짜가 1일 이전으로 넘어갈 경우, 이전 달의 마지막 날짜로 설정합니다.
+      // 날짜가 1일 이전으로 넘어갈 경우, 이전 달의 마지막 날짜로 설정
       if (prevWeekDate.getDate() === 31 && selecteDate === 1) {
         const lastDayOfMonth = new Date(prevWeekDate.getFullYear(), prevWeekDate.getMonth(), 0);
         setSelectedDate(lastDayOfMonth.getDate());
@@ -54,18 +60,23 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     });
   };
 
+  // 다음 주로 이동하는 함수
   const nextWeek = () => {
     setCurrentDate(prevDate => {
       const nextWeekDate = new Date(prevDate);
       nextWeekDate.setDate(nextWeekDate.getDate() + 7);
 
+      // 다음 주의 월이 현재 선택한 월과 다를 경우, 월을 업데이트
       if (nextWeekDate.getMonth() !== selecteMonth) {
         setSelectedMonth(nextWeekDate.getMonth());
+
+        // 다음 주의 월이 1월인 경우, 연도를 업데이트
         if (nextWeekDate.getMonth() === 0) {
           setSelectedYears(nextWeekDate.getFullYear());
         }
       }
-      // 날짜가 다음 달로 넘어갈 경우, 다음 달의 1일로 설정합니다.
+
+      // 날짜가 다음 달로 넘어갈 경우, 다음 달의 1일로 설정
       if (nextWeekDate.getDate() === 1 && selecteDate === 31) {
         setSelectedDate(selecteDate);
       } else {
@@ -75,36 +86,46 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       return nextWeekDate;
     });
   };
+
+  // 날짜를 선택하는 함수
   const selectDay = (date: number) => {
     setCurrentDate(prevDate => {
       const nextWeekDate = new Date(prevDate);
       nextWeekDate.setDate(date);
 
+      // 현재 날짜가 6일보다 작고, 클릭한 날짜가 21보다 크면 (현재달의 초반과 이전달의 후반부가 보이는 캘린더)
       if (selecteDate < 6 && date > 21) {
-        // 현재날짜가 6일보다 작고, 클릭한 날짜가 21보다 클 떄 (현재달의 초반과 이전달의 후반부가 보이는 캘린더)
+        // 현재 월이 1월인 경우
         if (selecteMonth === 0) {
-          // 현재 월이 1월인 경우
-          setSelectedYears(selectYears - 1); // 이전 연도로 변경
-          setSelectedMonth(11); // 12월로 변경
+          // 연도를 이전 연도로 변경
+          setSelectedYears(selectYears - 1);
+          // 월을 12월로 변경
+          setSelectedMonth(11);
         } else {
-          setSelectedMonth(selecteMonth - 1); // 이전 달로 변경
+          // 월을 이전 달로 변경
+          setSelectedMonth(selecteMonth - 1);
         }
       } else if (selecteDate > 22 && date < 6 && selecteDate - date > 6) {
-        //  현재날짜가 22일보다 크고, 클릭한 날짜가 6보다 작을 떄 (현재달의 후반과 이전달의 초반부가 보이는 캘린더)
+        // 현재날짜가 22일보다 크고, 클릭한 날짜가 6보다 작으면 (현재달의 후반과 이전달의 초반부가 보이는 캘린더)
         if (selecteMonth === 11) {
           // 현재 월이 12월인 경우
-          setSelectedYears(selectYears + 1); // 다음 연도로 변경
-          setSelectedMonth(0); // 1월로 변경
+          // 연도를 다음 연도로 변경
+          setSelectedYears(selectYears + 1);
+          // 월을 1월로 변경
+          setSelectedMonth(0);
         } else {
-          setSelectedMonth(selecteMonth + 1); // 다음 달로 변경
+          // 월을 다음 달로 변경
+          setSelectedMonth(selecteMonth + 1);
         }
       }
 
+      // 선택된 날짜 업데이트
       setSelectedDate(date);
       return nextWeekDate;
     });
   };
 
+  // 월을 변경하는 함수
   const changeMonth = (newMonth: number) => {
     let newYear = selectYears;
 
@@ -116,35 +137,33 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       newYear += 1;
     }
 
-    // 변경된 월의 마지막 날짜를 구합니다.
+    // 변경된 월의 마지막 날짜 계산
     const lastDayOfNewMonth = new Date(newYear, newMonth + 1, 0).getDate();
 
     let newDate = selecteDate;
 
-    // 선택된 날짜가 변경된 월의 마지막 날짜보다 큰 경우, 가장 가까운 유효한 날짜로 변경합니다.
+    // 선택된 날짜가 변경된 월의 마지막 날짜보다 큰 경우, 가장 가까운 유효한 날짜로 변경
     if (newDate > lastDayOfNewMonth) {
       newDate = lastDayOfNewMonth;
     }
 
-    // 변경된 월로 날짜 객체를 업데이트합니다.
+    // 변경된 월로 날짜 객체 업데이트
     const adjustedStartDate = new Date(currentDate);
     adjustedStartDate.setMonth(newMonth); // 변경된 월로 설정
     adjustedStartDate.setFullYear(newYear); // 변경된 연도로 설정
-
-    // 선택된 날짜를 업데이트합니다.
     adjustedStartDate.setDate(newDate);
 
-    // state를 업데이트합니다.
+    // 상태 업데이트
     setSelectedDate(newDate);
     setSelectedMonth(newMonth);
     setSelectedYears(newYear);
     setCurrentDate(adjustedStartDate);
   };
 
-  // 날짜 배열 생성 (일요일부터 토요일까지)
+  // 일요일부터 토요일까지의 요일 배열
   const weekdays = ['일', '월', '화', '수', '목', '금', '토'];
 
-  // 캘린더의 렌더링 로직
+  // 캘린더를 렌더링하는 함수
   const renderCalendar = (selecteDate: number) => {
     const weekStart = new Date(currentDate);
     weekStart.setDate(weekStart.getDate() - weekStart.getDay());
@@ -155,10 +174,10 @@ const ReactCalendar: React.FC<CalendarProps> = ({
       const date = new Date(weekStart);
       date.setDate(weekStart.getDate() + i);
 
-      // 현재 날짜와 selectDate를 비교하여 스타일을 변경.
+      // 현재 날짜와 selectDate를 비교하여 스타일을 변경
       const isCurrentDate = date.getDate() === selecteDate;
 
-      // 스타일을 파란색으로 변경합니다.
+      // 스타일을 파란색으로 변경
       const cellStyle = isCurrentDate
         ? { color: 'var(--color-main)', background: '#E4F4FF', borderRadius: '20px' }
         : {};
@@ -172,6 +191,7 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     return calendar;
   };
 
+  // 컴포넌트의 반환
   return (
     <Calendar>
       <MonthSelect>
@@ -212,6 +232,8 @@ const ReactCalendar: React.FC<CalendarProps> = ({
     </Calendar>
   );
 };
+
+// ReactCalendar 컴포넌트 내보내기
 export default ReactCalendar;
 
 const Calendar = styled.div`

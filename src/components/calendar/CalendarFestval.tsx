@@ -122,7 +122,6 @@ const FestivalContainer = styled.div`
   height: 105px;
   color: var(--color-dark);
   font-size: 13px;
-  border: solid 0.5px rgba(223, 218, 218, 0.5);
   border-radius: 5px;
 `;
 
@@ -239,20 +238,6 @@ const FestivalrCategoryWrap = styled.div`
 
   @media screen and (max-width: 400px) {
     font-size: 11px;
-  }
-`;
-const CalendarDeleteBtn = styled.button`
-  width: 35px;
-  border: 1px solid #eee;
-  background-color: #ffffff;
-  color: #e62e2e;
-  border-radius: 5px;
-  font-size: 1.4rem;
-  margin-bottom: 5px;
-  cursor: pointer;
-
-  :hover {
-    color: #ff5454;
   }
 `;
 
