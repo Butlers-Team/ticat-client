@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { useState, useEffect, useReducer } from 'react';
 import ReactCalendar from '@components/calendar/ReactCalendar';
-import { CalendarListRequest, CalendarListListType, CalendarListType } from 'types/api/calendar';
+import { CalendarListRequest, CalendarListType } from 'types/api/calendar';
 import { getCalendarList } from '@api/calendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
 import { deleteCalendarRequest } from '@api/calendar';
 import Button from '@components/Button';
-import { CgTrash } from 'react-icons/cg';
+
 const CalendarPage: React.FC = (): JSX.Element => {
   const now = new Date();
   const year = now.getFullYear();
@@ -86,7 +86,6 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     MoreCalendarList();
   }, [page]);
-  console.log(selectedCalendars); // 이 부분에서 아직 업데이트되지 않았을 수 있습니다.
   return (
     <CalendarContainer>
       <CalendarSection>
@@ -123,7 +122,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
       </CalendarTopSection>
 
       <FestivalListSection>
-        {calendarDatailList?.length === undefined || calendarDatailList.length < 1 ? (
+        {calendarDatailList.length < 1 ? (
           <EmptyListSection>
             <img src={'assets/images/ticat-logo-icon-gray.png'}></img>
             <span>추가된 축제 일정이 없어요.</span>
@@ -242,7 +241,6 @@ const FestivalScrollWrap = styled.div`
   overflow: auto;
   margin: 0 auto;
 
-  // 스크롤바 없애기
   // chrome and safari
   ::-webkit-scrollbar {
     display: none;
