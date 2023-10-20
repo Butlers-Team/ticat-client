@@ -104,20 +104,24 @@ const CalendarPage: React.FC = (): JSX.Element => {
         <p className="today-date">
           <span>{selecteYears}년</span> <span>{selecteMonth + 1}월</span> <span>{selecteDate}일</span> 축제리스트
         </p>
-        {select ? (
-          <DeleteBtnSection>
-            {' '}
-            <button className="select-list" onClick={() => selectDeleteList()}>
-              선택취소
-            </button>
-          </DeleteBtnSection>
-        ) : (
-          <DeleteBtnSection>
-            {' '}
-            <button className="unselect-list" onClick={() => selectDeleteList()}>
-              선택삭제
-            </button>
-          </DeleteBtnSection>
+        {calendarDatailList.length > 0 && (
+          <div>
+            {select ? (
+              <DeleteBtnSection>
+                {' '}
+                <button className="select-list" onClick={() => selectDeleteList()}>
+                  선택취소
+                </button>
+              </DeleteBtnSection>
+            ) : (
+              <DeleteBtnSection>
+                {' '}
+                <button className="unselect-list" onClick={() => selectDeleteList()}>
+                  선택삭제
+                </button>
+              </DeleteBtnSection>
+            )}
+          </div>
         )}
       </CalendarTopSection>
 
