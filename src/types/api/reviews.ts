@@ -3,9 +3,9 @@ import { PageInfoType } from '.';
 
 interface ReviewType {
   commentCount: number;
-  disliked?: boolean;
+  disliked: boolean;
   dislikedCount: number;
-  liked?: boolean;
+  liked: boolean;
   likedCount: number;
   pictures: string[] | [];
   reviewId: number;
