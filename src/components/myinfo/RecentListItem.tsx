@@ -40,11 +40,9 @@ const RecentListItem = ({ recentItem }: RecentListItemProps) => {
       itemIsLike, // 바꾸려는 상태
       setIsItemLike, // 바꾸려는 상태 Set함수
       postFestivalLike, // 생성 Api 요청 mutation
-      postFestivalUnLike, // 취소 Api 요청 뮤테이션
+      postFestivalUnLike, // 취소 Api 요청 mutation
       500, // 시간은 500~1000사이가 좋아용
     );
-
-    console.log('실행중 >> ', itemIsLike);
   };
 
   return (
