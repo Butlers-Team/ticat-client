@@ -18,8 +18,8 @@ interface Props {
   memberId: number | null;
   reviewId: number;
   commentCount: number;
-  liked?: boolean;
-  disliked?: boolean;
+  liked: boolean;
+  disliked: boolean;
   likedCount?: number;
   dislikedCount?: number;
 }

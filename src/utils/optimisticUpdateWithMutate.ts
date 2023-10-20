@@ -3,7 +3,7 @@ import { MutableRefObject } from 'react';
 // 토글 카운트 함수
 const toggleAndCount = (
   operator: 'minus' | 'plus',
-  setToggleFunction: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  setToggleFunction: React.Dispatch<React.SetStateAction<boolean>>,
   setCountFunction?: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   setToggleFunction(prev => !prev);
@@ -18,12 +18,12 @@ const toggleAndCount = (
 
 // 상태 및 카운터 업데이트
 const updateStatesAndCounts = (
-  targetValue: boolean | undefined,
-  toggleTargetState: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  targetValue: boolean,
+  toggleTargetState: React.Dispatch<React.SetStateAction<boolean>>,
   setTargetCountFunction?: React.Dispatch<React.SetStateAction<number>>,
 
-  oppositionValue?: boolean | undefined,
-  toggleOppositionState?: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  oppositionValue?: boolean,
+  toggleOppositionState?: React.Dispatch<React.SetStateAction<boolean>>,
   setOppositionCounterFunction?: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   if (oppositionValue && toggleOppositionState && setOppositionCounterFunction) {
@@ -39,8 +39,8 @@ const updateStatesAndCounts = (
 
 // mutate 요청 및 에러 핸들링
 const executeMutation = (
-  targetValue: boolean | undefined,
-  toggleTargetState: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  targetValue: boolean,
+  toggleTargetState: React.Dispatch<React.SetStateAction<boolean>>,
   createMutation: any,
   deleteMutation: any,
   setTargetCountFunction?: React.Dispatch<React.SetStateAction<number>>,
@@ -67,8 +67,8 @@ export const optimisticUpdateWithMutate = async (
   // 필수값
   //  const timer = useRef<ReturnType<typeof setTimeout>>(); 함수를 불러오는 곳에 넣어주세요
   timer: MutableRefObject<ReturnType<typeof setTimeout> | undefined>,
-  targetValue: boolean | undefined, // 대상이 되는 상태값
-  toggleTargetState: React.Dispatch<React.SetStateAction<boolean | undefined>>, //상태값 변경
+  targetValue: boolean, // 대상이 되는 상태값
+  toggleTargetState: React.Dispatch<React.SetStateAction<boolean>>, //상태값 변경
   createMutation: any,
   deleteMutation: any,
   delayTime: number,
@@ -78,7 +78,7 @@ export const optimisticUpdateWithMutate = async (
 
   //좋아요/ 싫어요 같은 반대 옵션까지 두 개를 조정해야할 때
   oppositionValue?: boolean | undefined,
-  toggleOppositionState?: React.Dispatch<React.SetStateAction<boolean | undefined>>,
+  toggleOppositionState?: React.Dispatch<React.SetStateAction<boolean>>,
   setOppositionCounterFunction?: React.Dispatch<React.SetStateAction<number>>,
 ) => {
   if (timer.current) {
