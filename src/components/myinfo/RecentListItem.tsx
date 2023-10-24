@@ -1,5 +1,7 @@
+import { useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { RecentListType } from 'types/api/myinfo';
 
 // hook
 import { usePostFestivalLike } from '@hooks/query/usePostFestivalLike';
@@ -8,12 +10,11 @@ import { usePostFestivalUnLike } from '@hooks/query/usePostFestivalUnLike';
 // utils
 import { formatDate } from '@utils/formatDate';
 import { splitAddress } from '@utils/address';
-import { RecentListType } from 'types/api/myinfo';
+import { optimisticUpdateWithMutate } from '@utils/optimisticUpdateWithMutate';
 
 // icons
 import { MdPlace } from 'react-icons/md';
 import { TiHeartFullOutline } from 'react-icons/ti';
-import { useState } from 'react';
 
 interface RecentListItemProps {
   recentItem: RecentListType;
@@ -29,17 +30,19 @@ const handlerImgError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
 const RecentListItem = ({ recentItem }: RecentListItemProps) => {
   const postFestivalLike = usePostFestivalLike({ festivalId: recentItem.festivalId });
   const postFestivalUnLike = usePostFestivalUnLike({ festivalId: recentItem.festivalId });
+  const timer = useRef<ReturnType<typeof setTimeout>>();
   const [itemIsLike, setIsItemLike] = useState<boolean>(recentItem.favorite);
 
-  /** 2023/10/10 - 축제 좋아요/좋아요 취소 - by sineTlsl */
+  /** 2023/10/20 - 축제 좋아요/좋아요 취소 - by sineTlsl */
   const handlerFestivalLike = () => {
-    setIsItemLike(!itemIsLike);
-
-    if (!itemIsLike) {
-      postFestivalLike.mutate();
-    } else {
-      postFestivalUnLike.mutate();
-    }
+    optimisticUpdateWithMutate(
+      timer, // 여기에 생성된 타이머
+      itemIsLike, // 바꾸려는 상태
+      setIsItemLike, // 바꾸려는 상태 Set함수
+      postFestivalLike, // 생성 Api 요청 mutation
+      postFestivalUnLike, // 취소 Api 요청 mutation
+      500, // 시간은 500~1000사이가 좋아용
+    );
   };
 
   return (
