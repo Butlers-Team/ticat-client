@@ -1,20 +1,21 @@
 import styled from 'styled-components';
+import { useState, useEffect } from 'react'; // useState 추가
 import { CalendarListType } from 'types/api/calendar';
 import { useNavigate } from 'react-router-dom';
 
 // utils
 import { formatDate } from '@utils/formatDate';
 import { splitAddress } from '@utils/address';
-import { deleteCalendarRequest } from '@api/calendar';
 // icons
 import { FaStar } from 'react-icons/fa';
 import { TiHeartFullOutline } from 'react-icons/ti';
-import { CgTrash } from 'react-icons/cg';
 import { LuStamp } from 'react-icons/lu';
 
 interface FestivalProps {
   item: CalendarListType;
-  forceUpdate: React.Dispatch<React.SetStateAction<number>>;
+  selectedCalendars: number[];
+  setSelectedCalendars: React.Dispatch<React.SetStateAction<number[]>>;
+  select: boolean;
 }
 
 const statusStlye = (state: string) => {
@@ -29,14 +30,27 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
+const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendars }: FestivalProps) => {
+  const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
-  /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
-  const deleteCalendarList = async () => {
-    await deleteCalendarRequest(item.calendarId);
-    forceUpdate(1);
-    alert(`[${item.title}]일정이 삭제되었습니다.`);
+
+  // 수정: 체크박스 클릭 핸들러
+  const handleCheckboxChange = (clickedItem: CalendarListType) => {
+    setSelected(prevSelected => {
+      const isSelected = selectedCalendars.includes(clickedItem.calendarId);
+      let updatedCalendars;
+      if (isSelected) {
+        // 이미 선택된 경우, 배열에서 해당 아이템을 제거합니다.
+        updatedCalendars = selectedCalendars.filter(calendar => calendar !== clickedItem.calendarId);
+      } else {
+        // 선택되지 않은 경우, 배열에 해당 아이템을 추가합니다.
+        updatedCalendars = [...selectedCalendars, clickedItem.calendarId];
+      }
+      setSelectedCalendars(updatedCalendars);
+      return !prevSelected; // 체크박스 상태를 반전
+    });
   };
+
   /** 2023/09/12 스탬프페이지로 축제데이터 넘겨주는 함수 - parksubeom */
   const routeStampPage = () => {
     navigate('/stamp/valid', { state: { item } });
@@ -45,6 +59,10 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
   const routeDetailPage = () => {
     navigate(`/detail/${item.festivalId}`);
   };
+
+  useEffect(() => {
+    setSelected(false);
+  }, [select]);
   return (
     <FestivalContainer>
       <ImgBox>
@@ -69,22 +87,25 @@ const CalendarFestival = ({ item, forceUpdate }: FestivalProps) => {
           {formatDate(item.eventStartDate)} ~ {formatDate(item.eventEndDate)}
         </p>
       </DescriptionWrap>
-      <CalendarRightContainer>
-        <FestivalrCategoryWrap>
-          <CalendarDeleteBtn onClick={deleteCalendarList}>
-            <CgTrash />
-          </CalendarDeleteBtn>
-        </FestivalrCategoryWrap>
-        {item.status === 'EXPECTED' ? (
-          <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
-            스탬프찍기
-          </DisabledBtn>
-        ) : (
-          <StampAddBtn onClick={routeStampPage}>
-            <LuStamp />
-          </StampAddBtn>
-        )}
-      </CalendarRightContainer>
+      {select ? (
+        <CalendarRightContainer>
+          <FestivalrCategoryWrap>
+            <input type="checkbox" checked={selected} onChange={() => handleCheckboxChange(item)}></input>
+          </FestivalrCategoryWrap>
+        </CalendarRightContainer>
+      ) : (
+        <CalendarRightContainer>
+          {item.status === 'EXPECTED' ? (
+            <DisabledBtn className="disabled" onClick={routeStampPage} disabled>
+              스탬프찍기
+            </DisabledBtn>
+          ) : (
+            <StampAddBtn onClick={routeStampPage}>
+              <LuStamp />
+            </StampAddBtn>
+          )}
+        </CalendarRightContainer>
+      )}
     </FestivalContainer>
   );
 };
@@ -95,11 +116,13 @@ export default CalendarFestival;
 const FestivalContainer = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  margin: 3px auto;
+  padding: 0px 5px;
   width: 100%;
   height: 105px;
   color: var(--color-dark);
   font-size: 13px;
+  border-radius: 5px;
 `;
 
 // 축제 정보 이미지
@@ -217,26 +240,9 @@ const FestivalrCategoryWrap = styled.div`
     font-size: 11px;
   }
 `;
-const CalendarDeleteBtn = styled.button`
-  width: 35px;
-  height: 20px;
-  border: none;
-  background-color: #ffffff;
-  border-radius: 5px;
-  font-size: 1.5rem;
-  color: #ccc;
-  margin-bottom: 20px;
-  font-weight: bold;
-  cursor: pointer;
-
-  :hover {
-    color: #ff5454;
-  }
-`;
 
 const StampAddBtn = styled.button`
   width: 50px;
-
   border: 1px solid #eee;
   background-color: #ffffff;
   color: #b8b8b8;

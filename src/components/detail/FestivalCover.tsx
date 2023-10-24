@@ -1,15 +1,16 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
 import { getWeather } from '@api/weather';
 import { WeatherRequest, WeatherType } from 'types/api/weather';
 import { WeatherIcon } from '@components/WeatherIcon';
 import AddCalendar from '@components/calendar/AddCalendarForm';
-//import { getToken } from '@store/useTokenStore';
-
+import { CalendarListType2 } from 'types/api/calendar';
 //icon
 import { TiLocation } from 'react-icons/ti';
+import { LuStamp } from 'react-icons/lu';
 import { BiSolidHeart } from 'react-icons/bi';
 import { FiHeart, FiShare2 } from 'react-icons/fi';
 import { LuTicket } from 'react-icons/lu';
@@ -28,6 +29,7 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   const isAuthenticated = !!accessToken && !!refreshToken;
   const token = window.localStorage.getItem('accessToken');
   const location = useLocation();
+  const navigate = useNavigate();
   const [dateForm, setDateForm] = useState<boolean>(false);
   const [defaultImg, setDefaultImg] = useState(detailList.image);
   const [festivalLiked, setFestivalLiked] = useState(detailList.liked);
@@ -93,6 +95,28 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
   const addCalendar = () => {
     setDateForm(!dateForm);
   };
+  const routeStampPage = () => {
+    const item: CalendarListType2 = {
+      address: detailList.address,
+      category: detailList.category,
+      eventEndDate: detailList.eventenddate,
+      eventhomepage: detailList.eventhomepage,
+      eventplace: detailList.eventplace,
+      eventStartDate: detailList.eventstartdate,
+      festivalId: detailList.festivalId,
+      image: detailList.image,
+      liked: detailList.liked,
+      mapx: detailList.mapx,
+      mapy: detailList.mapy,
+      overview: detailList.overview,
+      playtime: detailList.playtime,
+      price: detailList.price,
+      status: detailList.status,
+      tel: detailList.tel,
+      title: detailList.title,
+    };
+    navigate('/stamp/valid', { state: { item } });
+  };
 
   useEffect(() => {
     fetchWeather();
@@ -157,6 +181,10 @@ const FestivalCover: React.FC<FestivalCoverProps> = ({ detailList }) => {
             className="calendar-icon-btn"
             onClick={() => handleCopyClipBoard(`${window.location.origin}${location.pathname}`)}>
             <FiShare2 />
+          </button>
+
+          <button className="calendar-icon-btn" onClick={routeStampPage}>
+            <LuStamp />
           </button>
         </BtnSection>
       </div>

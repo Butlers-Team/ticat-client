@@ -40,7 +40,11 @@ const FestivalLocation: React.FC<FestivalCoverProps> = ({ detailList }) => {
   }, []);
   /** 2023/07/23 - 카카오맵에서 축제위치와 내 위치의 경로를 찾도록 링크로 이동시켜주는 함수 - by parksubeom */
   const searchKakaoMap = () => {
-    window.open(`https://map.kakao.com/link/to/${detailList.eventplace},${detailList.mapy},${detailList.mapx}`);
+    window.open(
+      `https://map.kakao.com/link/to/${detailList.eventplace === '' ? detailList.address : detailList.eventplace},${
+        detailList.mapy
+      },${detailList.mapx}`,
+    );
   };
   return (
     <>

@@ -60,6 +60,26 @@ export interface CalendarListType {
   calendarDate: string;
 }
 
+export interface CalendarListType2 {
+  address: string;
+  category: string;
+  eventEndDate: string;
+  eventhomepage: string;
+  eventplace: string;
+  eventStartDate: string;
+  festivalId: number;
+  image: string;
+  liked: boolean;
+  mapx: number;
+  mapy: number;
+  overview: string;
+  playtime: string;
+  price: string;
+  status: string;
+  tel: string;
+  title: string;
+}
+
 // 축제 리스트 카테고리별
 /** 2023/07/04 - 축제 리스트 카테고리별 params (Reqeust) - by  parksubeom */
 export interface CalendarListRequest {

@@ -1,11 +1,11 @@
 import styled, { keyframes } from 'styled-components';
-import { CalendarListType } from 'types/api/calendar';
+import { CalendarListType2 } from 'types/api/calendar';
 
 // icons
 import { MdPlace } from 'react-icons/md';
 
 interface TicketStampingProps {
-  item: CalendarListType;
+  item: CalendarListType2;
 }
 
 /** 2023/09/22 - 이미지 에러 시 기본 이미지로 대체 - by sineTlsl */
