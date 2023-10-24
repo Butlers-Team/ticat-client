@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
-import { useKeywordStore, useListAppearState, useMapLocationStore } from '@store/mapListStore';
+import {
+  useKeywordStore,
+  useListAppearState,
+  useMapLocationStore,
+  useMapUpdateLocationStore,
+} from '@store/mapListStore';
 
 //component
 import MapScreen from '@components/maplist/MapScreen';
@@ -15,6 +20,7 @@ const MapListPage = () => {
   const { location } = useLocationStore();
   const { screenLocation, setScreenLocation } = useMapLocationStore();
   const { setKeyword } = useKeywordStore();
+  const { setUpdateScreenLocation } = useMapUpdateLocationStore();
 
   const { listAppear, setListAppear } = useListAppearState();
 
@@ -35,9 +41,9 @@ const MapListPage = () => {
             className={`flex-all-center ${listAppear ?? 'clicked-btn'}`}
             onClick={() => {
               setKeyword('');
-              setScreenLocation(location);
+              setUpdateScreenLocation(screenLocation);
             }}>
-            <MdOutlineMyLocation className="icon-margin" />내 위치 찾기
+            <MdOutlineMyLocation className="icon-margin" />현 위치에서 검색
           </MyLocationBtn>
         )}
         <OptionButton />

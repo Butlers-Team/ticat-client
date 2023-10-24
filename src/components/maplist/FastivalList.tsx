@@ -15,6 +15,7 @@ import {
   useMarkerDataStore,
   useMapLocationStore,
   useStatusStore,
+  useMapUpdateLocationStore,
 } from '@store/mapListStore';
 
 interface transformed {
@@ -34,6 +35,7 @@ const FastivalList = () => {
   const { status } = useStatusStore();
   const { setMarkerData } = useMarkerDataStore();
   const { screenLocation } = useMapLocationStore();
+  const { updateScreenLocation } = useMapUpdateLocationStore();
   const [size, setSize] = useState<number>(15);
 
   const categoryJoin = category.join();
@@ -79,7 +81,7 @@ const FastivalList = () => {
 
   useEffect(() => {
     fetchDetailList();
-  }, [sortBy, category, keyword, size, screenLocation, status]);
+  }, [sortBy, category, keyword, size, updateScreenLocation, status]);
 
   const handleLoadMore = () => {
     setSize(prevSize => prevSize + 10); // Increase size by 10

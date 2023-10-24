@@ -161,3 +161,23 @@ export const useListAppearState = create<listAppearState>(set => ({
   listAppear: false,
   setListAppear: (listAppear: boolean) => set({ listAppear }),
 }));
+
+// 지도 위치 업데이트
+
+type mapUpdateScreenLocation = {
+  latitude?: number;
+  longitude?: number;
+};
+
+type mapUpdateScreenLocationState = {
+  updateScreenLocation: mapUpdateScreenLocation;
+  setUpdateScreenLocation: (newData: mapUpdateScreenLocation) => void;
+};
+
+export const useMapUpdateLocationStore = create<mapUpdateScreenLocationState>(set => ({
+  updateScreenLocation: {
+    latitude: 37.566761113473376,
+    longitude: 126.97854474587949,
+  },
+  setUpdateScreenLocation: newData => set({ updateScreenLocation: newData }),
+}));

@@ -260,7 +260,7 @@ const DeleteBtnSection = styled.div`
   margin-top: 2rem;
 
   > .select-list {
-    width: 6rem;
+    width: 7rem;
     height: 2.5rem;
     border-radius: 5px;
     font-size: 12px;
@@ -271,7 +271,7 @@ const DeleteBtnSection = styled.div`
     background-color: var(--background-color);
   }
   > .unselect-list {
-    width: 6rem;
+    width: 7rem;
     height: 2.5rem;
     border-radius: 5px;
     font-size: 12px;
