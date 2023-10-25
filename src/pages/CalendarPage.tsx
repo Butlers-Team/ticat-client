@@ -270,6 +270,11 @@ const DeleteBtnSection = styled.div`
     box-shadow: none;
     background-color: var(--background-color);
   }
+  @media (max-width: 400px) {
+    .select-list {
+      font-size: 9px;
+    }
+  }
   > .unselect-list {
     width: 7rem;
     height: 2.5rem;
@@ -281,5 +286,10 @@ const DeleteBtnSection = styled.div`
     background-color: #ffffff;
     box-shadow: none;
     background-color: var(--background-color);
+  }
+  @media (max-width: 400px) {
+    .unselect-list {
+      font-size: 9px;
+    }
   }
 `;
