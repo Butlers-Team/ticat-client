@@ -77,10 +77,14 @@ const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendar
         <div className="icon-wrap">
           <div className="review-icon">
             <FaStar size="14px" color="#FFAD33" />
+            <span>
+              {item.reviewRating.toFixed(1)} ({item.reviewCount})
+            </span>
           </div>
           <p className="gap">|</p>
           <div className="review-icon">
             <TiHeartFullOutline size="14px" color="var(--color-sub)" />
+            <span>{item.likeCount}</span>
           </div>
         </div>
         <p className="festival-date">
