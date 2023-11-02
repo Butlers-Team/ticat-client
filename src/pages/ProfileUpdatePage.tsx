@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { MyInfoType } from 'types/api/myinfo';
 import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
+import { MyInfoType } from 'types/api/myinfo';
+
+// stores
 import { useMemberStore } from '@store/useMemberStore';
 
 // utils
@@ -51,10 +53,13 @@ const ProfileUpdatePage = () => {
   const profileUpdatemutation = useMutation(patchMyInfo, {
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
-      // setMember({
-      //   ...member,
-      //   displayName: memberName,
-      // });
+
+      if (member) {
+        setMember({
+          ...member,
+          displayName: memberName,
+        });
+      }
       navigate('/myinfo');
     },
     onError: err => {
