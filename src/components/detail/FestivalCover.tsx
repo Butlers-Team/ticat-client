@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+//api
 import { festivalLikedRequest, festivalUnLikedRequest } from '@api/festivalliked';
 import { getWeather } from '@api/weather';
+import { CalendarListType2 } from 'types/api/calendar';
 import { WeatherRequest, WeatherType } from 'types/api/weather';
+//components
 import { WeatherIcon } from '@components/WeatherIcon';
 import AddCalendar from '@components/calendar/AddCalendarForm';
-import { CalendarListType2 } from 'types/api/calendar';
 //icon
 import { TiLocation } from 'react-icons/ti';
 import { LuStamp } from 'react-icons/lu';

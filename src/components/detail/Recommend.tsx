@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 //type
-import { RecommendSwiperOptions } from 'types/swiper/swiperOptions';
 import { RecommendListType } from 'types/api/recommend';
 import { getRecommendList } from '@api/recommend';
 import { RecommendRequest } from 'types/api/recommend';
