@@ -1,13 +1,16 @@
 import styled from 'styled-components';
 import { useState, useEffect, useReducer } from 'react';
-import ReactCalendar from '@components/calendar/ReactCalendar';
+//apis
 import { CalendarListRequest, CalendarListType } from 'types/api/calendar';
-import { getCalendarList } from '@api/calendar';
+import { getCalendarList, deleteCalendarRequest } from '@api/calendar';
+//components
+import ReactCalendar from '@components/calendar/ReactCalendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
-import { deleteCalendarRequest } from '@api/calendar';
 import Button from '@components/Button';
+//import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CalendarPage: React.FC = (): JSX.Element => {
+  //const queryClient = useQueryClient();
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
@@ -26,9 +29,10 @@ const CalendarPage: React.FC = (): JSX.Element => {
   const addSchedule = () => {
     window.location.href = '/festival';
   };
+
   useEffect(() => {
     setCalendarDatailList([]);
-    /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom */
+    /** 2023/08/20 - 캘린더 페이지 진입 시, 해당 날짜의 등록된 스케쥴 리스트 불러오는 함수 - parksubeom  */
     const fetchCalendarList = async () => {
       const params: CalendarListRequest = {
         page: 1,
@@ -47,6 +51,8 @@ const CalendarPage: React.FC = (): JSX.Element => {
     setSelectedCalendars([]);
     setSelect(false);
   }, [selecteDate, selecteMonth, selecteYears, trigger]);
+
+  /** 2023/10/20 - 삭제 할 캘린더 항목 추가하는 함수 - parksubeom */
   const selectDeleteList = () => {
     setSelect(!select);
     setSelectedCalendars([]);
@@ -66,7 +72,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     forceUpdate();
     alert('선택한 캘린더가 삭제되었습니다.');
   };
-
+  /** 2023/10/20 - 캘린더 리스트 더보기 요청 함수 - parksubeom */
   const handleLoadMore = () => {
     setPage(prevPage => prevPage + 1);
   };
