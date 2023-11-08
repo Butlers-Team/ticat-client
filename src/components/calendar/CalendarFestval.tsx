@@ -16,6 +16,7 @@ interface FestivalProps {
   selectedCalendars: number[];
   setSelectedCalendars: React.Dispatch<React.SetStateAction<number[]>>;
   select: boolean;
+  allSelect: boolean;
 }
 
 const statusStlye = (state: string) => {
@@ -30,7 +31,7 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendars }: FestivalProps) => {
+const CalendarFestival = ({ item, select, selectedCalendars, allSelect, setSelectedCalendars }: FestivalProps) => {
   const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
 
@@ -63,6 +64,14 @@ const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendar
   useEffect(() => {
     setSelected(false);
   }, [select]);
+
+  useEffect(() => {
+    if (allSelect) {
+      setSelected(true);
+    } else {
+      setSelected(false);
+    }
+  }, [allSelect]);
   return (
     <FestivalContainer>
       <ImgBox>

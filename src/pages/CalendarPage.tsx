@@ -7,16 +7,20 @@ import { getCalendarList, deleteCalendarRequest } from '@api/calendar';
 import ReactCalendar from '@components/calendar/ReactCalendar';
 import CalendarFestival from '@components/calendar/CalendarFestval';
 import Button from '@components/Button';
+//hook
+import useCustomToast from '@hooks/useCustomToast';
 //import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const CalendarPage: React.FC = (): JSX.Element => {
   //const queryClient = useQueryClient();
+  const toast = useCustomToast();
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
   const date = now.getDate();
   const [selectedCalendars, setSelectedCalendars] = useState<number[]>([]);
   const [select, setSelect] = useState<boolean>(false);
+  const [allSelect, setAllSelect] = useState<boolean>(false);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>();
   const [selecteDate, setSelectedDate] = useState<number>(date);
@@ -50,19 +54,28 @@ const CalendarPage: React.FC = (): JSX.Element => {
     fetchCalendarList();
     setSelectedCalendars([]);
     setSelect(false);
+    setAllSelect(false);
   }, [selecteDate, selecteMonth, selecteYears, trigger]);
 
   /** 2023/10/20 - 삭제 할 캘린더 항목 추가하는 함수 - parksubeom */
   const selectDeleteList = () => {
-    setSelect(!select);
     setSelectedCalendars([]);
+    setSelect(!select);
+  };
+  /** 2023/10/20 - 전체삭제 리스트 추가하는 함수 - parksubeom */
+  const allSelectDeleteList = () => {
+    const list: number[] = [];
+    calendarDatailList.forEach(el => list.push(el.calendarId));
+    setSelectedCalendars(list);
+    setAllSelect(!allSelect);
+  };
+  /** 2023/10/20 - 전체삭제 리스트 추가하는 함수 - parksubeom */
+  const emptySelectDeleteList = () => {
+    setSelectedCalendars([]);
+    setAllSelect(!allSelect);
   };
   /** 2023/09/12 캘린더 삭제요청 함수 - parksubeom */
   const deleteSelectedCalendars = async () => {
-    if (selectedCalendars.length === 0) {
-      alert('선택된 캘린더가 없습니다.');
-      return;
-    }
     // 여기에서 selectedCalendars 배열을 순회하면서 각 캘린더를 삭제하는 요청을 보냅니다.
     for (const calendar of selectedCalendars) {
       await deleteCalendarRequest(calendar);
@@ -70,7 +83,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     // 삭제 후, 배열 초기화 및 갱신
     setSelectedCalendars([]);
     forceUpdate();
-    alert('선택한 캘린더가 삭제되었습니다.');
+    toast({ title: '캘린더가 정상적으로 삭제되었습니다.', status: 'success' });
   };
   /** 2023/10/20 - 캘린더 리스트 더보기 요청 함수 - parksubeom */
   const handleLoadMore = () => {
@@ -92,6 +105,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     };
     MoreCalendarList();
   }, [page]);
+
   return (
     <CalendarContainer>
       <CalendarSection>
@@ -115,6 +129,15 @@ const CalendarPage: React.FC = (): JSX.Element => {
             {select ? (
               <DeleteBtnSection>
                 {' '}
+                {allSelect ? (
+                  <button className="unselect-list" onClick={() => emptySelectDeleteList()}>
+                    전체쉬소
+                  </button>
+                ) : (
+                  <button className="select-list" onClick={() => allSelectDeleteList()}>
+                    전체선택
+                  </button>
+                )}
                 <button className="select-list" onClick={() => selectDeleteList()}>
                   선택취소
                 </button>
@@ -150,6 +173,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
                     selectedCalendars={selectedCalendars}
                     setSelectedCalendars={setSelectedCalendars}
                     select={select}
+                    allSelect={allSelect}
                   />
                 </li>
               );
