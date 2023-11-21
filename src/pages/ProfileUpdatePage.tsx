@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { MyInfoType } from 'types/api/myinfo';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
+import { MyInfoType } from 'types/api/myinfo';
+
+// stores
+import { useMemberStore } from '@store/useMemberStore';
 
 // utils
 import { CheckCategory } from '@utils/categories';
 import { validateNickname } from '@utils/validateNickname';
+
+// hook
+import useCustomToast from '@hooks/useCustomToast';
 
 // components
 import TopHistoryBackNav from '@components/TopHistoryBackNav';
@@ -18,6 +24,8 @@ import ProfileInfoNameUpdate from '@components/profile/ProfileInfoNameUpdate';
 
 /**  2023/08/07 - 프로필 수정 페이지 - by sineTlsl */
 const ProfileUpdatePage = () => {
+  const { member, setMember } = useMemberStore();
+  const toast = useCustomToast();
   const navigate = useNavigate();
   const location = useLocation();
   const queryClient = useQueryClient();
@@ -39,6 +47,8 @@ const ProfileUpdatePage = () => {
   const interestMutation = useMutation(patchInterest, {
     onSuccess: () => {
       queryClient.invalidateQueries(['userInterest']);
+
+      navigate('/myinfo');
     },
     onError: err => {
       console.log(err);
@@ -49,6 +59,13 @@ const ProfileUpdatePage = () => {
   const profileUpdatemutation = useMutation(patchMyInfo, {
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
+
+      if (member) {
+        setMember({
+          ...member,
+          displayName: memberName,
+        });
+      }
       navigate('/myinfo');
     },
     onError: err => {
@@ -71,8 +88,12 @@ const ProfileUpdatePage = () => {
   const handleProfileUpdate = () => {
     // 닉네임 유효성 검사
     const errorMessage = validateNickname(memberName);
+    if (memberName.length === 0) {
+      toast({ title: '닉네임을 입력해주세요 :(', status: 'error' });
+      return;
+    }
     if (errorMessage) {
-      alert(errorMessage);
+      toast({ title: errorMessage, status: 'error' });
       return; // 에러가 있다면 이후 코드 실행 중지
     }
 

@@ -47,7 +47,7 @@ const CategoryTabNav = () => {
     if (scrollRef.current) {
       setMaxScrollLeft(scrollRef.current.scrollWidth - scrollRef.current.clientWidth);
     }
-  }, [categoriesTab]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
+  }, [categoriesTab, scrollPosition]); // 탭 카테고리가 변경될 때마다 maxScrollLeft 업데이트
 
   /** 2023/08/29 - 메인에서 카테고리 아이콘 클릭 시 tabNav 스크롤 위치 조정 - by sineTlsl */
   useEffect(() => {
