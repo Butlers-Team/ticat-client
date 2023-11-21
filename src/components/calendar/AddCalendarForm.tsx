@@ -8,6 +8,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import styled from 'styled-components';
 import { addCalendarRequest } from '@api/calendar';
 import { CalendarAddRequest } from 'types/api/addcalendar';
+//hooks
+import useCustomToast from '@hooks/useCustomToast';
 
 interface AddCalendarProps {
   setDateForm: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +19,7 @@ interface AddCalendarProps {
 }
 
 const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, startdate, enddate }) => {
+  const toast = useCustomToast();
   const minyear = startdate.substring(0, 4);
   const minmonth = startdate.substring(4, 6);
   const minday = startdate.substring(6, 8);
@@ -43,7 +46,7 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
     }
   };
   /** 2023-07-29 원하는 날짜를 픽스하고, 해당날짜 캘린더에 축제를 추가하는 함수 - parksubeom */
-  const postForm = () => {
+  const postForm = async () => {
     if (member) {
       setDateForm(false);
       const endDate = new Date(dateRange.endDate);
@@ -53,11 +56,21 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
         startDate: `${dateRange.startDate?.toJSON().split('T')[0]}`,
         endDate: endDate.toISOString().split('T')[0] || '',
       };
-      addCalendarRequest(params);
+      try {
+        const data = await addCalendarRequest(params);
+        console.log(data);
+        if (data) {
+          toast({
+            title: `${dateRange.startDate?.toLocaleDateString()} ~ ${dateRange.endDate?.toLocaleDateString()} 일정이 성공적으로 등록되었습니다. `,
+            status: 'success',
+          });
+        } else {
+          toast({ title: '중복된 일정 입니다. 날짜를 다시 확인해주세요.', status: 'error' });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     }
-    alert(
-      `${dateRange.startDate?.toLocaleDateString()}일 부터 ${dateRange.endDate?.toLocaleDateString()}일 까지의 일정이 추가합니다. `,
-    );
   };
   const exitForm = () => {
     setDateForm(false);

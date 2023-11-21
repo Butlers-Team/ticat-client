@@ -1,16 +1,17 @@
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-
 //components
 import FestivalCover from '@components/detail/FestivalCover';
 import FestivalInfo from '@components/detail/FestivalInfo';
 import FestivalLocation from '@components/detail/FestivalLocation';
 import Recommend from '@components/detail/Recommend';
+import Reviews from '@components/post/reviews/Reviews';
+//api
 import { FestivalDetailType } from 'types/api/detail';
 import { getDetailList } from '../api/detail';
 import { recentPostRequest } from '@api/recent';
-import Reviews from '@components/post/reviews/Reviews';
+//store
 import { useTokenStore } from '@store/useTokenStore';
 import { useMemberStore } from '@store/useMemberStore';
 

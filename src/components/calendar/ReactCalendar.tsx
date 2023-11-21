@@ -32,66 +32,10 @@ const ReactCalendar: React.FC<CalendarProps> = ({
   // 컴포넌트 상태 관리를 위한 useState 훅 사용
   const [currentDate, setCurrentDate] = useState(startDate);
 
-  // 이전 주로 이동하는 함수
-  const prevWeek = () => {
-    setCurrentDate(prevDate => {
-      const prevWeekDate = new Date(prevDate);
-      prevWeekDate.setDate(prevWeekDate.getDate() - 7);
-
-      // 이전 주의 월이 현재 선택한 월과 다를 경우, 월을 업데이트
-      if (prevWeekDate.getMonth() !== selecteMonth) {
-        setSelectedMonth(prevWeekDate.getMonth());
-
-        // 이전 주의 월이 1월인 경우, 연도를 업데이트 (1을 빼서 이전 연도로 변경)
-        if (prevWeekDate.getMonth() === 0) {
-          setSelectedYears(prevWeekDate.getFullYear() - 1);
-        }
-      }
-
-      // 날짜가 1일 이전으로 넘어갈 경우, 이전 달의 마지막 날짜로 설정
-      if (prevWeekDate.getDate() === 31 && selecteDate === 1) {
-        const lastDayOfMonth = new Date(prevWeekDate.getFullYear(), prevWeekDate.getMonth(), 0);
-        setSelectedDate(lastDayOfMonth.getDate());
-      } else {
-        setSelectedDate(prevWeekDate.getDate());
-      }
-
-      return prevWeekDate;
-    });
-  };
-
-  // 다음 주로 이동하는 함수
-  const nextWeek = () => {
-    setCurrentDate(prevDate => {
-      const nextWeekDate = new Date(prevDate);
-      nextWeekDate.setDate(nextWeekDate.getDate() + 7);
-
-      // 다음 주의 월이 현재 선택한 월과 다를 경우, 월을 업데이트
-      if (nextWeekDate.getMonth() !== selecteMonth) {
-        setSelectedMonth(nextWeekDate.getMonth());
-
-        // 다음 주의 월이 1월인 경우, 연도를 업데이트
-        if (nextWeekDate.getMonth() === 0) {
-          setSelectedYears(nextWeekDate.getFullYear());
-        }
-      }
-
-      // 날짜가 다음 달로 넘어갈 경우, 다음 달의 1일로 설정
-      if (nextWeekDate.getDate() === 1 && selecteDate === 31) {
-        setSelectedDate(selecteDate);
-      } else {
-        setSelectedDate(nextWeekDate.getDate());
-      }
-
-      return nextWeekDate;
-    });
-  };
-
   // 날짜를 선택하는 함수
   const selectDay = (date: number) => {
     setCurrentDate(prevDate => {
       const nextWeekDate = new Date(prevDate);
-      nextWeekDate.setDate(date);
 
       // 현재 날짜가 6일보다 작고, 클릭한 날짜가 21보다 크면 (현재달의 초반과 이전달의 후반부가 보이는 캘린더)
       if (selecteDate < 6 && date > 21) {
@@ -121,6 +65,69 @@ const ReactCalendar: React.FC<CalendarProps> = ({
 
       // 선택된 날짜 업데이트
       setSelectedDate(date);
+      return nextWeekDate;
+    });
+  };
+
+  // 이전 주로 이동하는 함수
+  const prevWeek = () => {
+    setCurrentDate(prevDate => {
+      const currentWeekDate = new Date(prevDate); // 현재 주의 날짜 복사
+
+      // 현재 주의 날짜에서 7일 전의 날짜를 계산합니다.
+      currentWeekDate.setDate(currentWeekDate.getDate() - 7);
+
+      // 이전 주와 다른 월로 이동했을 경우, 월을 업데이트합니다.
+      if (currentWeekDate.getMonth() !== selecteMonth) {
+        setSelectedMonth(currentWeekDate.getMonth());
+
+        // 이전 주의 월이 1월인 경우, 연도를 업데이트합니다.
+        if (currentWeekDate.getMonth() === 11) {
+          setSelectedYears(currentWeekDate.getFullYear());
+        }
+      }
+
+      // 이전 주의 날짜가 31일이고, 현재 날짜가 1일인 경우,
+      // 해당 월의 마지막 날짜를 선택합니다.
+      if (currentWeekDate.getDate() === 31 && selecteDate === 1) {
+        const lastDayOfMonth = new Date(currentWeekDate.getFullYear(), currentWeekDate.getMonth(), 0);
+        setSelectedDate(lastDayOfMonth.getDate());
+      } else {
+        // 그 외의 경우, 이전 주의 날짜를 선택합니다.
+        setSelectedDate(currentWeekDate.getDate());
+      }
+
+      return currentWeekDate;
+    });
+  };
+
+  // 다음 주로 이동하는 함수
+  const nextWeek = () => {
+    setCurrentDate(prevDate => {
+      const nextWeekDate = new Date(prevDate);
+
+      // 현재 날짜에서 7일 후의 날짜를 계산합니다.
+      nextWeekDate.setDate(nextWeekDate.getDate() + 7);
+
+      // 다음 주와 다른 월로 이동했을 경우, 월을 업데이트합니다.
+      if (nextWeekDate.getMonth() !== selecteMonth) {
+        setSelectedMonth(nextWeekDate.getMonth());
+
+        // 다음 주의 월이 1월인 경우, 연도를 업데이트합니다.
+        if (nextWeekDate.getMonth() === 0) {
+          setSelectedYears(nextWeekDate.getFullYear());
+        }
+      }
+
+      // 다음 주의 날짜가 1일이고, 현재 날짜가 31일인 경우,
+      // 현재 월의 마지막 날짜를 선택합니다.
+      if (nextWeekDate.getDate() === 1 && selecteDate === 31) {
+        setSelectedDate(selecteDate);
+      } else {
+        // 그 외의 경우, 다음 주의 날짜를 선택합니다.
+        setSelectedDate(nextWeekDate.getDate());
+      }
+
       return nextWeekDate;
     });
   };

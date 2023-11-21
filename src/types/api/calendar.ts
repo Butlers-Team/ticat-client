@@ -5,6 +5,9 @@ export interface CalendarListListType {
       memberId: number;
       festivalList: [
         {
+          reviewRating: number;
+          reviewCount: number;
+          likeCount: number;
           address: string;
           category: string;
           eventEndDate: string;
@@ -38,6 +41,9 @@ export interface CalendarListListType {
 }
 
 export interface CalendarListType {
+  reviewRating: number;
+  reviewCount: number;
+  likeCount: number;
   address: string;
   category: string;
   eventEndDate: string;

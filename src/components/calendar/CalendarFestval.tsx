@@ -16,6 +16,7 @@ interface FestivalProps {
   selectedCalendars: number[];
   setSelectedCalendars: React.Dispatch<React.SetStateAction<number[]>>;
   select: boolean;
+  allSelect: boolean;
 }
 
 const statusStlye = (state: string) => {
@@ -30,7 +31,7 @@ const statusStlye = (state: string) => {
   return { state: '미확인', style: 'completed' };
 };
 
-const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendars }: FestivalProps) => {
+const CalendarFestival = ({ item, select, selectedCalendars, allSelect, setSelectedCalendars }: FestivalProps) => {
   const [selected, setSelected] = useState(false);
   const navigate = useNavigate();
 
@@ -63,6 +64,14 @@ const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendar
   useEffect(() => {
     setSelected(false);
   }, [select]);
+
+  useEffect(() => {
+    if (allSelect) {
+      setSelected(true);
+    } else {
+      setSelected(false);
+    }
+  }, [allSelect]);
   return (
     <FestivalContainer>
       <ImgBox>
@@ -77,10 +86,14 @@ const CalendarFestival = ({ item, select, selectedCalendars, setSelectedCalendar
         <div className="icon-wrap">
           <div className="review-icon">
             <FaStar size="14px" color="#FFAD33" />
+            <span>
+              {item.reviewRating.toFixed(1)} ({item.reviewCount})
+            </span>
           </div>
           <p className="gap">|</p>
           <div className="review-icon">
             <TiHeartFullOutline size="14px" color="var(--color-sub)" />
+            <span>{item.likeCount}</span>
           </div>
         </div>
         <p className="festival-date">
