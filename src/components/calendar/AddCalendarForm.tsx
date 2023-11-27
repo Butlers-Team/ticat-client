@@ -50,11 +50,11 @@ const AddCalendar: React.FC<AddCalendarProps> = ({ setDateForm, festivalId, star
     if (member) {
       setDateForm(false);
       const endDate = new Date(dateRange.endDate);
-      endDate.setDate(endDate.getDate() + 1);
+      const startDate = new Date(dateRange.startDate);
       const params: CalendarAddRequest = {
         festivalId: festivalId,
-        startDate: `${dateRange.startDate?.toJSON().split('T')[0]}`,
-        endDate: endDate.toISOString().split('T')[0] || '',
+        startDate: `${startDate?.getFullYear()}-${startDate?.getMonth()}-${startDate?.getDate()}`,
+        endDate: `${endDate?.getFullYear()}-${endDate?.getMonth()}-${endDate?.getDate()}`,
       };
       try {
         const data = await addCalendarRequest(params);
