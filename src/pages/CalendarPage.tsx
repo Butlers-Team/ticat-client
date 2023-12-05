@@ -69,7 +69,7 @@ const CalendarPage: React.FC = (): JSX.Element => {
     setSelectedCalendars(list);
     setAllSelect(!allSelect);
   };
-  /** 2023/10/20 - 전체삭제 리스트 추가하는 함수 - parksubeom */
+  /** 2023/10/20 - 전체삭제 리스트 비우는 함수 - parksubeom */
   const emptySelectDeleteList = () => {
     setSelectedCalendars([]);
     setAllSelect(!allSelect);

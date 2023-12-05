@@ -274,7 +274,7 @@ const BtnSection = styled.div`
     height: 3.5rem;
     border-radius: 5px;
     border: none;
-    font-size: 1.5rem;
+    font-size: 15px;
     margin-right: 5px;
     cursor: pointer;
     > span {
@@ -291,7 +291,7 @@ const BtnSection = styled.div`
     height: 3.5rem;
     border-radius: 5px;
     border: none;
-    font-size: 1.5rem;
+    font-size: 15px;
     margin-right: 5px;
     cursor: pointer;
     > span {
