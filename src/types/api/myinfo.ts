@@ -1,4 +1,9 @@
 // ========================== 회원정보 ==========================
+/** 2023/11/22 - 아이디 중복 확인 body Type - by sineTlsl */
+export interface IdDuplicationPostBodyType {
+  displayName: string;
+}
+
 /** 2023/07/21 - 회원정보 데이터 Type - by sineTlsl */
 export interface MyInfoType {
   memberId: number;

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { getInterest, patchMyInfo, patchInterest } from '@api/myinfo';
+import { getInterest, patchMyInfo, patchInterest, postIdDuplication } from '@api/myinfo';
 import { MyInfoType } from 'types/api/myinfo';
 
 // stores
@@ -56,7 +56,7 @@ const ProfileUpdatePage = () => {
   });
 
   /** 2023/08/13 - 프로필 업데이트 요청 함수 생성 - by sineTlsl */
-  const profileUpdatemutation = useMutation(patchMyInfo, {
+  const profileUpdateMutation = useMutation(patchMyInfo, {
     onSuccess: () => {
       queryClient.invalidateQueries(['userInfo']);
 
@@ -72,6 +72,10 @@ const ProfileUpdatePage = () => {
       console.log(err);
     },
   });
+
+  // const idDuplicationMutation = useMutation(postIdDuplication, , {
+
+  // });
 
   /** 2023/08/07 - 이전 페이지 이동 함수 - by sineTlsl */
   const goBackPage = () => {
@@ -105,7 +109,7 @@ const ProfileUpdatePage = () => {
       categories: category,
     };
 
-    profileUpdatemutation.mutate(updateProfileBody);
+    profileUpdateMutation.mutate(updateProfileBody);
     interestMutation.mutate(updateInterestBody);
   };
 
