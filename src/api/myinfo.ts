@@ -1,9 +1,23 @@
 import instance from '@api/axiosInstance';
 
 // type
-import { MyInfoType, RecentListType, InterestType, MyInfoPatchBodyType, InterestPatchBodyType } from 'types/api/myinfo';
+import {
+  MyInfoType,
+  RecentListType,
+  InterestType,
+  MyInfoPatchBodyType,
+  InterestPatchBodyType,
+  IdDuplicationPostBodyType,
+} from 'types/api/myinfo';
 
 // ========================== 회원정보 ==========================
+/** 2023/11/22 - 아이디 중복 확인 POST 요청 - by sineTlsl */
+export const postIdDuplication = async (body: IdDuplicationPostBodyType) => {
+  const { data } = await instance.post('/display-name', body);
+
+  return data;
+};
+
 /** 2023/07/21 - 회원정보 GET 요청 - by sineTlsl */
 export const getMyInfo = async () => {
   const { data } = await instance.get<MyInfoType>('/members');
